@@ -4,6 +4,7 @@
  */
 
 import { useRef } from 'react';
+import { escapeHtml } from '@/lib/security/inputSanitizer';
 import { useTranslation } from "@/hooks/useTranslation";
 import Barcode from 'react-barcode';
 import { Button } from '@/components/ui/button';
@@ -132,7 +133,7 @@ export function ProductBarcodeDisplay({
         <!DOCTYPE html>
         <html>
           <head>
-            <title>Code-barres - ${barcode}</title>
+            <title>Code-barres - ${escapeHtml(barcode)}</title>
             <style>
               body {
                 margin: 0;

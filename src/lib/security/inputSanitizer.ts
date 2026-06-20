@@ -17,6 +17,21 @@ export const sanitizeHTML = (dirty: string): string => {
 };
 
 /**
+ * Échapper du texte pour insertion SÛRE dans une chaîne HTML (titre, contenu).
+ * À utiliser quand une valeur est interpolée dans du HTML construit à la main
+ * hors du rendu React — ex. `document.write()` d'une fenêtre d'impression —
+ * où React n'échappe PAS automatiquement (risque XSS).
+ */
+export const escapeHtml = (input: unknown): string => {
+  return String(input ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+};
+
+/**
  * Échapper caractères SQL dangereux
  */
 export const escapeSQLString = (input: string): string => {

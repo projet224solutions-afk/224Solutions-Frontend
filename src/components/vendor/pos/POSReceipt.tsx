@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { escapeHtml } from '@/lib/security/inputSanitizer';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -129,7 +130,7 @@ export function POSReceipt({ open, onClose, orderData }: POSReceiptProps) {
       printWindow.document.write(`
         <html>
           <head>
-            <title>Reçu - ${orderData.orderNumber}</title>
+            <title>Reçu - ${escapeHtml(orderData.orderNumber)}</title>
             <style>
               body { font-family: 'Courier New', monospace; font-size: 14px; padding: 10px; max-width: 320px; margin: 0 auto; }
               .header { text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px; }

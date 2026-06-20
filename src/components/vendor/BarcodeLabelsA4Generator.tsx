@@ -4,6 +4,7 @@
  */
 
 import { useState, useCallback } from 'react';
+import { escapeHtml } from '@/lib/security/inputSanitizer';
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
 import { Button } from '@/components/ui/button';
@@ -308,13 +309,13 @@ export function BarcodeLabelsA4Generator({ vendorId, businessName }: BarcodeLabe
 
     const labelsHTML = labels.map((label, idx) => `
       <div class="label">
-        <div class="name">${label.name.length > 25 ? label.name.substring(0, 22) + '...' : label.name}</div>
+        <div class="name">${escapeHtml(label.name.length > 25 ? label.name.substring(0, 22) + '...' : label.name)}</div>
         <svg id="bc-${idx}"></svg>
         <div class="info">
           ${[
-            showPrice ? fc(label.price) : '',
-            showSku && label.sku ? label.sku : '',
-            showBusinessName && businessName ? businessName : ''
+            showPrice ? escapeHtml(fc(label.price)) : '',
+            showSku && label.sku ? escapeHtml(label.sku) : '',
+            showBusinessName && businessName ? escapeHtml(businessName) : ''
           ].filter(Boolean).join(' • ')}
         </div>
       </div>

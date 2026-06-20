@@ -3,6 +3,7 @@
  */
 
 import { useRef } from 'react';
+import { escapeHtml } from '@/lib/security/inputSanitizer';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -162,7 +163,7 @@ export default function BadgeGeneratorDialog({
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Badge ${vehicleData.member_name}</title>
+          <title>Badge ${escapeHtml(vehicleData.member_name)}</title>
           <style>
             @media print {
               body {
