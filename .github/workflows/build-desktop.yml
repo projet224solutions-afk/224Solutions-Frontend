@@ -1,0 +1,369 @@
+name: Build Desktop Apps
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build React app
+        run: |
+          npm run build
+          echo "React app built successfully"
+          
+      - name: Verify desktop assets (Windows)
+        shell: pwsh
+        run: |
+          if (-not (Test-Path assets)) { New-Item -ItemType Directory -Path assets | Out-Null }
+          if (-not (Test-Path assets/icon.ico)) {
+            Write-Host 'assets/icon.ico not found. Generating placeholder icon...'
+            Add-Type -AssemblyName System.Drawing
+            $bmp = New-Object System.Drawing.Bitmap 256,256
+            $g = [System.Drawing.Graphics]::FromImage($bmp)
+            $bg = [System.Drawing.Color]::FromArgb(0,102,204) # 224 blue
+            $g.Clear($bg)
+            $bmp.Save('assets/icon.png', [System.Drawing.Imaging.ImageFormat]::Png)
+            $g.Dispose()
+            $bmp.Dispose()
+
+            # Build ICO (PNG-in-ICO format)
+            $pngBytes = [System.IO.File]::ReadAllBytes('assets/icon.png')
+            $ms = New-Object System.IO.MemoryStream
+            $bw = New-Object System.IO.BinaryWriter($ms)
+            # ICONDIR
+            $bw.Write([UInt16]0) # reserved
+            $bw.Write([UInt16]1) # type = icon
+            $bw.Write([UInt16]1) # count
+            # ICONDIRENTRY
+            $bw.Write([Byte]0)   # width 0 => 256
+            $bw.Write([Byte]0)   # height 0 => 256
+            $bw.Write([Byte]0)   # color count
+            $bw.Write([Byte]0)   # reserved
+            $bw.Write([UInt16]0) # planes
+            $bw.Write([UInt16]32) # bit count
+            $bw.Write([UInt32]$pngBytes.Length) # bytes in res
+            $bw.Write([UInt32]22) # image offset (6 + 16)
+            $bw.Write($pngBytes)
+            $bw.Flush()
+            [System.IO.File]::WriteAllBytes('assets/icon.ico', $ms.ToArray())
+            $bw.Close(); $ms.Close()
+          }
+          
+      - name: Create Electron main process
+        run: |
+          cat > electron-main.js << 'EOF'
+          const { app, BrowserWindow, Menu } = require('electron');
+          const path = require('path');
+          
+          function createWindow() {
+            const mainWindow = new BrowserWindow({
+              width: 1400,
+              height: 900,
+              webPreferences: {
+                nodeIntegration: false,
+                contextIsolation: true,
+                enableRemoteModule: false,
+                sandbox: true
+              },
+              icon: path.join(__dirname, 'assets/icon.ico'),
+              title: '224Solutions - Bureau Syndicat',
+              show: false
+            });
+
+            mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
+            
+            mainWindow.once('ready-to-show', () => {
+              mainWindow.show();
+            });
+            
+            // Menu personnalisé
+            const template = [
+              {
+                label: '224Solutions',
+                submenu: [
+                  { role: 'about', label: 'À propos' },
+                  { type: 'separator' },
+                  { role: 'quit', label: 'Quitter' }
+                ]
+              },
+              {
+                label: 'Fichier',
+                submenu: [
+                  { role: 'close', label: 'Fermer' }
+                ]
+              },
+              {
+                label: 'Affichage',
+                submenu: [
+                  { role: 'reload', label: 'Actualiser' },
+                  { role: 'forceReload', label: 'Forcer l\'actualisation' },
+                  { role: 'toggleDevTools', label: 'Outils de développement' },
+                  { type: 'separator' },
+                  { role: 'resetZoom', label: 'Zoom normal' },
+                  { role: 'zoomIn', label: 'Zoom avant' },
+                  { role: 'zoomOut', label: 'Zoom arrière' },
+                  { type: 'separator' },
+                  { role: 'togglefullscreen', label: 'Plein écran' }
+                ]
+              }
+            ];
+            
+            const menu = Menu.buildFromTemplate(template);
+            Menu.setApplicationMenu(menu);
+          }
+          
+          if (process.platform === 'win32') {
+            app.setAppUserModelId('com.224solutions.bureau-syndicat');
+          }
+
+          app.whenReady().then(createWindow);
+          
+          app.on('window-all-closed', () => {
+            if (process.platform !== 'darwin') {
+              app.quit();
+            }
+          });
+          
+          app.on('activate', () => {
+            if (BrowserWindow.getAllWindows().length === 0) {
+              createWindow();
+            }
+          });
+          EOF
+          
+      - name: Create package.json for Electron
+        run: |
+          cat > electron-package.json << 'EOF'
+          {
+            "name": "224solutions-bureau-syndicat",
+            "version": "1.0.0",
+            "description": "224Solutions - Gestion Bureau Syndicat",
+            "main": "electron-main.js",
+            "homepage": "./",
+            "author": "224Solutions",
+            "license": "MIT",
+            "build": {
+              "appId": "com.224solutions.bureau-syndicat",
+              "productName": "224Solutions Bureau Syndicat",
+              "directories": {
+                "output": "electron-dist"
+              },
+              "files": [
+                "electron-main.js",
+                "dist/**/*",
+                "assets/**/*",
+                "node_modules/**/*"
+              ],
+              "win": {
+                "target": "nsis",
+                "icon": "assets/icon.ico"
+              },
+              "nsis": {
+                "oneClick": false,
+                "allowToChangeInstallationDirectory": true,
+                "createDesktopShortcut": true,
+                "createStartMenuShortcut": true
+              }
+            },
+            "scripts": {
+              "electron": "electron .",
+              "build-electron": "electron-builder",
+              "dist": "electron-builder --publish=never"
+            }
+          }
+          EOF
+          
+      - name: Build Windows executable
+        run: |
+          copy electron-package.json package.json
+          npx electron-builder --win --publish=never
+          
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 224solutions-windows-exe
+          path: electron-dist/*.exe
+          retention-days: 30
+
+  build-macos:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build React app
+        run: npm run build
+        
+      - name: Verify desktop assets (macOS)
+        run: |
+          mkdir -p assets
+          if [ ! -f assets/icon.icns ]; then
+            echo "assets/icon.icns not found. Generating placeholder ICNS..."
+            # Generate 1024x1024 PNG placeholder using sips (macOS)
+            if [ ! -f assets/icon.png ]; then
+              convert -size 1024x1024 canvas:'#0066CC' assets/icon.png || sips -s format png --resampleWidth 1024 /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/ToolbarAdvanced.icns --out assets/icon.png || echo "Placeholder base icon created"
+            fi
+            mkdir -p assets/Icon.iconset
+            for size in 16 32 64 128 256 512; do
+              sips -z $size $size assets/icon.png --out assets/Icon.iconset/icon_${size}x${size}.png || true
+              sips -z $((size*2)) $((size*2)) assets/icon.png --out assets/Icon.iconset/icon_${size}x${size}@2x.png || true
+            done
+            iconutil -c icns assets/Icon.iconset -o assets/icon.icns || echo "::warning::Failed to generate ICNS; please provide a real assets/icon.icns"
+          fi
+          
+      - name: Create Electron main process
+        run: |
+          cat > electron-main.js << 'EOF'
+          const { app, BrowserWindow, Menu } = require('electron');
+          const path = require('path');
+          
+          function createWindow() {
+            const mainWindow = new BrowserWindow({
+              width: 1400,
+              height: 900,
+              webPreferences: {
+                nodeIntegration: false,
+                contextIsolation: true,
+                sandbox: true
+              },
+              title: '224Solutions - Bureau Syndicat',
+              show: false
+            });
+            
+            mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
+            
+            mainWindow.once('ready-to-show', () => {
+              mainWindow.show();
+            });
+          }
+          
+          app.whenReady().then(createWindow);
+          
+          app.on('window-all-closed', () => {
+            if (process.platform !== 'darwin') {
+              app.quit();
+            }
+          });
+          EOF
+          
+      - name: Create package.json for Electron
+        run: |
+          cat > electron-package.json << 'EOF'
+          {
+            "name": "224solutions-bureau-syndicat",
+            "version": "1.0.0",
+            "main": "electron-main.js",
+            "build": {
+              "appId": "com.224solutions.bureau-syndicat",
+              "productName": "224Solutions Bureau Syndicat",
+              "directories": {
+                "output": "electron-dist"
+              },
+              "files": [
+                "electron-main.js",
+                "dist/**/*",
+                "assets/**/*",
+                "node_modules/**/*"
+              ],
+              "mac": {
+                "target": "dmg",
+                "category": "public.app-category.business",
+                "icon": "assets/icon.icns"
+              }
+            }
+          }
+          EOF
+          
+      - name: Build macOS DMG
+        run: |
+          cp electron-package.json package.json
+          npx electron-builder --mac --publish=never
+          
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 224solutions-macos-dmg
+          path: electron-dist/*.dmg
+          retention-days: 30
+
+  create-release:
+    needs: [build-windows, build-macos]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: 224solutions-windows-exe
+          path: ./windows
+          
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: 224solutions-macos-dmg
+          path: ./macos
+          
+      - name: Create Desktop Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: desktop-v${{ github.run_number }}
+          name: 224Solutions Desktop v${{ github.run_number }}
+          body: |
+            🖥️ **Versions Desktop Automatiques**
+            
+            💻 **Windows (.exe):**
+            - Téléchargez le fichier .exe
+            - Exécutez l'installateur
+            - Suivez les instructions d'installation
+            
+            🍎 **macOS (.dmg):**
+            - Téléchargez le fichier .dmg
+            - Montez l'image disque
+            - Glissez l'app vers Applications
+            
+            🚀 **Fonctionnalités Desktop:**
+            - Interface native Windows/macOS
+            - Gestion hors ligne complète
+            - Synchronisation automatique
+            - Notifications système
+            - Raccourcis clavier
+            - Menu contextuel
+            
+            📊 **Build:** ${{ github.sha }}
+            🕒 **Date:** ${{ github.event.head_commit.timestamp }}
+          files: |
+            ./windows/*.exe
+            ./macos/*.dmg
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

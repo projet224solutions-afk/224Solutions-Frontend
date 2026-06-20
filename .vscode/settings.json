@@ -1,0 +1,12 @@
+{
+  "deno.enable": false,
+  "deno.enablePaths": ["supabase/functions"],
+  "deno.unstable": true,
+  "deno.lint": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.validate.enable": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  }
+}

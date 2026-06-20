@@ -1,0 +1,33 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <g filter="url(#shadow)">
+    <path d="M20 60L64 27L108 60V98C108 103.523 103.523 108 98 108H30C24.4772 108 20 103.523 20 98V60Z" fill="url(#house)"/>
+    <path d="M33 54L64 32L95 54V46L64 23L33 46V54Z" fill="#CFE1FF" fill-opacity="0.85"/>
+    <rect x="33" y="56" width="24" height="26" rx="6" fill="#EAF2FF"/>
+    <rect x="71" y="56" width="24" height="18" rx="6" fill="#EAF2FF"/>
+    <rect x="54" y="74" width="20" height="34" rx="8" fill="#0B2F6B"/>
+    <path d="M54 74H74V82C74 84.2091 72.2091 86 70 86H58C55.7909 86 54 84.2091 54 82V74Z" fill="#15489C"/>
+    <path d="M28 64H100" stroke="#6CA8FF" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+  </g>
+  <circle cx="93" cy="33" r="10" fill="#FFFFFF" fill-opacity="0.22"/>
+  <defs>
+    <linearGradient id="bg" x1="14" y1="10" x2="110" y2="116" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0D4FB3"/>
+      <stop offset="1" stop-color="#071A36"/>
+    </linearGradient>
+    <linearGradient id="house" x1="24" y1="32" x2="98" y2="109" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#C8DBFF"/>
+    </linearGradient>
+    <filter id="shadow" x="12" y="18" width="104" height="98" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="6"/>
+      <feGaussianBlur stdDeviation="4"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0117647 0 0 0 0 0.105882 0 0 0 0 0.231373 0 0 0 0.32 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_1" result="shape"/>
+    </filter>
+  </defs>
+</svg>

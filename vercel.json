@@ -1,0 +1,89 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.224solution.net"
+        }
+      ],
+      "destination": "https://224solution.net/:path*",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "Content-Security-Policy", "value": "frame-ancestors 'self'" }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/s/:path*",
+      "destination": "https://uakkxaibujzxdiqzpnpr.supabase.co/functions/v1/short-link/:path*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "https://backend.224solution.net/api/:path*"
+    },
+    {
+      "source": "/health",
+      "destination": "https://backend.224solution.net/health"
+    },
+    {
+      "source": "/healthz",
+      "destination": "https://backend.224solution.net/healthz"
+    },
+    {
+      "source": "/healthz.json",
+      "destination": "https://backend.224solution.net/healthz.json"
+    },
+    {
+      "source": "/auth/confirm",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/auth/set-password",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/auth/select-country",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/auth/:path*",
+      "destination": "https://backend.224solution.net/auth/:path*"
+    },
+    {
+      "source": "/jobs/:path*",
+      "destination": "https://backend.224solution.net/jobs/:path*"
+    },
+    {
+      "source": "/media/:path*",
+      "destination": "https://backend.224solution.net/media/:path*"
+    },
+    {
+      "source": "/internal/:path*",
+      "destination": "https://backend.224solution.net/internal/:path*"
+    },
+    {
+      "source": "/edge-functions/:path*",
+      "destination": "https://backend.224solution.net/edge-functions/:path*"
+    },
+    {
+      "source": "/webhooks/:path*",
+      "destination": "https://backend.224solution.net/webhooks/:path*"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
+    }
+  ]
+}

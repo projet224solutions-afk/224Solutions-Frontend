@@ -1,0 +1,98 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build React app
+        run: |
+          npm run build
+          echo "React app built successfully"
+          
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        
+      - name: Create Capacitor Android project
+        run: |
+          npm install -g @capacitor/cli
+          npx cap add android
+          npx cap sync android
+          
+      - name: Build Android APK
+        run: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew assembleRelease
+          
+      - name: Sign APK
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > android/app/keystore.jks
+          cd android
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file=keystore.jks \
+            -Pandroid.injected.signing.store.password="${{ secrets.KEYSTORE_PASSWORD }}" \
+            -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS }}" \
+            -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}"
+            
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 224solutions-android-apk
+          path: android/app/build/outputs/apk/release/*.apk
+          retention-days: 30
+          
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: android-v${{ github.run_number }}
+          name: 224Solutions Android v${{ github.run_number }}
+          body: |
+            🤖 **Version Android Automatique**
+            
+            📱 **Installation:**
+            1. Téléchargez le fichier APK
+            2. Activez "Sources inconnues" dans les paramètres Android
+            3. Installez l'APK
+            
+            🚀 **Fonctionnalités:**
+            - Interface bureau syndicat complète
+            - Gestion des taxi-motards avec badges
+            - Wallet intégré avec transactions
+            - Authentification sécurisée
+            - Mode hors ligne
+            
+            📊 **Build:** ${{ github.sha }}
+            🕒 **Date:** ${{ github.event.head_commit.timestamp }}
+          files: android/app/build/outputs/apk/release/*.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

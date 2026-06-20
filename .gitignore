@@ -1,0 +1,50 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.local
+.env.production
+
+# Fichiers de diagnostic (ne pas inclure en production)
+public/mobile-diagnostic.html
+public/test-mobile.html
+
+# Google Cloud Platform - Sécurité
+.gcp/
+*.json
+service-account-*.json
+*-key.json
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+backend/.env.txt
+backendpackage.json.txt
+nano dockerfile.txt
+rc
+upabase
+.vercel
+.env*.local
+
+# Cache intermédiaire des traductions auto (régénérable)
+scripts/.i18n-cache/
+
+# Fichier de remplacement de la purge de secrets (contient les tokens fuités — NE JAMAIS committer)
+scripts/security/.purge-replacements.txt

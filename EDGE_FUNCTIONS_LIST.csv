@@ -1,0 +1,217 @@
+﻿Name,Path,Category,Has_DB,Has_OpenAI,Has_Stripe,Has_Auth,Has_ExternalAPI
+admin-release-funds,supabase/functions/admin-release-funds,Admin/Monitoring,Y,N,N,Y,Y
+admin-review-payment,supabase/functions/admin-review-payment,Payment,Y,N,Y,Y,Y
+advanced-analytics,supabase/functions/advanced-analytics,Analytics,Y,N,N,Y,Y
+affiliate-commission-trigger,supabase/functions/affiliate-commission-trigger,Other,Y,N,N,Y,Y
+african-fx-collect,supabase/functions/african-fx-collect,Other,Y,N,N,N,Y
+african-fx-query,supabase/functions/african-fx-query,Other,Y,N,N,N,Y
+agent-affiliate-link,supabase/functions/agent-affiliate-link,User Management,Y,N,N,Y,Y
+agent-delete-product,supabase/functions/agent-delete-product,Product Management,Y,N,N,Y,Y
+agent-delete-user,supabase/functions/agent-delete-user,User Management,Y,N,N,Y,Y
+agent-get-products,supabase/functions/agent-get-products,Product Management,Y,N,N,Y,Y
+agent-toggle-product-status,supabase/functions/agent-toggle-product-status,Product Management,Y,N,N,Y,Y
+agent-toggle-user-status,supabase/functions/agent-toggle-user-status,User Management,Y,N,N,Y,Y
+agent-update-product,supabase/functions/agent-update-product,Product Management,Y,N,N,Y,Y
+agora-token,supabase/functions/agora-token,Other,Y,N,N,Y,Y
+ai-contract-assistant,supabase/functions/ai-contract-assistant,AI/ML,N,N,N,Y,Y
+ai-copilot,supabase/functions/ai-copilot,AI/ML,N,N,N,Y,Y
+ai-error-analyzer,supabase/functions/ai-error-analyzer,AI/ML,Y,N,N,Y,Y
+ai-recommend,supabase/functions/ai-recommend,AI/ML,Y,N,N,Y,Y
+api-guard-monitor,supabase/functions/api-guard-monitor,Admin/Monitoring,Y,N,N,Y,Y
+apply-migrations,supabase/functions/apply-migrations,Other,Y,N,N,Y,Y
+assess-payment-risk,supabase/functions/assess-payment-risk,Payment,Y,N,Y,Y,Y
+audio-translation-webhook,supabase/functions/audio-translation-webhook,Webhooks,Y,N,N,Y,Y
+auth-agent-bureau-login,supabase/functions/auth-agent-bureau-login,Authentication,Y,N,N,Y,Y
+auth-agent-bureau-verify-otp,supabase/functions/auth-agent-bureau-verify-otp,Authentication,Y,N,N,Y,Y
+auth-agent-login,supabase/functions/auth-agent-login,Authentication,Y,N,N,Y,Y
+auth-bureau-login,supabase/functions/auth-bureau-login,Authentication,Y,N,N,Y,Y
+auth-verify-otp,supabase/functions/auth-verify-otp,Authentication,Y,N,N,Y,Y
+cached-data,supabase/functions/cached-data,Other,Y,N,N,Y,Y
+calculate-delivery-distances,supabase/functions/calculate-delivery-distances,Order Management,N,N,N,Y,Y
+calculate-route,supabase/functions/calculate-route,Other,N,N,N,Y,Y
+cancel-order,supabase/functions/cancel-order,Order Management,Y,N,N,Y,Y
+change-agent-email,supabase/functions/change-agent-email,User Management,Y,N,N,Y,Y
+change-agent-password,supabase/functions/change-agent-password,Authentication,Y,N,N,Y,Y
+change-bureau-password,supabase/functions/change-bureau-password,Authentication,Y,N,N,Y,Y
+change-member-password,supabase/functions/change-member-password,Authentication,Y,N,N,Y,Y
+chapchappay-ecommerce,supabase/functions/chapchappay-ecommerce,Other,N,N,N,Y,Y
+chapchappay-pull,supabase/functions/chapchappay-pull,Other,Y,N,N,Y,Y
+chapchappay-push,supabase/functions/chapchappay-push,Other,Y,N,N,Y,Y
+chapchappay-status,supabase/functions/chapchappay-status,Other,Y,N,N,Y,Y
+chapchappay-webhook,supabase/functions/chapchappay-webhook,Webhooks,Y,N,N,Y,Y
+check-all-services,supabase/functions/check-all-services,Other,N,Y,N,Y,Y
+cleanup-cache-errors,supabase/functions/cleanup-cache-errors,Other,Y,N,N,Y,Y
+client-ai-assistant,supabase/functions/client-ai-assistant,AI/ML,Y,N,N,Y,Y
+cloud-health-proxy,supabase/functions/cloud-health-proxy,Other,N,N,N,Y,Y
+cognito-auth-proxy,supabase/functions/cognito-auth-proxy,Authentication,Y,N,N,Y,Y
+cognito-sync-session,supabase/functions/cognito-sync-session,Other,N,N,N,Y,Y
+communication-handler,supabase/functions/communication-handler,Other,Y,N,N,Y,Y
+competitive-analysis,supabase/functions/competitive-analysis,Other,N,N,N,Y,Y
+confirm-delivery,supabase/functions/confirm-delivery,Order Management,Y,N,N,Y,Y
+confirm-order-by-seller,supabase/functions/confirm-order-by-seller,Order Management,Y,N,N,Y,Y
+confirm-stripe-deposit,supabase/functions/confirm-stripe-deposit,Payment,Y,N,Y,Y,Y
+convert-audio,supabase/functions/convert-audio,Other,Y,N,N,Y,Y
+create-bureau-with-auth,supabase/functions/create-bureau-with-auth,Authentication,Y,N,N,Y,Y
+create-contract,supabase/functions/create-contract,Other,Y,N,N,Y,Y
+create-conversation,supabase/functions/create-conversation,Other,Y,N,N,Y,Y
+create-payment-intent,supabase/functions/create-payment-intent,Payment,Y,N,Y,Y,Y
+create-paypal-order,supabase/functions/create-paypal-order,Payment,Y,N,N,Y,Y
+create-pdg-agent,supabase/functions/create-pdg-agent,User Management,Y,N,N,Y,Y
+create-product,supabase/functions/create-product,Product Management,Y,N,N,Y,Y
+create-short-link,supabase/functions/create-short-link,Other,Y,N,N,Y,Y
+create-sub-agent,supabase/functions/create-sub-agent,User Management,Y,N,N,Y,Y
+create-syndicate-member,supabase/functions/create-syndicate-member,Other,Y,N,N,Y,Y
+create-user-by-agent,supabase/functions/create-user-by-agent,User Management,Y,N,N,Y,Y
+create-vendor-agent,supabase/functions/create-vendor-agent,User Management,Y,N,N,Y,Y
+delete-pdg-agent,supabase/functions/delete-pdg-agent,User Management,Y,N,N,Y,Y
+delete-user,supabase/functions/delete-user,User Management,Y,N,N,Y,Y
+delivery-payment,supabase/functions/delivery-payment,Payment,Y,N,Y,Y,Y
+detect-anomalies,supabase/functions/detect-anomalies,Other,Y,N,N,Y,Y
+detect-surveillance-anomalies,supabase/functions/detect-surveillance-anomalies,Other,Y,N,N,Y,Y
+dispute-ai-arbitrate,supabase/functions/dispute-ai-arbitrate,AI/ML,Y,N,N,Y,Y
+dispute-create,supabase/functions/dispute-create,Other,Y,N,N,Y,Y
+dispute-resolve,supabase/functions/dispute-resolve,Other,Y,N,N,Y,Y
+dispute-respond,supabase/functions/dispute-respond,Other,Y,N,N,Y,Y
+djomy-init-payment,supabase/functions/djomy-init-payment,Payment,Y,N,N,Y,Y
+djomy-payment,supabase/functions/djomy-payment,Payment,Y,N,N,Y,Y
+djomy-secure-webhook,supabase/functions/djomy-secure-webhook,Payment,Y,N,N,Y,Y
+djomy-verify,supabase/functions/djomy-verify,Payment,Y,N,N,Y,Y
+djomy-webhook,supabase/functions/djomy-webhook,Payment,Y,N,N,Y,Y
+enhance-product-image,supabase/functions/enhance-product-image,Product Management,N,N,N,Y,Y
+error-monitor,supabase/functions/error-monitor,Admin/Monitoring,Y,N,N,Y,Y
+escrow-auto-release,supabase/functions/escrow-auto-release,Payment,Y,N,N,Y,Y
+escrow-create,supabase/functions/escrow-create,Payment,Y,N,N,Y,Y
+escrow-create-stripe,supabase/functions/escrow-create-stripe,Payment,Y,N,Y,Y,Y
+escrow-dispute,supabase/functions/escrow-dispute,Payment,Y,N,N,Y,Y
+escrow-refund,supabase/functions/escrow-refund,Payment,Y,N,Y,Y,Y
+escrow-release,supabase/functions/escrow-release,Payment,Y,N,Y,Y,Y
+escrow-stripe-webhook,supabase/functions/escrow-stripe-webhook,Payment,Y,N,Y,Y,Y
+export-users-for-cognito,supabase/functions/export-users-for-cognito,User Management,Y,N,N,Y,Y
+financial-stats,supabase/functions/financial-stats,Other,Y,N,N,Y,Y
+firebase-config,supabase/functions/firebase-config,Other,N,N,N,Y,Y
+firebase-health-check,supabase/functions/firebase-health-check,Other,N,N,N,Y,Y
+fix-error,supabase/functions/fix-error,Other,Y,N,N,Y,Y
+fraud-detection,supabase/functions/fraud-detection,Other,Y,N,N,Y,Y
+freight-payment,supabase/functions/freight-payment,Payment,Y,N,Y,Y,Y
+gcs-signed-url,supabase/functions/gcs-signed-url,Other,Y,N,N,Y,Y
+gcs-upload-complete,supabase/functions/gcs-upload-complete,Other,Y,N,N,Y,Y
+generate-bureau-token,supabase/functions/generate-bureau-token,File Generation,Y,N,N,Y,Y
+generate-contract-pdf,supabase/functions/generate-contract-pdf,File Generation,Y,N,N,Y,Y
+generate-contract-with-ai,supabase/functions/generate-contract-with-ai,File Generation,Y,N,N,Y,Y
+generate-invoice-pdf,supabase/functions/generate-invoice-pdf,File Generation,Y,N,N,Y,Y
+generate-pdf,supabase/functions/generate-pdf,File Generation,Y,N,N,Y,Y
+generate-product-description,supabase/functions/generate-product-description,Product Management,N,Y,N,Y,Y
+generate-product-image,supabase/functions/generate-product-image,Product Management,N,N,N,Y,Y
+generate-product-image-openai,supabase/functions/generate-product-image-openai,Product Management,N,Y,N,Y,Y
+generate-purchase-pdf,supabase/functions/generate-purchase-pdf,File Generation,Y,N,N,Y,Y
+generate-quote-pdf,supabase/functions/generate-quote-pdf,File Generation,Y,N,N,Y,Y
+generate-similar-image,supabase/functions/generate-similar-image,File Generation,N,N,N,Y,Y
+generate-totp,supabase/functions/generate-totp,File Generation,N,N,N,Y,Y
+generate-unique-id,supabase/functions/generate-unique-id,File Generation,Y,N,N,Y,Y
+geocode-address,supabase/functions/geocode-address,Other,N,N,N,Y,Y
+geo-detect,supabase/functions/geo-detect,Other,Y,N,N,Y,Y
+get-agent-users,supabase/functions/get-agent-users,User Management,Y,N,N,Y,Y
+get-google-secret,supabase/functions/get-google-secret,Other,Y,N,N,Y,Y
+get-user-activity,supabase/functions/get-user-activity,User Management,Y,N,N,Y,Y
+google-cloud-test,supabase/functions/google-cloud-test,Other,N,N,N,Y,Y
+google-maps-config,supabase/functions/google-maps-config,Other,N,N,N,Y,Y
+google-places-autocomplete,supabase/functions/google-places-autocomplete,Other,N,N,N,Y,Y
+inventory-api,supabase/functions/inventory-api,Product Management,Y,N,N,Y,Y
+link-escrow-order,supabase/functions/link-escrow-order,Payment,Y,N,N,Y,Y
+manual-credit-seller,supabase/functions/manual-credit-seller,Other,Y,N,Y,Y,Y
+mapbox-proxy,supabase/functions/mapbox-proxy,Other,N,N,N,Y,Y
+marketplace-escrow-payment,supabase/functions/marketplace-escrow-payment,Payment,Y,N,Y,Y,Y
+marketplace-rotation,supabase/functions/marketplace-rotation,Other,Y,N,N,Y,Y
+migrate-users-to-cognito,supabase/functions/migrate-users-to-cognito,User Management,Y,N,N,Y,Y
+ml-fraud-detection,supabase/functions/ml-fraud-detection,Other,Y,N,N,Y,Y
+mobile-money-withdrawal,supabase/functions/mobile-money-withdrawal,Other,Y,N,N,Y,Y
+notify-vendor-delivery-complete,supabase/functions/notify-vendor-delivery-complete,Order Management,Y,N,N,Y,Y
+og-meta,supabase/functions/og-meta,Other,Y,N,N,Y,Y
+open-dispute,supabase/functions/open-dispute,Other,Y,N,N,Y,Y
+payment-core,supabase/functions/payment-core,Payment,Y,N,N,Y,Y
+payment-diagnostic,supabase/functions/payment-diagnostic,Payment,N,N,N,Y,Y
+paypal-client-id,supabase/functions/paypal-client-id,Payment,N,N,N,Y,Y
+paypal-deposit,supabase/functions/paypal-deposit,Payment,Y,N,N,Y,Y
+paypal-webhook,supabase/functions/paypal-webhook,Payment,Y,N,N,Y,Y
+paypal-withdrawal,supabase/functions/paypal-withdrawal,Payment,Y,N,N,Y,Y
+pdg-ai-assistant,supabase/functions/pdg-ai-assistant,AI/ML,Y,N,N,Y,Y
+pdg-copilot,supabase/functions/pdg-copilot,AI/ML,Y,N,N,Y,Y
+pdg-delete-service-product,supabase/functions/pdg-delete-service-product,Product Management,Y,N,N,Y,Y
+pdg-delete-vendor,supabase/functions/pdg-delete-vendor,Other,Y,N,N,Y,Y
+pdg-mfa-verify,supabase/functions/pdg-mfa-verify,Other,Y,N,N,Y,Y
+pdg-update-agent-email,supabase/functions/pdg-update-agent-email,User Management,Y,N,N,Y,Y
+process-digital-renewals,supabase/functions/process-digital-renewals,Other,Y,N,N,Y,Y
+process-payment-link,supabase/functions/process-payment-link,Payment,Y,N,Y,Y,Y
+production-cron-jobs,supabase/functions/production-cron-jobs,Product Management,Y,N,N,Y,Y
+pubsub-manage,supabase/functions/pubsub-manage,Other,Y,N,N,Y,Y
+pubsub-publish,supabase/functions/pubsub-publish,Other,Y,N,N,Y,Y
+pubsub-subscribe,supabase/functions/pubsub-subscribe,Other,Y,N,N,Y,Y
+redis-cache,supabase/functions/redis-cache,Other,N,N,N,Y,Y
+register-with-affiliate,supabase/functions/register-with-affiliate,Other,Y,N,N,Y,Y
+release-scheduled-funds,supabase/functions/release-scheduled-funds,Other,Y,N,N,Y,Y
+renew-subscription,supabase/functions/renew-subscription,Other,Y,N,N,Y,Y
+request-refund,supabase/functions/request-refund,Other,Y,N,N,Y,Y
+reset-agent-password,supabase/functions/reset-agent-password,Authentication,Y,N,N,Y,Y
+reset-pdg-password,supabase/functions/reset-pdg-password,Authentication,N,N,N,Y,Y
+resolve-dispute,supabase/functions/resolve-dispute,Other,Y,N,N,Y,Y
+resolve-payment-link,supabase/functions/resolve-payment-link,Payment,Y,N,N,Y,Y
+resolve-short-link,supabase/functions/resolve-short-link,Other,Y,N,N,Y,Y
+restart-module,supabase/functions/restart-module,Other,Y,N,N,Y,Y
+restaurant-payment,supabase/functions/restaurant-payment,Payment,Y,N,Y,Y,Y
+restore-user,supabase/functions/restore-user,User Management,Y,N,N,Y,Y
+secure-payment-init,supabase/functions/secure-payment-init,Payment,Y,N,N,Y,Y
+secure-payment-validate,supabase/functions/secure-payment-validate,Payment,Y,N,N,Y,Y
+security-analysis,supabase/functions/security-analysis,Security,N,N,N,Y,Y
+security-block-ip,supabase/functions/security-block-ip,Security,Y,N,N,Y,Y
+security-detect-anomaly,supabase/functions/security-detect-anomaly,Security,Y,N,N,Y,Y
+security-forensics,supabase/functions/security-forensics,Security,Y,N,N,Y,Y
+security-incident-response,supabase/functions/security-incident-response,Security,Y,N,N,Y,Y
+send-agent-invitation,supabase/functions/send-agent-invitation,User Management,N,N,N,Y,Y
+send-bureau-access-email,supabase/functions/send-bureau-access-email,Other,N,N,N,Y,Y
+send-communication-notification,supabase/functions/send-communication-notification,Other,Y,N,N,Y,Y
+send-delivery-notification,supabase/functions/send-delivery-notification,Order Management,Y,N,N,Y,Y
+send-otp-email,supabase/functions/send-otp-email,Other,N,N,N,Y,Y
+send-security-alert,supabase/functions/send-security-alert,Security,Y,N,N,Y,Y
+send-sms,supabase/functions/send-sms,Other,N,N,N,Y,Y
+service-payment,supabase/functions/service-payment,Payment,Y,N,Y,Y,Y
+short-link,supabase/functions/short-link,Other,Y,N,N,Y,Y
+sign-contract,supabase/functions/sign-contract,Other,Y,N,N,Y,Y
+smart-notifications,supabase/functions/smart-notifications,Other,Y,N,N,Y,Y
+smart-recommendations,supabase/functions/smart-recommendations,Other,Y,N,N,Y,Y
+stripe-create-payment-intent,supabase/functions/stripe-create-payment-intent,Payment,Y,N,Y,Y,Y
+stripe-deposit,supabase/functions/stripe-deposit,Payment,Y,N,Y,Y,Y
+stripe-marketplace-payment,supabase/functions/stripe-marketplace-payment,Payment,Y,N,Y,Y,Y
+stripe-pos-payment,supabase/functions/stripe-pos-payment,Payment,Y,N,Y,Y,Y
+stripe-webhook,supabase/functions/stripe-webhook,Payment,Y,N,Y,N,Y
+stripe-withdrawal,supabase/functions/stripe-withdrawal,Payment,Y,N,N,Y,Y
+subscription-expiry-check,supabase/functions/subscription-expiry-check,Other,Y,N,N,N,Y
+subscription-webhook,supabase/functions/subscription-webhook,Webhooks,Y,N,N,N,Y
+sync-system-apis,supabase/functions/sync-system-apis,Other,Y,Y,Y,N,Y
+sync-to-cloudsql,supabase/functions/sync-to-cloudsql,Other,Y,N,N,Y,Y
+task-queue-worker,supabase/functions/task-queue-worker,Other,Y,N,N,Y,Y
+taxi-accept-ride,supabase/functions/taxi-accept-ride,Other,Y,N,N,Y,Y
+taxi-payment,supabase/functions/taxi-payment,Payment,Y,N,Y,Y,Y
+taxi-payment-process,supabase/functions/taxi-payment-process,Payment,Y,N,Y,Y,Y
+taxi-refuse-ride,supabase/functions/taxi-refuse-ride,Other,Y,N,N,Y,Y
+test-gemini-api,supabase/functions/test-gemini-api,Other,N,N,N,Y,Y
+test-google-cloud-api,supabase/functions/test-google-cloud-api,Other,N,N,N,Y,Y
+translate-audio,supabase/functions/translate-audio,Other,Y,N,N,Y,Y
+translate-message,supabase/functions/translate-message,Other,Y,N,N,Y,Y
+translate-product,supabase/functions/translate-product,Product Management,N,N,N,Y,Y
+universal-login,supabase/functions/universal-login,Authentication,Y,N,N,Y,Y
+update-bureau-email,supabase/functions/update-bureau-email,Other,Y,N,N,Y,Y
+update-member-email,supabase/functions/update-member-email,Other,Y,N,N,Y,Y
+update-vendor-agent-email,supabase/functions/update-vendor-agent-email,User Management,Y,N,N,Y,Y
+upload-bureau-stamp,supabase/functions/upload-bureau-stamp,Other,Y,N,N,Y,Y
+validate-purchase,supabase/functions/validate-purchase,Other,Y,N,N,Y,Y
+vendor-agent-get-products,supabase/functions/vendor-agent-get-products,Product Management,Y,N,N,Y,Y
+vendor-ai-assistant,supabase/functions/vendor-ai-assistant,AI/ML,Y,N,N,Y,Y
+verify-bureau-token,supabase/functions/verify-bureau-token,Other,Y,N,N,Y,Y
+verify-totp,supabase/functions/verify-totp,Other,Y,N,N,Y,Y
+verify-vendor,supabase/functions/verify-vendor,Other,Y,N,N,Y,Y
+visual-search,supabase/functions/visual-search,Other,Y,N,N,Y,Y
+waap-protect,supabase/functions/waap-protect,Other,Y,N,N,Y,Y
+wallet-audit,supabase/functions/wallet-audit,Payment,Y,N,N,Y,Y
+wallet-operations,supabase/functions/wallet-operations,Payment,Y,N,N,Y,Y
+wallet-payment-api,supabase/functions/wallet-payment-api,Payment,Y,N,N,Y,Y
+wallet-transfer,supabase/functions/wallet-transfer,Payment,Y,N,N,Y,Y

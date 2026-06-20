@@ -1,0 +1,223 @@
+﻿<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function () {
+      var host = window.location.hostname;
+      if (host === 'www.224solution.net') {
+        window.location.replace('https://224solution.net' + window.location.pathname + window.location.search + window.location.hash);
+        return;
+      }
+      if (host && host.indexOf('224solution.net') !== -1 && window.location.protocol === 'http:') {
+        window.location.replace('https://' + window.location.host + window.location.pathname + window.location.search + window.location.hash);
+      }
+    })();
+  </script>
+  
+  <!-- ­ƒÜÇ OPTIMISATION PERFORMANCE: domaines externes statiques -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://api.stripe.com">
+  <link rel="dns-prefetch" href="https://js.stripe.com">
+  <!-- Early hints for faster TTFB -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  
+  <link rel="icon" type="image/png" href="/favicon.png?v=3" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/logo-224solutions.png?v=3" sizes="192x192" />
+  <link rel="shortcut icon" href="/favicon.png?v=3" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+  
+  <!-- iOS PWA Configuration -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="224Solutions" />
+  <meta name="application-name" content="224Solutions" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
+  
+  <!-- Apple Touch Icons - CRITICAL for iOS PWA -->
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
+  <link rel="apple-touch-icon" sizes="120x120" href="/icon-128.png?v=3" />
+  <link rel="apple-touch-icon" sizes="152x152" href="/icon-152.png?v=3" />
+  <link rel="apple-touch-icon" sizes="167x167" href="/icon-192.png?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3" />
+  <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png" />
+
+  <!-- iOS Splash Screens (startup images) -->
+  <!-- iPhone 14 Pro Max / 15 Plus -->
+  <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)" href="/icon-512.png?v=3" />
+  <!-- iPhone 14 Pro / 15 -->
+  <link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" href="/icon-512.png?v=3" />
+  <!-- iPhone 13 / 14 / 12 -->
+  <link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" href="/icon-512.png?v=3" />
+  <!-- iPhone SE / 8 / 7 / 6s -->
+  <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" href="/icon-512.png?v=3" />
+  <!-- iPad -->
+  <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" href="/icon-512.png?v=3" />
+  
+  <title>224Solutions - Taxi-Moto, Livraison &amp; E-Commerce</title>
+  <meta name="description" content="R├®servez un taxi, commandez vos repas, faites vos achats en ligne. La super-app tout-en-un de la Guin├®e.">
+  <meta name="keywords" content="taxi moto, livraison, e-commerce, Conakry, Guin├®e, transport, marketplace, courses">
+  <meta name="author" content="224Solutions" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://224solution.net/" />
+  <meta property="og:title" content="224Solutions - Taxi-Moto, Livraison &amp; E-Commerce">
+  <meta property="og:description" content="R├®servez un taxi, commandez vos repas, faites vos achats en ligne. La super-app tout-en-un de la Guin├®e.">
+  <meta property="og:image" content="/logo-224solutions.png" />
+
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://224solution.net/" />
+  <meta property="twitter:title" content="224Solutions - Taxi-Moto, Livraison &amp; E-Commerce">
+  <meta name="twitter:description" content="R├®servez un taxi, commandez vos repas, faites vos achats en ligne. La super-app tout-en-un de la Guin├®e.">
+
+  <meta name="theme-color" content="#2563eb" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1e40af" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#2563eb" />
+  <link rel="manifest" href="/manifest.webmanifest?v=3" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/loader.css" />
+</head>
+
+<body>
+  <div id="root"></div>
+  
+  <div id="app-loader">
+    <img src="/logo-224solutions.png" alt="224Solutions" style="width:80px;height:80px;object-fit:contain;margin-bottom:12px" />
+    <div class="logo">224Solutions</div>
+    <div class="spinner"></div>
+    <div class="text">Chargement...</div>
+  </div>
+
+  <!-- Preview hotfix (optionnel): d├®senregistrer SW + vider caches -->
+  <!--
+    IMPORTANT:
+    - Ce reset emp├¬che l'installation PWA si on le fait ├á chaque visite.
+    - On l'active seulement si on ajoute ?resetSw=1 ├á l'URL.
+  -->
+  <script>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      if (!params.has('resetSw')) return;
+
+      console.log('[PWA Reset] Cleaning SW + caches on', location.hostname);
+
+      (async function () {
+        try {
+          if ('serviceWorker' in navigator) {
+            var regs = await navigator.serviceWorker.getRegistrations();
+            await Promise.all((regs || []).map(function (r) { return r.unregister(); }));
+            console.log('[PWA Reset] SW unregistered:', regs.length);
+          }
+          if ('caches' in window) {
+            var keys = await caches.keys();
+            await Promise.all((keys || []).map(function (k) { return caches.delete(k); }));
+            console.log('[PWA Reset] Caches cleared:', keys.length);
+          }
+        } catch (e) {
+          console.warn('[PWA Reset] Error:', e);
+        }
+        // Reload without resetSw param
+        var clean = new URL(location.href);
+        clean.searchParams.delete('resetSw');
+        clean.searchParams.delete('__reload');
+        location.replace(clean.pathname + clean.search + clean.hash || '/');
+      })();
+    })();
+  </script>
+
+  <script>
+    // Polyfill Node.js globals pour amazon-cognito-identity-js
+    if (typeof globalThis.global === 'undefined') { globalThis.global = globalThis; }
+    if (typeof globalThis.process === 'undefined') { globalThis.process = { env: {}, version: '' }; }
+  </script>
+  <script type="module" src="/src/main.tsx"></script>
+  
+  <script>
+    // Hide loader when app is ready + error recovery
+    (function() {
+      var loader = document.getElementById('app-loader');
+      var textEl = loader && loader.querySelector('.text');
+      var maxWait = 15000;
+      
+      function hide() {
+        if (loader) {
+          loader.classList.add('fade-out');
+          setTimeout(function() { if (loader) loader.style.display = 'none'; }, 400);
+        }
+      }
+
+      function safeRootText(root) {
+        try {
+          return String((root && root.textContent) || '').trim();
+        } catch (e) {
+          return '';
+        }
+      }
+      
+      function check() {
+        var root = document.getElementById('root');
+        if (!root) return false;
+        if (root.getAttribute('data-app-mounted') === 'true') return true;
+        return root.childElementCount > 0 || safeRootText(root).length > 0;
+      }
+      
+      var interval = setInterval(function() {
+        if (check()) { clearInterval(interval); hide(); }
+      }, 200);
+      
+      // After max wait, auto-heal once for stale PWA cache, then show manual recovery link
+      setTimeout(function() {
+        clearInterval(interval);
+        if (!check() && loader && textEl) {
+          var autoRecoverKey = '__224_auto_recover_done';
+          var alreadyAutoRecovered = sessionStorage.getItem(autoRecoverKey) === '1';
+
+          if (!alreadyAutoRecovered) {
+            sessionStorage.setItem(autoRecoverKey, '1');
+            textEl.innerHTML = 'R├®paration automatique en cours...';
+            setTimeout(function() {
+              window.location.replace('/?resetSw=1&autoRecover=1');
+            }, 700);
+            return;
+          }
+
+          textEl.innerHTML = 'Le chargement prend plus de temps que pr├®vu.<br><a href="/?resetSw=1" style="color:#023288;text-decoration:underline;margin-top:8px;display:inline-block">Recharger l\'application</a>';
+        } else {
+          hide();
+        }
+      }, maxWait);
+      
+      window.__hideLoader = hide;
+
+      // Global error handler - show error in loader
+      window.addEventListener('error', function(e) {
+        var appMounted = false;
+        try {
+          appMounted = check();
+        } catch (err) {
+          appMounted = false;
+        }
+        if (textEl && !appMounted) {
+          textEl.innerHTML = 'Erreur de chargement.<br><a href="/?resetSw=1" style="color:#023288;text-decoration:underline;margin-top:8px;display:inline-block">Recharger</a>';
+        }
+      });
+    })();
+  </script>
+  
+  <noscript>
+    <div style="padding: 40px; text-align: center; font-family: system-ui, sans-serif;">
+      <h1 style="color: #007BFF;">224Solutions</h1>
+      <p style="margin-top: 20px; color: #666;">JavaScript est requis pour utiliser cette application.</p>
+    </div>
+  </noscript>
+</body>
+
+</html>

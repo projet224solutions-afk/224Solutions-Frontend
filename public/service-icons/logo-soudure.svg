@@ -1,0 +1,36 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="url(#bgSoud)"/>
+  <g filter="url(#shSoud)">
+    <!-- chalumeau -->
+    <rect x="34" y="58" width="34" height="11" rx="5" fill="#C9D2DC" transform="rotate(-18 34 58)"/>
+    <rect x="40" y="68" width="14" height="9" rx="4" fill="#8B97A3" transform="rotate(-18 40 68)"/>
+    <!-- flamme -->
+    <path d="M78 40C84 48 90 52 90 62C90 72 83 78 74 78C66 78 60 72 60 64C60 57 64 54 67 50C68 55 71 56 73 55C71 50 72 44 78 40Z" fill="url(#flame)"/>
+    <path d="M76 56C79 60 81 62 81 66C81 70 78 72 74 72C71 72 68 70 68 66C68 62 71 60 73 57C73 60 75 60 76 59C75 58 75 57 76 56Z" fill="#FFE9A8"/>
+    <!-- etincelles -->
+    <circle cx="52" cy="46" r="2.5" fill="#FFD36A"/>
+    <circle cx="46" cy="54" r="1.8" fill="#FFB347"/>
+    <circle cx="58" cy="38" r="1.6" fill="#FFE9A8"/>
+  </g>
+  <circle cx="98" cy="28" r="8" fill="#FFFFFF" fill-opacity="0.15"/>
+  <defs>
+    <linearGradient id="bgSoud" x1="12" y1="10" x2="111" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#141414"/>
+      <stop offset="1" stop-color="#C23B00"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="60" y1="78" x2="90" y2="40" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF6A00"/>
+      <stop offset="1" stop-color="#FFD33D"/>
+    </linearGradient>
+    <filter id="shSoud" x="26" y="30" width="76" height="80" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="bg"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="a"/>
+      <feOffset dy="6"/>
+      <feGaussianBlur stdDeviation="4"/>
+      <feComposite in2="a" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.1 0 0 0 0 0.04 0 0 0 0 0 0 0 0 0.4 0"/>
+      <feBlend mode="normal" in2="bg" result="e1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="e1" result="shape"/>
+    </filter>
+  </defs>
+</svg>

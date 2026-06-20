@@ -1,0 +1,30 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="url(#bgPlomb)"/>
+  <g filter="url(#shPlomb)">
+    <!-- robinet -->
+    <rect x="40" y="50" width="40" height="14" rx="7" fill="#EAF4FF"/>
+    <rect x="68" y="34" width="12" height="20" rx="4" fill="#D8E6FF"/>
+    <rect x="64" y="30" width="20" height="8" rx="4" fill="#EAF4FF"/>
+    <path d="M44 64V74C44 78 41 80 38 80" stroke="#D8E6FF" stroke-width="9" stroke-linecap="round"/>
+    <!-- goutte -->
+    <path d="M38 88C42 88 45 91 45 95C45 99 42 102 38 102C34 102 31 99 31 95C31 91 34 88 38 88Z" fill="#7FC6FF"/>
+    <circle cx="35" cy="93" r="2" fill="#EAF4FF"/>
+  </g>
+  <circle cx="98" cy="28" r="8" fill="#FFFFFF" fill-opacity="0.15"/>
+  <defs>
+    <linearGradient id="bgPlomb" x1="12" y1="10" x2="111" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08243F"/>
+      <stop offset="1" stop-color="#0E6BA8"/>
+    </linearGradient>
+    <filter id="shPlomb" x="22" y="22" width="84" height="92" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="bg"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="a"/>
+      <feOffset dy="6"/>
+      <feGaussianBlur stdDeviation="4"/>
+      <feComposite in2="a" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.03 0 0 0 0 0.14 0 0 0 0 0.25 0 0 0 0.35 0"/>
+      <feBlend mode="normal" in2="bg" result="e1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="e1" result="shape"/>
+    </filter>
+  </defs>
+</svg>

@@ -1,0 +1,193 @@
+# EDGE Migration Gap Report
+
+Generated at: 2026-04-01T02:12:15.579Z
+
+## Summary
+
+- Source functions scanned: 170
+- Heuristically covered in backend routes: 170
+- Potentially missing migrations: 0
+
+## Notes
+
+- This report is heuristic and may include false positives.
+- A function can be migrated under a renamed endpoint grouped by domain route.
+- Decommissioned functions are excluded from the parity check.
+- Use this list as migration backlog, then validate endpoint behavior manually.
+
+## Potentially Missing (Top 200)
+
+No potential gaps detected by heuristic check.
+
+## Heuristically Covered (Top 200)
+
+- admin-release-funds
+- admin-review-payment
+- advanced-analytics
+- affiliate-commission-trigger
+- agent-affiliate-link
+- agent-delete-product
+- agent-delete-user
+- agent-get-products
+- agent-toggle-product-status
+- agent-toggle-user-status
+- agent-update-product
+- agora-token
+- ai-contract-assistant
+- ai-copilot
+- ai-error-analyzer
+- ai-recommend
+- api-guard-monitor
+- assess-payment-risk
+- audio-translation-webhook
+- auth-agent-bureau-login
+- auth-agent-bureau-verify-otp
+- auth-agent-login
+- auth-bureau-login
+- auth-verify-otp
+- calculate-delivery-distances
+- calculate-route
+- change-agent-email
+- change-agent-password
+- change-bureau-password
+- change-member-password
+- chapchappay-ecommerce
+- chapchappay-pull
+- chapchappay-push
+- chapchappay-status
+- chapchappay-webhook
+- check-all-services
+- client-ai-assistant
+- cognito-auth-proxy
+- cognito-sync-session
+- confirm-stripe-deposit
+- convert-audio
+- create-bureau-with-auth
+- create-contract
+- create-payment-intent
+- create-paypal-order
+- create-pdg-agent
+- create-product
+- create-sub-agent
+- create-syndicate-member
+- create-user-by-agent
+- create-vendor-agent
+- delete-pdg-agent
+- delete-user
+- delivery-payment
+- detect-anomalies
+- detect-surveillance-anomalies
+- dispute-ai-arbitrate
+- enhance-product-image
+- error-monitor
+- escrow-auto-release
+- escrow-create
+- escrow-create-stripe
+- escrow-dispute
+- escrow-refund
+- escrow-release
+- escrow-stripe-webhook
+- export-users-for-cognito
+- financial-stats
+- firebase-config
+- firebase-health-check
+- fix-error
+- fraud-detection
+- freight-payment
+- gcs-signed-url
+- gcs-upload-complete
+- generate-contract-pdf
+- generate-contract-with-ai
+- generate-invoice-pdf
+- generate-pdf
+- generate-product-description
+- generate-product-image
+- generate-product-image-openai
+- generate-purchase-pdf
+- generate-quote-pdf
+- generate-similar-image
+- generate-totp
+- geo-detect
+- geocode-address
+- get-agent-users
+- get-google-secret
+- get-user-activity
+- google-cloud-test
+- google-maps-config
+- google-places-autocomplete
+- inventory-api
+- link-escrow-order
+- mapbox-proxy
+- marketplace-escrow-payment
+- migrate-users-to-cognito
+- ml-fraud-detection
+- mobile-money-withdrawal
+- notify-vendor-delivery-complete
+- og-meta
+- payment-core
+- payment-diagnostic
+- paypal-client-id
+- paypal-deposit
+- paypal-webhook
+- paypal-withdrawal
+- pdg-ai-assistant
+- pdg-copilot
+- pdg-delete-service-product
+- pdg-delete-vendor
+- pdg-mfa-verify
+- pdg-update-agent-email
+- process-payment-link
+- production-cron-jobs
+- register-with-affiliate
+- reset-agent-password
+- reset-pdg-password
+- resolve-payment-link
+- restart-module
+- restaurant-payment
+- restore-user
+- secure-payment-init
+- secure-payment-validate
+- security-analysis
+- security-block-ip
+- security-detect-anomaly
+- security-forensics
+- security-incident-response
+- send-agent-invitation
+- send-bureau-access-email
+- send-communication-notification
+- send-delivery-notification
+- send-otp-email
+- send-security-alert
+- send-sms
+- service-payment
+- sign-contract
+- smart-notifications
+- spatial-analysis
+- stripe-create-payment-intent
+- stripe-deposit
+- stripe-marketplace-payment
+- stripe-pos-payment
+- stripe-webhook
+- stripe-withdrawal
+- subscription-webhook
+- taxi-payment
+- taxi-payment-process
+- test-gemini-api
+- test-google-cloud-api
+- translate-audio
+- translate-message
+- translate-product
+- universal-login
+- update-bureau-email
+- update-member-email
+- update-vendor-agent-email
+- upload-bureau-stamp
+- validate-purchase
+- vendor-agent-get-products
+- vendor-ai-assistant
+- verify-totp
+- visual-search
+- wallet-audit
+- wallet-operations
+- wallet-payment-api
+- wallet-transfer

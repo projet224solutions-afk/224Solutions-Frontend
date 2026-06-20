@@ -1,0 +1,59 @@
+﻿* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+#app-loader {
+  position: fixed;
+  inset: 0;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.3s ease-out;
+}
+
+#app-loader.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#app-loader .logo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #04439e;
+  margin-bottom: 1.5rem;
+  font-family: 'Poppins', system-ui, sans-serif;
+}
+
+#app-loader .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #04439e;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+#app-loader .text {
+  margin-top: 1rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#root {
+  min-height: 100%;
+  width: 100%;
+}

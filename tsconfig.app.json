@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "types": ["node"],
+    "jsx": "react-jsx",
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "skipLibCheck": true,
+    "strict": false,
+    "target": "ES2020",
+    "useDefineForClassFields": true
+  },
+  "exclude": [
+    "supabase/**/*",
+    "224Solutions/**/*",
+    "EMERGENCY_INTEGRATION_GUIDE.tsx",
+    "EMERGENCY_INTEGRATION_GUIDE.md.txt",
+    "*.md.txt",
+    "node_modules",
+    "dist",
+    "public",
+    "scripts",
+    "docs"
+  ],
+  "include": [
+    "src"
+  ]
+}
