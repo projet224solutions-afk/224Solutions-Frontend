@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 📝 FORMULAIRE DE FACTURATION DYNAMIQUE - 224SECURE
  * Interface pour que le livreur crée des factures et liens de paiement
@@ -40,6 +41,7 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
     onInvoiceCreated,
     onCancel
 }) => {
+    const { t } = useTranslation();
     const fc = useFormatCurrency();
     const [amount, setAmount] = useState('');
     const [startLocation, setStartLocation] = useState('');
@@ -97,7 +99,7 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
         e.preventDefault();
 
         if (!amount || !startLocation || !endLocation) {
-            alert('Veuillez remplir tous les champs obligatoires');
+            alert(t('dynamicInvoiceForm.veuillezRemplirTousLesChamps'));
             return;
         }
 
@@ -125,7 +127,7 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
             console.log('📝 Facture créée:', invoice.id);
         } catch (error) {
             console.error('Erreur création facture:', error);
-            alert('Erreur lors de la création de la facture');
+            alert(t('dynamicInvoiceForm.erreurLorsDeLaCreation'));
         } finally {
             setIsCreating(false);
         }
@@ -136,7 +138,7 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
         if (createdInvoice) {
             try {
                 await navigator.clipboard.writeText(createdInvoice.paymentLink);
-                alert('Lien copié dans le presse-papiers !');
+                alert(t('dynamicInvoiceForm.lienCopieDansLePresse'));
             } catch (error) {
                 console.error('Erreur copie:', error);
             }
@@ -187,7 +189,7 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
                         </div>
 
                         <div className="space-y-2">
-                            <Label className="text-sm font-medium text-gray-600">Lien de paiement</Label>
+                            <Label className="text-sm font-medium text-gray-600">{t('dynamicInvoiceForm.lienDePaiement')}</Label>
                             <div className="flex gap-2">
                                 <Input
                                     value={createdInvoice.paymentLink}
@@ -227,13 +229,13 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
                         )}
 
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                            <h4 className="font-semibold text-blue-800 mb-2">Instructions pour le client :</h4>
+                            <h4 className="font-semibold text-blue-800 mb-2">{t('dynamicInvoiceForm.instructionsPourLeClient')}</h4>
                             <ul className="text-sm text-blue-700 space-y-1">
-                                <li>• Le client clique sur le lien ou scanne le QR code</li>
-                                <li>• Il choisit sa méthode de paiement</li>
-                                <li>• Le système ajoute automatiquement 1% de frais</li>
-                                <li>• Le paiement est sécurisé par 224SECURE</li>
-                                <li>• Vous serez payé après confirmation de livraison</li>
+                                <li>{t('dynamicInvoiceForm.leClientCliqueSurLe')}</li>
+                                <li>{t('dynamicInvoiceForm.ilChoisitSaMethodeDe')}</li>
+                                <li>{t('dynamicInvoiceForm.leSystemeAjouteAutomatiquement1')}</li>
+                                <li>{t('dynamicInvoiceForm.lePaiementEstSecurisePar')}</li>
+                                <li>{t('dynamicInvoiceForm.vousSerezPayeApresConfirmation')}</li>
                             </ul>
                         </div>
 
@@ -300,7 +302,7 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
                                     id="start-location"
                                     value={startLocation}
                                     onChange={(e) => setStartLocation(e.target.value)}
-                                    placeholder="Adresse de départ"
+                                    placeholder={t('dynamicInvoiceForm.adresseDeDepart')}
                                     className="flex-1"
                                     required
                                 />
@@ -333,7 +335,7 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
                                     id="end-location"
                                     value={endLocation}
                                     onChange={(e) => setEndLocation(e.target.value)}
-                                    placeholder="Adresse de destination"
+                                    placeholder={t('dynamicInvoiceForm.adresseDeDestination')}
                                     className="flex-1"
                                     required
                                 />
@@ -350,7 +352,7 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
 
                         {/* Informations client (optionnel) */}
                         <div className="space-y-4">
-                            <h3 className="font-semibold text-gray-800">Informations client (optionnel)</h3>
+                            <h3 className="font-semibold text-gray-800">{t('dynamicInvoiceForm.informationsClientOptionnel')}</h3>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
@@ -362,7 +364,7 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
                                         id="client-name"
                                         value={clientName}
                                         onChange={(e) => setClientName(e.target.value)}
-                                        placeholder="Nom du client"
+                                        placeholder={t('dynamicInvoiceForm.nomDuClient')}
                                     />
                                 </div>
 
@@ -388,7 +390,7 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
                                 id="notes"
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
-                                placeholder="Instructions spéciales, description du trajet..."
+                                placeholder={t('dynamicInvoiceForm.instructionsSpecialesDescriptionDuTrajet')}
                                 rows={3}
                             />
                         </div>
@@ -397,10 +399,10 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
                         {amount && (
                             <Card className="bg-gray-50">
                                 <CardContent className="p-4">
-                                    <h4 className="font-semibold text-gray-800 mb-3">Résumé de la facture</h4>
+                                    <h4 className="font-semibold text-gray-800 mb-3">{t('dynamicInvoiceForm.resumeDeLaFacture')}</h4>
                                     <div className="space-y-2 text-sm">
                                         <div className="flex justify-between">
-                                            <span>Montant du trajet:</span>
+                                            <span>{t('dynamicInvoiceForm.montantDuTrajet')}</span>
                                             <span className="font-medium">{fc(parseFloat(amount) || 0)}</span>
                                         </div>
                                         <div className="flex justify-between">
@@ -408,11 +410,11 @@ const DynamicInvoiceForm: React.FC<DynamicInvoiceFormProps> = ({
                                             <span className="font-medium">{fc(feeAmount)}</span>
                                         </div>
                                         <div className="border-t pt-2 flex justify-between font-semibold">
-                                            <span>Total client paiera:</span>
+                                            <span>{t('dynamicInvoiceForm.totalClientPaiera')}</span>
                                             <span className="text-[#ff4000]">{fc(totalAmount)}</span>
                                         </div>
                                         <div className="flex justify-between text-xs text-gray-600">
-                                            <span>Vous recevrez:</span>
+                                            <span>{t('dynamicInvoiceForm.vousRecevrez')}</span>
                                             <span>{fc(parseFloat(amount) || 0)}</span>
                                         </div>
                                     </div>

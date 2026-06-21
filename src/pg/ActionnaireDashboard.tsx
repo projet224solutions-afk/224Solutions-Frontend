@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 // ============================================================================
 // Dashboard Actionnaire — 224Solutions
 // ============================================================================
@@ -56,6 +57,7 @@ function StatCard({
   color?: string;
   bg?: string;
 }) {
+  const { t } = useTranslation();
   return (
     <Card className="border-0 shadow-sm">
       <CardContent className="pt-5 pb-4">
@@ -78,7 +80,8 @@ function StatCard({
 // Badge de vote
 // ============================================================================
 function VoteChoiceBadge({ choice }: { choice: 'yes' | 'no' | 'abstain' | null | undefined }) {
-  if (!choice) return <Badge variant="outline" className="text-xs">Non voté</Badge>;
+  const { t } = useTranslation();
+  if (!choice) return <Badge variant="outline" className="text-xs">{t('actionnaireDashboard.nonVote')}</Badge>;
   const map = {
     yes:     { label: 'Pour',      cls: 'bg-orange-100 text-[#ff4000]' },
     no:      { label: 'Contre',    cls: 'bg-orange-100 text-[#ff4000]' },
@@ -101,6 +104,7 @@ function OverviewTab({
   unreadCount,
   onGoToWallet,
 }: ReturnType<typeof useShareholderDashboard> & { onGoToWallet: () => void }) {
+  const { t } = useTranslation();
   const fc = useFormatCurrency();
   const sh = dashboardData?.shareholder;
   const assignment = dashboardData?.assignment;
@@ -144,7 +148,7 @@ function OverviewTab({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="cursor-pointer" onClick={onGoToWallet}>
           <StatCard
-            title="Solde wallet"
+            title={t('actionnaireDashboard.soldeWallet')}
             value={walletBalance > 0 ? walletBalance.toLocaleString('fr-FR') : '— Voir →'}
             sub="Cliquer pour ouvrir"
             icon={Wallet}
@@ -256,7 +260,7 @@ function OverviewTab({
                     <p className="text-sm font-medium">
                       {format(new Date(p.created_at), 'dd MMMM yyyy', { locale: fr })}
                     </p>
-                    <p className="text-xs text-muted-foreground">Paiement</p>
+                    <p className="text-xs text-muted-foreground">{t('actionnaireDashboard.paiement')}</p>
                   </div>
                   <div className="text-right">
                     <p className="font-bold">{p.amount.toLocaleString('fr-FR')} {p.currency}</p>
@@ -281,6 +285,7 @@ function OverviewTab({
 // Onglet Revenus
 // ============================================================================
 function RevenuesTab({ revenues }: { revenues: ReturnType<typeof useShareholderDashboard>['revenues'] }) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const userName = user?.user_metadata?.full_name ?? user?.email ?? 'Actionnaire';
 
@@ -288,8 +293,8 @@ function RevenuesTab({ revenues }: { revenues: ReturnType<typeof useShareholderD
     return (
       <div className="text-center py-16 text-muted-foreground">
         <TrendingUp className="w-10 h-10 mx-auto mb-3 opacity-30" />
-        <p>Aucun revenu calculé pour le moment</p>
-        <p className="text-xs mt-1">Les revenus sont calculés par le PDG chaque mois</p>
+        <p>{t('actionnaireDashboard.aucunRevenuCalculePourLe')}</p>
+        <p className="text-xs mt-1">{t('actionnaireDashboard.lesRevenusSontCalculesPar')}</p>
       </div>
     );
   }
@@ -312,7 +317,7 @@ function RevenuesTab({ revenues }: { revenues: ReturnType<typeof useShareholderD
               {/* En-tête : période + statut */}
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-xs text-muted-foreground">Période</p>
+                  <p className="text-xs text-muted-foreground">{t('actionnaireDashboard.periode')}</p>
                   <p className="text-sm font-semibold">
                     {format(new Date(r.period_start), 'dd MMM yyyy', { locale: fr })}
                     {' → '}
@@ -335,7 +340,7 @@ function RevenuesTab({ revenues }: { revenues: ReturnType<typeof useShareholderD
               <div className="space-y-1.5">
                 {/* Revenus bruts */}
                 <div className="flex justify-between items-center px-3 py-2 bg-muted/40 rounded-lg">
-                  <span className="text-sm text-muted-foreground">Revenus bruts encaissés</span>
+                  <span className="text-sm text-muted-foreground">{t('actionnaireDashboard.revenusBrutsEncaisses')}</span>
                   <span className="text-sm font-semibold">{fmt(brut, r.currency)}</span>
                 </div>
 
@@ -398,11 +403,12 @@ function RevenuesTab({ revenues }: { revenues: ReturnType<typeof useShareholderD
 // Onglet Paiements
 // ============================================================================
 function PaymentsTab({ payments }: { payments: ReturnType<typeof useShareholderDashboard>['payments'] }) {
+  const { t } = useTranslation();
   if (payments.length === 0) {
     return (
       <div className="text-center py-16 text-muted-foreground">
         <DollarSign className="w-10 h-10 mx-auto mb-3 opacity-30" />
-        <p>Aucun paiement reçu pour le moment</p>
+        <p>{t('actionnaireDashboard.aucunPaiementRecuPourLe')}</p>
       </div>
     );
   }
@@ -414,9 +420,9 @@ function PaymentsTab({ payments }: { payments: ReturnType<typeof useShareholderD
           <TableHeader>
             <TableRow>
               <TableHead>Date</TableHead>
-              <TableHead className="text-right">Montant</TableHead>
+              <TableHead className="text-right">{t('actionnaireDashboard.montant')}</TableHead>
               <TableHead>Statut</TableHead>
-              <TableHead>Envoyé au wallet</TableHead>
+              <TableHead>{t('actionnaireDashboard.envoyeAuWallet')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -476,6 +482,7 @@ const COUNTRY_NAMES: Record<string, string> = {
 // Table d'abonnements réutilisable
 // ============================================================================
 function SubscriptionTable({ rows }: { rows: any[] }) {
+  const { t } = useTranslation();
   if (rows.length === 0) return null;
 
   return (
@@ -486,7 +493,7 @@ function SubscriptionTable({ rows }: { rows: any[] }) {
           <TableHead>Pays</TableHead>
           <TableHead>Statut</TableHead>
           <TableHead>Date</TableHead>
-          <TableHead className="text-right">Montant</TableHead>
+          <TableHead className="text-right">{t('actionnaireDashboard.montant')}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -546,6 +553,7 @@ function SubSection({
   accentColor: string;
   emptyMsg: string;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2 px-1">
@@ -598,6 +606,7 @@ function isOfferedByCeo(s: any): boolean {
 }
 
 function VendorListSection({ subscriptions }: { subscriptions: any[] }) {
+  const { t } = useTranslation();
   type VendorRow = {
     name: string; country: string; isActive: boolean;
     payant: number;    // actif + prix > 0
@@ -662,7 +671,7 @@ function VendorListSection({ subscriptions }: { subscriptions: any[] }) {
           <Table>
             <TableHeader>
               <TableRow className="bg-gray-50">
-                <TableHead className="pl-4 font-semibold">Boutique</TableHead>
+                <TableHead className="pl-4 font-semibold">{t('actionnaireDashboard.boutique')}</TableHead>
                 <TableHead className="font-semibold">Pays</TableHead>
                 <TableHead className="text-center font-semibold text-[#ff4000]">
                   <span className="flex items-center justify-center gap-1">
@@ -689,7 +698,7 @@ function VendorListSection({ subscriptions }: { subscriptions: any[] }) {
                     <XCircle className="w-3 h-3" />Annulé
                   </span>
                 </TableHead>
-                <TableHead className="text-right font-semibold pr-4">Montant payé</TableHead>
+                <TableHead className="text-right font-semibold pr-4">{t('actionnaireDashboard.montantPaye')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -795,6 +804,7 @@ const FILTER_CONFIG: Record<FilterKey, {
 function SubscriptionsTab({
   subscriptions,
 }: Pick<ReturnType<typeof useShareholderDashboard>, 'subscriptions' | 'paidSubs' | 'freeSubs'>) {
+  const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState<FilterKey>('total');
 
   // ── Groupes calculés ─────────────────────────────────────────────────────
@@ -831,7 +841,7 @@ function SubscriptionsTab({
     return (
       <div className="text-center py-16 text-muted-foreground">
         <Package className="w-10 h-10 mx-auto mb-3 opacity-30" />
-        <p>Aucun abonnement dans votre périmètre</p>
+        <p>{t('actionnaireDashboard.aucunAbonnementDansVotrePerimetre')}</p>
       </div>
     );
   }
@@ -879,7 +889,7 @@ function SubscriptionsTab({
             <p className="text-xs text-[#04439e] font-medium">Offerts</p>
           </div>
           <p className="text-2xl font-bold text-[#04439e]">{allOfferedByPDG.length}</p>
-          <p className="text-xs text-[#04439e] mt-0.5">Offerts par le PDG</p>
+          <p className="text-xs text-[#04439e] mt-0.5">{t('actionnaireDashboard.offertsParLePdg')}</p>
         </button>
 
         {/* Gratuit */}
@@ -914,10 +924,10 @@ function SubscriptionsTab({
         >
           <div className="flex items-center gap-1.5 mb-1">
             <Clock className="w-3.5 h-3.5 text-orange-600" />
-            <p className="text-xs text-orange-700 font-medium">Expirés</p>
+            <p className="text-xs text-orange-700 font-medium">{t('actionnaireDashboard.expires')}</p>
           </div>
           <p className="text-2xl font-bold text-orange-700">{expiredSubs.length}</p>
-          <p className="text-xs text-orange-600 mt-0.5">Abonnements expirés</p>
+          <p className="text-xs text-orange-600 mt-0.5">{t('actionnaireDashboard.abonnementsExpires')}</p>
         </button>
 
         {/* Annulé */}
@@ -933,10 +943,10 @@ function SubscriptionsTab({
         >
           <div className="flex items-center gap-1.5 mb-1">
             <XCircle className="w-3.5 h-3.5 text-[#ff4000]" />
-            <p className="text-xs text-[#ff4000] font-medium">Annulés</p>
+            <p className="text-xs text-[#ff4000] font-medium">{t('actionnaireDashboard.annules')}</p>
           </div>
           <p className="text-2xl font-bold text-[#ff4000]">{cancelledSubs.length}</p>
-          <p className="text-xs text-[#ff4000] mt-0.5">Abonnements annulés</p>
+          <p className="text-xs text-[#ff4000] mt-0.5">{t('actionnaireDashboard.abonnementsAnnules')}</p>
         </button>
 
         {/* Total */}
@@ -989,6 +999,7 @@ function VotesTab({
   openVotes: ReturnType<typeof useShareholderDashboard>['openVotes'];
   onVote: (voteId: string, choice: 'yes' | 'no' | 'abstain') => Promise<void>;
 }) {
+  const { t } = useTranslation();
   const [voting, setVoting] = useState<string | null>(null);
 
   const handleVote = async (vote: ShareholderVote, choice: 'yes' | 'no' | 'abstain') => {
@@ -1001,7 +1012,7 @@ function VotesTab({
     return (
       <div className="text-center py-16 text-muted-foreground">
         <Vote className="w-10 h-10 mx-auto mb-3 opacity-30" />
-        <p>Aucune résolution en cours</p>
+        <p>{t('actionnaireDashboard.aucuneResolutionEnCours')}</p>
       </div>
     );
   }
@@ -1073,7 +1084,7 @@ function VotesTab({
       {/* Votes passés (fermés, annulés, ou ouverts dont la date est dépassée) */}
       {votes.filter(v => v.status !== 'open' || (v.end_date && new Date(v.end_date) <= new Date())).length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-muted-foreground">Votes passés</h3>
+          <h3 className="text-sm font-semibold text-muted-foreground">{t('actionnaireDashboard.votesPasses')}</h3>
           {votes.filter(v => v.status !== 'open' || (v.end_date && new Date(v.end_date) <= new Date())).map(vote => {
             const total = vote.total_votes ?? 0;
             return (
@@ -1110,6 +1121,7 @@ function VotesTab({
 // Onglet Documents
 // ============================================================================
 function DocumentsTab({ documents }: { documents: ReturnType<typeof useShareholderDashboard>['documents'] }) {
+  const { t } = useTranslation();
   const DOC_TYPE_LABELS: Record<string, string> = {
     shareholder_contract:    'Contrat actionnaire',
     payment_receipt:         'Reçu de paiement',
@@ -1125,7 +1137,7 @@ function DocumentsTab({ documents }: { documents: ReturnType<typeof useSharehold
     return (
       <div className="text-center py-16 text-muted-foreground">
         <FileText className="w-10 h-10 mx-auto mb-3 opacity-30" />
-        <p>Aucun document disponible</p>
+        <p>{t('actionnaireDashboard.aucunDocumentDisponible')}</p>
       </div>
     );
   }
@@ -1181,11 +1193,12 @@ function NotificationsTab({
   notifications: ReturnType<typeof useShareholderDashboard>['notifications'];
   onMarkRead: (id: string) => Promise<void>;
 }) {
+  const { t } = useTranslation();
   if (notifications.length === 0) {
     return (
       <div className="text-center py-16 text-muted-foreground">
         <Bell className="w-10 h-10 mx-auto mb-3 opacity-30" />
-        <p>Aucune notification</p>
+        <p>{t('actionnaireDashboard.aucuneNotification')}</p>
       </div>
     );
   }
@@ -1235,6 +1248,7 @@ function NotificationsTab({
 // Page principale
 // ============================================================================
 export default function ActionnaireDashboard() {
+  const { t } = useTranslation();
   const { user, profile, signOut } = useAuth();
   const navigate = useNavigate();
   useRoleRedirect();
@@ -1279,7 +1293,7 @@ export default function ActionnaireDashboard() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center space-y-3">
           <RefreshCw className="w-8 h-8 animate-spin mx-auto text-blue-500" />
-          <p className="text-muted-foreground text-sm">Chargement de votre espace…</p>
+          <p className="text-muted-foreground text-sm">{t('actionnaireDashboard.chargementDeVotreEspace')}</p>
         </div>
       </div>
     );
@@ -1293,7 +1307,7 @@ export default function ActionnaireDashboard() {
           <CardContent className="pt-8 pb-8 text-center space-y-4">
             <XCircle className="w-12 h-12 mx-auto text-[#ff4000]" />
             <div>
-              <p className="font-semibold text-lg">Erreur de connexion</p>
+              <p className="font-semibold text-lg">{t('actionnaireDashboard.erreurDeConnexion')}</p>
               <p className="text-sm text-muted-foreground mt-1">{loadError}</p>
             </div>
             <div className="flex gap-2 justify-center">
@@ -1343,7 +1357,7 @@ export default function ActionnaireDashboard() {
           <CardContent className="pt-8 pb-8 text-center space-y-4">
             <Users className="w-12 h-12 mx-auto text-muted-foreground opacity-40" />
             <div>
-              <p className="font-semibold text-lg">Accès non autorisé</p>
+              <p className="font-semibold text-lg">{t('actionnaireDashboard.accesNonAutorise')}</p>
               <p className="text-sm text-muted-foreground mt-1">
                 Votre compte n'est pas encore configuré comme actionnaire.
                 Contactez l'administration.
@@ -1409,7 +1423,7 @@ export default function ActionnaireDashboard() {
             <TabsTrigger value="overview"       className="text-xs flex-1 min-w-fit">Accueil</TabsTrigger>
             <TabsTrigger value="wallet"         className="text-xs flex-1 min-w-fit">Wallet</TabsTrigger>
             <TabsTrigger value="revenues"       className="text-xs flex-1 min-w-fit">Revenus</TabsTrigger>
-            <TabsTrigger value="payments"       className="text-xs flex-1 min-w-fit">Paiements</TabsTrigger>
+            <TabsTrigger value="payments"       className="text-xs flex-1 min-w-fit">{t('actionnaireDashboard.paiements')}</TabsTrigger>
             <TabsTrigger value="subscriptions"  className="text-xs flex-1 min-w-fit">Abonnements</TabsTrigger>
             <TabsTrigger value="purchases"      className="text-xs flex-1 min-w-fit">Mes achats</TabsTrigger>
             <TabsTrigger value="votes"          className="relative text-xs flex-1 min-w-fit">

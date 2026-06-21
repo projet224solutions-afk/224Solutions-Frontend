@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * Formulaires de devis par métier (vitrerie/menuiserie/plomberie/soudure).
  * Chacun s'appuie sur le moteur partagé `calculator.ts` + `quotePdf.ts`.
@@ -21,6 +22,7 @@ import { generateQuotePdf } from '@/lib/artisan/quotePdf';
 type CreateFn = (q: any) => Promise<any>;
 
 function Totals({ ht, tax, ttc }: { ht: number; tax: number; ttc: number }) {
+  const { t } = useTranslation();
   return (
     <div className="rounded-xl bg-muted p-3 text-sm">
       <div className="flex justify-between"><span>Total HT</span><b><Money amount={ht} /></b></div>
@@ -34,12 +36,13 @@ async function submitQuote(onCreate: CreateFn, serviceType: string, serviceLabel
   const created = await onCreate({ service_type: serviceType, status: 'sent', items, total_ht: totals.total_ht, tax_rate: 18, total_ttc: totals.total_ttc });
   if (created) {
     generateQuotePdf({ serviceLabel, items, ...totals, reference: created.id?.slice(0, 8) });
-    toast.success('Devis créé + PDF');
+    toast.success(t('quoteForms.devisCreePdf'));
   }
 }
 
 // ── VITRERIE ─────────────────────────────────────────────────────────────────
 export function GlassQuote({ onCreate }: { onCreate: CreateFn }) {
+  const { t } = useTranslation();
   const [intervention, setIntervention] = useState(GLASS_INTERVENTION_TYPES[0].code);
   const [h, setH] = useState(120); const [w, setW] = useState(80);
   const [type, setType] = useState(GLASS_TYPES[1].code);
@@ -59,7 +62,7 @@ export function GlassQuote({ onCreate }: { onCreate: CreateFn }) {
         <div><Label>Hauteur (cm)</Label><Input type="number" value={h} onChange={(e) => setH(+e.target.value || 0)} /></div>
         <div><Label>Largeur (cm)</Label><Input type="number" value={w} onChange={(e) => setW(+e.target.value || 0)} /></div>
       </div>
-      <div><Label>Type de verre</Label>
+      <div><Label>{t('quoteForms.typeDeVerre')}</Label>
         <select className="w-full rounded-md border px-2 py-2 text-sm" value={type} onChange={(e) => setType(e.target.value)}>
           {GLASS_TYPES.map((g) => <option key={g.code} value={g.code}>{g.label} — {g.pricePerM2.toLocaleString()} GNF/m²</option>)}
         </select>
@@ -71,13 +74,14 @@ export function GlassQuote({ onCreate }: { onCreate: CreateFn }) {
         <label className="flex items-center gap-1"><input type="checkbox" checked={urgent} onChange={(e) => setUrgent(e.target.checked)} />Urgence (+30%)</label>
       </div>
       <Totals ht={r.total_ht} tax={r.tax} ttc={r.total_ttc} />
-      <Button onClick={() => submitQuote(onCreate, 'vitrerie', 'Vitrerie', items, r)}><FileDown className="h-4 w-4 mr-1" />Créer + PDF</Button>
+      <Button onClick={() => submitQuote(onCreate, 'vitrerie', 'Vitrerie', items, r)}><FileDown className="h-4 w-4 mr-1" />{t('quoteForms.creerPdf')}</Button>
     </CardContent></Card>
   );
 }
 
 // ── SOUDURE / MÉTALLERIE (calculateur cordon — signature QuoteIQ) ─────────────
 export function MetalQuote({ onCreate }: { onCreate: CreateFn }) {
+  const { t } = useTranslation();
   // Section matière (poids du métal de base)
   const [metal, setMetal] = useState(METAL_TYPES[0].code);
   const [h, setH] = useState(2000); const [w, setW] = useState(1000); const [thick, setThick] = useState(3); const [qty, setQty] = useState(1);
@@ -97,8 +101,8 @@ export function MetalQuote({ onCreate }: { onCreate: CreateFn }) {
 
   return (
     <Card><CardContent className="space-y-3 pt-4">
-      <div className="text-xs font-semibold uppercase text-muted-foreground">Matière</div>
-      <div><Label>Métal de base</Label>
+      <div className="text-xs font-semibold uppercase text-muted-foreground">{t('quoteForms.matiere')}</div>
+      <div><Label>{t('quoteForms.metalDeBase')}</Label>
         <select className="w-full rounded-md border px-2 py-2 text-sm" value={metal} onChange={(e) => setMetal(e.target.value)}>
           {METAL_TYPES.map((x) => <option key={x.code} value={x.code}>{x.label} — {x.pricePerKg.toLocaleString()} GNF/kg</option>)}
         </select>
@@ -106,34 +110,35 @@ export function MetalQuote({ onCreate }: { onCreate: CreateFn }) {
       <div className="grid grid-cols-4 gap-2">
         <div><Label>H (mm)</Label><Input type="number" value={h} onChange={(e) => setH(+e.target.value || 0)} /></div>
         <div><Label>L (mm)</Label><Input type="number" value={w} onChange={(e) => setW(+e.target.value || 0)} /></div>
-        <div><Label>Ép. (mm)</Label><Input type="number" value={thick} onChange={(e) => setThick(+e.target.value || 0)} /></div>
-        <div><Label>Qté</Label><Input type="number" min={1} value={qty} onChange={(e) => setQty(Math.max(1, +e.target.value || 1))} /></div>
+        <div><Label>{t('quoteForms.epMm')}</Label><Input type="number" value={thick} onChange={(e) => setThick(+e.target.value || 0)} /></div>
+        <div><Label>{t('quoteForms.qte')}</Label><Input type="number" min={1} value={qty} onChange={(e) => setQty(Math.max(1, +e.target.value || 1))} /></div>
       </div>
-      <div className="text-sm text-muted-foreground">Poids estimé : <b>{weight.toFixed(1)} kg</b> · Matière : <b>{baseMaterialCost.toLocaleString()} GNF</b></div>
+      <div className="text-sm text-muted-foreground">{t('quoteForms.poidsEstime')} <b>{weight.toFixed(1)} kg</b> {t('quoteForms.matiere2')} <b>{baseMaterialCost.toLocaleString()} GNF</b></div>
 
       <div className="text-xs font-semibold uppercase text-muted-foreground">Soudure</div>
       <div className="grid grid-cols-2 gap-2">
-        <div><Label>Procédé</Label>
+        <div><Label>{t('quoteForms.procede')}</Label>
           <select className="w-full rounded-md border px-2 py-2 text-sm" value={process} onChange={(e) => setProcess(e.target.value as any)}>
             {WELD_PROCESSES.map((p) => <option key={p.code} value={p.code}>{p.label}</option>)}
           </select>
         </div>
-        <div><Label>Longueur de cordon (m)</Label><Input type="number" step="0.1" value={cordLength} onChange={(e) => setCordLength(+e.target.value || 0)} /></div>
+        <div><Label>{t('quoteForms.longueurDeCordonM')}</Label><Input type="number" step="0.1" value={cordLength} onChange={(e) => setCordLength(+e.target.value || 0)} /></div>
       </div>
-      <label className="flex items-center gap-1 text-sm"><input type="checkbox" checked={autoPasses} onChange={(e) => setAutoPasses(e.target.checked)} />Passes auto (selon épaisseur)</label>
-      {!autoPasses && <div><Label>Nombre de passes</Label><Input type="number" min={1} value={passes} onChange={(e) => setPasses(Math.max(1, +e.target.value || 1))} /></div>}
+      <label className="flex items-center gap-1 text-sm"><input type="checkbox" checked={autoPasses} onChange={(e) => setAutoPasses(e.target.checked)} />{t('quoteForms.passesAutoSelonEpaisseur')}</label>
+      {!autoPasses && <div><Label>{t('quoteForms.nombreDePasses')}</Label><Input type="number" min={1} value={passes} onChange={(e) => setPasses(Math.max(1, +e.target.value || 1))} /></div>}
       <div className="rounded-lg bg-muted p-2 text-xs text-muted-foreground">
         Passes : <b>{est.passes}</b> · Cordon effectif : <b>{est.effectiveLengthM.toFixed(1)} m</b> · Consommable : <b>{est.consumableQty.toFixed(2)} {est.consumableUnit}</b> · Temps : <b>{Math.round(est.timeMin)} min</b>{est.gasCost > 0 ? <> · Gaz : <b>{Math.round(est.gasCost).toLocaleString()} GNF</b></> : null}
       </div>
 
       <Totals ht={est.totals.total_ht} tax={est.totals.tax} ttc={est.totals.total_ttc} />
-      <Button onClick={() => submitQuote(onCreate, 'soudure', 'Soudure / Métallerie', est.items, est.totals)}><FileDown className="h-4 w-4 mr-1" />Créer + PDF</Button>
+      <Button onClick={() => submitQuote(onCreate, 'soudure', 'Soudure / Métallerie', est.items, est.totals)}><FileDown className="h-4 w-4 mr-1" />{t('quoteForms.creerPdf')}</Button>
     </CardContent></Card>
   );
 }
 
 // ── PLOMBERIE ────────────────────────────────────────────────────────────────
 export function PlumbingQuote({ onCreate }: { onCreate: CreateFn }) {
+  const { t } = useTranslation();
   const [lines, setLines] = useState<{ code: string; qty: number }[]>([{ code: PLUMBING_CATALOG[0].code, qty: 1 }]);
   const [urgency, setUrgency] = useState<'normal' | 'urgent' | 'immediate'>('normal');
   const items: QuoteItem[] = lines.map((l) => { const c = PLUMBING_CATALOG.find((x) => x.code === l.code)!; return { label: c.label, qty: l.qty, unit_price_material: c.price, unit_price_labor: 0 }; });
@@ -157,13 +162,14 @@ export function PlumbingQuote({ onCreate }: { onCreate: CreateFn }) {
         </select>
       </div>
       <Totals ht={totals.total_ht} tax={totals.tax} ttc={totals.total_ttc} />
-      <Button onClick={() => submitQuote(onCreate, 'plomberie', 'Plomberie', items, totals)}><FileDown className="h-4 w-4 mr-1" />Créer + PDF</Button>
+      <Button onClick={() => submitQuote(onCreate, 'plomberie', 'Plomberie', items, totals)}><FileDown className="h-4 w-4 mr-1" />{t('quoteForms.creerPdf')}</Button>
     </CardContent></Card>
   );
 }
 
 // ── MENUISERIE (devis sur mesure, lignes d'ouvrages) ─────────────────────────
 export function CarpentryQuote({ onCreate }: { onCreate: CreateFn }) {
+  const { t } = useTranslation();
   const [lines, setLines] = useState<{ label: string; wood: string; finish: string; phase: string; qty: number; material: number; labor: number }[]>(
     [{ label: 'Porte intérieure 83×204', wood: WOOD_TYPES[0].code, finish: WOOD_FINISHES[1].code, phase: CARPENTRY_PHASES[0].code, qty: 1, material: 150000, labor: 80000 }]);
   const phaseLabel = (code: string) => CARPENTRY_PHASES.find((p) => p.code === code)?.label ?? '';
@@ -176,8 +182,8 @@ export function CarpentryQuote({ onCreate }: { onCreate: CreateFn }) {
     <Card><CardContent className="space-y-3 pt-4">
       {lines.map((l, idx) => (
         <div key={idx} className="space-y-2 rounded-lg border p-2">
-          <Input placeholder="Désignation de l'ouvrage" value={l.label} onChange={(e) => upd(idx, { label: e.target.value })} />
-          <div><Label className="text-xs">Phase de chantier</Label>
+          <Input placeholder={t('quoteForms.designationDeLOuvrage')} value={l.label} onChange={(e) => upd(idx, { label: e.target.value })} />
+          <div><Label className="text-xs">{t('quoteForms.phaseDeChantier')}</Label>
             <select className="w-full rounded-md border px-2 py-2 text-sm" value={l.phase} onChange={(e) => upd(idx, { phase: e.target.value })}>{CARPENTRY_PHASES.map((p) => <option key={p.code} value={p.code}>{p.label}</option>)}</select>
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -185,9 +191,9 @@ export function CarpentryQuote({ onCreate }: { onCreate: CreateFn }) {
             <select className="rounded-md border px-2 py-2 text-sm" value={l.finish} onChange={(e) => upd(idx, { finish: e.target.value })}>{WOOD_FINISHES.map((f) => <option key={f.code} value={f.code}>{f.label}</option>)}</select>
           </div>
           <div className="grid grid-cols-3 gap-2">
-            <div><Label className="text-xs">Qté</Label><Input type="number" min={1} value={l.qty} onChange={(e) => upd(idx, { qty: Math.max(1, +e.target.value || 1) })} /></div>
-            <div><Label className="text-xs">Matériau</Label><Input type="number" value={l.material} onChange={(e) => upd(idx, { material: +e.target.value || 0 })} /></div>
-            <div><Label className="text-xs">Main d'œuvre</Label><Input type="number" value={l.labor} onChange={(e) => upd(idx, { labor: +e.target.value || 0 })} /></div>
+            <div><Label className="text-xs">{t('quoteForms.qte')}</Label><Input type="number" min={1} value={l.qty} onChange={(e) => upd(idx, { qty: Math.max(1, +e.target.value || 1) })} /></div>
+            <div><Label className="text-xs">{t('quoteForms.materiau')}</Label><Input type="number" value={l.material} onChange={(e) => upd(idx, { material: +e.target.value || 0 })} /></div>
+            <div><Label className="text-xs">{t('quoteForms.mainDUvre')}</Label><Input type="number" value={l.labor} onChange={(e) => upd(idx, { labor: +e.target.value || 0 })} /></div>
           </div>
           <Button size="sm" variant="ghost" onClick={() => setLines((ls) => ls.filter((_, i) => i !== idx))}><Trash2 className="h-4 w-4 text-destructive mr-1" />Retirer</Button>
         </div>
@@ -197,7 +203,7 @@ export function CarpentryQuote({ onCreate }: { onCreate: CreateFn }) {
         {CARPENTRY_PHASES.map((p) => <div key={p.code} className="flex justify-between"><span>{p.label}</span><b>{subtotal(p.code).toLocaleString()} GNF</b></div>)}
       </div>
       <Totals ht={totals.total_ht} tax={totals.tax} ttc={totals.total_ttc} />
-      <Button onClick={() => submitQuote(onCreate, 'menuiserie', 'Menuiserie', items, totals)}><FileDown className="h-4 w-4 mr-1" />Créer + PDF</Button>
+      <Button onClick={() => submitQuote(onCreate, 'menuiserie', 'Menuiserie', items, totals)}><FileDown className="h-4 w-4 mr-1" />{t('quoteForms.creerPdf')}</Button>
     </CardContent></Card>
   );
 }

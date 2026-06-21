@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * ÉCRAN CENTRAL — Validation des ordonnances par le pharmacien.
  * File d'attente → ouverture d'une ordonnance → photo zoomable + saisie des médicaments + devis.
@@ -17,6 +18,7 @@ import { FileText, Plus, Trash2, Check, X, ZoomIn, Clock, Loader2, ShieldAlert }
 
 /** Miniature d'ordonnance via URL signée (bucket privé). */
 function PrescThumb({ prescriptionId, hasPhotos, className }: { prescriptionId: string; hasPhotos: boolean; className?: string }) {
+  const { t } = useTranslation();
   const { urls } = usePrescriptionPhotos(prescriptionId, hasPhotos);
   if (!hasPhotos) return null;
   if (!urls[0]) return <div className={`rounded border bg-muted flex items-center justify-center ${className || ''}`}><FileText className="h-4 w-4 text-muted-foreground" /></div>;
@@ -33,6 +35,7 @@ const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
 };
 
 export function PharmacyPrescriptionValidation({ serviceId }: { serviceId: string }) {
+  const { t } = useTranslation();
   const fc = useFormatCurrency();
   const { prescriptions, loading, validate, refuse } = usePharmacyPrescriptions(serviceId);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -86,10 +89,10 @@ export function PharmacyPrescriptionValidation({ serviceId }: { serviceId: strin
       <div className="flex items-start gap-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-800">
         <ShieldAlert className="h-4 w-4 shrink-0 mt-0.5" />
         <div>
-          <span className="font-semibold">La validation engage votre responsabilité de pharmacien.</span> Avant de valider, vérifiez :
+          <span className="font-semibold">{t('pharmacyPrescriptionValidation.laValidationEngageVotreResponsabilite')}</span> Avant de valider, vérifiez :
           lisibilité de l'ordonnance ; identité et signature du prescripteur ; date de validité (non périmée) ; identité du patient ;
           cohérence dosage / posologie / durée ; absence de contre-indication, d'interaction ou d'allergie connue ; disponibilité en stock.
-          <span className="font-medium"> En cas de doute, refusez et orientez vers le médecin.</span>
+          <span className="font-medium"> {t('pharmacyPrescriptionValidation.enCasDeDouteRefusez')}</span>
         </div>
       </div>
 
@@ -125,7 +128,7 @@ export function PharmacyPrescriptionValidation({ serviceId }: { serviceId: strin
               {/* Photo(s) de l'ordonnance */}
               <div className="space-y-2">
                 <h3 className="font-semibold text-sm">Ordonnance — {current.customer_name || 'Client'}</h3>
-                {currentPhotos.length === 0 && <div className="rounded-lg border bg-muted py-10 text-center text-xs text-muted-foreground"><Loader2 className="mx-auto mb-1 h-4 w-4 animate-spin" /> Chargement de l'ordonnance…</div>}
+                {currentPhotos.length === 0 && <div className="rounded-lg border bg-muted py-10 text-center text-xs text-muted-foreground"><Loader2 className="mx-auto mb-1 h-4 w-4 animate-spin" /> {t('pharmacyPrescriptionValidation.chargementDeLOrdonnance')}</div>}
                 {currentPhotos.map((url, i) => (
                   <div key={i} className="relative group">
                     <img src={url} alt={`ordonnance ${i + 1}`} className="w-full rounded-lg border" />
@@ -138,42 +141,42 @@ export function PharmacyPrescriptionValidation({ serviceId }: { serviceId: strin
               {/* Saisie des médicaments + devis */}
               {!refusing ? (
                 <div className="space-y-2">
-                  <h3 className="font-semibold text-sm">Médicaments (saisie pharmacien)</h3>
+                  <h3 className="font-semibold text-sm">{t('pharmacyPrescriptionValidation.medicamentsSaisiePharmacien')}</h3>
                   <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-1">
                     {meds.map((m, i) => (
                       <div key={i} className="rounded-lg border p-2 space-y-1.5">
                         <div className="flex gap-1.5">
-                          <Input className="h-8 flex-1" placeholder="Nom du médicament" value={m.name} onChange={(e) => setMed(i, { name: e.target.value })} />
+                          <Input className="h-8 flex-1" placeholder={t('pharmacyPrescriptionValidation.nomDuMedicament')} value={m.name} onChange={(e) => setMed(i, { name: e.target.value })} />
                           <Button size="icon" variant="ghost" className="h-8 w-8 shrink-0" onClick={() => delMed(i)}><Trash2 className="h-3.5 w-3.5 text-destructive" /></Button>
                         </div>
                         <div className="grid grid-cols-3 gap-1.5">
                           <Input className="h-8" placeholder="Dosage" value={m.dosage || ''} onChange={(e) => setMed(i, { dosage: e.target.value })} />
-                          <Input className="h-8" type="number" min={1} placeholder="Qté" value={m.quantity} onChange={(e) => setMed(i, { quantity: Math.max(1, Number(e.target.value) || 1) })} />
+                          <Input className="h-8" type="number" min={1} placeholder={t('pharmacyPrescriptionValidation.qte')} value={m.quantity} onChange={(e) => setMed(i, { quantity: Math.max(1, Number(e.target.value) || 1) })} />
                           <Input className="h-8" type="number" min={0} placeholder="Prix" value={m.price} onChange={(e) => setMed(i, { price: Math.max(0, Number(e.target.value) || 0) })} />
                         </div>
                         <label className="flex items-center gap-1.5 text-xs text-muted-foreground">
                           <input type="checkbox" checked={m.available !== false} onChange={(e) => setMed(i, { available: e.target.checked })} /> En stock
-                          {m.available === false && <Input className="h-7 ml-2 flex-1" placeholder="Équivalent proposé + note" value={m.note || ''} onChange={(e) => setMed(i, { note: e.target.value })} />}
+                          {m.available === false && <Input className="h-7 ml-2 flex-1" placeholder={t('pharmacyPrescriptionValidation.equivalentProposeNote')} value={m.note || ''} onChange={(e) => setMed(i, { note: e.target.value })} />}
                         </label>
                       </div>
                     ))}
                   </div>
-                  <Button size="sm" variant="outline" className="w-full gap-1" onClick={addMed}><Plus className="h-4 w-4" /> Ajouter un médicament</Button>
+                  <Button size="sm" variant="outline" className="w-full gap-1" onClick={addMed}><Plus className="h-4 w-4" /> {t('pharmacyPrescriptionValidation.ajouterUnMedicament')}</Button>
                   {current.delivery_type === 'delivery' && (
                     <div className="flex items-center justify-between gap-2 rounded-lg border px-2 py-1.5">
-                      <span className="text-xs flex items-center gap-1">🛵 Frais de livraison</span>
+                      <span className="text-xs flex items-center gap-1">{t('pharmacyPrescriptionValidation.fraisDeLivraison')}</span>
                       <Input className="h-8 w-28 text-right" type="number" min={0} value={deliveryFee} onChange={(e) => setDeliveryFee(Math.max(0, Number(e.target.value) || 0))} />
                     </div>
                   )}
-                  <Textarea className="text-sm" rows={2} placeholder="Note au client (optionnel)" value={notes} onChange={(e) => setNotes(e.target.value)} />
+                  <Textarea className="text-sm" rows={2} placeholder={t('pharmacyPrescriptionValidation.noteAuClientOptionnel')} value={notes} onChange={(e) => setNotes(e.target.value)} />
                   <div className="space-y-0.5 border-t pt-2">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground"><span>Médicaments</span><span>{fc(total)}</span></div>
-                    {current.delivery_type === 'delivery' && deliveryFee > 0 && <div className="flex items-center justify-between text-xs text-muted-foreground"><span>Livraison</span><span>{fc(deliveryFee)}</span></div>}
+                    <div className="flex items-center justify-between text-xs text-muted-foreground"><span>{t('pharmacyPrescriptionValidation.medicaments')}</span><span>{fc(total)}</span></div>
+                    {current.delivery_type === 'delivery' && deliveryFee > 0 && <div className="flex items-center justify-between text-xs text-muted-foreground"><span>{t('pharmacyPrescriptionValidation.livraison')}</span><span>{fc(deliveryFee)}</span></div>}
                     <div className="flex items-center justify-between font-bold"><span>Total devis</span><span className="text-primary">{fc(total + (current.delivery_type === 'delivery' ? deliveryFee : 0))}</span></div>
                   </div>
                   <label className="flex items-start gap-2 rounded-lg bg-muted/50 px-2 py-1.5 text-xs cursor-pointer">
                     <input type="checkbox" className="mt-0.5" checked={attested} onChange={(e) => setAttested(e.target.checked)} />
-                    <span>J'atteste avoir vérifié l'ordonnance (lisibilité, prescripteur, validité, posologie, contre-indications) et engage ma responsabilité de pharmacien.</span>
+                    <span>{t('pharmacyPrescriptionValidation.jAttesteAvoirVerifieL')}</span>
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     <Button variant="outline" className="gap-1.5 text-destructive border-destructive/40" onClick={() => setRefusing(true)}><X className="h-4 w-4" /> Refuser</Button>
@@ -183,10 +186,10 @@ export function PharmacyPrescriptionValidation({ serviceId }: { serviceId: strin
               ) : (
                 <div className="space-y-2">
                   <h3 className="font-semibold text-sm text-destructive">Refuser l'ordonnance</h3>
-                  <p className="text-xs text-muted-foreground">Motif obligatoire (illisible, non conforme, périmée…). Le client sera notifié.</p>
-                  <Textarea rows={4} placeholder="Motif du refus…" value={refuseReason} onChange={(e) => setRefuseReason(e.target.value)} />
+                  <p className="text-xs text-muted-foreground">{t('pharmacyPrescriptionValidation.motifObligatoireIllisibleNonConforme')}</p>
+                  <Textarea rows={4} placeholder={t('pharmacyPrescriptionValidation.motifDuRefus')} value={refuseReason} onChange={(e) => setRefuseReason(e.target.value)} />
                   <div className="grid grid-cols-2 gap-2">
-                    <Button variant="outline" onClick={() => setRefusing(false)}>Retour</Button>
+                    <Button variant="outline" onClick={() => setRefusing(false)}>{t('pharmacyPrescriptionValidation.retour')}</Button>
                     <Button variant="destructive" disabled={busy || !refuseReason.trim()} onClick={doRefuse}>{busy ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Confirmer le refus'}</Button>
                   </div>
                 </div>

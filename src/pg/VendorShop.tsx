@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 ﻿import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { ArrowLeft, MapPin, Star, Phone, Mail, MessageCircle, Package, Clock, Store, Truck, AlertTriangle, Laptop, ExternalLink, CheckCircle2, RefreshCw, WifiOff, SearchX, ShieldOff, Plane, ShieldCheck, ArrowUpRight } from "lucide-react";
@@ -27,6 +28,7 @@ import { LocalPrice } from "@/components/ui/LocalPrice";
 
 // Mini composant pour afficher le badge de certification d'un vendeur
 function VendorCertBadgeInline({ vendorId }: { vendorId: string }) {
+  const { t } = useTranslation();
   const { isCertified } = useVendorCertificationCached(vendorId);
   if (!isCertified) return null;
   return <CertifiedVendorBadge status="CERTIFIE" size="sm" />;
@@ -81,6 +83,7 @@ const isAffiliateFlightProduct = (product: any) => {
 };
 
 export default function VendorShop() {
+  const { t } = useTranslation();
   const params = useParams<{ vendorId?: string; slug?: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -149,7 +152,7 @@ export default function VendorShop() {
     const id = identifier;
     if (!id) {
       log('SHOP IDENTIFIER MISSING');
-      toast.error('Identifiant boutique manquant');
+      toast.error(t('vendorShop.identifiantBoutiqueManquant'));
       navigate('/marketplace');
       return;
     }
@@ -359,7 +362,7 @@ export default function VendorShop() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Chargement de la boutique...</p>
+          <p className="text-muted-foreground">{t('vendorShop.chargementDeLaBoutique')}</p>
         </div>
       </div>
     );
@@ -373,7 +376,7 @@ export default function VendorShop() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="p-8 text-center max-w-md w-full">
           <WifiOff className="w-10 h-10 text-destructive mx-auto mb-4" />
-          <h2 className="text-xl font-bold mb-2 text-foreground">Connexion lente</h2>
+          <h2 className="text-xl font-bold mb-2 text-foreground">{t('vendorShop.connexionLente')}</h2>
           <p className="text-muted-foreground mb-6">
             La boutique met trop de temps à charger. Votre connexion est peut-être instable.
           </p>
@@ -399,7 +402,7 @@ export default function VendorShop() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="p-8 text-center max-w-md w-full">
           <WifiOff className="w-10 h-10 text-destructive mx-auto mb-4" />
-          <h2 className="text-xl font-bold mb-2 text-foreground">Erreur de connexion</h2>
+          <h2 className="text-xl font-bold mb-2 text-foreground">{t('vendorShop.erreurDeConnexion')}</h2>
           <p className="text-muted-foreground mb-6">
             Impossible de contacter le serveur. Vérifiez votre connexion Internet.
           </p>
@@ -427,7 +430,7 @@ export default function VendorShop() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="p-8 text-center max-w-md w-full">
           <SearchX className="w-10 h-10 text-muted-foreground mx-auto mb-4" />
-          <h2 className="text-xl font-bold mb-2 text-foreground">Boutique introuvable</h2>
+          <h2 className="text-xl font-bold mb-2 text-foreground">{t('vendorShop.boutiqueIntrouvable')}</h2>
           <p className="text-muted-foreground mb-6">
             Cette boutique n'existe pas ou a été supprimée.
           </p>
@@ -457,7 +460,7 @@ export default function VendorShop() {
 
     const { data: { user: currentUser } } = await supabase.auth.getUser();
     if (!currentUser) {
-      toast.error('Veuillez vous connecter pour contacter le vendeur');
+      toast.error(t('vendorShop.veuillezVousConnecterPourContacter'));
       navigate('/auth');
       return;
     }
@@ -473,11 +476,11 @@ export default function VendorShop() {
         });
 
       if (error) throw error;
-      toast.success('Message envoyé au vendeur');
+      toast.success(t('vendorShop.messageEnvoyeAuVendeur'));
       navigate(`/messages?recipientId=${vendor.user_id}`);
     } catch (error) {
       console.error('Erreur envoi message:', error);
-      toast.error("Erreur lors de l'envoi du message");
+      toast.error(t('vendorShop.erreurLorsDeLEnvoi'));
     }
   };
 
@@ -517,7 +520,7 @@ export default function VendorShop() {
       {!vendor.is_active && (
         <Alert className="m-4 border-destructive/50 bg-destructive/10">
           <AlertTriangle className="h-4 w-4 text-destructive" />
-          <AlertTitle className="text-destructive">Boutique inactive</AlertTitle>
+          <AlertTitle className="text-destructive">{t('vendorShop.boutiqueInactive')}</AlertTitle>
           <AlertDescription className="text-muted-foreground">
             {isOwner ? (
               <>
@@ -553,7 +556,7 @@ export default function VendorShop() {
             <Button variant="ghost" size="icon" onClick={() => navigate('/marketplace')}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
-            <h1 className="text-xl font-bold text-foreground">Boutique</h1>
+            <h1 className="text-xl font-bold text-foreground">{t('vendorShop.boutique')}</h1>
             {!vendor.is_active && (
               <Badge variant="outline" className="border-orange-500/50 text-orange-500">
                 Inactive
@@ -741,7 +744,7 @@ export default function VendorShop() {
       <Dialog open={showReviews} onOpenChange={setShowReviews}>
         <DialogContent className="w-[96vw] max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Avis de la boutique</DialogTitle>
+            <DialogTitle>{t('vendorShop.avisDeLaBoutique')}</DialogTitle>
           </DialogHeader>
           <ShopReviewsSection vendorId={vendor.id} />
         </DialogContent>
@@ -752,7 +755,7 @@ export default function VendorShop() {
         {errorType === 'products_error' && (
           <Card className="p-6 text-center mb-4 border-destructive/30">
             <AlertTriangle className="w-8 h-8 text-destructive mx-auto mb-3" />
-            <p className="text-foreground font-medium mb-1">Impossible de charger les produits</p>
+            <p className="text-foreground font-medium mb-1">{t('vendorShop.impossibleDeChargerLesProduits')}</p>
             <p className="text-sm text-muted-foreground mb-4">
               Le vendeur existe mais ses produits n'ont pas pu être récupérés.
             </p>
@@ -792,7 +795,7 @@ export default function VendorShop() {
                   {products.length === 0 ? (
                     <Card className="p-8 text-center">
                       <Package className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                      <p className="text-muted-foreground">Ce vendeur n'a pas encore de produits physiques disponibles.</p>
+                      <p className="text-muted-foreground">{t('vendorShop.ceVendeurNAPas')}</p>
                     </Card>
                   ) : (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mobile-landscape-grid mobile-portrait-grid">
@@ -815,7 +818,7 @@ export default function VendorShop() {
                           category={product.categories?.name}
                           onBuy={() => handleProductClick(product.id)}
                           onAddToCart={() => {
-                            toast.success('Produit ajouté au panier');
+                            toast.success(t('vendorShop.produitAjouteAuPanier'));
                           }}
                           onContact={handleContactVendor}
                         />
@@ -986,7 +989,7 @@ export default function VendorShop() {
                 {products.length === 0 ? (
                   <Card className="p-8 text-center">
                     <Package className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                    <p className="text-muted-foreground">Ce vendeur n'a pas encore de produits disponibles.</p>
+                    <p className="text-muted-foreground">{t('vendorShop.ceVendeurNAPas2')}</p>
                   </Card>
                 ) : (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mobile-landscape-grid mobile-portrait-grid">
@@ -1009,7 +1012,7 @@ export default function VendorShop() {
                         category={product.categories?.name}
                         onBuy={() => handleProductClick(product.id)}
                         onAddToCart={() => {
-                          toast.success('Produit ajouté au panier');
+                          toast.success(t('vendorShop.produitAjouteAuPanier'));
                         }}
                         onContact={handleContactVendor}
                       />

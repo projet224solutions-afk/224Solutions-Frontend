@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * Liste des achats personnels avec possibilité de confirmer la réception (Escrow)
  * Utilisable par vendeurs et agents quand ils achètent sur le marketplace
@@ -126,6 +127,7 @@ const extractFunctionErrorMessage = async (error: unknown): Promise<string> => {
 
 // Tracker visuel de progression
 function OrderProgressTracker({ status }: { status: string }) {
+  const { t } = useTranslation();
   const steps = [
     { key: 'pending', label: 'En attente', icon: Clock },
     { key: 'confirmed', label: 'Confirmée', icon: CheckCircle },
@@ -181,6 +183,7 @@ export default function MyPurchasesOrdersList({
   title = "Mes achats",
   emptyMessage = "Vous n'avez pas encore effectué d'achats"
 }: MyPurchasesOrdersListProps) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [escrows, setEscrows] = useState<Record<string, EscrowStatus>>({});
@@ -286,7 +289,7 @@ export default function MyPurchasesOrdersList({
       setEscrows(escrowMap);
     } catch (error) {
       console.error('Error loading orders:', error);
-      toast.error('Erreur lors du chargement des commandes');
+      toast.error(t('myPurchasesOrdersList.erreurLorsDuChargementDes'));
     } finally {
       setLoading(false);
     }
@@ -327,7 +330,7 @@ export default function MyPurchasesOrdersList({
         if (!response.success) throw new Error(response.error || 'Erreur lors de la confirmation');
       }
 
-      toast.success('Réception confirmée !', {
+      toast.success(t('myPurchasesOrdersList.receptionConfirmee'), {
         description: escrow ? 'Le paiement a été transféré au vendeur' : 'Merci d\'avoir confirmé la réception'
       });
 
@@ -340,7 +343,7 @@ export default function MyPurchasesOrdersList({
       await loadOrders();
     } catch (error) {
       console.error('Error confirming delivery:', error);
-      toast.error('Erreur lors de la confirmation', {
+      toast.error(t('myPurchasesOrdersList.erreurLorsDeLaConfirmation'), {
         description: await extractFunctionErrorMessage(error)
       });
     } finally {
@@ -373,17 +376,17 @@ export default function MyPurchasesOrdersList({
 
       const refund = (response as any).refund;
       if (refund?.refunded && refund.amount > 0) {
-        toast.success('Commande annulée — remboursement effectué', {
+        toast.success(t('myPurchasesOrdersList.commandeAnnuleeRemboursementEffectue'), {
           description: `${refund.amount.toLocaleString()} ${refund.currency} remboursés dans votre portefeuille`,
         });
       } else {
-        toast.success('Commande annulée');
+        toast.success(t('myPurchasesOrdersList.commandeAnnulee'));
       }
 
       await loadOrders();
     } catch (error) {
       console.error('Error cancelling order:', error);
-      toast.error('Erreur lors de l\'annulation', {
+      toast.error(t('myPurchasesOrdersList.erreurLorsDeLAnnulation'), {
         description: error instanceof Error ? error.message : 'Veuillez réessayer'
       });
     } finally {
@@ -414,11 +417,11 @@ export default function MyPurchasesOrdersList({
 
       if (!response.success) throw new Error(response.error || 'Erreur lors de la demande');
 
-      toast.success('Demande de remboursement envoyée');
+      toast.success(t('myPurchasesOrdersList.demandeDeRemboursementEnvoyee'));
       await loadOrders();
     } catch (error) {
       console.error('Error requesting refund:', error);
-      toast.error('Erreur lors de la demande', {
+      toast.error(t('myPurchasesOrdersList.erreurLorsDeLaDemande'), {
         description: error instanceof Error ? error.message : 'Veuillez réessayer'
       });
     } finally {
@@ -552,7 +555,7 @@ export default function MyPurchasesOrdersList({
             {filteredOrders.length === 0 ? (
               <div className="text-center py-8">
                 <Package className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">Aucune commande dans cette catégorie</p>
+                <p className="text-muted-foreground">{t('myPurchasesOrdersList.aucuneCommandeDansCetteCategorie')}</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -631,7 +634,7 @@ export default function MyPurchasesOrdersList({
                           <div className="flex items-start gap-2 p-3 bg-orange-50 rounded-lg border border-orange-200">
                             <Shield className="w-5 h-5 text-[#ff4000] flex-shrink-0 mt-0.5" />
                             <div>
-                              <p className="text-sm font-medium text-[#ff4000]">Paiement protégé</p>
+                              <p className="text-sm font-medium text-[#ff4000]">{t('myPurchasesOrdersList.paiementProtege')}</p>
                               <p className="text-xs text-[#ff4000]">
                                 <Money amount={escrow.amount} from={escrow.currency || 'GNF'} /> sécurisés jusqu'à confirmation
                               </p>
@@ -704,12 +707,12 @@ export default function MyPurchasesOrdersList({
       <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmer la réception ?</AlertDialogTitle>
+            <AlertDialogTitle>{t('myPurchasesOrdersList.confirmerLaReception')}</AlertDialogTitle>
             <AlertDialogDescription>
               En confirmant, vous attestez avoir reçu votre commande.
               {!selectedOrderIsCashOnDelivery && (
                 <div className="mt-3 rounded-lg border border-primary/15 bg-primary/5 p-3">
-                  <div className="text-sm text-muted-foreground">Montant qui sera libéré au vendeur</div>
+                  <div className="text-sm text-muted-foreground">{t('myPurchasesOrdersList.montantQuiSeraLibereAu')}</div>
                   <div className="mt-1 text-lg font-semibold text-foreground">
                     {formatCurrency(sellerReceivableAmount, sellerReceivableCurrency)}
                   </div>
@@ -728,7 +731,7 @@ export default function MyPurchasesOrdersList({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogCancel>{t('myPurchasesOrdersList.annuler')}</AlertDialogCancel>
             <AlertDialogAction onClick={() => void confirmDelivery()}>Confirmer</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -737,16 +740,16 @@ export default function MyPurchasesOrdersList({
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Annuler la commande ?</AlertDialogTitle>
+            <AlertDialogTitle>{t('myPurchasesOrdersList.annulerLaCommande')}</AlertDialogTitle>
             <AlertDialogDescription>
               <div className="space-y-4">
-                <p>Vous êtes sur le point d'annuler cette commande.</p>
+                <p>{t('myPurchasesOrdersList.vousEtesSurLePoint')}</p>
                 <textarea
                   value={cancelReason}
                   onChange={(e) => setCancelReason(e.target.value)}
                   className="w-full p-2 border rounded-md resize-none"
                   rows={3}
-                  placeholder="Raison de l'annulation (optionnel)"
+                  placeholder={t('myPurchasesOrdersList.raisonDeLAnnulationOptionnel')}
                 />
                 <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
                   <div className="flex items-start gap-2">
@@ -771,16 +774,16 @@ export default function MyPurchasesOrdersList({
       <AlertDialog open={showRefundDialog} onOpenChange={setShowRefundDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Demander un remboursement</AlertDialogTitle>
+            <AlertDialogTitle>{t('myPurchasesOrdersList.demanderUnRemboursement')}</AlertDialogTitle>
             <AlertDialogDescription>
               <div className="space-y-4">
-                <p>Décrivez la raison de votre demande.</p>
+                <p>{t('myPurchasesOrdersList.decrivezLaRaisonDeVotre')}</p>
                 <textarea
                   value={refundReason}
                   onChange={(e) => setRefundReason(e.target.value)}
                   className="w-full p-2 border rounded-md resize-none"
                   rows={4}
-                  placeholder="Raison du remboursement"
+                  placeholder={t('myPurchasesOrdersList.raisonDuRemboursement')}
                   required
                 />
                 <input
@@ -794,7 +797,7 @@ export default function MyPurchasesOrdersList({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogCancel>{t('myPurchasesOrdersList.annuler')}</AlertDialogCancel>
             <AlertDialogAction onClick={confirmRequestRefund} disabled={!refundReason.trim()}>Envoyer</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

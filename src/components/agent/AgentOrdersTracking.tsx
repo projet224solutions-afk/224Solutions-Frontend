@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -131,6 +132,7 @@ const paymentStatusLabels: Record<string, string> = {
 
 // Composant de suivi visuel des étapes
 function OrderProgressTracker({ currentStatus }: { currentStatus: string }) {
+  const { t } = useTranslation();
   const getStepIndex = (status: string) => {
     const statusMap: Record<string, number> = {
       pending: 0,
@@ -154,7 +156,7 @@ function OrderProgressTracker({ currentStatus }: { currentStatus: string }) {
     return (
       <div className="flex items-center justify-center p-4 bg-orange-50 rounded-xl border border-orange-200">
         <XCircle className="w-6 h-6 text-[#ff4000] mr-2" />
-        <span className="font-medium text-[#ff4000]">Commande annulée</span>
+        <span className="font-medium text-[#ff4000]">{t('agentOrdersTracking.commandeAnnulee')}</span>
       </div>
     );
   }
@@ -204,6 +206,7 @@ function OrderProgressTracker({ currentStatus }: { currentStatus: string }) {
 }
 
 export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
+  const { t } = useTranslation();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -370,7 +373,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
       setOrders(mappedOrders);
     } catch (error) {
       console.error('Erreur chargement commandes:', error);
-      toast.error('Erreur lors du chargement des commandes');
+      toast.error(t('agentOrdersTracking.erreurLorsDuChargementDes'));
     } finally {
       setLoading(false);
     }
@@ -400,7 +403,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
       setOrderDetails(data);
     } catch (error) {
       console.error('Erreur chargement détails:', error);
-      toast.error('Erreur lors du chargement des détails');
+      toast.error(t('agentOrdersTracking.erreurLorsDuChargementDes2'));
     } finally {
       setLoadingDetails(false);
     }
@@ -508,7 +511,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-[#ff4000] font-medium">Livrées</p>
+                <p className="text-xs text-[#ff4000] font-medium">{t('agentOrdersTracking.livrees')}</p>
                 <p className="text-2xl font-bold text-[#ff4000]">{stats.completed}</p>
               </div>
               <div className="p-3 bg-[#ff4000] rounded-xl">
@@ -538,7 +541,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-orange-100 text-sm">Revenus générés par mes utilisateurs</p>
+              <p className="text-orange-100 text-sm">{t('agentOrdersTracking.revenusGeneresParMesUtilisateurs')}</p>
               <p className="text-3xl font-bold">{formatCurrency(stats.totalRevenue)}</p>
             </div>
             <TrendingUp className="w-12 h-12 text-orange-200" />
@@ -570,7 +573,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
-                placeholder="Rechercher par n° commande, client, ID..."
+                placeholder={t('agentOrdersTracking.rechercherParNCommandeClient')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -582,15 +585,15 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
                 <SelectValue placeholder="Filtrer par statut" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tous les statuts</SelectItem>
+                <SelectItem value="all">{t('agentOrdersTracking.tousLesStatuts')}</SelectItem>
                 <SelectItem value="pending">En attente</SelectItem>
-                <SelectItem value="confirmed">Confirmée</SelectItem>
-                <SelectItem value="preparing">En préparation</SelectItem>
-                <SelectItem value="shipped">Expédiée</SelectItem>
+                <SelectItem value="confirmed">{t('agentOrdersTracking.confirmee')}</SelectItem>
+                <SelectItem value="preparing">{t('agentOrdersTracking.enPreparation')}</SelectItem>
+                <SelectItem value="shipped">{t('agentOrdersTracking.expediee')}</SelectItem>
                 <SelectItem value="in_transit">En transit</SelectItem>
-                <SelectItem value="delivered">Livrée</SelectItem>
-                <SelectItem value="completed">Terminée</SelectItem>
-                <SelectItem value="cancelled">Annulée</SelectItem>
+                <SelectItem value="delivered">{t('agentOrdersTracking.livree')}</SelectItem>
+                <SelectItem value="completed">{t('agentOrdersTracking.terminee')}</SelectItem>
+                <SelectItem value="cancelled">{t('agentOrdersTracking.annulee')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -599,8 +602,8 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
           {filteredOrders.length === 0 ? (
             <div className="text-center py-12 text-slate-500">
               <ShoppingCart className="w-16 h-16 mx-auto mb-4 text-slate-300" />
-              <p className="text-lg font-medium">Aucune commande trouvée</p>
-              <p className="text-sm">Les commandes de vos utilisateurs apparaîtront ici</p>
+              <p className="text-lg font-medium">{t('agentOrdersTracking.aucuneCommandeTrouvee')}</p>
+              <p className="text-sm">{t('agentOrdersTracking.lesCommandesDeVosUtilisateurs')}</p>
             </div>
           ) : (
             <ScrollArea className="h-[500px]">
@@ -776,14 +779,14 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
               {/* Status & Payment */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-slate-50">
-                  <p className="text-xs text-slate-500 mb-1">Statut commande</p>
+                  <p className="text-xs text-slate-500 mb-1">{t('agentOrdersTracking.statutCommande')}</p>
                   <Badge className={cn("text-sm", statusColors[orderDetails.status])}>
                     {statusIcons[orderDetails.status]}
                     <span className="ml-1">{statusLabels[orderDetails.status]}</span>
                   </Badge>
                 </div>
                 <div className="p-4 rounded-xl bg-slate-50">
-                  <p className="text-xs text-slate-500 mb-1">Paiement</p>
+                  <p className="text-xs text-slate-500 mb-1">{t('agentOrdersTracking.paiement')}</p>
                   <Badge className={cn("text-sm", paymentStatusColors[orderDetails.payment_status])}>
                     {paymentStatusLabels[orderDetails.payment_status]}
                   </Badge>
@@ -819,7 +822,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
                 <div className="space-y-1 text-sm">
                   <p><strong>Nom:</strong> {selectedOrder?.customer_name}</p>
                   <p><strong>Email:</strong> {selectedOrder?.customer_email || '-'}</p>
-                  <p><strong>Téléphone:</strong> {selectedOrder?.customer_phone || '-'}</p>
+                  <p><strong>{t('agentOrdersTracking.telephone')}</strong> {selectedOrder?.customer_phone || '-'}</p>
                   {selectedOrder?.customer_public_id && (
                     <p><strong>ID:</strong> {selectedOrder.customer_public_id}</p>
                   )}
