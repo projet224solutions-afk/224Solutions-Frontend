@@ -33,6 +33,29 @@ const SEV: Record<string, string> = {
 };
 const RT_TABLES = ['escrow_transactions', 'wallet_transactions', 'system_alerts', 'subscriptions', 'driver_subscriptions', 'service_subscriptions', 'revenus_pdg', 'agents_management'];
 
+// Libellés lisibles des champs de détail d'anomalie (sinon la clé snake_case est affichée telle quelle).
+const FIELD_LABELS: Record<string, string> = {
+  order_number: 'N° commande', escrow_amount: 'Montant escrow', order_subtotal: 'Sous-total commande',
+  ecart_fuite: 'Écart (fuite)', amount: 'Montant', total: 'Total', subtotal: 'Sous-total',
+  paid_amount: 'Payé', remaining_amount: 'Reste dû', commission_amount: 'Commission', net_amount: 'Net',
+  currency: 'Devise', status: 'Statut', customer_name: 'Client', customer_phone: 'Téléphone',
+  created_at: 'Créé le', released_at: 'Libéré le', due_date: 'Échéance', auto_release_date: 'Libération auto',
+  retrieved_at: 'Taux récupéré le', days_overdue: 'Jours de retard', heures_depuis_maj: 'Heures depuis MAJ',
+  paire: 'Paire de devises', rate: 'Taux', source_type: 'Source', description: 'Description',
+  vendor_id: 'ID vendeur', order_id: 'ID commande', id: 'ID',
+};
+const MONEY_RE = /(amount|total|subtotal|ecart|montant|solde|paid|remaining|rate|fuite|net|commission)/i;
+// Formate une valeur de détail pour un affichage clair (date locale, montant séparé, objet ignoré).
+function fmtFieldValue(key: string, v: unknown): string {
+  if (v === null || v === undefined || v === '') return '—';
+  if (typeof v === 'object') return JSON.stringify(v);
+  if (/(_at|_date)$/.test(key) && typeof v === 'string') {
+    const d = new Date(v); return isNaN(d.getTime()) ? String(v) : d.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' });
+  }
+  if (typeof v === 'number' && MONEY_RE.test(key)) return v.toLocaleString('fr-FR');
+  return String(v);
+}
+
 export default function EscrowConversionMonitor() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -275,10 +298,16 @@ export default function EscrowConversionMonitor() {
                         </div>
                       </div>
                     )}
-                    <div className="grid grid-cols-1 gap-x-4 gap-y-0.5 text-xs sm:grid-cols-2">
-                      {Object.entries(r).filter(([k]) => k !== 'user').map(([k, v]) => (
-                        <span key={k} className="truncate"><span className="text-muted-foreground">{k} :</span> {v === null || v === undefined ? '—' : typeof v === 'object' ? JSON.stringify(v) : String(v)}</span>
-                      ))}
+                    <div className="grid grid-cols-1 gap-x-4 gap-y-1 text-xs sm:grid-cols-2">
+                      {Object.entries(r).filter(([k]) => k !== 'user').map(([k, v]) => {
+                        const highlight = /(ecart|fuite|overdue|days_overdue|heures_depuis)/i.test(k);
+                        return (
+                          <span key={k} className="truncate">
+                            <span className="text-muted-foreground capitalize">{FIELD_LABELS[k] || k.replace(/_/g, ' ')} :</span>{' '}
+                            <span className={highlight ? 'font-semibold text-[#ff4000]' : 'text-foreground'}>{fmtFieldValue(k, v)}</span>
+                          </span>
+                        );
+                      })}
                     </div>
                   </div>
                 );
