@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🏥 MODULE PHARMACIE (côté pharmacien) — interface complète, intégrée comme les autres services
  * (wallet + copilot + abonnement + badge sécurité). Onglets : Ordonnances (validation = cœur),
@@ -27,6 +28,7 @@ import { usePharmacyPrescriptions, usePharmacyOrders, usePharmacyMedications } f
 interface PharmacyModuleProps { serviceId: string; businessName?: string; }
 
 export function PharmacyModule({ serviceId, businessName }: PharmacyModuleProps) {
+  const { t } = useTranslation();
   const [tab, setTab] = useState('prescriptions');
   const { prescriptions } = usePharmacyPrescriptions(serviceId);
   const { orders } = usePharmacyOrders(serviceId);
@@ -47,17 +49,17 @@ export function PharmacyModule({ serviceId, businessName }: PharmacyModuleProps)
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ff4000]/10"><Stethoscope className="h-5 w-5 text-[#ff4000]" /></div>
-          <div><h2 className="text-xl font-bold leading-tight">{businessName || 'Ma Pharmacie'}</h2><p className="text-xs text-muted-foreground">Gestion pharmaceutique</p></div>
+          <div><h2 className="text-xl font-bold leading-tight">{businessName || 'Ma Pharmacie'}</h2><p className="text-xs text-muted-foreground">{t('pharmacyModule.gestionPharmaceutique')}</p></div>
         </div>
         <PharmacyToggles serviceId={serviceId} />
       </div>
 
       {/* 4 métriques */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <Metric label="Ordonnances à valider" value={toValidate} Icon={FileText} alert={toValidate > 0} />
-        <Metric label="En préparation" value={preparing} Icon={ShoppingBag} />
-        <Metric label="CA du jour" value={<Money amount={caToday} />} Icon={DollarSign} />
-        <Metric label="Médicaments en rupture" value={outOfStock} Icon={AlertTriangle} alert={outOfStock > 0} />
+        <Metric label={t('pharmacyModule.ordonnancesAValider')} value={toValidate} Icon={FileText} alert={toValidate > 0} />
+        <Metric label={t('pharmacyModule.enPreparation')} value={preparing} Icon={ShoppingBag} />
+        <Metric label={t('pharmacyModule.caDuJour')} value={<Money amount={caToday} />} Icon={DollarSign} />
+        <Metric label={t('pharmacyModule.medicamentsEnRupture')} value={outOfStock} Icon={AlertTriangle} alert={outOfStock > 0} />
       </div>
 
       <Tabs value={tab} onValueChange={setTab}>
@@ -66,7 +68,7 @@ export function PharmacyModule({ serviceId, businessName }: PharmacyModuleProps)
             <ClipboardCheck className="w-5 h-5 sm:w-4 sm:h-4" /> Ordonnances{toValidate > 0 && <span className="ml-0.5 rounded-full bg-red-600 px-1.5 text-[10px] text-white">{toValidate}</span>}
           </TabsTrigger>
           <TabsTrigger value="pos" className="flex-col sm:flex-row gap-1.5 py-3 sm:py-2.5 text-sm"><ShoppingCart className="w-5 h-5 sm:w-4 sm:h-4" /> Caisse</TabsTrigger>
-          <TabsTrigger value="preparation" className="flex-col sm:flex-row gap-1.5 py-3 sm:py-2.5 text-sm"><ShoppingBag className="w-5 h-5 sm:w-4 sm:h-4" /> Préparation</TabsTrigger>
+          <TabsTrigger value="preparation" className="flex-col sm:flex-row gap-1.5 py-3 sm:py-2.5 text-sm"><ShoppingBag className="w-5 h-5 sm:w-4 sm:h-4" /> {t('pharmacyModule.preparation')}</TabsTrigger>
           <TabsTrigger value="catalog" className="flex-col sm:flex-row gap-1.5 py-3 sm:py-2.5 text-sm"><Pill className="w-5 h-5 sm:w-4 sm:h-4" /> Catalogue</TabsTrigger>
           <TabsTrigger value="oncall" className="flex-col sm:flex-row gap-1.5 py-3 sm:py-2.5 text-sm"><CalendarClock className="w-5 h-5 sm:w-4 sm:h-4" /> Garde</TabsTrigger>
           <TabsTrigger value="analytics" className="flex-col sm:flex-row gap-1.5 py-3 sm:py-2.5 text-sm"><TrendingUp className="w-5 h-5 sm:w-4 sm:h-4" /> Analytics</TabsTrigger>
@@ -86,6 +88,7 @@ export function PharmacyModule({ serviceId, businessName }: PharmacyModuleProps)
 }
 
 function Metric({ label, value, Icon, alert }: { label: string; value: React.ReactNode; Icon: any; alert?: boolean }) {
+  const { t } = useTranslation();
   return (
     <Card className={alert ? 'border-red-300' : ''}>
       <CardHeader className="flex flex-row items-center justify-between pb-1"><CardTitle className="text-xs font-medium text-muted-foreground">{label}</CardTitle><Icon className={`h-4 w-4 ${alert ? 'text-red-500' : 'text-[#ff4000]'}`} /></CardHeader>
@@ -97,6 +100,7 @@ function Metric({ label, value, Icon, alert }: { label: string; value: React.Rea
 /** Toggles « Pharmacie ouverte / de garde aujourd'hui ». Ouverte = metadata.is_open ;
  *  de garde = ligne pharmacy_oncall du jour. (Écran 1 du prompt.) */
 function PharmacyToggles({ serviceId }: { serviceId: string }) {
+  const { t } = useTranslation();
   const [onCallToday, setOnCallToday] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const [meta, setMeta] = useState<Record<string, any>>({});
@@ -140,6 +144,7 @@ const DAYS: { k: string; label: string }[] = [
 
 /** Garde & horaires : horaires d'ouverture hebdomadaires + planification des dates de garde. */
 function PharmacyOnCall({ serviceId }: { serviceId: string }) {
+  const { t } = useTranslation();
   const [dates, setDates] = useState<{ id: string; oncall_date: string }[]>([]);
   const [newDate, setNewDate] = useState('');
   const [hours, setHours] = useState<Record<string, { open: string; close: string; closed: boolean }>>(
@@ -171,7 +176,7 @@ function PharmacyOnCall({ serviceId }: { serviceId: string }) {
     <div className="space-y-4">
     <Card><CardContent className="space-y-3 py-4 block">
       <div className="flex items-center gap-2 text-sm font-semibold"><CalendarClock className="h-4 w-4 text-[#ff4000]" /> Horaires d'ouverture</div>
-      <p className="text-xs text-muted-foreground">Ces horaires s'affichent aux clients sur votre fiche pharmacie.</p>
+      <p className="text-xs text-muted-foreground">{t('pharmacyModule.cesHorairesSAffichentAux')}</p>
       <div className="space-y-1.5">
         {DAYS.map((d) => {
           const h = hours[d.k] || { open: '08:00', close: '20:00', closed: false };
@@ -180,7 +185,7 @@ function PharmacyOnCall({ serviceId }: { serviceId: string }) {
               <span className="w-24 shrink-0">{d.label}</span>
               <Switch checked={!h.closed} onCheckedChange={(on) => setDay(d.k, { closed: !on })} />
               {h.closed ? (
-                <span className="text-muted-foreground">Fermée</span>
+                <span className="text-muted-foreground">{t('pharmacyModule.fermee')}</span>
               ) : (
                 <>
                   <Input type="time" value={h.open} onChange={(e) => setDay(d.k, { open: e.target.value })} className="h-8 max-w-[120px]" />
@@ -196,10 +201,10 @@ function PharmacyOnCall({ serviceId }: { serviceId: string }) {
     </CardContent></Card>
     <Card><CardContent className="space-y-3 py-4 block">
       <div className="flex items-center gap-2 text-sm font-semibold"><ShieldPlus className="h-4 w-4 text-red-600" /> Gardes</div>
-      <p className="text-sm text-muted-foreground">Planifiez vos gardes : ces jours-là, votre pharmacie apparaît dans « Pharmacies de garde » et reste visible tard.</p>
-      <div className="flex gap-2"><Input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} className="max-w-[200px]" /><Button onClick={add} className="gap-1"><Plus className="h-4 w-4" /> Ajouter</Button></div>
+      <p className="text-sm text-muted-foreground">{t('pharmacyModule.planifiezVosGardesCesJours')}</p>
+      <div className="flex gap-2"><Input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} className="max-w-[200px]" /><Button onClick={add} className="gap-1"><Plus className="h-4 w-4" /> {t('pharmacyModule.ajouter')}</Button></div>
       <div className="space-y-1.5">
-        {dates.length === 0 && <p className="text-sm text-muted-foreground">Aucune garde planifiée.</p>}
+        {dates.length === 0 && <p className="text-sm text-muted-foreground">{t('pharmacyModule.aucuneGardePlanifiee')}</p>}
         {dates.map((d) => (
           <div key={d.id} className="flex items-center gap-2 rounded-md border px-3 py-2 text-sm">
             <CalendarClock className="h-4 w-4 text-[#ff4000]" /> {new Date(d.oncall_date + 'T00:00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}
@@ -214,6 +219,7 @@ function PharmacyOnCall({ serviceId }: { serviceId: string }) {
 
 /** Analytics simples : CA, ordonnances traitées, médicaments les plus demandés, ruptures. */
 function PharmacyAnalytics({ prescriptions, orders, medications }: { prescriptions: any[]; orders: any[]; medications: any[] }) {
+  const { t } = useTranslation();
   const stats = useMemo(() => {
     const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
     const monthOrders = orders.filter((o) => new Date(o.created_at) >= monthStart);
@@ -226,14 +232,14 @@ function PharmacyAnalytics({ prescriptions, orders, medications }: { prescriptio
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Metric label="CA du mois" value={<Money amount={stats.caMonth} />} Icon={DollarSign} />
-        <Metric label="Ordonnances traitées" value={stats.treated} Icon={ClipboardCheck} />
-        <Metric label="Refusées" value={stats.refused} Icon={FileText} />
+        <Metric label={t('pharmacyModule.caDuMois')} value={<Money amount={stats.caMonth} />} Icon={DollarSign} />
+        <Metric label={t('pharmacyModule.ordonnancesTraitees')} value={stats.treated} Icon={ClipboardCheck} />
+        <Metric label={t('pharmacyModule.refusees')} value={stats.refused} Icon={FileText} />
         <Metric label="Ruptures" value={stats.ruptures} Icon={AlertTriangle} alert={stats.ruptures > 0} />
       </div>
-      <Card><CardHeader className="pb-2"><CardTitle className="text-sm">Médicaments les plus demandés</CardTitle></CardHeader>
+      <Card><CardHeader className="pb-2"><CardTitle className="text-sm">{t('pharmacyModule.medicamentsLesPlusDemandes')}</CardTitle></CardHeader>
         <CardContent>
-          {stats.top.length === 0 ? <p className="text-sm text-muted-foreground">Pas encore de données.</p> : (
+          {stats.top.length === 0 ? <p className="text-sm text-muted-foreground">{t('pharmacyModule.pasEncoreDeDonnees')}</p> : (
             <ol className="space-y-1">{stats.top.map(([name, qty], i) => (
               <li key={name} className="flex items-center gap-2 text-sm"><span className="w-5 text-muted-foreground">{i + 1}.</span><span className="flex-1 truncate">{name}</span><span className="font-semibold text-[#ff4000]">{qty}×</span></li>
             ))}</ol>

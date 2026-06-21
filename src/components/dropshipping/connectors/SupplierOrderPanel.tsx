@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * SUPPLIER ORDER PANEL
  * Panel de gestion des commandes fournisseurs dropshipping
@@ -186,6 +187,7 @@ function getStatusConfig(status: string) {
 // ==================== SUB COMPONENTS ====================
 
 function TrackingTimeline({ tracking }: { tracking: TrackingInfo }) {
+  const { t } = useTranslation();
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
@@ -240,6 +242,7 @@ function OrderCard({
   onCancelOrder: () => Promise<void>;
   onAddNote: (note: string) => Promise<void>;
 }) {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [noteDialog, setNoteDialog] = useState(false);
   const [note, setNote] = useState('');
@@ -248,6 +251,7 @@ function OrderCard({
   const StatusIcon = statusConfig.icon;
 
   const handleCreateOrder = async () => {
+    const { t } = useTranslation();
     setLoading(true);
     await onCreateOrder();
     setLoading(false);
@@ -306,11 +310,11 @@ function OrderCard({
           {/* Infos commande */}
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="text-muted-foreground">Quantité</p>
+              <p className="text-muted-foreground">{t('supplierOrderPanel.quantite')}</p>
               <p className="font-medium">{order.quantity} unité(s)</p>
             </div>
             <div>
-              <p className="text-muted-foreground">Coût total</p>
+              <p className="text-muted-foreground">{t('supplierOrderPanel.coutTotal')}</p>
               <p className="font-medium">{formatCurrency(order.totalCost, order.currency)}</p>
             </div>
           </div>
@@ -419,7 +423,7 @@ function OrderCard({
           {order.supplierOrderId && (
             <div className="flex items-center gap-2 text-sm bg-muted/50 rounded-lg p-2">
               <FileText className="w-4 h-4 text-muted-foreground" />
-              <span className="text-muted-foreground">Réf. fournisseur:</span>
+              <span className="text-muted-foreground">{t('supplierOrderPanel.refFournisseur')}</span>
               <code className="font-mono">{order.supplierOrderId}</code>
               <Button
                 variant="ghost"
@@ -497,7 +501,7 @@ function OrderCard({
       <Dialog open={noteDialog} onOpenChange={setNoteDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Ajouter une note</DialogTitle>
+            <DialogTitle>{t('supplierOrderPanel.ajouterUneNote')}</DialogTitle>
             <DialogDescription>
               Commande #{order.internalOrderId}
             </DialogDescription>
@@ -505,7 +509,7 @@ function OrderCard({
 
           <div className="space-y-4 py-4">
             <Textarea
-              placeholder="Entrez votre note..."
+              placeholder={t('supplierOrderPanel.entrezVotreNote')}
               value={note}
               onChange={(e) => setNote(e.target.value)}
               rows={4}
@@ -537,6 +541,7 @@ export function SupplierOrderPanel({
   onCancelOrder,
   onAddNote
 }: SupplierOrderPanelProps) {
+  const { t } = useTranslation();
   const [filterStatus, setFilterStatus] = useState<string>('all');
 
   // Filtrer les commandes
@@ -567,7 +572,7 @@ export function SupplierOrderPanel({
               <Clock className="w-5 h-5 text-[#ff4000]" />
               <div>
                 <p className="text-2xl font-bold">{stats.pending}</p>
-                <p className="text-xs text-muted-foreground">À commander</p>
+                <p className="text-xs text-muted-foreground">{t('supplierOrderPanel.aCommander')}</p>
               </div>
             </div>
           </CardContent>
@@ -579,7 +584,7 @@ export function SupplierOrderPanel({
               <Package className="w-5 h-5 text-blue-500" />
               <div>
                 <p className="text-2xl font-bold">{stats.ordered}</p>
-                <p className="text-xs text-muted-foreground">Commandées</p>
+                <p className="text-xs text-muted-foreground">{t('supplierOrderPanel.commandees')}</p>
               </div>
             </div>
           </CardContent>
@@ -603,7 +608,7 @@ export function SupplierOrderPanel({
               <CheckCircle className="w-5 h-5 text-[#ff4000]" />
               <div>
                 <p className="text-2xl font-bold">{stats.delivered}</p>
-                <p className="text-xs text-muted-foreground">Livrées</p>
+                <p className="text-xs text-muted-foreground">{t('supplierOrderPanel.livrees')}</p>
               </div>
             </div>
           </CardContent>
@@ -669,7 +674,7 @@ export function SupplierOrderPanel({
         <Card>
           <CardContent className="flex flex-col items-center justify-center h-64">
             <Package className="w-12 h-12 text-muted-foreground mb-4" />
-            <p className="text-lg font-medium">Aucune commande</p>
+            <p className="text-lg font-medium">{t('supplierOrderPanel.aucuneCommande')}</p>
             <p className="text-sm text-muted-foreground">
               {filterStatus === 'all'
                 ? 'Les commandes dropshipping apparaîtront ici'

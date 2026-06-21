@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * DASHBOARD CHAUFFEUR TAXI VOITURE — Interface Ultra-Professionnelle
  * Style Uber / VTC Premium — Noir, Blanc, Bleu
@@ -52,6 +53,7 @@ function CarBottomNav({ activeTab, onTabChange, hasActiveRide }: {
   onTabChange: (tab: TabId) => void;
   hasActiveRide: boolean;
 }) {
+  const { t } = useTranslation();
   const tabs = [
     { id: 'dashboard' as TabId, label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
     { id: 'navigation' as TabId, label: 'Course', icon: <Navigation className="w-5 h-5" />, badge: hasActiveRide },
@@ -94,6 +96,7 @@ function CarRideRequestCard({ request, accepting, onAccept, onDecline }: {
   onAccept: () => void;
   onDecline: () => void;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="bg-gradient-to-br from-blue-950 to-gray-900 rounded-2xl p-4 border border-blue-500/30 shadow-lg shadow-blue-500/10">
       <div className="flex items-start justify-between mb-3">
@@ -131,7 +134,7 @@ function CarRideRequestCard({ request, accepting, onAccept, onDecline }: {
         </div>
         <div className="bg-gray-800/60 rounded-xl p-2 text-center">
           <p className="text-blue-400 font-bold text-sm">{request.estimatedDuration ? `${request.estimatedDuration} min` : '--'}</p>
-          <p className="text-gray-500 text-[10px]">Durée</p>
+          <p className="text-gray-500 text-[10px]">{t('taxiCarDriver.duree')}</p>
         </div>
         <div className="bg-gray-800/60 rounded-xl p-2 text-center">
           <p className="text-[#ff4000] font-bold text-sm">{request.estimatedEarnings ? `${request.estimatedEarnings.toLocaleString()}` : '--'}</p>
@@ -189,6 +192,7 @@ function CarMainDashboard({
   onExpandMap: () => void;
   onStatClick?: (id: string) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-gray-950 pb-24">
       {/* Subscription Banner */}
@@ -273,7 +277,7 @@ function CarMainDashboard({
           >
             <DollarSign className="w-5 h-5 text-[#ff4000] mx-auto mb-1" />
             <p className="text-white font-bold text-base">{stats.todayEarnings.toLocaleString()}</p>
-            <p className="text-gray-500 text-[10px]">Gains du jour</p>
+            <p className="text-gray-500 text-[10px]">{t('taxiCarDriver.gainsDuJour')}</p>
           </button>
           <button
             onClick={() => onStatClick?.('history')}
@@ -348,8 +352,8 @@ function CarMainDashboard({
             <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
               <Car className="w-8 h-8 text-blue-400" />
             </div>
-            <p className="text-gray-400 text-sm">En attente de demandes...</p>
-            <p className="text-gray-600 text-xs mt-1">Vous recevrez une notification à chaque nouvelle course</p>
+            <p className="text-gray-400 text-sm">{t('taxiCarDriver.enAttenteDeDemandes')}</p>
+            <p className="text-gray-600 text-xs mt-1">{t('taxiCarDriver.vousRecevrezUneNotificationA')}</p>
           </div>
         )}
       </div>
@@ -361,6 +365,7 @@ function CarMainDashboard({
 // Composant principal TaxiCarDriver
 // ============================================================
 export default function TaxiCarDriver() {
+  const { t } = useTranslation();
   const { user, profile, signOut } = useAuth();
   const { error, capture, clear } = useTaxiErrorBoundary();
   const navigate = useNavigate();
@@ -436,7 +441,7 @@ export default function TaxiCarDriver() {
     setDistanceToDestination(dist);
     setTimeToDestination(Math.ceil((dist / 1000) / 40 * 60));
     setNextInstruction('Navigation démarrée');
-    toast.info('Navigation activée');
+    toast.info(t('taxiCarDriver.navigationActivee'));
   }, [location]);
 
   const { activeRide, setActiveRide, setNavigationActive, updateRideStatus, cancelActiveRide } = useTaxiActiveRide(driverId, startNavigation, updateLocalStats);
@@ -458,7 +463,7 @@ export default function TaxiCarDriver() {
 
   const toggleOnlineStatus = async () => {
     const next = !isOnline;
-    if (!driverId) { toast.error('Profil conducteur non trouvé'); return; }
+    if (!driverId) { toast.error(t('taxiCarDriver.profilConducteurNonTrouve')); return; }
     if (next && !hasAccess) {
       toast.error('⚠️ Abonnement requis', { description: 'Vous devez avoir un abonnement actif' });
       return;
@@ -476,7 +481,7 @@ export default function TaxiCarDriver() {
       } catch (err: unknown) {
         toast.dismiss('gps-car');
         capture('network', 'Erreur activation', err);
-        toast.error('Impossible de passer en ligne');
+        toast.error(t('taxiCarDriver.impossibleDePasserEnLigne'));
       }
     } else {
       try {
@@ -487,7 +492,7 @@ export default function TaxiCarDriver() {
         toast.info('🔴 Hors ligne');
       } catch (err: unknown) {
         capture('network', 'Erreur changement statut', err);
-        toast.error('Erreur lors du changement de statut');
+        toast.error(t('taxiCarDriver.erreurLorsDuChangementDe'));
       }
     }
   };
@@ -521,7 +526,7 @@ export default function TaxiCarDriver() {
     }
     setIsOnline(false);
     await signOut();
-    toast.success('Déconnexion réussie');
+    toast.success(t('taxiCarDriver.deconnexionReussie'));
     navigate('/');
   };
 
@@ -626,8 +631,8 @@ export default function TaxiCarDriver() {
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center px-4">
               <Car className="w-12 h-12 text-gray-700 mb-3" />
-              <p className="text-gray-500">Aucune course active</p>
-              <p className="text-gray-600 text-sm mt-1">Acceptez une demande depuis le Dashboard</p>
+              <p className="text-gray-500">{t('taxiCarDriver.aucuneCourseActive')}</p>
+              <p className="text-gray-600 text-sm mt-1">{t('taxiCarDriver.acceptezUneDemandeDepuisLe')}</p>
               <Button
                 onClick={() => setActiveTab('dashboard')}
                 variant="outline"
@@ -688,7 +693,7 @@ export default function TaxiCarDriver() {
           {rideHistory.length === 0 ? (
             <div className="text-center py-12">
               <Car className="w-12 h-12 text-gray-700 mx-auto mb-3" />
-              <p className="text-gray-500">Aucune course complétée</p>
+              <p className="text-gray-500">{t('taxiCarDriver.aucuneCourseCompletee')}</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -738,7 +743,7 @@ export default function TaxiCarDriver() {
             <p className="text-gray-400 text-sm">Basé sur {driverStats.totalRides || 0} courses</p>
           </div>
           <div className="mt-4 bg-gray-900 rounded-xl p-4 border border-gray-800 space-y-2">
-            <h3 className="text-white font-medium text-sm">Conseils pour améliorer votre note</h3>
+            <h3 className="text-white font-medium text-sm">{t('taxiCarDriver.conseilsPourAmeliorerVotreNote')}</h3>
             {['Soyez ponctuel aux rendez-vous', 'Conduisez prudemment et respectez le code', 'Soyez courtois avec les clients', 'Maintenez votre véhicule propre et climatisé', 'Proposez de l\'eau aux clients si possible'].map((tip) => (
               <div key={tip} className="flex items-start gap-2">
                 <CheckCircle className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" />

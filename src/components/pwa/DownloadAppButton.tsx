@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * COMPOSANT: DownloadAppButton
  * Bouton d'installation PWA simplifié
@@ -33,6 +34,7 @@ interface DownloadAppButtonProps {
 }
 
 export function DownloadAppButton({ variant = 'default', className = '' }: DownloadAppButtonProps) {
+  const { t } = useTranslation();
   const [showDialog, setShowDialog] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
@@ -72,7 +74,7 @@ export function DownloadAppButton({ variant = 'default', className = '' }: Downl
     try {
       // 0) PWA install bloqué en iframe / webview
       if (isInIframe || isInAppBrowser) {
-        toast.info('Ouvrir dans le navigateur pour installer', {
+        toast.info(t('downloadAppButton.ouvrirDansLeNavigateurPour'), {
           description: isInAppBrowser
             ? 'Ouvrez ce lien dans Chrome/Safari (les navigateurs intégrés bloquent l’installation).'
             : "Ouvrez l'application dans un nouvel onglet pour installer.",
@@ -90,7 +92,7 @@ export function DownloadAppButton({ variant = 'default', className = '' }: Downl
         window.localStorage.setItem('enable_pwa_preview', '1');
         const url = new URL(window.location.href);
         url.searchParams.set('pwa', '1');
-        toast.info('Activation de l’installation…', {
+        toast.info(t('downloadAppButton.activationDeLInstallation'), {
           description: 'Recharge en cours pour activer le mode PWA (une seule fois).',
           duration: 4000,
         });
@@ -102,7 +104,7 @@ export function DownloadAppButton({ variant = 'default', className = '' }: Downl
       if (isInstallable) {
         const success = await promptInstall();
         if (success) {
-          toast.success('Application installée !', {
+          toast.success(t('downloadAppButton.applicationInstallee'), {
             description: "224Solutions est maintenant sur votre écran d'accueil.",
           });
           setShowDialog(false);
@@ -119,12 +121,12 @@ export function DownloadAppButton({ variant = 'default', className = '' }: Downl
           duration: 8000,
         });
       } else if (isMobile) {
-        toast.info('Installation sur Android', {
+        toast.info(t('downloadAppButton.installationSurAndroid'), {
           description: "Menu (⋮) → 'Installer l'application' ou 'Ajouter à l'écran d'accueil'.",
           duration: 8000,
         });
       } else {
-        toast.info('Installation sur ordinateur', {
+        toast.info(t('downloadAppButton.installationSurOrdinateur'), {
           description: "Cliquez sur l'icône d'installation dans la barre d'adresse.",
           duration: 8000,
         });
@@ -150,7 +152,7 @@ export function DownloadAppButton({ variant = 'default', className = '' }: Downl
             {isMobile ? <Smartphone className="w-6 h-6" /> : <Monitor className="w-6 h-6" />}
             <div>
               <p className="font-semibold">Installez 224Solutions</p>
-              <p className="text-sm opacity-90">Accès rapide depuis l'écran d'accueil</p>
+              <p className="text-sm opacity-90">{t('downloadAppButton.accesRapideDepuisLEcran')}</p>
             </div>
           </div>
           <Button onClick={() => setShowDialog(true)} variant="secondary" className="gap-2">
@@ -203,7 +205,7 @@ export function DownloadAppButton({ variant = 'default', className = '' }: Downl
           </div>
           <div className="flex-1">
             <h3 className="text-xl font-bold">Installer 224Solutions</h3>
-            <p className="text-sm opacity-90">Accès rapide depuis votre écran d'accueil</p>
+            <p className="text-sm opacity-90">{t('downloadAppButton.accesRapideDepuisVotreEcran')}</p>
           </div>
           <Button onClick={() => setShowDialog(true)} variant="secondary" size="lg" className="gap-2">
             <Download className="w-5 h-5" />
@@ -245,6 +247,7 @@ function InstallDialog({
   isMobile,
   isIOS,
 }: InstallDialogProps) {
+  const { t } = useTranslation();
   const inIframe = (() => {
     try {
       return window.self !== window.top;
@@ -261,7 +264,7 @@ function InstallDialog({
           <p className="font-medium">Important :</p>
           <p className="text-sm">
             L’installation PWA est bloquée dans un aperçu / navigateur intégré.
-            Ouvrez ce lien dans <span className="font-semibold">Chrome</span> (Android) ou <span className="font-semibold">Safari</span> (iOS).
+            Ouvrez ce lien dans <span className="font-semibold">Chrome</span> {t('downloadAppButton.androidOu')} <span className="font-semibold">Safari</span> (iOS).
           </p>
         </div>
       );
@@ -301,7 +304,7 @@ function InstallDialog({
     if (isMobile) {
       return (
         <div className="space-y-2">
-          <p className="font-medium">Sur Android :</p>
+          <p className="font-medium">{t('downloadAppButton.surAndroid')}</p>
           <div className="space-y-1 text-sm">
             <p className="flex items-center gap-2">
               <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs">1</span>
@@ -318,8 +321,8 @@ function InstallDialog({
 
     return (
       <div className="space-y-2">
-        <p className="font-medium">Sur ordinateur :</p>
-        <p className="text-sm">Cliquez sur l'icône d'installation dans la barre d'adresse de votre navigateur.</p>
+        <p className="font-medium">{t('downloadAppButton.surOrdinateur')}</p>
+        <p className="text-sm">{t('downloadAppButton.cliquezSurLIconeD')}</p>
       </div>
     );
   };

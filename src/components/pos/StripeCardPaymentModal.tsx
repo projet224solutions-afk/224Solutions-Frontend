@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * STRIPE CARD PAYMENT MODAL - Modal de paiement carte POS
  * Utilise Stripe Elements pour un paiement sécurisé
@@ -85,6 +86,7 @@ function PaymentForm({
   onError: (error: string) => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
@@ -118,18 +120,18 @@ function PaymentForm({
       if (confirmError) {
         setError(confirmError.message || 'Erreur de paiement');
         onError(confirmError.message || 'Erreur de paiement');
-        toast.error('Paiement refusé', {
+        toast.error(t('stripeCardPaymentModal.paiementRefuse'), {
           description: confirmError.message,
         });
       } else if (paymentIntent) {
         if (paymentIntent.status === 'succeeded') {
           setSucceeded(true);
-          toast.success('Paiement accepté!', {
+          toast.success(t('stripeCardPaymentModal.paiementAccepte'), {
             description: `${formatAmount(totalAmount)} encaissé`,
           });
           onSuccess(paymentIntent.id);
         } else if (paymentIntent.status === 'processing') {
-          toast.info('Paiement en cours de traitement...');
+          toast.info(t('stripeCardPaymentModal.paiementEnCoursDeTraitement'));
         } else if (paymentIntent.status === 'requires_action') {
           toast.info('Authentification 3D Secure requise...');
         }
@@ -152,7 +154,7 @@ function PaymentForm({
           </div>
         </div>
         <div>
-          <h3 className="text-2xl font-bold text-[#ff4000]">Paiement réussi!</h3>
+          <h3 className="text-2xl font-bold text-[#ff4000]">{t('stripeCardPaymentModal.paiementReussi')}</h3>
           <p className="text-muted-foreground mt-2">
             <strong>{formatAmount(totalAmount)}</strong> encaissé
           </p>
@@ -174,7 +176,7 @@ function PaymentForm({
           <div className="space-y-2">
             <div className="border-b pb-2 space-y-1 text-sm">
               <div className="flex justify-between">
-                <span>Montant produit</span>
+                <span>{t('stripeCardPaymentModal.montantProduit')}</span>
                 <span className="font-medium">{formatAmount(productAmount)}</span>
               </div>
               <div className="flex justify-between text-muted-foreground">
@@ -183,7 +185,7 @@ function PaymentForm({
               </div>
             </div>
             <div className="flex justify-between text-lg font-bold">
-              <span>Total à payer</span>
+              <span>{t('stripeCardPaymentModal.totalAPayer')}</span>
               <span className="text-primary">{formatAmount(totalAmount)}</span>
             </div>
             <div className="text-xs text-muted-foreground pt-1">
@@ -206,7 +208,7 @@ function PaymentForm({
       <div className="space-y-2">
         <div className="flex items-center gap-2 mb-2">
           <CreditCard className="w-4 h-4 text-muted-foreground" />
-          <span className="text-sm font-medium">Informations de carte</span>
+          <span className="text-sm font-medium">{t('stripeCardPaymentModal.informationsDeCarte')}</span>
         </div>
         <PaymentElement
           options={{
@@ -226,8 +228,8 @@ function PaymentForm({
       <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 p-3 rounded-lg">
         <Shield className="w-4 h-4 mt-0.5" />
         <div>
-          <p className="font-medium">Paiement 100% sécurisé</p>
-          <p className="mt-1">Cryptage SSL. Compatible 3D Secure. Données protégées par Stripe.</p>
+          <p className="font-medium">{t('stripeCardPaymentModal.paiement100Securise')}</p>
+          <p className="mt-1">{t('stripeCardPaymentModal.cryptageSslCompatible3dSecure')}</p>
         </div>
       </div>
 
@@ -251,7 +253,7 @@ function PaymentForm({
       </div>
 
       <div className="flex items-center justify-center gap-3 pt-2">
-        <span className="text-xs text-muted-foreground">Cartes acceptées:</span>
+        <span className="text-xs text-muted-foreground">{t('stripeCardPaymentModal.cartesAcceptees')}</span>
         <div className="flex gap-2">
           <div className="w-10 h-6 bg-[#04439e] rounded flex items-center justify-center text-white text-[8px] font-bold">
             VISA
@@ -281,6 +283,7 @@ export function StripeCardPaymentModal({
   onSuccess,
   onError,
 }: StripeCardPaymentModalProps) {
+  const { t } = useTranslation();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -384,15 +387,15 @@ export function StripeCardPaymentModal({
         <DialogHeader>
           <div className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-primary" />
-            <DialogTitle>Paiement par carte</DialogTitle>
+            <DialogTitle>{t('stripeCardPaymentModal.paiementParCarte')}</DialogTitle>
           </div>
-          <DialogDescription>Paiement sécurisé via Stripe</DialogDescription>
+          <DialogDescription>{t('stripeCardPaymentModal.paiementSecuriseViaStripe')}</DialogDescription>
         </DialogHeader>
 
         {loading && (
           <div className="flex flex-col items-center justify-center py-12 space-y-4">
             <Loader2 className="w-12 h-12 animate-spin text-primary" />
-            <p className="text-muted-foreground">Initialisation du paiement...</p>
+            <p className="text-muted-foreground">{t('stripeCardPaymentModal.initialisationDuPaiement')}</p>
           </div>
         )}
 

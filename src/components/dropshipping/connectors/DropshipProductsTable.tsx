@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * DROPSHIP PRODUCTS TABLE
  * Table de gestion des produits dropshipping importés
@@ -102,6 +103,7 @@ interface DropshipProductsTableProps {
 // ==================== HELPER COMPONENTS ====================
 
 function SyncStatusBadge({ status, lastSync }: { status: string; lastSync: string | null }) {
+  const { t } = useTranslation();
   const getStatusConfig = () => {
     switch (status) {
       case 'synced':
@@ -131,7 +133,7 @@ function SyncStatusBadge({ status, lastSync }: { status: string; lastSync: strin
           {lastSync ? (
             <p>Dernière sync: {formatRelativeTime(lastSync)}</p>
           ) : (
-            <p>Jamais synchronisé</p>
+            <p>{t('dropshipProductsTable.jamaisSynchronise')}</p>
           )}
         </TooltipContent>
       </Tooltip>
@@ -140,6 +142,7 @@ function SyncStatusBadge({ status, lastSync }: { status: string; lastSync: strin
 }
 
 function StockStatusBadge({ status, quantity }: { status: string; quantity: number | null }) {
+  const { t } = useTranslation();
   const getConfig = () => {
     switch (status) {
       case 'in_stock':
@@ -163,6 +166,7 @@ function StockStatusBadge({ status, quantity }: { status: string; quantity: numb
 }
 
 function PriceChangeIndicator({ change, pct }: { change: string | null; pct: number | null }) {
+  const { t } = useTranslation();
   if (!change || change === 'stable') return <Minus className="w-4 h-4 text-muted-foreground" />;
 
   if (change === 'up') {
@@ -210,6 +214,7 @@ export function DropshipProductsTable({
   onTogglePublish,
   onViewOnSource
 }: DropshipProductsTableProps) {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
   const [filterConnector, setFilterConnector] = useState<string>('all');
@@ -288,7 +293,7 @@ export function DropshipProductsTable({
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Rechercher un produit..."
+              placeholder={t('dropshipProductsTable.rechercherUnProduit')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9"
@@ -301,7 +306,7 @@ export function DropshipProductsTable({
               <SelectValue placeholder="Connecteur" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tous</SelectItem>
+              <SelectItem value="all">{t('dropshipProductsTable.tous')}</SelectItem>
               {connectors.map(c => (
                 <SelectItem key={c} value={c}>{c}</SelectItem>
               ))}
@@ -314,8 +319,8 @@ export function DropshipProductsTable({
               <SelectValue placeholder="Statut" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tous</SelectItem>
-              <SelectItem value="published">Publiés</SelectItem>
+              <SelectItem value="all">{t('dropshipProductsTable.tous')}</SelectItem>
+              <SelectItem value="published">{t('dropshipProductsTable.publies')}</SelectItem>
               <SelectItem value="draft">Brouillons</SelectItem>
               <SelectItem value="error">Erreurs sync</SelectItem>
               <SelectItem value="out_of_stock">Rupture</SelectItem>
@@ -350,11 +355,11 @@ export function DropshipProductsTable({
       {/* Statistiques rapides */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-muted/50 rounded-lg p-3">
-          <p className="text-sm text-muted-foreground">Total produits</p>
+          <p className="text-sm text-muted-foreground">{t('dropshipProductsTable.totalProduits')}</p>
           <p className="text-2xl font-bold">{products.length}</p>
         </div>
         <div className="bg-orange-50 rounded-lg p-3">
-          <p className="text-sm text-[#ff4000]">Publiés</p>
+          <p className="text-sm text-[#ff4000]">{t('dropshipProductsTable.publies')}</p>
           <p className="text-2xl font-bold text-[#ff4000]">
             {products.filter(p => p.isPublished).length}
           </p>
@@ -385,9 +390,9 @@ export function DropshipProductsTable({
                 />
               </TableHead>
               <TableHead className="w-[60px]">Image</TableHead>
-              <TableHead>Produit</TableHead>
+              <TableHead>{t('dropshipProductsTable.produit')}</TableHead>
               <TableHead>Source</TableHead>
-              <TableHead className="text-right">Coût</TableHead>
+              <TableHead className="text-right">{t('dropshipProductsTable.cout')}</TableHead>
               <TableHead className="text-right">Prix vente</TableHead>
               <TableHead>Stock</TableHead>
               <TableHead>Sync</TableHead>
@@ -518,7 +523,7 @@ export function DropshipProductsTable({
                           onClick={() => onTogglePublish(product.id, !product.isPublished)}
                         >
                           {product.isPublished ? (
-                            <><EyeOff className="w-4 h-4 mr-2" /> Dépublier</>
+                            <><EyeOff className="w-4 h-4 mr-2" /> {t('dropshipProductsTable.depublier')}</>
                           ) : (
                             <><Eye className="w-4 h-4 mr-2" /> Publier</>
                           )}

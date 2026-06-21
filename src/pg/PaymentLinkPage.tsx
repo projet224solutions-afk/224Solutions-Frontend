@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 ﻿/**
  * 💳 PAGE PUBLIQUE DE PAIEMENT - /pay/:token
  * Page professionnelle pour payer via un lien de paiement 224SOLUTIONS
@@ -71,6 +72,7 @@ interface CardPaymentElementFormProps {
 }
 
 function CardPaymentElementForm({ amountLabel, disabled = false, onSuccess, onError }: CardPaymentElementFormProps) {
+  const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
   const [submitting, setSubmitting] = useState(false);
@@ -139,6 +141,7 @@ function CardPaymentElementForm({ amountLabel, disabled = false, onSuccess, onEr
 }
 
 export default function PaymentLinkPage() {
+  const { t } = useTranslation();
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -374,7 +377,7 @@ export default function PaymentLinkPage() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
-          <p className="text-muted-foreground">Chargement du paiement...</p>
+          <p className="text-muted-foreground">{t('paymentLinkPage.chargementDuPaiement')}</p>
         </div>
       </div>
     );
@@ -388,7 +391,7 @@ export default function PaymentLinkPage() {
           <CardContent className="p-8 text-center">
             <AlertCircle className="w-12 h-12 mx-auto mb-4 text-destructive" />
             <h2 className="text-xl font-semibold mb-2">Lien introuvable</h2>
-            <p className="text-muted-foreground mb-4">Ce lien de paiement n'existe pas ou a été supprimé.</p>
+            <p className="text-muted-foreground mb-4">{t('paymentLinkPage.ceLienDePaiementN')}</p>
             <Button onClick={() => navigate('/')}><ArrowLeft className="w-4 h-4 mr-2" />Accueil</Button>
           </CardContent>
         </Card>
@@ -403,8 +406,8 @@ export default function PaymentLinkPage() {
         <Card className="max-w-md w-full">
           <CardContent className="p-8 text-center">
             <Clock className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <h2 className="text-xl font-semibold mb-2">Lien expiré</h2>
-            <p className="text-muted-foreground mb-4">Contactez le vendeur pour un nouveau lien.</p>
+            <h2 className="text-xl font-semibold mb-2">{t('paymentLinkPage.lienExpire')}</h2>
+            <p className="text-muted-foreground mb-4">{t('paymentLinkPage.contactezLeVendeurPourUn')}</p>
             <Button onClick={() => navigate('/')}><ArrowLeft className="w-4 h-4 mr-2" />Accueil</Button>
           </CardContent>
         </Card>
@@ -421,7 +424,7 @@ export default function PaymentLinkPage() {
             <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-[#ff4000]" />
             </div>
-            <h2 className="text-xl font-bold mb-2">Paiement confirmé !</h2>
+            <h2 className="text-xl font-bold mb-2">{t('paymentLinkPage.paiementConfirme')}</h2>
             <p className="text-muted-foreground mb-2">
               {formatCurrency(linkData.amount, linkData.currency)}
             </p>
@@ -433,7 +436,7 @@ export default function PaymentLinkPage() {
             )}
             <div className="flex items-center justify-center gap-2 p-3 bg-muted rounded-lg mb-4">
               <Receipt className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm">Un reçu sera envoyé par notification</span>
+              <span className="text-sm">{t('paymentLinkPage.unRecuSeraEnvoyePar')}</span>
             </div>
             <Button onClick={() => navigate('/')} variant="outline">
               <ArrowLeft className="w-4 h-4 mr-2" />Retour
@@ -456,7 +459,7 @@ export default function PaymentLinkPage() {
         {/* Header */}
         <div className="text-center">
           <h1 className="text-xl font-bold text-foreground">224SOLUTIONS</h1>
-          <p className="text-sm text-muted-foreground">Paiement sécurisé</p>
+          <p className="text-sm text-muted-foreground">{t('paymentLinkPage.paiementSecurise')}</p>
         </div>
 
         {/* Payment Details Card */}
@@ -531,7 +534,7 @@ export default function PaymentLinkPage() {
                   ))}
                 </div>
                 <div className="flex items-center justify-between px-3 py-2.5 bg-muted/50 border-t">
-                  <span className="text-sm font-semibold">Total à payer</span>
+                  <span className="text-sm font-semibold">{t('paymentLinkPage.totalAPayer')}</span>
                   <span className="text-base font-bold text-primary">{formatCurrency(linkData.amount, linkData.currency)}</span>
                 </div>
               </div>
@@ -547,7 +550,7 @@ export default function PaymentLinkPage() {
             {/* Amount breakdown */}
             <div className="space-y-1.5 p-3 bg-muted rounded-lg">
               <div className="flex justify-between text-sm">
-                <span>Montant</span>
+                <span>{t('paymentLinkPage.montant')}</span>
                 <span>{formatCurrency(linkData.grossAmount || linkData.amount, linkData.currency)}</span>
               </div>
               {(linkData.remise || 0) > 0 && (
@@ -558,7 +561,7 @@ export default function PaymentLinkPage() {
               )}
               {linkData.reference && (
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Référence</span>
+                  <span>{t('paymentLinkPage.reference')}</span>
                   <span>{linkData.reference}</span>
                 </div>
               )}
@@ -570,7 +573,7 @@ export default function PaymentLinkPage() {
               )}
               <Separator className="my-1" />
               <div className="flex justify-between font-bold">
-                <span>Total à payer</span>
+                <span>{t('paymentLinkPage.totalAPayer')}</span>
                 <span className="text-primary">{formatCurrency(linkData.amount, linkData.currency)}</span>
               </div>
             </div>
@@ -601,11 +604,11 @@ export default function PaymentLinkPage() {
                   id="cust-name"
                   value={customerInfo.name}
                   onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
-                  placeholder="Votre nom"
+                  placeholder={t('paymentLinkPage.votreNom')}
                 />
               </div>
               <div>
-                <Label htmlFor="cust-phone">Téléphone *</Label>
+                <Label htmlFor="cust-phone">{t('paymentLinkPage.telephone')}</Label>
                 <Input
                   id="cust-phone"
                   value={customerInfo.phone}
@@ -648,7 +651,7 @@ export default function PaymentLinkPage() {
               </div>
               <div className="text-left">
                 <p className="font-semibold text-sm">Orange Money</p>
-                <p className="text-xs text-muted-foreground">Paiement mobile instantané</p>
+                <p className="text-xs text-muted-foreground">{t('paymentLinkPage.paiementMobileInstantane')}</p>
               </div>
             </button>
 

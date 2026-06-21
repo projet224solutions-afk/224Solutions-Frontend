@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * EMERGENCY ACTIONS PANEL - Panneau d'actions syndicat
  * 224Solutions - Actions rapides pour gérer les urgences
@@ -32,6 +33,7 @@ export const EmergencyActionsPanel: React.FC<EmergencyActionsPanelProps> = ({
   userName,
   onActionComplete
 }) => {
+  const { t } = useTranslation();
   const [actions, setActions] = useState<EmergencyAction[]>([]);
   const [noteText, setNoteText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,11 +78,11 @@ export const EmergencyActionsPanel: React.FC<EmergencyActionsPanelProps> = ({
         window.location.href = `tel:${alert.driver_phone}`;
       }
 
-      toast.success('Appel initié');
+      toast.success(t('emergencyActionsPanel.appelInitie'));
       onActionComplete();
     } catch (error) {
       console.error('❌ Erreur:', error);
-      toast.error('Erreur lors de l\'appel');
+      toast.error(t('emergencyActionsPanel.erreurLorsDeLAppel'));
     }
   };
 
@@ -101,11 +103,11 @@ export const EmergencyActionsPanel: React.FC<EmergencyActionsPanelProps> = ({
         notes: `Message envoyé: ${message}`
       });
 
-      toast.success('Message envoyé');
+      toast.success(t('emergencyActionsPanel.messageEnvoye'));
       onActionComplete();
     } catch (error) {
       console.error('❌ Erreur:', error);
-      toast.error('Erreur lors de l\'envoi');
+      toast.error(t('emergencyActionsPanel.erreurLorsDeLEnvoi'));
     }
   };
 
@@ -126,11 +128,11 @@ export const EmergencyActionsPanel: React.FC<EmergencyActionsPanelProps> = ({
         notes: `Police notifiée: ${details}`
       });
 
-      toast.success('🚔 Police notifiée avec succès');
+      toast.success(t('emergencyActionsPanel.policeNotifieeAvecSucces'));
       onActionComplete();
     } catch (error) {
       console.error('❌ Erreur:', error);
-      toast.error('Erreur lors de la notification');
+      toast.error(t('emergencyActionsPanel.erreurLorsDeLaNotification'));
     }
   };
 
@@ -139,7 +141,7 @@ export const EmergencyActionsPanel: React.FC<EmergencyActionsPanelProps> = ({
    */
   const handleAddNote = async () => {
     if (!noteText.trim()) {
-      toast.warning('Veuillez saisir une note');
+      toast.warning(t('emergencyActionsPanel.veuillezSaisirUneNote'));
       return;
     }
 
@@ -155,11 +157,11 @@ export const EmergencyActionsPanel: React.FC<EmergencyActionsPanelProps> = ({
       });
 
       setNoteText('');
-      toast.success('Note ajoutée');
+      toast.success(t('emergencyActionsPanel.noteAjoutee'));
       onActionComplete();
     } catch (error) {
       console.error('❌ Erreur:', error);
-      toast.error('Erreur lors de l\'ajout de la note');
+      toast.error(t('emergencyActionsPanel.erreurLorsDeLAjout'));
     } finally {
       setIsSubmitting(false);
     }
@@ -243,13 +245,13 @@ export const EmergencyActionsPanel: React.FC<EmergencyActionsPanelProps> = ({
       {/* Ajouter une note */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Ajouter une Note</CardTitle>
+          <CardTitle className="text-lg">{t('emergencyActionsPanel.ajouterUneNote')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <Textarea
             value={noteText}
             onChange={(e) => setNoteText(e.target.value)}
-            placeholder="Décrivez l'action prise ou les observations..."
+            placeholder={t('emergencyActionsPanel.decrivezLActionPriseOu')}
             rows={4}
             className="w-full"
           />

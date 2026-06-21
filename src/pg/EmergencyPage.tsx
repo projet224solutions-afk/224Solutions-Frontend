@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 ﻿/**
  * EMERGENCY PAGE - Page dédiée aux urgences
  * 224Solutions - Page complète de gestion des alertes
@@ -18,6 +19,7 @@ import { useActiveEmergencyAlerts, useEmergencyStats } from '@/hooks/useEmergenc
  * Page principale Emergency
  */
 export const EmergencyPage: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -37,7 +39,7 @@ export const EmergencyPage: React.FC = () => {
         <Card className="max-w-md">
           <CardContent className="py-12 text-center">
             <AlertTriangle className="h-16 w-16 text-[#ff4000] mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-2">Accès Refusé</h2>
+            <h2 className="text-2xl font-bold mb-2">{t('emergencyPage.accesRefuse')}</h2>
             <p className="text-muted-foreground mb-6">
               Seuls les administrateurs et les bureaux syndicats peuvent accéder au système d'urgence.
             </p>
@@ -90,7 +92,7 @@ export const EmergencyPage: React.FC = () => {
               )}
 
               <div className="text-right">
-                <p className="text-xs text-muted-foreground">Connecté en tant que</p>
+                <p className="text-xs text-muted-foreground">{t('emergencyPage.connecteEnTantQue')}</p>
                 <p className="text-sm font-medium">{(user as any)?.full_name || user?.email}</p>
               </div>
             </div>
@@ -139,7 +141,7 @@ export const EmergencyPage: React.FC = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Analyse des Urgences</CardTitle>
+                  <CardTitle>{t('emergencyPage.analyseDesUrgences')}</CardTitle>
                   <CardDescription>
                     Données des 30 derniers jours
                   </CardDescription>
@@ -151,7 +153,7 @@ export const EmergencyPage: React.FC = () => {
                       <span className="text-2xl font-bold">{stats?.total_alerts || 0}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Taux de résolution</span>
+                      <span className="text-sm text-muted-foreground">{t('emergencyPage.tauxDeResolution')}</span>
                       <span className="text-2xl font-bold text-[#ff4000]">
                         {stats?.total_alerts
                           ? Math.round(((stats.resolved_alerts || 0) / stats.total_alerts) * 100)
@@ -175,7 +177,7 @@ export const EmergencyPage: React.FC = () => {
           <TabsContent value="history">
             <Card>
               <CardHeader>
-                <CardTitle>Historique des Alertes</CardTitle>
+                <CardTitle>{t('emergencyPage.historiqueDesAlertes')}</CardTitle>
                 <CardDescription>
                   Toutes les alertes (actives, résolues, fausses alertes)
                 </CardDescription>
@@ -191,7 +193,7 @@ export const EmergencyPage: React.FC = () => {
           <TabsContent value="settings">
             <Card>
               <CardHeader>
-                <CardTitle>Paramètres d'urgence</CardTitle>
+                <CardTitle>{t('emergencyPage.parametresDUrgence')}</CardTitle>
                 <CardDescription>
                   Configuration du système d'alerte
                 </CardDescription>
@@ -202,15 +204,15 @@ export const EmergencyPage: React.FC = () => {
                   <div className="space-y-2">
                     <label className="flex items-center gap-2">
                       <input type="checkbox" defaultChecked />
-                      <span className="text-sm">Activer les notifications push</span>
+                      <span className="text-sm">{t('emergencyPage.activerLesNotificationsPush')}</span>
                     </label>
                     <label className="flex items-center gap-2">
                       <input type="checkbox" defaultChecked />
-                      <span className="text-sm">Activer le son d'urgence</span>
+                      <span className="text-sm">{t('emergencyPage.activerLeSonDUrgence')}</span>
                     </label>
                     <label className="flex items-center gap-2">
                       <input type="checkbox" defaultChecked />
-                      <span className="text-sm">Activer les notifications par email</span>
+                      <span className="text-sm">{t('emergencyPage.activerLesNotificationsParEmail')}</span>
                     </label>
                   </div>
                 </div>
@@ -220,11 +222,11 @@ export const EmergencyPage: React.FC = () => {
                   <div className="space-y-2">
                     <label className="flex items-center gap-2">
                       <input type="checkbox" defaultChecked />
-                      <span className="text-sm">Afficher la carte GPS automatiquement</span>
+                      <span className="text-sm">{t('emergencyPage.afficherLaCarteGpsAutomatiquement')}</span>
                     </label>
                     <label className="flex items-center gap-2">
                       <input type="checkbox" defaultChecked />
-                      <span className="text-sm">Rafraîchissement automatique (30 secondes)</span>
+                      <span className="text-sm">{t('emergencyPage.rafraichissementAutomatique30Secondes')}</span>
                     </label>
                   </div>
                 </div>
@@ -247,6 +249,7 @@ export const EmergencyPage: React.FC = () => {
  * Page de détail d'une alerte spécifique
  */
 export const EmergencyAlertDetailPage: React.FC = () => {
+  const { t } = useTranslation();
   const { alertId } = useParams<{ alertId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();

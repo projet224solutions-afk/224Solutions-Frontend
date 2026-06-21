@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * EMERGENCY ALERTS DASHBOARD - Bureau Syndicat
  * 224Solutions - Tableau de bord de gestion des alertes d'urgence
@@ -41,6 +42,7 @@ export const EmergencyAlertsDashboard: React.FC<EmergencyAlertsDashboardProps> =
   userId,
   userName
 }) => {
+  const { t } = useTranslation();
   const [activeAlerts, setActiveAlerts] = useState<EmergencyAlert[]>([]);
   const [selectedAlert, setSelectedAlert] = useState<EmergencyAlert | null>(null);
   const [stats, setStats] = useState<EmergencyStats | null>(null);
@@ -69,7 +71,7 @@ export const EmergencyAlertsDashboard: React.FC<EmergencyAlertsDashboardProps> =
       }
     } catch (error) {
       console.error('❌ Erreur chargement alertes:', error);
-      toast.error('Impossible de charger les alertes');
+      toast.error(t('emergencyAlertsDashboard.impossibleDeChargerLesAlertes'));
     }
   }, [bureauId, selectedAlert]);
 
@@ -128,7 +130,7 @@ export const EmergencyAlertsDashboard: React.FC<EmergencyAlertsDashboardProps> =
       });
 
       // Notification visuelle
-      toast.error('🚨 NOUVELLE URGENCE TAXI-MOTO!', {
+      toast.error(t('emergencyAlertsDashboard.nouvelleUrgenceTaxiMoto'), {
         description: `${newAlert.driver_name || 'Conducteur'} (${newAlert.driver_code || 'N/A'}) signale une urgence`,
         duration: 10000,
         action: {
@@ -166,7 +168,7 @@ export const EmergencyAlertsDashboard: React.FC<EmergencyAlertsDashboardProps> =
       loadActiveAlerts();
     } catch (error) {
       console.error('❌ Erreur:', error);
-      toast.error('Erreur lors de la prise en charge');
+      toast.error(t('emergencyAlertsDashboard.erreurLorsDeLaPrise'));
     }
   };
 
@@ -181,24 +183,24 @@ export const EmergencyAlertsDashboard: React.FC<EmergencyAlertsDashboardProps> =
         notes: notes || 'Situation résolue'
       });
 
-      toast.success('✅ Alerte résolue avec succès');
+      toast.success(t('emergencyAlertsDashboard.alerteResolueAvecSucces'));
       setSelectedAlert(null);
       loadActiveAlerts();
     } catch (error) {
       console.error('❌ Erreur:', error);
-      toast.error('Erreur lors de la résolution');
+      toast.error(t('emergencyAlertsDashboard.erreurLorsDeLaResolution'));
     }
   };
 
   const handleMarkAsFalseAlert = async (alert: EmergencyAlert) => {
     try {
       await emergencyService.markAsFalseAlert(alert.id, userId, 'Marqué comme fausse alerte');
-      toast.success('Marqué comme fausse alerte');
+      toast.success(t('emergencyAlertsDashboard.marqueCommeFausseAlerte'));
       setSelectedAlert(null);
       loadActiveAlerts();
     } catch (error) {
       console.error('❌ Erreur:', error);
-      toast.error('Erreur lors du marquage');
+      toast.error(t('emergencyAlertsDashboard.erreurLorsDuMarquage'));
     }
   };
 
@@ -272,7 +274,7 @@ export const EmergencyAlertsDashboard: React.FC<EmergencyAlertsDashboardProps> =
         <Card>
           <CardContent className="py-12 text-center">
             <CheckCircle className="h-16 w-16 text-[#ff4000] mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Aucune Alerte Active</h3>
+            <h3 className="text-xl font-semibold mb-2">{t('emergencyAlertsDashboard.aucuneAlerteActive')}</h3>
             <p className="text-muted-foreground">
               Tous les conducteurs sont en sécurité. Le système surveille en temps réel.
             </p>
@@ -346,7 +348,7 @@ export const EmergencyAlertsDashboard: React.FC<EmergencyAlertsDashboardProps> =
                           <p className="text-lg font-semibold">{selectedAlert.driver_code || 'N/A'}</p>
                         </div>
                         <div>
-                          <label className="text-sm font-medium text-muted-foreground">Téléphone</label>
+                          <label className="text-sm font-medium text-muted-foreground">{t('emergencyAlertsDashboard.telephone')}</label>
                           <p className="text-lg font-semibold">{selectedAlert.driver_phone || 'N/A'}</p>
                         </div>
                         <div>
@@ -365,7 +367,7 @@ export const EmergencyAlertsDashboard: React.FC<EmergencyAlertsDashboardProps> =
                       </div>
 
                       <div className="border-t pt-4">
-                        <label className="text-sm font-medium text-muted-foreground">Temps écoulé</label>
+                        <label className="text-sm font-medium text-muted-foreground">{t('emergencyAlertsDashboard.tempsEcoule')}</label>
                         <p className="text-xl font-semibold text-[#ff4000]">
                           {Math.floor((selectedAlert.seconds_since_alert || 0) / 60)} min {Math.floor((selectedAlert.seconds_since_alert || 0) % 60)} sec
                         </p>
@@ -387,7 +389,7 @@ export const EmergencyAlertsDashboard: React.FC<EmergencyAlertsDashboardProps> =
               <Card>
                 <CardContent className="py-12 text-center">
                   <MapPin className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">Sélectionnez une alerte pour voir les détails</p>
+                  <p className="text-muted-foreground">{t('emergencyAlertsDashboard.selectionnezUneAlertePourVoir')}</p>
                 </CardContent>
               </Card>
             )}

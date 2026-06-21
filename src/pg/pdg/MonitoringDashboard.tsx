@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 ﻿/**
  * MONITORING DASHBOARD - Production-grade realtime monitoring
  * 224Solutions - PDG/Admin SOC-level dashboard
@@ -49,6 +50,7 @@ const serviceIcons: Record<string, React.ReactNode> = {
 };
 
 export default function MonitoringDashboard() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { alerts, services, stats, loading, lastRefresh, acknowledgeAlert, resolveAlert, forceHealthCheck, refreshData } = useMonitoringRealtime();
   const [searchQuery, setSearchQuery] = useState('');
@@ -66,18 +68,18 @@ export default function MonitoringDashboard() {
 
   const handleAcknowledge = async (id: string) => {
     const ok = await acknowledgeAlert(id);
-    if (ok) toast.success('Alerte acquittée');
+    if (ok) toast.success(t('monitoringDashboard.alerteAcquittee'));
   };
 
   const handleResolve = async (id: string) => {
     const ok = await resolveAlert(id);
-    if (ok) toast.success('Alerte résolue');
+    if (ok) toast.success(t('monitoringDashboard.alerteResolue'));
   };
 
   const handleForceCheck = async () => {
     toast.info('Health check en cours...');
     await forceHealthCheck();
-    toast.success('Health check terminé');
+    toast.success(t('monitoringDashboard.healthCheckTermine'));
   };
 
   const overallBg = stats.overallStatus === 'healthy' ? 'bg-[#ff4000]/10 border-[#ff4000]/30'
@@ -143,13 +145,13 @@ export default function MonitoringDashboard() {
         </Card>
         <Card>
           <CardContent className="pt-4 pb-3 px-4">
-            <div className="text-xs text-muted-foreground">Services sains</div>
+            <div className="text-xs text-muted-foreground">{t('monitoringDashboard.servicesSains')}</div>
             <div className="text-2xl font-bold text-[#ff4000]">{stats.healthyServices}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-4 pb-3 px-4">
-            <div className="text-xs text-muted-foreground">Services dégradés</div>
+            <div className="text-xs text-muted-foreground">{t('monitoringDashboard.servicesDegrades')}</div>
             <div className="text-2xl font-bold text-[#ff4000]">{stats.degradedServices + stats.criticalServices}</div>
           </CardContent>
         </Card>
@@ -194,7 +196,7 @@ export default function MonitoringDashboard() {
               <div className="relative">
                 <Search className="absolute left-2 top-2.5 h-3 w-3 text-muted-foreground" />
                 <Input
-                  placeholder="Rechercher..."
+                  placeholder={t('monitoringDashboard.rechercher')}
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   className="pl-7 h-8 w-48 text-sm"
@@ -205,7 +207,7 @@ export default function MonitoringDashboard() {
                 onChange={e => setSeverityFilter(e.target.value)}
                 className="h-8 text-xs border rounded px-2 bg-background"
               >
-                <option value="all">Toutes</option>
+                <option value="all">{t('monitoringDashboard.toutes')}</option>
                 <option value="critical">Critique</option>
                 <option value="high">Haute</option>
                 <option value="medium">Moyenne</option>
@@ -251,8 +253,9 @@ function AlertList({ alerts, onAcknowledge, onResolve, showActions, showResolve 
   showActions?: boolean;
   showResolve?: boolean;
 }) {
+  const { t } = useTranslation();
   if (alerts.length === 0) {
-    return <p className="text-sm text-muted-foreground text-center py-8">Aucune alerte</p>;
+    return <p className="text-sm text-muted-foreground text-center py-8">{t('monitoringDashboard.aucuneAlerte')}</p>;
   }
 
   return (

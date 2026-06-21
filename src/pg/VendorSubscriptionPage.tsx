@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 ﻿import { ArrowLeft, Store, Calendar, CreditCard, Wallet, CalendarDays, CheckCircle2, XCircle, Loader2, Crown, Sparkles, Package, ImageIcon, BarChart3, Headphones, Star, Palette, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,6 +49,7 @@ function getActivePlan(plans: Plan[], subscription: any, hasAccess: boolean, isE
 
 // Feature row component
 function FeatureRow({ label, icon: Icon, enabled }: { label: string; icon: any; enabled: boolean }) {
+  const { t } = useTranslation();
   return (
     <div className="flex items-center gap-2 text-sm">
       <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -311,6 +313,7 @@ const DIGITAL_MODULE_BADGES = [
 ];
 
 export default function VendorSubscriptionPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const { businessType, vendorId, userId: currentVendorUserId } = useCurrentVendor();
@@ -439,7 +442,7 @@ export default function VendorSubscriptionPage() {
     try {
       setProcessing(true);
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { toast.error('Vous devez être connecté'); return; }
+      if (!user) { toast.error(t('vendorSubscriptionPage.vousDevezEtreConnecte')); return; }
 
       const price = calculatePrice(selectedPlan, billingCycle);
 
@@ -523,7 +526,7 @@ export default function VendorSubscriptionPage() {
                   <CheckCircle2 className="h-3 w-3 mr-1" /> Actif
                 </Badge>
               ) : isExpired ? (
-                <Badge variant="outline" className="bg-orange-50 text-[#ff4000] border-orange-200">Expiré</Badge>
+                <Badge variant="outline" className="bg-orange-50 text-[#ff4000] border-orange-200">{t('vendorSubscriptionPage.expire')}</Badge>
               ) : (
                 <Badge variant="outline" className="bg-muted text-muted-foreground">Gratuit</Badge>
               )}
@@ -558,7 +561,7 @@ export default function VendorSubscriptionPage() {
             {isDigitalSubscription && (
               <div className="rounded-xl border border-blue-200 bg-blue-50/80 p-4 space-y-3">
                 <div>
-                  <h3 className="font-semibold text-sm text-[#04439e]">Modules couverts par votre abonnement digital</h3>
+                  <h3 className="font-semibold text-sm text-[#04439e]">{t('vendorSubscriptionPage.modulesCouvertsParVotreAbonnement')}</h3>
                   <p className="text-xs text-[#04439e]/80">
                     Votre plan pilote surtout la capacite de publication, la visibilite et l'accompagnement de vos ventes numeriques.
                   </p>
@@ -836,7 +839,7 @@ export default function VendorSubscriptionPage() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Confirmer votre abonnement</DialogTitle>
+            <DialogTitle>{t('vendorSubscriptionPage.confirmerVotreAbonnement')}</DialogTitle>
             <DialogDescription>
               Plan: <strong>{selectedPlan?.display_name}</strong>
             </DialogDescription>
@@ -844,7 +847,7 @@ export default function VendorSubscriptionPage() {
 
           <div className="py-4 space-y-4">
             <div className="space-y-2">
-              <p className="text-sm font-medium">Cycle de facturation :</p>
+              <p className="text-sm font-medium">{t('vendorSubscriptionPage.cycleDeFacturation')}</p>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => setBillingCycle('monthly')}
@@ -889,7 +892,7 @@ export default function VendorSubscriptionPage() {
 
             <div className="bg-muted/50 rounded-lg p-4 space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Montant</span>
+                <span className="text-sm text-muted-foreground">{t('vendorSubscriptionPage.montant')}</span>
                 <span className="font-bold text-lg">{fmt(currentPrice)}</span>
               </div>
               <div className="flex justify-between items-center">
@@ -901,14 +904,14 @@ export default function VendorSubscriptionPage() {
             <div className="bg-muted/30 rounded-lg p-3 space-y-1">
               <div className="flex items-center gap-2 text-sm">
                 <Wallet className="w-4 h-4 text-primary" />
-                <span className="font-medium">Paiement par Wallet</span>
+                <span className="font-medium">{t('vendorSubscriptionPage.paiementParWallet')}</span>
               </div>
-              <p className="text-xs text-muted-foreground">Le montant sera débité de votre wallet</p>
+              <p className="text-xs text-muted-foreground">{t('vendorSubscriptionPage.leMontantSeraDebiteDe')}</p>
             </div>
           </div>
 
           <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>{t('vendorSubscriptionPage.annuler')}</Button>
             <Button onClick={handleSubscribe} disabled={processing}>
               <CreditCard className="w-4 h-4 mr-2" />
               {processing ? 'Traitement...' : 'Confirmer'}

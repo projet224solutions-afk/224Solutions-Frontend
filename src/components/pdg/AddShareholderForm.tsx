@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 // ============================================================================
 // Formulaire d'ajout d'actionnaire (PDG)
 // ============================================================================
@@ -56,6 +57,7 @@ function PercentageAvailability({
   requested: number;
   excludeId?: string;
 }) {
+  const { t } = useTranslation();
   const [info, setInfo] = useState<{
     valid: boolean;
     current: number;
@@ -131,6 +133,7 @@ function Field({
   children: React.ReactNode;
   required?: boolean;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="space-y-1">
       <Label className="text-sm font-medium">
@@ -165,6 +168,7 @@ export default function AddShareholderForm({
   editMode = false,
   initialData,
 }: AddShareholderFormProps) {
+  const { t } = useTranslation();
   const [fullName, setFullName]               = useState(initialData?.full_name          ?? '');
   const [email, setEmail]                     = useState(initialData?.email               ?? '');
   const [phone, setPhone]                     = useState(initialData?.phone               ?? '');
@@ -240,7 +244,7 @@ export default function AddShareholderForm({
               className={cn(errors.fullName && 'border-[#ff4000]')}
             />
           </Field>
-          <Field label="Téléphone" error={errors.phone}>
+          <Field label={t('addShareholderForm.telephone')} error={errors.phone}>
             <Input
               value={phone}
               onChange={e => setPhone(e.target.value)}
@@ -257,10 +261,10 @@ export default function AddShareholderForm({
             className={cn(errors.email && 'border-[#ff4000]')}
           />
         </Field>
-        <Field label="Pays de résidence" error={errors.residenceCountry}>
+        <Field label={t('addShareholderForm.paysDeResidence')} error={errors.residenceCountry}>
           <Select value={residenceCountry} onValueChange={setResidenceCountry}>
             <SelectTrigger>
-              <SelectValue placeholder="Pays de l'actionnaire (optionnel)…" />
+              <SelectValue placeholder={t('addShareholderForm.paysDeLActionnaireOptionnel')} />
             </SelectTrigger>
             <SelectContent>
               {COUNTRIES.map(c => (
@@ -273,13 +277,13 @@ export default function AddShareholderForm({
           </p>
         </Field>
         {!editMode && (
-          <Field label="Mot de passe temporaire" error={errors.tempPwd} required>
+          <Field label={t('addShareholderForm.motDePasseTemporaire')} error={errors.tempPwd} required>
             <div className="relative">
               <Input
                 type={showPwd ? 'text' : 'password'}
                 value={tempPwd}
                 onChange={e => setTempPwd(e.target.value)}
-                placeholder="Mot de passe provisoire"
+                placeholder={t('addShareholderForm.motDePasseProvisoire')}
                 className={cn('pr-9', errors.tempPwd && 'border-[#ff4000]')}
               />
               <button
@@ -303,7 +307,7 @@ export default function AddShareholderForm({
           Assignation
         </p>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Catégorie" error={errors.category} required>
+          <Field label={t('addShareholderForm.categorie')} error={errors.category} required>
             <Select
               value={category}
               onValueChange={v => setCategory(v as ShareholderCategory)}
@@ -320,7 +324,7 @@ export default function AddShareholderForm({
               </SelectContent>
             </Select>
           </Field>
-          <Field label="Portée" error={errors.scope} required>
+          <Field label={t('addShareholderForm.portee')} error={errors.scope} required>
             <Select
               value={scope}
               onValueChange={v => setScope(v as ActionScope)}
@@ -343,7 +347,7 @@ export default function AddShareholderForm({
           <Field label="Pays" error={errors.country} required>
             <Select value={country} onValueChange={setCountry}>
               <SelectTrigger className={cn(errors.country && 'border-[#ff4000]')}>
-                <SelectValue placeholder="Sélectionner le pays…" />
+                <SelectValue placeholder={t('addShareholderForm.selectionnerLePays')} />
               </SelectTrigger>
               <SelectContent>
                 {COUNTRIES.map(c => (
@@ -400,7 +404,7 @@ export default function AddShareholderForm({
         </Button>
         <Button type="submit" className="flex-1" disabled={loading}>
           {loading
-            ? <><RefreshCw className="w-4 h-4 animate-spin mr-2" />Création…</>
+            ? <><RefreshCw className="w-4 h-4 animate-spin mr-2" />{t('addShareholderForm.creation')}</>
             : editMode ? 'Enregistrer les modifications' : 'Créer l\'actionnaire'
           }
         </Button>

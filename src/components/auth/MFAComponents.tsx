@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * MFA SETUP COMPONENTS - 224SOLUTIONS
  * Composants UI pour la configuration et vérification MFA
@@ -22,6 +23,7 @@ import { toast } from 'sonner';
  * Bannière obligatoire de configuration MFA
  */
 export function MFARequiredBanner() {
+  const { t } = useTranslation();
   const { requiresSetup, gracePeriodEnds } = useMFA();
   const [showSetup, setShowSetup] = useState(false);
 
@@ -80,6 +82,7 @@ export function MFASetupDialog({
   onOpenChange: (open: boolean) => void;
   required?: boolean;
 }) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<MFAMethod>('totp');
   const [totpSetup, setTotpSetup] = useState<{
     qr_code?: string;
@@ -226,7 +229,7 @@ export function MFASetupDialog({
 
                 {/* Code de vérification */}
                 <div className="space-y-2">
-                  <Label>Entrez le code de l'application</Label>
+                  <Label>{t('mFAComponents.entrezLeCodeDeL')}</Label>
                   <div className="flex gap-2">
                     <Input
                       value={verificationCode}
@@ -254,7 +257,7 @@ export function MFASetupDialog({
             {!currentFactorId ? (
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label>Numéro de téléphone</Label>
+                  <Label>{t('mFAComponents.numeroDeTelephone')}</Label>
                   <Input
                     type="tel"
                     value={phoneNumber}
@@ -279,7 +282,7 @@ export function MFASetupDialog({
                 isVerifying={isVerifying}
                 code={verificationCode}
                 setCode={setVerificationCode}
-                label="Code reçu par SMS"
+                label={t('mFAComponents.codeRecuParSms')}
               />
             )}
           </TabsContent>
@@ -294,7 +297,7 @@ export function MFASetupDialog({
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="votre@email.com"
+                    placeholder={t('mFAComponents.votreEmailCom')}
                   />
                 </div>
                 <Button
@@ -311,7 +314,7 @@ export function MFASetupDialog({
                 isVerifying={isVerifying}
                 code={verificationCode}
                 setCode={setVerificationCode}
-                label="Code reçu par email"
+                label={t('mFAComponents.codeRecuParEmail')}
               />
             )}
           </TabsContent>
@@ -343,6 +346,7 @@ export function MFAChallengeDialog({
   onSuccess: () => void;
   factors: MFAFactor[];
 }) {
+  const { t } = useTranslation();
   const [selectedFactor, setSelectedFactor] = useState<MFAFactor | null>(
     factors.find(f => f.is_primary) || factors[0] || null
   );
@@ -442,12 +446,13 @@ export function MFAChallengeDialog({
  * Affichage des codes de backup
  */
 function BackupCodesDisplay({ codes }: { codes: string[] }) {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(codes.join('\n'));
     setCopied(true);
-    toast.success('Codes copiés');
+    toast.success(t('mFAComponents.codesCopies'));
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -499,6 +504,7 @@ function VerificationCodeInput({
   label: string;
   length?: number;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -539,6 +545,7 @@ function VerificationCodeInput({
  * Page de gestion MFA (paramètres)
  */
 export function MFASettingsPanel() {
+  const { t } = useTranslation();
   const {
     status,
     factors,
@@ -552,11 +559,11 @@ export function MFASettingsPanel() {
 
   const handleRemoveFactor = async (factorId: string) => {
     if (factors.length === 1) {
-      toast.error('Vous devez garder au moins une méthode d\'authentification');
+      toast.error(t('mFAComponents.vousDevezGarderAuMoins'));
       return;
     }
 
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette méthode d\'authentification?')) {
+    if (confirm(t('mFAComponents.etesVousSurDeVouloir'))) {
       await removeFactor(factorId);
     }
   };
@@ -646,7 +653,7 @@ export function MFASettingsPanel() {
           ) : (
             <div className="text-center py-6 text-muted-foreground">
               <Shield className="h-12 w-12 mx-auto mb-3 opacity-50" />
-              <p>Aucune méthode d'authentification configurée</p>
+              <p>{t('mFAComponents.aucuneMethodeDAuthentificationConfiguree')}</p>
             </div>
           )}
 
@@ -666,11 +673,11 @@ export function MFASettingsPanel() {
         <Dialog open onOpenChange={() => setShowBackupCodes(null)}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Nouveaux codes de récupération</DialogTitle>
+              <DialogTitle>{t('mFAComponents.nouveauxCodesDeRecuperation')}</DialogTitle>
             </DialogHeader>
             <BackupCodesDisplay codes={showBackupCodes} />
             <DialogFooter>
-              <Button onClick={() => setShowBackupCodes(null)}>J'ai noté les codes</Button>
+              <Button onClick={() => setShowBackupCodes(null)}>{t('mFAComponents.jAiNoteLesCodes')}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

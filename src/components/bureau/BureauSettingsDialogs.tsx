@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * Dialogs pour modification email et mot de passe bureau
  */
@@ -19,6 +20,7 @@ interface ChangePasswordDialogProps {
 }
 
 export function ChangePasswordDialog({ open, onOpenChange, bureauId, onSuccess }: ChangePasswordDialogProps) {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -33,12 +35,12 @@ export function ChangePasswordDialog({ open, onOpenChange, bureauId, onSuccess }
     e.preventDefault();
 
     if (formData.new_password !== formData.confirm_password) {
-      toast.error('Les mots de passe ne correspondent pas');
+      toast.error(t('bureauSettingsDialogs.lesMotsDePasseNe'));
       return;
     }
 
     if (formData.new_password.length < 8) {
-      toast.error('Le nouveau mot de passe doit contenir au moins 8 caractères');
+      toast.error(t('bureauSettingsDialogs.leNouveauMotDePasse'));
       return;
     }
 
@@ -55,7 +57,7 @@ export function ChangePasswordDialog({ open, onOpenChange, bureauId, onSuccess }
       if (error) throw error;
 
       if (data.success) {
-        toast.success('Mot de passe modifié avec succès');
+        toast.success(t('bureauSettingsDialogs.motDePasseModifieAvec'));
         setFormData({ current_password: '', new_password: '', confirm_password: '' });
         onOpenChange(false);
         onSuccess?.();
@@ -81,7 +83,7 @@ export function ChangePasswordDialog({ open, onOpenChange, bureauId, onSuccess }
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="current_password">Mot de passe actuel *</Label>
+            <Label htmlFor="current_password">{t('bureauSettingsDialogs.motDePasseActuel')}</Label>
             <div className="relative">
               <Input
                 id="current_password"
@@ -102,7 +104,7 @@ export function ChangePasswordDialog({ open, onOpenChange, bureauId, onSuccess }
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="new_password">Nouveau mot de passe * (min. 8 caractères)</Label>
+            <Label htmlFor="new_password">{t('bureauSettingsDialogs.nouveauMotDePasseMin')}</Label>
             <div className="relative">
               <Input
                 id="new_password"
@@ -124,7 +126,7 @@ export function ChangePasswordDialog({ open, onOpenChange, bureauId, onSuccess }
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="confirm_password">Confirmer le nouveau mot de passe *</Label>
+            <Label htmlFor="confirm_password">{t('bureauSettingsDialogs.confirmerLeNouveauMotDe')}</Label>
             <div className="relative">
               <Input
                 id="confirm_password"
@@ -179,6 +181,7 @@ interface ChangeEmailDialogProps {
 }
 
 export function ChangeEmailDialog({ open, onOpenChange, bureauId, currentEmail, onSuccess }: ChangeEmailDialogProps) {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [newEmail, setNewEmail] = useState('');
 
@@ -186,7 +189,7 @@ export function ChangeEmailDialog({ open, onOpenChange, bureauId, currentEmail, 
     e.preventDefault();
 
     if (!newEmail.trim()) {
-      toast.error('Veuillez entrer un email');
+      toast.error(t('bureauSettingsDialogs.veuillezEntrerUnEmail'));
       return;
     }
 
@@ -197,7 +200,7 @@ export function ChangeEmailDialog({ open, onOpenChange, bureauId, currentEmail, 
     }
 
     if (newEmail.toLowerCase() === currentEmail.toLowerCase()) {
-      toast.error('Le nouvel email doit être différent de l\'actuel');
+      toast.error(t('bureauSettingsDialogs.leNouvelEmailDoitEtre'));
       return;
     }
 
@@ -213,7 +216,7 @@ export function ChangeEmailDialog({ open, onOpenChange, bureauId, currentEmail, 
       if (error) throw error;
 
       if (data.success) {
-        toast.success('Email modifié avec succès');
+        toast.success(t('bureauSettingsDialogs.emailModifieAvecSucces'));
         setNewEmail('');
         onOpenChange(false);
         onSuccess?.();
@@ -251,7 +254,7 @@ export function ChangeEmailDialog({ open, onOpenChange, bureauId, currentEmail, 
               required
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
-              placeholder="nouveau@email.com"
+              placeholder={t('bureauSettingsDialogs.nouveauEmailCom')}
             />
           </div>
 
