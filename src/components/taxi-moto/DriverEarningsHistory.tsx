@@ -89,7 +89,7 @@ export function DriverEarningsHistory({ rides, todayEarnings, todayRides }: Driv
     <div className="space-y-4">
   {/* Statistiques par période */}
   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-        <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+        <Card className="bg-white border-0 shadow-lg">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-[#ff4000]">
               {todayEarnings.toLocaleString()}
@@ -101,7 +101,7 @@ export function DriverEarningsHistory({ rides, todayEarnings, todayRides }: Driv
           </CardContent>
         </Card>
 
-        <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+        <Card className="bg-white border-0 shadow-lg">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-blue-600">
               {Math.round(stats.week.earnings).toLocaleString()}
@@ -113,7 +113,7 @@ export function DriverEarningsHistory({ rides, todayEarnings, todayRides }: Driv
           </CardContent>
         </Card>
 
-        <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+        <Card className="bg-white border-0 shadow-lg">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-[#04439e]">
               {Math.round(stats.month.earnings).toLocaleString()}
@@ -127,7 +127,7 @@ export function DriverEarningsHistory({ rides, todayEarnings, todayRides }: Driv
       </div>
 
       {/* Graphique simple des 7 derniers jours */}
-      <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+      <Card className="bg-white border-0 shadow-lg">
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
             <TrendingUp className="w-4 h-4" />
@@ -157,7 +157,7 @@ export function DriverEarningsHistory({ rides, todayEarnings, todayRides }: Driv
       </Card>
 
       {/* Liste des courses */}
-      <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+      <Card className="bg-white border-0 shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center justify-between text-base">
             <span>{t('driverEarningsHistory.historiqueDesCourses')}</span>

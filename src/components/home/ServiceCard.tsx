@@ -28,7 +28,7 @@ export function HomeServiceCard({
   title,
   subtitle,
   count,
-  gradient = 'from-primary/10',
+  gradient = 'bg-primary/10',
   iconBg = 'bg-primary/10',
   trending = false,
   onClick,
@@ -101,7 +101,6 @@ export function HomeServiceCard({
       {/* Ambient glow effect */}
       <div className={cn(
         'absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-0 blur-3xl',
-        'bg-gradient-to-br',
         gradient,
         'group-hover:opacity-60 transition-opacity duration-700'
       )} />
@@ -162,7 +161,7 @@ export function HomeServiceCard({
       {/* Bottom gradient line */}
       <div className={cn(
         'absolute bottom-0 left-0 right-0 h-0.5',
-        'bg-gradient-to-r opacity-0 group-hover:opacity-100',
+        'opacity-0 group-hover:opacity-100',
         gradient,
         'transition-opacity duration-500'
       )} />

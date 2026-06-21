@@ -376,7 +376,7 @@ export function DriverDashboard({
 
       {/* Course active */}
       {activeRide && (
-        <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+        <Card className="bg-white border-0 shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Car className="w-5 h-5 text-blue-600" />
@@ -440,7 +440,7 @@ export function DriverDashboard({
       )}
 
       {/* État du système - Connexion temps réel */}
-      <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+      <Card className="bg-white border-0 shadow-lg">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Car className="w-5 h-5 text-blue-600" />
@@ -481,7 +481,7 @@ export function DriverDashboard({
       </Card>
 
       {/* État du système - Connexion temps réel */}
-      <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+      <Card className="bg-white border-0 shadow-lg">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-[#ff4000] animate-pulse' : 'bg-gray-400'}`}></div>

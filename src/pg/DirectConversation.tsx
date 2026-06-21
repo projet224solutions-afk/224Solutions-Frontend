@@ -380,7 +380,7 @@ export default function DirectConversation() {
   return (
     <div className="fixed inset-0 bg-background flex flex-col z-[200]">
       {/* --- Header --- */}
-      <div className="flex items-center gap-3 p-4 border-b border-border bg-card/95 backdrop-blur-sm shadow-sm">
+      <div className="flex items-center gap-3 p-4 border-b border-border bg-card shadow-sm">
         <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="h-10 w-10 rounded-full hover:bg-muted">
           <ArrowLeft className="w-5 h-5" />
         </Button>
@@ -522,7 +522,7 @@ export default function DirectConversation() {
       </ScrollArea>
 
       {/* --- Input bar --- */}
-      <div className="p-3 border-t border-border bg-card/95 backdrop-blur-sm shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+      <div className="p-3 border-t border-border bg-card shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
         <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex items-center gap-2">
           <Button type="button" variant="ghost" size="icon" className="h-11 w-11 flex-shrink-0 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
             <Paperclip className="w-5 h-5" />

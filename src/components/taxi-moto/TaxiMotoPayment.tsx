@@ -239,7 +239,7 @@ export default function TaxiMotoPayment({
         return (
             <div className="space-y-4">
                 {/* Résumé du paiement */}
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-white border-0 shadow-lg">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <Receipt className="w-5 h-5 text-[#ff4000]" />
@@ -266,7 +266,7 @@ export default function TaxiMotoPayment({
                 </Card>
 
                 {/* Méthodes de paiement */}
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-white border-0 shadow-lg">
                     <CardHeader>
                         <CardTitle>{t('taxiMotoPayment.choisissezVotreMethodeDePaiement')}</CardTitle>
                     </CardHeader>
@@ -347,7 +347,7 @@ export default function TaxiMotoPayment({
 
         return (
             <div className="space-y-4">
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-white border-0 shadow-lg">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <method.icon className="w-5 h-5 text-blue-600" />
@@ -471,7 +471,7 @@ export default function TaxiMotoPayment({
                 </Card>
 
                 {/* Résumé final */}
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-white border-0 shadow-lg">
                     <CardContent className="p-4">
                         <div className="flex justify-between items-center">
                             <span className="font-semibold">{t('taxiMotoPayment.totalAPayer')}</span>
@@ -507,7 +507,7 @@ export default function TaxiMotoPayment({
     // Étape de traitement
     if (paymentStep === 'processing') {
         return (
-            <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-white border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                     <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
                     <h3 className="text-xl font-semibold mb-2">{t('taxiMotoPayment.traitementDuPaiement')}</h3>
@@ -526,7 +526,7 @@ export default function TaxiMotoPayment({
     // Étape de succès
     if (paymentStep === 'success') {
         return (
-            <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-white border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                     <CheckCircle className="w-16 h-16 mx-auto mb-4 text-[#ff4000]" />
                     <h3 className="text-xl font-semibold text-[#ff4000] mb-2">
@@ -552,7 +552,7 @@ export default function TaxiMotoPayment({
     // Étape d'erreur
     if (paymentStep === 'error') {
         return (
-            <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-white border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                     <AlertTriangle className="w-16 h-16 mx-auto mb-4 text-[#ff4000]" />
                     <h3 className="text-xl font-semibold text-[#ff4000] mb-2">

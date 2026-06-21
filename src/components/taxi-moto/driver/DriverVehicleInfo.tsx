@@ -50,7 +50,7 @@ export function DriverVehicleInfo({
       className
     )}>
       {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-blue-500/5/5" />
+      <div className="absolute inset-0 bg-[#04439e]/5" />
 
       <div className="relative">
         {/* Header compact */}

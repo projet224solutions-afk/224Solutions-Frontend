@@ -438,7 +438,7 @@ export function GoogleMapsNavigation({
           {/* Coordonnées GPS */}
           {currentLocation && (
             <div className="absolute bottom-3 left-3 z-10 pointer-events-none">
-              <div className="bg-white/90 backdrop-blur-sm rounded-md px-2.5 py-1.5 shadow border border-gray-100">
+              <div className="bg-white rounded-md px-2.5 py-1.5 shadow border border-gray-100">
                 <p className="text-[11px] font-mono text-gray-500 leading-tight">
                   {currentLocation.latitude.toFixed(5)}, {currentLocation.longitude.toFixed(5)}
                 </p>

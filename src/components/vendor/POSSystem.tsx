@@ -1841,7 +1841,7 @@ export function POSSystem() {
 
           <div className="flex items-center gap-2 md:gap-4">
             {/* Horloge - Desktop only */}
-            <div className="hidden md:flex bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl p-4 shadow-md">
+            <div className="hidden md:flex bg-card border border-border/50 rounded-xl p-4 shadow-md">
               <div className="flex items-center gap-2 text-sm">
                 <Clock className="h-4 w-4 text-primary" />
                 <div>
@@ -2030,7 +2030,7 @@ export function POSSystem() {
 
       {/* Mobile: Tabs pour basculer entre Produits et Panier */}
       {isMobile && (
-        <div className="bg-card/95 backdrop-blur-sm border-b border-border/50 px-3 py-1.5 sticky top-0 z-30">
+        <div className="bg-card border-b border-border/50 px-3 py-1.5 sticky top-0 z-30">
           <div className="flex gap-2">
             <Button
               variant={mobileTab === 'products' ? 'default' : 'outline'}

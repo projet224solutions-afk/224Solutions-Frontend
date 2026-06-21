@@ -108,7 +108,7 @@ export function GPSPermissionHelper({ onLocationGranted, currentError }: GPSPerm
 
   if (permissionState === 'checking') {
     return (
-      <Card className="bg-white/95 backdrop-blur-sm">
+      <Card className="bg-white">
         <CardContent className="pt-8 pb-8 text-center">
           <Loader2 className="w-12 h-12 mx-auto mb-4 text-blue-500 animate-spin" />
           <p className="text-gray-600">{t('gPSPermissionHelper.verificationDuGps')}</p>
@@ -119,7 +119,7 @@ export function GPSPermissionHelper({ onLocationGranted, currentError }: GPSPerm
 
   if (permissionState === 'unavailable') {
     return (
-      <Card className="bg-white/95 backdrop-blur-sm border-orange-200">
+      <Card className="bg-white border-orange-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-[#ff4000]">
             <AlertTriangle className="w-5 h-5" />
@@ -147,7 +147,7 @@ export function GPSPermissionHelper({ onLocationGranted, currentError }: GPSPerm
 
   if (permissionState === 'denied') {
     return (
-      <Card className="bg-white/95 backdrop-blur-sm border-orange-200">
+      <Card className="bg-white border-orange-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-orange-600">
             <AlertTriangle className="w-5 h-5" />
@@ -210,7 +210,7 @@ export function GPSPermissionHelper({ onLocationGranted, currentError }: GPSPerm
   }
 
   return (
-    <Card className="bg-white/95 backdrop-blur-sm">
+    <Card className="bg-white">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <MapPin className="w-5 h-5 text-blue-600" />

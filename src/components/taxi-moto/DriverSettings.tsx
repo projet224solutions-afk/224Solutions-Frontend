@@ -235,7 +235,7 @@ export function DriverSettings({ driverId }: DriverSettingsProps) {
   return (
     <div className="space-y-4 pb-24">
       {/* Profil du chauffeur */}
-      <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
+      <Card className="bg-white shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <User className="w-5 h-5 text-blue-600" />
@@ -429,7 +429,7 @@ export function DriverSettings({ driverId }: DriverSettingsProps) {
       </Card>
 
       {/* Paramètres de service */}
-      <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
+      <Card className="bg-white shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <SettingsIcon className="w-5 h-5 text-blue-600" />
@@ -569,7 +569,7 @@ export function DriverSettings({ driverId }: DriverSettingsProps) {
       </Card>
 
       {/* Déconnexion */}
-      <Card className="bg-white/90 backdrop-blur-sm shadow-lg">
+      <Card className="bg-white shadow-lg">
         <CardContent className="pt-6">
           <Button
             onClick={handleLogout}

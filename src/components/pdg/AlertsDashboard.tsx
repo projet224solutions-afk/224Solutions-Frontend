@@ -330,7 +330,7 @@ export default function AlertsDashboard() {
                 </div>
               ) : (
                 alerts.map((alert) => (
-                  <Card key={alert.id} className="bg-card/50 backdrop-blur">
+                  <Card key={alert.id} className="bg-card">
                     <CardContent className="pt-6">
                       <div className="space-y-3">
                         {/* Header */}

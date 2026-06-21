@@ -308,7 +308,7 @@ export default function TaxiMotoTracking({
 
     if (!currentRide) {
         return (
-            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-card border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                     <MapPin className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                     <h3 className="text-lg font-semibold text-foreground mb-2">{t('taxiMotoTracking.aucuneCourseActive')}</h3>
@@ -340,7 +340,7 @@ export default function TaxiMotoTracking({
         <div className="space-y-4">
 
             {/* STATUT + BARRE DE PROGRESSION */}
-            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-card border-0 shadow-lg">
                 <CardContent className="p-5">
                     <div className="flex items-center justify-between mb-3">
                         <Badge className={`${statusInfo.color} px-3 py-1 flex items-center gap-1.5`}>
@@ -380,7 +380,7 @@ export default function TaxiMotoTracking({
             </Card>
 
             {/* CARTE DE SUIVI GPS EN TEMPS RÉEL */}
-            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg overflow-hidden">
+            <Card className="bg-card border-0 shadow-lg overflow-hidden">
                 <CardHeader className="pb-2">
                     <CardTitle className="text-base flex items-center gap-2">
                         <Navigation className="w-4 h-4 text-primary" />
@@ -479,7 +479,7 @@ export default function TaxiMotoTracking({
 
             {/* INFORMATIONS DU CONDUCTEUR */}
             {driver && (
-                <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-card border-0 shadow-lg">
                     <CardHeader className="pb-2">
                         <CardTitle className="text-base">{t('taxiMotoTracking.votreConducteur')}</CardTitle>
                     </CardHeader>
@@ -533,7 +533,7 @@ export default function TaxiMotoTracking({
             )}
 
             {/* DÉTAILS DU TRAJET */}
-            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-card border-0 shadow-lg">
                 <CardHeader className="pb-2">
                     <CardTitle className="text-base">{t('taxiMotoTracking.detailsDuTrajet')}</CardTitle>
                 </CardHeader>

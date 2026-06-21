@@ -2053,7 +2053,7 @@ export default function Auth() {
                         <img src={item.image} alt={item.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-black/5 to-transparent" />
                         <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-center">
-                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white/90 shadow-sm backdrop-blur-sm">
+                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
                             {item.logoImage ? (
                               <img src={item.logoImage} alt={item.name} className="h-full w-full object-cover" loading="lazy" />
                             ) : (
@@ -2092,7 +2092,7 @@ export default function Auth() {
                         <img src={service.image} alt={service.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/5 to-transparent" />
                         <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-center">
-                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white/90 shadow-sm backdrop-blur-sm">
+                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
                             {service.logoImage ? (
                               <img src={service.logoImage} alt={service.name} className="h-full w-full object-cover" loading="lazy" />
                             ) : (
@@ -2131,7 +2131,7 @@ export default function Auth() {
                         <img src={service.image} alt={service.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/5 to-transparent" />
                         <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-center">
-                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white/90 shadow-sm backdrop-blur-sm">
+                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
                             {service.logoImage ? (
                               <img src={service.logoImage} alt={service.name} className="h-full w-full object-cover" loading="lazy" />
                             ) : (

@@ -277,7 +277,7 @@ export function DriverNavigation({
 
   if (!activeRide) {
     return (
-      <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg mt-4">
+      <Card className="bg-white border-0 shadow-lg mt-4">
         <CardContent className="p-8 text-center">
           <Navigation className="w-16 h-16 mx-auto mb-4 text-gray-400" />
           <h3 className="text-xl font-semibold text-gray-700 mb-2">
@@ -343,7 +343,7 @@ export function DriverNavigation({
       </Card>
 
       {/* Actions de course */}
-      <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+      <Card className="bg-white border-0 shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <span>Course en cours</span>

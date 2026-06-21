@@ -104,6 +104,7 @@ interface VendorRoutesProps {
  * Page POS verrouillée pour les vendeurs digitaux
  */
 const POSLockedPage = memo(function POSLockedPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
@@ -149,6 +150,7 @@ const VirtualCardPage = memo(function VirtualCardPage() {
  * Wrapper pour le copilote IA
  */
 const CopilotePage = memo(function CopilotePage() {
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>

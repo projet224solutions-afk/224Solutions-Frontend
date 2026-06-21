@@ -25,7 +25,7 @@ const getQuickActions = (t: (key: string) => string): QuickAction[] => [
     id: 'restaurant',
     icon: <Utensils className="w-5 h-5" />,
     label: t('home.restaurant'),
-    gradient: 'from-vendeur-secondary to-brand-orange-dark'
+    gradient: 'bg-vendeur-secondary'
   },
   {
     id: 'boutique',

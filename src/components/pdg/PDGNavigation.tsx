@@ -39,7 +39,7 @@ interface NavCategory {
 const categories: NavCategory[] = [
   {
     title: 'Finance',
-    color: 'from-[#ff4000]',
+    color: 'bg-[#ff4000]',
     bgColor: 'bg-[#ff4000]',
     items: [
       { value: 'finance', label: 'Finance & Revenus', icon: DollarSign, permission: 'view_finance' },
@@ -51,7 +51,7 @@ const categories: NavCategory[] = [
   },
   {
     title: 'Gestion',
-    color: 'from-blue-500',
+    color: 'bg-blue-500',
     bgColor: 'bg-blue-500',
     items: [
       { value: 'users', label: 'Utilisateurs', icon: Users, permission: 'view_users' },
@@ -65,7 +65,7 @@ const categories: NavCategory[] = [
   },
   {
     title: 'Opérations',
-    color: 'from-[#ff4000]',
+    color: 'bg-[#ff4000]',
     bgColor: 'bg-[#ff4000]',
     items: [
       { value: 'agents', label: 'Agents', icon: UserCheck, permission: 'view_agents' },
@@ -88,7 +88,7 @@ const categories: NavCategory[] = [
   },
   {
     title: 'Système',
-    color: 'from-[#04439e]',
+    color: 'bg-[#04439e]',
     bgColor: 'bg-[#04439e]',
     items: [
       { value: 'security', label: 'Sécurité', icon: Shield, permission: 'view_security' },
@@ -107,7 +107,7 @@ const categories: NavCategory[] = [
   },
   {
     title: 'Intelligence',
-    color: 'from-[#ff4000]',
+    color: 'bg-[#ff4000]',
     bgColor: 'bg-[#ff4000]',
     items: [
       { value: 'ai-assistant', label: 'Assistant IA', icon: Brain, badge: true, permission: 'access_ai_assistant' },
@@ -250,7 +250,7 @@ export default function PDGNavigation({ activeTab, onTabChange, aiActive }: PDGN
                           onClick={() => toggleCategory(category.title)}
                           className={cn(
                             "w-full flex items-center justify-between p-3 rounded-xl transition-all",
-                            "bg-gradient-to-r text-white font-medium",
+                            "text-white font-medium",
                             category.color,
                             hasActiveItem && "ring-2 ring-primary ring-offset-2"
                           )}
@@ -331,7 +331,7 @@ export default function PDGNavigation({ activeTab, onTabChange, aiActive }: PDGN
                 }}
                 className={cn(
                   "px-3 py-2 rounded-lg text-xs font-medium transition-all whitespace-nowrap",
-                  "bg-gradient-to-r text-white",
+                  "text-white",
                   category.color,
                   hasActiveItem && "ring-2 ring-offset-1 ring-primary"
                 )}
@@ -365,7 +365,7 @@ export default function PDGNavigation({ activeTab, onTabChange, aiActive }: PDGN
               {/* En-tête de catégorie */}
               <div
                 className={cn(
-                  "bg-gradient-to-br p-4 cursor-pointer flex items-center justify-between",
+                  "p-4 cursor-pointer flex items-center justify-between",
                   "hover:shadow-lg transition-all duration-300 relative overflow-hidden",
                   category.color
                 )}
@@ -452,7 +452,7 @@ export default function PDGNavigation({ activeTab, onTabChange, aiActive }: PDGN
             {activeCategory && (
               <>
                 <span className={cn(
-                  "px-3 py-1 rounded-full font-medium bg-gradient-to-r text-white shadow-md",
+                  "px-3 py-1 rounded-full font-medium text-white shadow-md",
                   activeCategory.color,
                   "hover:shadow-lg transition-shadow"
                 )}>

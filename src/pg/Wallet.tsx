@@ -32,7 +32,7 @@ export default function Wallet() {
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-6">
       {/* Header - optimise mobile */}
-      <div className="border-b bg-card/50 backdrop-blur-xl sticky top-0 z-10">
+      <div className="border-b bg-card-xl sticky top-0 z-10">
         <div className="px-3 py-3 sm:container sm:mx-auto sm:px-4 sm:py-4">
           <div className="flex items-center gap-2 sm:gap-4">
             <Button

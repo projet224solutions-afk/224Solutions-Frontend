@@ -140,7 +140,7 @@ const NotFound = () => {
       </Card>
 
       {/* Navigation rapide en bas de page */}
-      <div className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t border-border z-50 shadow-elegant">
+      <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 shadow-elegant">
         <div className="flex items-center justify-around px-2 py-2 max-w-screen-xl mx-auto">
           {navigationItems.map((item) => {
             const isActive = location.pathname === item.path;

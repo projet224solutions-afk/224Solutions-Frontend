@@ -1000,7 +1000,7 @@ export default function CopiloteChat({ className = '', height = 'calc(100vh - 14
   };
 
   const roleLabel = userRole === 'vendeur' ? 'Vendeur' : 'Client';
-  const roleColor = userRole === 'vendeur' ? 'from-primary to-brand-blue-deep' : 'from-vendeur-secondary to-brand-orange-dark';
+  const roleColor = userRole === 'vendeur' ? 'bg-primary' : 'bg-vendeur-secondary';
 
   // Regex UUID v4
   const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -1064,7 +1064,7 @@ export default function CopiloteChat({ className = '', height = 'calc(100vh - 14
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0 flex-1">
             <div className="relative flex-shrink-0">
-              <Avatar className={`h-10 w-10 sm:h-14 sm:w-14 bg-gradient-to-br ${roleColor}`}>
+              <Avatar className={`h-10 w-10 sm:h-14 sm:w-14 ${roleColor}`}>
                 <AvatarImage src="/copilote-avatar.png" alt="Copilote 224" />
                 <AvatarFallback>
                   <Bot className="h-5 w-5 sm:h-7 sm:w-7 text-white" />
@@ -1274,7 +1274,7 @@ export default function CopiloteChat({ className = '', height = 'calc(100vh - 14
               <div className="flex justify-start mb-4">
                 <div className="flex items-start space-x-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarFallback className={`bg-gradient-to-br ${roleColor} text-white`}>
+                    <AvatarFallback className={`${roleColor} text-white`}>
                       <Bot className="h-4 w-4" />
                     </AvatarFallback>
                   </Avatar>
@@ -1413,7 +1413,7 @@ export default function CopiloteChat({ className = '', height = 'calc(100vh - 14
               (userRole === 'vendeur' && (vendorAccess.loading || vendorAccess.hasVendor === false))
             }
             size="icon"
-            className={`h-9 w-9 sm:h-12 sm:w-12 bg-gradient-to-r ${roleColor} hover:opacity-90 rounded-lg flex items-center justify-center`}
+            className={`h-9 w-9 sm:h-12 sm:w-12 ${roleColor} hover:opacity-90 rounded-lg flex items-center justify-center`}
           >
             {isLoading ? (
               <Loader2 className="h-3.5 w-3.5 sm:h-5 sm:w-5 animate-spin" />

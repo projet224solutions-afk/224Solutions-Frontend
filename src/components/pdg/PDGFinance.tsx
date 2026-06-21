@@ -465,7 +465,7 @@ export default function PDGFinance() {
         <PlatformRevenueOverview />
 
         {/* FX Commission Management Card */}
-        <Card className="border-border/40 bg-blue-500/5/5 backdrop-blur-sm">
+        <Card className="border-border/40 bg-[#04439e]/5">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               <DollarSign className="w-5 h-5 text-blue-500" />

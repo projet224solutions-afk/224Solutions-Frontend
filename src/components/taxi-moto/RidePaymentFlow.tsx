@@ -68,7 +68,7 @@ export default function RidePaymentFlow({
 
     if (showRating) {
         return (
-            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-card border-0 shadow-lg">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <CheckCircle className="w-6 h-6 text-[#ff4000]" />

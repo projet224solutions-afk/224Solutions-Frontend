@@ -76,7 +76,7 @@ export function StandardIdBadge({
         'font-mono font-semibold tracking-wider',
         sizeClasses[size],
         copyable && 'cursor-pointer hover:opacity-80 transition-opacity',
-        is224Format && 'bg-orange-500/10/10 border-orange-500/30',
+        is224Format && 'bg-[#ff4000]/10 border-orange-500/30',
         className
       )}
       onClick={handleCopy}

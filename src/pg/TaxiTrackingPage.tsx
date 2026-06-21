@@ -142,7 +142,7 @@ export default function TaxiTrackingPage() {
   }, [rideId, navigate]);
 
   return (
-    <div className="min-h-screen bg-blue-500/5/5">
+    <div className="min-h-screen bg-[#04439e]/5">
       {/* Header */}
       <div className="bg-card border-b sticky top-0 z-10">
         <div className="container max-w-4xl mx-auto px-4 py-4">

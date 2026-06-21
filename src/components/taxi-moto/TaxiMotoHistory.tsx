@@ -260,7 +260,7 @@ export default function TaxiMotoHistory({ userId }: TaxiMotoHistoryProps) {
 
     if (loading) {
         return (
-            <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-white border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
                     <p className="text-gray-600">{t('taxiMotoHistory.chargementDeLHistorique')}</p>
@@ -271,7 +271,7 @@ export default function TaxiMotoHistory({ userId }: TaxiMotoHistoryProps) {
 
     if (error) {
         return (
-            <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-white border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                     <div className="bg-orange-50 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                         <Clock className="w-8 h-8 text-[#ff4000]" />
@@ -289,7 +289,7 @@ export default function TaxiMotoHistory({ userId }: TaxiMotoHistoryProps) {
     return (
         <div className="space-y-4">
             {/* Filtres et recherche */}
-            <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-white border-0 shadow-lg">
                 <CardHeader>
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-lg">{t('taxiMotoHistory.historiqueDesCourses')}</CardTitle>
@@ -367,7 +367,7 @@ export default function TaxiMotoHistory({ userId }: TaxiMotoHistoryProps) {
 
             {/* Liste des courses */}
             {filteredRides.length === 0 ? (
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-white border-0 shadow-lg">
                     <CardContent className="p-8 text-center">
                         <Clock className="w-12 h-12 mx-auto mb-4 text-gray-400" />
                         <h3 className="text-lg font-semibold text-gray-700 mb-2">
@@ -384,7 +384,7 @@ export default function TaxiMotoHistory({ userId }: TaxiMotoHistoryProps) {
             ) : (
                 <div className="space-y-3">
                     {filteredRides.map((ride) => (
-                        <Card key={ride.id} className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+                        <Card key={ride.id} className="bg-white border-0 shadow-lg">
                             <CardContent className="p-4">
                                 <div className="flex items-start justify-between mb-3">
                                     <div>

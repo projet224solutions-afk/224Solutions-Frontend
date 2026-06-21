@@ -433,7 +433,7 @@ export default function TaxiMotoClient() {
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header Responsive */}
-      <header className="bg-card/90 backdrop-blur-sm border-b sticky top-0 z-40 shadow-sm">
+      <header className="bg-card border-b sticky top-0 z-40 shadow-sm">
         <div className={responsive.isMobile ? 'px-3 py-3' : 'px-6 py-4'}>
           {/* Bannière d'erreur unifiée */}
           {error && (
@@ -501,7 +501,7 @@ export default function TaxiMotoClient() {
 
       {/* Conducteurs à proximité - Responsive */}
       {location && nearbyDrivers.length > 0 && activeTab === 'booking' && (
-        <Card className={`${responsive.isMobile ? 'mx-3 mt-3' : 'mx-4 mt-4'} bg-card/90 backdrop-blur-sm border-0 shadow-lg`}>
+        <Card className={`${responsive.isMobile ? 'mx-3 mt-3' : 'mx-4 mt-4'} bg-card border-0 shadow-lg`}>
           <CardContent className={responsive.isMobile ? 'p-3' : 'p-4'}>
             <div className="flex items-center justify-between">
               <div className="flex-1">
@@ -548,7 +548,7 @@ export default function TaxiMotoClient() {
       {/* Navigation par onglets - Responsive */}
       <div className={responsive.isMobile ? 'px-3 mt-3' : 'px-4 mt-4'}>
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className={`grid w-full grid-cols-4 bg-card/80 backdrop-blur-sm ${responsive.isMobile ? 'h-12' : ''}`}>
+          <TabsList className={`grid w-full grid-cols-4 bg-card ${responsive.isMobile ? 'h-12' : ''}`}>
             <TabsTrigger
               value="booking"
               disabled={!!currentRide}
@@ -589,7 +589,7 @@ export default function TaxiMotoClient() {
           {/* Réservation */}
           <TabsContent value="booking" className="mt-4 space-y-4">
             {/* Partage de position : le client donne son ID/lien au chauffeur */}
-            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-card border-0 shadow-lg">
               <CardContent className={`${responsive.isMobile ? 'p-3' : 'p-4'} flex items-center justify-between gap-3`}>
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-foreground">Partager ma position</p>
@@ -640,7 +640,7 @@ export default function TaxiMotoClient() {
 
       {/* Statistiques rapides - Responsive */}
       {activeTab === 'booking' && (
-        <Card className={`${responsive.isMobile ? 'mx-3 mt-3' : 'mx-4 mt-4'} bg-card/90 backdrop-blur-sm border-0 shadow-lg`}>
+        <Card className={`${responsive.isMobile ? 'mx-3 mt-3' : 'mx-4 mt-4'} bg-card border-0 shadow-lg`}>
           <CardContent className={responsive.isMobile ? 'p-3' : 'p-4'}>
             <div className={`grid grid-cols-3 ${responsive.isMobile ? 'gap-2' : 'gap-4'} text-center`}>
               <div>

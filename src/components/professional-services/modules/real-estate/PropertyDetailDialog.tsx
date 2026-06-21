@@ -69,13 +69,13 @@ export function PropertyDetailDialog({ property, open, onClose, onRefresh, isOwn
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-card/80 backdrop-blur-sm rounded-full p-2 hover:bg-card transition-colors"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-card rounded-full p-2 hover:bg-card transition-colors"
                   >
                     <ChevronLeft className="h-5 w-5" />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-card/80 backdrop-blur-sm rounded-full p-2 hover:bg-card transition-colors"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-card rounded-full p-2 hover:bg-card transition-colors"
                   >
                     <ChevronRight className="h-5 w-5" />
                   </button>
@@ -92,7 +92,7 @@ export function PropertyDetailDialog({ property, open, onClose, onRefresh, isOwn
                   </div>
                 </>
               )}
-              <div className="absolute top-3 right-3 bg-card/80 backdrop-blur-sm px-2 py-1 rounded text-xs">
+              <div className="absolute top-3 right-3 bg-card px-2 py-1 rounded text-xs">
                 {currentImageIndex + 1}/{images.length}
               </div>
             </>

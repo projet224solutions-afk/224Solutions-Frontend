@@ -389,7 +389,7 @@ export default function PDG224Solutions() {
 
       <div className="relative z-10 h-screen overflow-y-auto scrollbar-thin overflow-x-hidden">
         {/* Header */}
-        <div className="border-b border-border/40 bg-card/30 backdrop-blur-xl w-full">
+        <div className="border-b border-border/40 bg-card w-full">
           <div className="max-w-[1600px] mx-auto px-4 py-3 sm:px-6 sm:py-6 w-full">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 w-full">
               <div className="flex items-center gap-3 sm:gap-6 min-w-0 w-full">
@@ -494,7 +494,7 @@ export default function PDG224Solutions() {
               </div>
             </div>
             {!mfaVerified && (
-              <div className="mt-4 p-4 rounded-xl bg-orange-500/5 border border-orange-500/20 backdrop-blur-sm">
+              <div className="mt-4 p-4 rounded-xl bg-[#ff4000]/5 border border-[#ff4000]/20">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center">
                     <Shield className="w-5 h-5 text-orange-500" />

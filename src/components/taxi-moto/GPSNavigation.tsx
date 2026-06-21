@@ -94,7 +94,7 @@ export function GPSNavigation({ activeRide, currentLocation, onContactCustomer }
 
   if (!activeRide) {
     return (
-      <Card className="bg-white/95 backdrop-blur-sm shadow-lg">
+      <Card className="bg-white shadow-lg">
         <CardContent className="pt-12 pb-12 text-center">
           <MapPin className="w-16 h-16 mx-auto mb-4 text-gray-300" />
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
@@ -219,7 +219,7 @@ export function GPSNavigation({ activeRide, currentLocation, onContactCustomer }
       </Card>
 
       {/* Informations supplémentaires */}
-      <Card className="bg-white/95 backdrop-blur-sm">
+      <Card className="bg-white">
         <CardContent className="pt-4">
           <div className="grid grid-cols-2 gap-3 text-center">
             <div>

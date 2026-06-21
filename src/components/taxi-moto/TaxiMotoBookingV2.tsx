@@ -279,7 +279,7 @@ export default function TaxiMotoBooking({
     return (
         <div className="space-y-4">
             {/* Formulaire de réservation */}
-            <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-card border-0 shadow-lg">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Navigation className="w-5 h-5 text-primary" />
@@ -385,7 +385,7 @@ export default function TaxiMotoBooking({
 
             {/* Informations d'itinéraire Google Maps */}
             {routeInfo && (
-                <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-card border-0 shadow-lg">
                     <CardContent className="p-4">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
@@ -418,7 +418,7 @@ export default function TaxiMotoBooking({
 
             {/* Détail du prix */}
             {priceEstimate && (
-                <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-card border-0 shadow-lg">
                     <CardHeader>
                         <CardTitle className="text-lg flex items-center gap-2">
                             <DollarSign className="w-5 h-5 text-[#ff4000]" />
@@ -479,7 +479,7 @@ export default function TaxiMotoBooking({
 
             {/* Conducteurs proches */}
             {nearbyDrivers.length > 0 && (
-                <Card className="bg-card/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-card border-0 shadow-lg">
                     <CardHeader>
                         <CardTitle className="text-lg flex items-center gap-2">
                             <Users className="w-5 h-5" />

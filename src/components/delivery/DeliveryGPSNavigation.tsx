@@ -169,7 +169,7 @@ export function DeliveryGPSNavigation({ activeDelivery, currentLocation, onConta
 
   if (!activeDelivery) {
     return (
-      <Card className="bg-card/95 backdrop-blur-sm shadow-lg">
+      <Card className="bg-card shadow-lg">
         <CardContent className="pt-12 pb-12 text-center">
           <Package className="w-16 h-16 mx-auto mb-4 text-muted-foreground/30" />
           <h3 className="text-lg font-semibold text-muted-foreground mb-2">
@@ -355,7 +355,7 @@ export function DeliveryGPSNavigation({ activeDelivery, currentLocation, onConta
       </Card>
 
       {/* Informations supplémentaires */}
-      <Card className="bg-card/95 backdrop-blur-sm">
+      <Card className="bg-card">
         <CardContent className="pt-4">
           <div className="grid grid-cols-2 gap-3 text-center">
             <div>

@@ -285,7 +285,7 @@ export function InteractiveMapNavigation({
 
   if (!activeRide) {
     return (
-      <Card className="bg-white/95 backdrop-blur-sm shadow-lg">
+      <Card className="bg-white shadow-lg">
         <CardContent className="pt-12 pb-12 text-center">
           <MapPin className="w-16 h-16 mx-auto mb-4 text-gray-300" />
           <h3 className="text-lg font-semibold text-gray-600 mb-2">

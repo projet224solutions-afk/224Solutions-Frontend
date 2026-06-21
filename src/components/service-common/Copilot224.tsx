@@ -6,7 +6,7 @@ import { useTranslation } from "@/hooks/useTranslation";
  * de session léger. La clé IA reste SERVEUR (le front ne fait qu'envoyer le message).
  */
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bot, Send, X, Loader2, Sparkles, ShoppingBag, Volume2, VolumeX, Mic } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -42,6 +42,22 @@ function mapBackendActions(raw: any): MsgAction[] | undefined {
 
 // Phase 3 — l'utilisateur cherche-t-il un produit ?
 const SEARCH_INTENT = /\b(cherch|trouv|achet|acheter|o[uù].*(acheter|trouver)|produit|je veux)\b/i;
+
+// Convertit une URL/chemin en chemin INTERNE navigable (react-router) si c'est un lien de l'app,
+// sinon renvoie null (lien externe). Gère les chemins relatifs et les URLs sur les domaines 224Solutions.
+function toInternalPath(url: string): string | null {
+  if (!url) return null;
+  if (url.startsWith('/')) return url;
+  try {
+    const u = new URL(url);
+    const host = u.hostname.toLowerCase();
+    const sameHost = typeof window !== 'undefined' && host === window.location.hostname.toLowerCase();
+    if (sameHost || /(^|\.)224solutions?\.net$/.test(host)) {
+      return (u.pathname || '/') + (u.search || '') + (u.hash || '');
+    }
+  } catch { /* pas une URL absolue */ }
+  return null;
+}
 
 // Phase 5 — actions réelles dérivées de l'intention (navigation seule, sans paiement auto).
 function deriveActions(message: string, service: string): { label: string; to: string }[] {
@@ -169,6 +185,40 @@ export function Copilot224({ service, title, suggestions = [], variant = 'bubble
     if (a.to) navigate(a.to);
   };
 
+  // Rend le texte d'un message en rendant CLIQUABLES les liens : markdown [label](url), URLs http(s),
+  // et chemins internes (/marketplace/product/…, /boutique/…, etc.). Les liens internes naviguent via
+  // react-router (navigate) ; les externes s'ouvrent dans un nouvel onglet sécurisé.
+  const renderMessageContent = (text: string): ReactNode => {
+    if (!text) return text;
+    const re = /\[([^\]]+)\]\(\s*(https?:\/\/[^\s)]+|\/[^\s)]+)\s*\)|(https?:\/\/[^\s<]+)|(\/(?:marketplace|product|produit|shop|boutique|digital-product|digital-products|wallet|proximite|boutiques)[^\s<)]*)/gi;
+    const nodes: ReactNode[] = [];
+    let last = 0; let m: RegExpExecArray | null; let key = 0;
+    while ((m = re.exec(text)) !== null) {
+      if (m.index > last) nodes.push(text.slice(last, m.index));
+      const label = m[1];
+      const target = (m[2] || m[3] || m[4] || '').replace(/[.,;:]$/, '');
+      const internal = toInternalPath(target);
+      if (internal) {
+        nodes.push(
+          <a key={key++} href={internal} onClick={(e) => { e.preventDefault(); navigate(internal); }}
+            className="font-medium text-[#04439e] underline underline-offset-2 hover:opacity-80 cursor-pointer break-words">
+            {label || target}
+          </a>
+        );
+      } else {
+        nodes.push(
+          <a key={key++} href={target} target="_blank" rel="noopener noreferrer"
+            className="font-medium text-[#04439e] underline underline-offset-2 hover:opacity-80 break-words">
+            {label || target}
+          </a>
+        );
+      }
+      last = re.lastIndex;
+    }
+    if (last < text.length) nodes.push(text.slice(last));
+    return nodes.length ? nodes : text;
+  };
+
   // Mode bulle fermée → bouton flottant (+ carte proactive si pertinent). Le mode intégré est toujours « ouvert ».
   if (!isEmbedded && !open) {
     const lowBalance = !hideWalletAlert && typeof context.balance === 'number' && context.balance < 5000;
@@ -219,8 +269,8 @@ export function Copilot224({ service, title, suggestions = [], variant = 'bubble
         )}
         {msgs.map((m, i) => (
           <div key={i} className="space-y-1.5">
-            <div className={`max-w-[85%] rounded-xl px-3 py-2 text-sm ${m.role === 'user' ? 'ml-auto bg-[#ff4000] text-white' : 'bg-muted'}`}>
-              {m.content}
+            <div className={`max-w-[85%] whitespace-pre-wrap break-words rounded-xl px-3 py-2 text-sm ${m.role === 'user' ? 'ml-auto bg-[#ff4000] text-white' : 'bg-muted'}`}>
+              {m.role === 'assistant' ? renderMessageContent(m.content) : m.content}
             </div>
             {m.actions && m.actions.length > 0 && (
               <div className="flex flex-wrap gap-1">
@@ -232,7 +282,7 @@ export function Copilot224({ service, title, suggestions = [], variant = 'bubble
             {m.products && m.products.length > 0 && (
               <div className="space-y-1">
                 {m.products.map((p) => (
-                  <button key={p.id} onClick={() => navigate('/marketplace')} className="flex w-full items-center gap-2 rounded-lg border p-1.5 text-left hover:border-[#ff4000]">
+                  <button key={p.id} onClick={() => navigate(`/marketplace/product/${p.id}`)} className="flex w-full items-center gap-2 rounded-lg border p-1.5 text-left hover:border-[#ff4000]">
                     {p.image ? <img src={p.image} alt="" className="h-9 w-9 rounded object-cover" /> : <ShoppingBag className="h-9 w-9 rounded bg-muted p-2 text-muted-foreground" />}
                     <span className="flex-1 truncate text-xs">{p.name}</span>
                     <span className="text-xs font-bold text-[#ff4000]"><Money amount={p.price} /></span>

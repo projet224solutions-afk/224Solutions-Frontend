@@ -100,7 +100,7 @@ export default function PaymentMethodStep({
     const isWalletSufficient = walletBalance >= amount;
 
     return (
-        <Card className="bg-card/95 backdrop-blur-sm border-0 shadow-xl">
+        <Card className="bg-card border-0 shadow-xl">
             <CardHeader className="pb-4">
                 <div className="flex items-center gap-3">
                     <Button

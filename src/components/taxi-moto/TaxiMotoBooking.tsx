@@ -416,7 +416,7 @@ export default function TaxiMotoBooking({
     return (
         <div className="space-y-4">
             {/* Formulaire de réservation */}
-            <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-white border-0 shadow-lg">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Navigation className="w-5 h-5 text-blue-600" />
@@ -601,7 +601,7 @@ export default function TaxiMotoBooking({
 
             {/* Informations d'itinéraire compactes */}
             {routeInfo && !destinationCoords && (
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-white border-0 shadow-lg">
                     <CardContent className="p-4">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
@@ -629,7 +629,7 @@ export default function TaxiMotoBooking({
 
             {/* Comparaison des prix */}
             {priceComparison.length > 0 && (
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-white border-0 shadow-lg">
                     <CardHeader>
                         <CardTitle className="text-lg">{t('taxiMotoBooking.choisissezVotreMoto')}</CardTitle>
                     </CardHeader>
@@ -679,7 +679,7 @@ export default function TaxiMotoBooking({
 
             {/* Détail du prix sélectionné */}
             {priceEstimate && (
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-white border-0 shadow-lg">
                     <CardHeader>
                         <CardTitle className="text-lg flex items-center gap-2">
                             <DollarSign className="w-5 h-5 text-[#ff4000]" />
@@ -755,7 +755,7 @@ export default function TaxiMotoBooking({
 
             {/* Conducteurs proches */}
             {nearbyDrivers.length > 0 && (
-                <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-white border-0 shadow-lg">
                     <CardHeader>
                         <CardTitle className="text-lg">Conducteurs proches</CardTitle>
                     </CardHeader>
