@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 // ============================================================================
 // Onglet PDG: Gestion des Actionnaires
 // ============================================================================
@@ -55,6 +56,7 @@ function StatCard({
   color: string;
   sub?: string;
 }) {
+  const { t } = useTranslation();
   return (
     <Card className="border-0 shadow-sm">
       <CardContent className="pt-5 pb-4">
@@ -87,6 +89,7 @@ function RevenueCalculatorDialog({
   onConfirmSave: (result: RevenueCalculationResult) => Promise<void>;
   loading: boolean;
 }) {
+  const { t } = useTranslation();
   const assignment = shareholder.assignment;
   const [start, setStart] = useState(
     format(new Date(new Date().getFullYear(), new Date().getMonth(), 1), 'yyyy-MM-dd'),
@@ -118,7 +121,7 @@ function RevenueCalculatorDialog({
   return (
     <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
       <DialogHeader>
-        <DialogTitle>Calculer les revenus</DialogTitle>
+        <DialogTitle>{t('pDGShareholderManagement.calculerLesRevenus')}</DialogTitle>
       </DialogHeader>
       <div className="space-y-4 pt-2">
         {/* Infos actionnaire */}
@@ -126,8 +129,8 @@ function RevenueCalculatorDialog({
           <p><span className="font-medium">Actionnaire:</span> {shareholder.full_name}</p>
           {assignment && (
             <>
-              <p><span className="font-medium">Catégorie:</span> {CATEGORY_LABELS[assignment.category]}</p>
-              <p><span className="font-medium">Portée:</span> {SCOPE_LABELS[assignment.action_scope]}</p>
+              <p><span className="font-medium">{t('pDGShareholderManagement.categorie')}</span> {CATEGORY_LABELS[assignment.category]}</p>
+              <p><span className="font-medium">{t('pDGShareholderManagement.portee')}</span> {SCOPE_LABELS[assignment.action_scope]}</p>
               {assignment.action_scope === 'country' && (
                 <p><span className="font-medium">Pays:</span> {assignment.country}</p>
               )}
@@ -140,11 +143,11 @@ function RevenueCalculatorDialog({
         {!preview && (
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-medium text-muted-foreground">Début de période</label>
+              <label className="text-xs font-medium text-muted-foreground">{t('pDGShareholderManagement.debutDePeriode')}</label>
               <Input type="date" value={start} onChange={e => setStart(e.target.value)} className="mt-1" />
             </div>
             <div>
-              <label className="text-xs font-medium text-muted-foreground">Fin de période</label>
+              <label className="text-xs font-medium text-muted-foreground">{t('pDGShareholderManagement.finDePeriode')}</label>
               <Input type="date" value={end} onChange={e => setEnd(e.target.value)} className="mt-1" />
             </div>
           </div>
@@ -255,6 +258,7 @@ function SuspendDialog({
   onClose: () => void;
   loading: boolean;
 }) {
+  const { t } = useTranslation();
   const isSuspended = shareholder.status === 'suspended';
   return (
     <DialogContent className="max-w-sm max-h-[90vh] overflow-y-auto">
@@ -269,8 +273,8 @@ function SuspendDialog({
       <div className="space-y-4 pt-2">
         <p className="text-sm text-muted-foreground">
           {isSuspended
-            ? <>Le compte de <strong>{shareholder.full_name}</strong> sera réactivé. Il pourra de nouveau accéder à son espace.</>
-            : <>Le compte de <strong>{shareholder.full_name}</strong> sera suspendu. Il ne pourra plus accéder à son espace actionnaire.</>}
+            ? <>{t('pDGShareholderManagement.leCompteDe')} <strong>{shareholder.full_name}</strong> {t('pDGShareholderManagement.seraReactiveIlPourraDe')}</>
+            : <>{t('pDGShareholderManagement.leCompteDe')} <strong>{shareholder.full_name}</strong> {t('pDGShareholderManagement.seraSuspenduIlNePourra')}</>}
         </p>
         <div className="flex gap-2 pt-1">
           <Button variant="outline" className="flex-1" onClick={onClose} disabled={loading}>
@@ -306,6 +310,7 @@ function TransferDialog({
   onClose: () => void;
   loading: boolean;
 }) {
+  const { t } = useTranslation();
   const [toId, setToId]     = useState('');
   const [reason, setReason] = useState('');
   const candidates = allShareholders.filter(
@@ -322,7 +327,7 @@ function TransferDialog({
       </DialogHeader>
       <div className="space-y-4 pt-2">
         <div className="bg-muted/50 rounded-lg p-3 text-sm space-y-1">
-          <p><span className="font-medium">De :</span> {shareholder.full_name}</p>
+          <p><span className="font-medium">{t('pDGShareholderManagement.de')}</span> {shareholder.full_name}</p>
           {shareholder.assignment && (
             <p className="text-muted-foreground">
               {CATEGORY_LABELS[shareholder.assignment.category]} · {shareholder.assignment.percentage}%
@@ -333,10 +338,10 @@ function TransferDialog({
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-muted-foreground">Transférer vers</label>
+          <label className="text-xs font-medium text-muted-foreground">{t('pDGShareholderManagement.transfererVers')}</label>
           <Select value={toId} onValueChange={setToId}>
             <SelectTrigger className="h-9">
-              <SelectValue placeholder="Sélectionner un actionnaire…" />
+              <SelectValue placeholder={t('pDGShareholderManagement.selectionnerUnActionnaire')} />
             </SelectTrigger>
             <SelectContent>
               {candidates.map(s => (
@@ -346,7 +351,7 @@ function TransferDialog({
                 </SelectItem>
               ))}
               {candidates.length === 0 && (
-                <SelectItem value="__none__" disabled>Aucun actionnaire disponible</SelectItem>
+                <SelectItem value="__none__" disabled>{t('pDGShareholderManagement.aucunActionnaireDisponible')}</SelectItem>
               )}
             </SelectContent>
           </Select>
@@ -357,7 +362,7 @@ function TransferDialog({
           <textarea
             value={reason}
             onChange={e => setReason(e.target.value)}
-            placeholder="Ex: Départ volontaire, cession…"
+            placeholder={t('pDGShareholderManagement.exDepartVolontaireCession')}
             rows={2}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none"
           />
@@ -365,7 +370,7 @@ function TransferDialog({
 
         <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 text-xs text-[#ff4000] flex gap-2">
           <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-          <span>L&apos;actionnaire source sera archivé. L&apos;assignment (% et catégorie) sera transféré à la destination.</span>
+          <span>{t('pDGShareholderManagement.lAposActionnaireSourceSera')}</span>
         </div>
 
         <div className="flex gap-2 pt-1">
@@ -400,6 +405,7 @@ function DeleteShareholderDialog({
   onClose: () => void;
   loading: boolean;
 }) {
+  const { t } = useTranslation();
   const [confirmed, setConfirmed] = useState('');
 
   return (
@@ -416,18 +422,18 @@ function DeleteShareholderDialog({
             <AlertTriangle className="w-4 h-4" />
             Action irréversible
           </p>
-          <p>Le compte de <strong>{shareholder.full_name}</strong> sera archivé et l&apos;accès désactivé. Les revenus et paiements existants sont conservés.</p>
-          <p className="text-xs">Impossible si des paiements sont en attente.</p>
+          <p>{t('pDGShareholderManagement.leCompteDe')} <strong>{shareholder.full_name}</strong> {t('pDGShareholderManagement.seraArchiveEtLApos')}</p>
+          <p className="text-xs">{t('pDGShareholderManagement.impossibleSiDesPaiementsSont')}</p>
         </div>
 
         <div className="space-y-1.5">
           <label className="text-xs font-medium text-muted-foreground">
-            Tapez <strong>SUPPRIMER</strong> pour confirmer
+            Tapez <strong>{t('pDGShareholderManagement.supprimer')}</strong> pour confirmer
           </label>
           <Input
             value={confirmed}
             onChange={e => setConfirmed(e.target.value)}
-            placeholder="SUPPRIMER"
+            placeholder={t('pDGShareholderManagement.supprimer')}
             className="text-sm"
           />
         </div>
@@ -469,11 +475,12 @@ function ShareholderTable({
   onTransfer: (sh: Shareholder) => void;
   onDelete: (sh: Shareholder) => void;
 }) {
+  const { t } = useTranslation();
   if (shareholders.length === 0) {
     return (
       <div className="text-center py-12 text-muted-foreground">
         <Users className="w-10 h-10 mx-auto mb-3 opacity-30" />
-        <p>Aucun actionnaire enregistré</p>
+        <p>{t('pDGShareholderManagement.aucunActionnaireEnregistre')}</p>
       </div>
     );
   }
@@ -483,8 +490,8 @@ function ShareholderTable({
       <TableHeader>
         <TableRow>
           <TableHead>Actionnaire</TableHead>
-          <TableHead>Catégorie</TableHead>
-          <TableHead>Portée</TableHead>
+          <TableHead>{t('pDGShareholderManagement.categorie2')}</TableHead>
+          <TableHead>{t('pDGShareholderManagement.portee2')}</TableHead>
           <TableHead>Pays</TableHead>
           <TableHead className="text-right">%</TableHead>
           <TableHead>Statut</TableHead>
@@ -546,7 +553,7 @@ function ShareholderTable({
                     className="h-7 text-xs"
                     onClick={() => onCalculate(sh)}
                     disabled={!a}
-                    title="Calculer les revenus"
+                    title={t('pDGShareholderManagement.calculerLesRevenus')}
                   >
                     <Calculator className="w-3.5 h-3.5 mr-1" />
                     Calculer
@@ -555,7 +562,7 @@ function ShareholderTable({
                     variant="ghost" size="icon"
                     className="h-7 w-7 text-muted-foreground hover:text-foreground"
                     onClick={() => onEdit(sh)}
-                    title="Modifier"
+                    title={t('pDGShareholderManagement.modifier')}
                   >
                     <Edit className="w-3.5 h-3.5" />
                   </Button>
@@ -579,7 +586,7 @@ function ShareholderTable({
                     className="h-7 w-7 text-blue-500 hover:text-blue-700 hover:bg-blue-50"
                     onClick={() => onTransfer(sh)}
                     disabled={!a}
-                    title="Transférer la part"
+                    title={t('pDGShareholderManagement.transfererLaPart')}
                   >
                     <ArrowRightLeft className="w-3.5 h-3.5" />
                   </Button>
@@ -587,7 +594,7 @@ function ShareholderTable({
                     variant="ghost" size="icon"
                     className="h-7 w-7 text-[#ff4000] hover:text-[#ff4000] hover:bg-orange-50"
                     onClick={() => onDelete(sh)}
-                    title="Supprimer"
+                    title={t('pDGShareholderManagement.supprimer2')}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </Button>
@@ -605,11 +612,12 @@ function ShareholderTable({
 // Tableau des revenus
 // ============================================================================
 function RevenueTable({ revenues }: { revenues: ShareholderRevenue[] }) {
+  const { t } = useTranslation();
   if (revenues.length === 0) {
     return (
       <div className="text-center py-12 text-muted-foreground">
         <TrendingUp className="w-10 h-10 mx-auto mb-3 opacity-30" />
-        <p>Aucun revenu calculé</p>
+        <p>{t('pDGShareholderManagement.aucunRevenuCalcule')}</p>
       </div>
     );
   }
@@ -661,7 +669,7 @@ function RevenueTable({ revenues }: { revenues: ShareholderRevenue[] }) {
               <div className="space-y-1.5">
                 {/* Revenus bruts */}
                 <div className="flex justify-between items-center px-3 py-2 bg-muted/40 rounded-lg">
-                  <span className="text-sm text-muted-foreground">Revenus bruts encaissés</span>
+                  <span className="text-sm text-muted-foreground">{t('pDGShareholderManagement.revenusBrutsEncaisses')}</span>
                   <span className="text-sm font-semibold">{fmt(brut, r.currency)}</span>
                 </div>
 
@@ -732,11 +740,12 @@ function PaymentsTable({
   onSendToWallet: (id: string) => void;
   loading: boolean;
 }) {
+  const { t } = useTranslation();
   if (payments.length === 0) {
     return (
       <div className="text-center py-12 text-muted-foreground">
         <DollarSign className="w-10 h-10 mx-auto mb-3 opacity-30" />
-        <p>Aucun paiement</p>
+        <p>{t('pDGShareholderManagement.aucunPaiement')}</p>
       </div>
     );
   }
@@ -746,7 +755,7 @@ function PaymentsTable({
       <TableHeader>
         <TableRow>
           <TableHead>Actionnaire</TableHead>
-          <TableHead className="text-right">Montant</TableHead>
+          <TableHead className="text-right">{t('pDGShareholderManagement.montant')}</TableHead>
           <TableHead>Statut</TableHead>
           <TableHead>Date</TableHead>
           <TableHead>Actions</TableHead>
@@ -819,15 +828,16 @@ function PaymentsTable({
 // Tableau pourcentages
 // ============================================================================
 function PercentageSummaryTable({ percentages }: { percentages: any[] }) {
+  const { t } = useTranslation();
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Catégorie</TableHead>
-          <TableHead>Portée</TableHead>
+          <TableHead>{t('pDGShareholderManagement.categorie2')}</TableHead>
+          <TableHead>{t('pDGShareholderManagement.portee2')}</TableHead>
           <TableHead>Pays</TableHead>
           <TableHead className="text-right">Actionnaires</TableHead>
-          <TableHead className="text-right">Attribué</TableHead>
+          <TableHead className="text-right">{t('pDGShareholderManagement.attribue')}</TableHead>
           <TableHead className="text-right">Restant</TableHead>
         </TableRow>
       </TableHeader>
@@ -885,6 +895,7 @@ function PercentageSummaryTable({ percentages }: { percentages: any[] }) {
 // Badge statut vote
 // ============================================================================
 function VoteStatusBadge({ status }: { status: ShareholderVote['status'] }) {
+  const { t } = useTranslation();
   const map: Record<string, { label: string; className: string }> = {
     draft:     { label: 'Brouillon', className: 'bg-gray-100 text-gray-700' },
     open:      { label: 'Ouvert',    className: 'bg-orange-100 text-[#ff4000]' },
@@ -913,6 +924,7 @@ function VoteFormDialog({
   onSubmit: (data: CreateVoteDto) => Promise<void>;
   loading: boolean;
 }) {
+  const { t } = useTranslation();
   const now = format(new Date(), "yyyy-MM-dd'T'HH:mm");
   const tomorrow = format(new Date(Date.now() + 86400000), "yyyy-MM-dd'T'HH:mm");
 
@@ -932,8 +944,8 @@ function VoteFormDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) { toast.error('Le titre est obligatoire'); return; }
-    if (!endDate || endDate <= startDate) { toast.error('La date de clôture doit être après la date de début'); return; }
+    if (!title.trim()) { toast.error(t('pDGShareholderManagement.leTitreEstObligatoire')); return; }
+    if (!endDate || endDate <= startDate) { toast.error(t('pDGShareholderManagement.laDateDeClotureDoit')); return; }
     await onSubmit({
       title:          title.trim(),
       description:    description.trim() || undefined,
@@ -960,7 +972,7 @@ function VoteFormDialog({
           {/* Titre */}
           <div className="space-y-1">
             <label className="text-sm font-medium">Titre <span className="text-[#ff4000]">*</span></label>
-            <Input value={title} onChange={e => setTitle(e.target.value)} placeholder="Ex: Approbation de l'expansion au Sénégal" />
+            <Input value={title} onChange={e => setTitle(e.target.value)} placeholder={t('pDGShareholderManagement.exApprobationDeLExpansion')} />
           </div>
 
           {/* Description */}
@@ -969,7 +981,7 @@ function VoteFormDialog({
             <textarea
               value={description}
               onChange={e => setDescription(e.target.value)}
-              placeholder="Détails de la résolution..."
+              placeholder={t('pDGShareholderManagement.detailsDeLaResolution')}
               rows={3}
               className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none"
             />
@@ -978,23 +990,23 @@ function VoteFormDialog({
           {/* Dates */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-sm font-medium">Début</label>
+              <label className="text-sm font-medium">{t('pDGShareholderManagement.debut')}</label>
               <Input type="datetime-local" value={startDate} onChange={e => setStartDate(e.target.value)} />
             </div>
             <div className="space-y-1">
-              <label className="text-sm font-medium">Clôture <span className="text-[#ff4000]">*</span></label>
+              <label className="text-sm font-medium">{t('pDGShareholderManagement.cloture')} <span className="text-[#ff4000]">*</span></label>
               <Input type="datetime-local" value={endDate} onChange={e => setEndDate(e.target.value)} />
             </div>
           </div>
 
           {/* Type de vote */}
           <div className="space-y-1">
-            <label className="text-sm font-medium">Type de vote</label>
+            <label className="text-sm font-medium">{t('pDGShareholderManagement.typeDeVote')}</label>
             <Select value={voteType} onValueChange={v => setVoteType(v as any)}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="simple">Simple (1 voix par actionnaire)</SelectItem>
-                <SelectItem value="weighted">Pondéré (par % de participation)</SelectItem>
+                <SelectItem value="weighted">{t('pDGShareholderManagement.pondereParDeParticipation')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -1015,7 +1027,7 @@ function VoteFormDialog({
           {/* Catégorie (conditionnel) */}
           {needsCategory && (
             <div className="space-y-1">
-              <label className="text-sm font-medium">Catégorie</label>
+              <label className="text-sm font-medium">{t('pDGShareholderManagement.categorie2')}</label>
               <Select value={category} onValueChange={setCategory}>
                 <SelectTrigger><SelectValue placeholder="Choisir..." /></SelectTrigger>
                 <SelectContent>
@@ -1040,7 +1052,7 @@ function VoteFormDialog({
             <div className="space-y-1">
               <label className="text-sm font-medium">Actionnaire</label>
               <Select value={shareholderId} onValueChange={setShareholderId}>
-                <SelectTrigger><SelectValue placeholder="Choisir un actionnaire..." /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder={t('pDGShareholderManagement.choisirUnActionnaire')} /></SelectTrigger>
                 <SelectContent>
                   {shareholders.filter(s => s.status === 'active').map(s => (
                     <SelectItem key={s.id} value={s.id}>{s.full_name}</SelectItem>
@@ -1078,6 +1090,7 @@ function VotesTabPDG({
   loading: boolean;
   onRefresh: () => void;
 }) {
+  const { t } = useTranslation();
   const [showCreate, setShowCreate]   = useState(false);
   const [selectedVote, setSelectedVote] = useState<ShareholderVote | null>(null);
   const [showEdit, setShowEdit]       = useState(false);
@@ -1095,7 +1108,7 @@ function VotesTabPDG({
     setActionLoading(true);
     const r = await shareholderService.createVote(data);
     setActionLoading(false);
-    if (r.success) { toast.success('Brouillon créé'); setShowCreate(false); onRefresh(); }
+    if (r.success) { toast.success(t('pDGShareholderManagement.brouillonCree')); setShowCreate(false); onRefresh(); }
     else toast.error(r.error || 'Erreur');
   };
 
@@ -1104,7 +1117,7 @@ function VotesTabPDG({
     setActionLoading(true);
     const r = await shareholderService.updateVote(selectedVote.id, data);
     setActionLoading(false);
-    if (r.success) { toast.success('Vote mis à jour'); setShowEdit(false); setSelectedVote(null); onRefresh(); }
+    if (r.success) { toast.success(t('pDGShareholderManagement.voteMisAJour')); setShowEdit(false); setSelectedVote(null); onRefresh(); }
     else toast.error(r.error || 'Erreur');
   };
 
@@ -1120,7 +1133,7 @@ function VotesTabPDG({
         <div className="flex items-center gap-2">
           <Vote className="w-5 h-5 text-primary" />
           <div>
-            <h3 className="font-semibold text-sm">Votes & Résolutions</h3>
+            <h3 className="font-semibold text-sm">{t('pDGShareholderManagement.votesResolutions')}</h3>
             <p className="text-xs text-muted-foreground">
               {openVotes.length} ouvert(s) · {draftVotes.length} brouillon(s) · {closedVotes.length} clôturé(s)
             </p>
@@ -1158,7 +1171,7 @@ function VotesTabPDG({
       {votes.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           <Vote className="w-10 h-10 mx-auto mb-3 opacity-30" />
-          <p className="text-sm">Aucun vote créé. Commencez par créer un brouillon.</p>
+          <p className="text-sm">{t('pDGShareholderManagement.aucunVoteCreeCommencezPar')}</p>
         </div>
       ) : (
         <Card className="border shadow-sm">
@@ -1166,11 +1179,11 @@ function VotesTabPDG({
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50">
-                  <TableHead className="pl-4 font-semibold">Résolution</TableHead>
+                  <TableHead className="pl-4 font-semibold">{t('pDGShareholderManagement.resolution')}</TableHead>
                   <TableHead className="font-semibold">Statut</TableHead>
                   <TableHead className="font-semibold">Destinataires</TableHead>
-                  <TableHead className="font-semibold text-center">Résultats</TableHead>
-                  <TableHead className="font-semibold">Clôture</TableHead>
+                  <TableHead className="font-semibold text-center">{t('pDGShareholderManagement.resultats')}</TableHead>
+                  <TableHead className="font-semibold">{t('pDGShareholderManagement.cloture')}</TableHead>
                   <TableHead className="text-right pr-4 font-semibold">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -1212,7 +1225,7 @@ function VotesTabPDG({
                         <div className="flex items-center justify-end gap-1">
                           {vote.status === 'draft' && (
                             <>
-                              <Button size="icon" variant="ghost" className="h-7 w-7" title="Modifier"
+                              <Button size="icon" variant="ghost" className="h-7 w-7" title={t('pDGShareholderManagement.modifier')}
                                 onClick={() => { setSelectedVote(vote); setShowEdit(true); }}>
                                 <Edit className="w-3.5 h-3.5" />
                               </Button>
@@ -1221,7 +1234,7 @@ function VotesTabPDG({
                                 onClick={() => act(() => shareholderService.publishVote(vote.id), 'Vote publié')}>
                                 <Send className="w-3.5 h-3.5" />
                               </Button>
-                              <Button size="icon" variant="ghost" className="h-7 w-7 text-[#ff4000]" title="Supprimer"
+                              <Button size="icon" variant="ghost" className="h-7 w-7 text-[#ff4000]" title={t('pDGShareholderManagement.supprimer2')}
                                 disabled={actionLoading}
                                 onClick={() => act(() => shareholderService.deleteVote(vote.id), 'Brouillon supprimé')}>
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -1230,12 +1243,12 @@ function VotesTabPDG({
                           )}
                           {vote.status === 'open' && (
                             <>
-                              <Button size="icon" variant="ghost" className="h-7 w-7 text-blue-700" title="Clôturer"
+                              <Button size="icon" variant="ghost" className="h-7 w-7 text-blue-700" title={t('pDGShareholderManagement.cloturer')}
                                 disabled={actionLoading}
                                 onClick={() => act(() => shareholderService.closeVote(vote.id), 'Vote clôturé')}>
                                 <Lock className="w-3.5 h-3.5" />
                               </Button>
-                              <Button size="icon" variant="ghost" className="h-7 w-7 text-[#ff4000]" title="Annuler"
+                              <Button size="icon" variant="ghost" className="h-7 w-7 text-[#ff4000]" title={t('pDGShareholderManagement.annuler')}
                                 disabled={actionLoading}
                                 onClick={() => act(() => shareholderService.cancelVote(vote.id), 'Vote annulé')}>
                                 <XCircle className="w-3.5 h-3.5" />
@@ -1243,7 +1256,7 @@ function VotesTabPDG({
                             </>
                           )}
                           {(vote.status === 'closed' || vote.status === 'cancelled') && (
-                            <Button size="icon" variant="ghost" className="h-7 w-7 opacity-40 cursor-default" title="Terminé">
+                            <Button size="icon" variant="ghost" className="h-7 w-7 opacity-40 cursor-default" title={t('pDGShareholderManagement.termine')}>
                               <Eye className="w-3.5 h-3.5" />
                             </Button>
                           )}
@@ -1294,6 +1307,7 @@ function VotesTabPDG({
 }
 
 export default function PDGShareholderManagement() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const {
     shareholders, stats, percentages, revenues, payments,
@@ -1382,7 +1396,7 @@ export default function PDGShareholderManagement() {
     if (!user?.id) return;
     const saveResult = await shareholderService.saveRevenue(result, user.id);
     if (saveResult.success) {
-      toast.success('Revenus enregistrés avec succès');
+      toast.success(t('pDGShareholderManagement.revenusEnregistresAvecSucces'));
       await refetch();
       setShowCalculator(false);
       setSelectedSh(null);
@@ -1398,7 +1412,7 @@ export default function PDGShareholderManagement() {
       {/* En-tête */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold">Gestion des Actionnaires</h2>
+          <h2 className="text-2xl font-bold">{t('pDGShareholderManagement.gestionDesActionnaires')}</h2>
           <p className="text-muted-foreground text-sm mt-0.5">
             Gérer les actionnaires, leurs attributions et leurs revenus
           </p>
@@ -1438,13 +1452,13 @@ export default function PDGShareholderManagement() {
             color="text-[#ff4000]"
           />
           <StatCard
-            title="Paiements en attente"
+            title={t('pDGShareholderManagement.paiementsEnAttente')}
             value={formatCurrency(stats.pending_payments)}
             icon={DollarSign}
             color="text-[#ff4000]"
           />
           <StatCard
-            title="Total distribué"
+            title={t('pDGShareholderManagement.totalDistribue')}
             value={formatCurrency(stats.sent_payments)}
             icon={TrendingUp}
             color="text-[#04439e]"
@@ -1564,7 +1578,7 @@ export default function PDGShareholderManagement() {
                   {filteredShareholders.length} actionnaire(s)
                 </CardTitle>
                 <Input
-                  placeholder="Rechercher…"
+                  placeholder={t('pDGShareholderManagement.rechercher')}
                   className="h-8 w-52 text-sm"
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
@@ -1588,7 +1602,7 @@ export default function PDGShareholderManagement() {
         <TabsContent value="revenues" className="mt-4">
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold">Historique des revenus calculés</CardTitle>
+              <CardTitle className="text-sm font-semibold">{t('pDGShareholderManagement.historiqueDesRevenusCalcules')}</CardTitle>
             </CardHeader>
             <CardContent>
               <RevenueTable revenues={revenues} />
@@ -1630,7 +1644,7 @@ export default function PDGShareholderManagement() {
               <Card>
                 <CardContent className="py-12 text-center text-muted-foreground">
                   <FileText className="w-10 h-10 mx-auto mb-3 opacity-30" />
-                  <p>Aucun paiement enregistré</p>
+                  <p>{t('pDGShareholderManagement.aucunPaiementEnregistre')}</p>
                 </CardContent>
               </Card>
             )}
@@ -1666,7 +1680,7 @@ export default function PDGShareholderManagement() {
       <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Ajouter un actionnaire</DialogTitle>
+            <DialogTitle>{t('pDGShareholderManagement.ajouterUnActionnaire')}</DialogTitle>
           </DialogHeader>
           <AddShareholderForm
             percentages={percentages}
