@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * SIDEBAR VENDEUR DIGITAL - Interface dédiée produits numériques & affiliations
  * Uniquement les fonctionnalités pertinentes pour le vendeur digital
@@ -25,6 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { useMerchantDigitalProducts } from "@/hooks/useDigitalProducts";
 
 const DigitalVendorSidebar = memo(function DigitalVendorSidebar() {
+  const { t } = useTranslation();
   const { state, setOpen, isMobile } = useSidebar();
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,9 +49,9 @@ const DigitalVendorSidebar = memo(function DigitalVendorSidebar() {
     {
       label: "Vue d’ensemble",
       items: [
-        { title: "Tableau de bord", icon: LayoutDashboard, path: "dashboard" },
+        { title: t('digitalVendorSidebar.tableauDeBord'), icon: LayoutDashboard, path: "dashboard" },
         { title: "Catalogue", icon: Laptop, path: "products", badge: products.length > 0 ? products.length.toString() : null },
-        { title: "Ajouter un produit", icon: Plus, path: "add-product" },
+        { title: t('digitalVendorSidebar.ajouterUnProduit'), icon: Plus, path: "add-product" },
       ]
     },
     {
@@ -58,14 +60,14 @@ const DigitalVendorSidebar = memo(function DigitalVendorSidebar() {
         { title: "Statistiques", icon: BarChart3, path: "analytics" },
         { title: "Campagnes", icon: Megaphone, path: "campaigns" },
         { title: "Affiliation", icon: Link, path: "affiliate", badge: affiliateCount > 0 ? affiliateCount.toString() : null },
-        { title: "Liens de paiement", icon: DollarSign, path: "payment-links" },
-        { title: "Explorer le marché", icon: Eye, path: "marketplace" },
+        { title: t('digitalVendorSidebar.liensDePaiement'), icon: DollarSign, path: "payment-links" },
+        { title: t('digitalVendorSidebar.explorerLeMarche'), icon: Eye, path: "marketplace" },
       ]
     },
     {
       label: "Finance",
       items: [
-        { title: "Portefeuille", icon: Wallet, path: "wallet" },
+        { title: t('digitalVendorSidebar.portefeuille'), icon: Wallet, path: "wallet" },
         { title: "Abonnement", icon: Crown, path: "subscription" },
       ]
     },
@@ -74,7 +76,7 @@ const DigitalVendorSidebar = memo(function DigitalVendorSidebar() {
       items: [
         { title: "Copilote IA", icon: Bot, path: "copilot" },
         { title: "Mes achats", icon: ShoppingBag, path: "my-purchases" },
-        { title: "Paramètres", icon: Settings, path: "settings" },
+        { title: t('digitalVendorSidebar.parametres'), icon: Settings, path: "settings" },
       ]
     },
   ];
@@ -98,7 +100,7 @@ const DigitalVendorSidebar = memo(function DigitalVendorSidebar() {
                 </div>
                 {!collapsed && (
                   <div className="min-w-0 flex-1">
-                    <h2 className="text-sm font-semibold tracking-[0.02em] text-white">Cockpit vendeur digital</h2>
+                    <h2 className="text-sm font-semibold tracking-[0.02em] text-white">{t('digitalVendorSidebar.cockpitVendeurDigital')}</h2>
                     <p className="mt-1 text-xs text-white/55">{publishedCount} produit{publishedCount !== 1 ? 's' : ''} publié{publishedCount !== 1 ? 's' : ''}</p>
                   </div>
                 )}
@@ -106,7 +108,7 @@ const DigitalVendorSidebar = memo(function DigitalVendorSidebar() {
               {!collapsed && (
                 <div className="mt-4 flex items-center justify-between gap-2 rounded-2xl bg-white/10 px-3 py-2.5">
                   <div>
-                    <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/45">Activité boutique</p>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/45">{t('digitalVendorSidebar.activiteBoutique')}</p>
                     <p className="text-sm font-semibold text-white">{products.length} références digitales</p>
                   </div>
                   <Badge className="inline-flex min-w-[92px] items-center justify-center whitespace-nowrap border-0 bg-[#ff4000] px-2.5 py-1 text-center text-[11px] font-semibold text-white shadow-none">
@@ -197,7 +199,7 @@ const DigitalVendorSidebar = memo(function DigitalVendorSidebar() {
               >
                 <div className="absolute inset-y-0 left-0 w-[3px] rounded-r-full bg-[#ff4000] -translate-x-full transition-transform duration-200 group-hover:translate-x-0" />
                 <Home className="w-4 h-4 flex-shrink-0" />
-                <span>Retour à l'accueil</span>
+                <span>{t('digitalVendorSidebar.retourALAccueil')}</span>
               </div>
             </div>
           )}

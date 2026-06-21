@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 ﻿/**
  * PAGE MES COMMANDES - Suivi unifié Restaurant + Taxi-Moto
  * Le client voit l'évolution de ses commandes en temps réel
@@ -22,23 +23,23 @@ import QuickFooter from '@/components/QuickFooter';
 // Status configs
 const restaurantStatusConfig: Record<string, { label: string; color: string; icon: any; step: number }> = {
   pending: { label: 'En attente', color: 'bg-[#ff4000]', icon: Clock, step: 1 },
-  confirmed: { label: 'Confirmée', color: 'bg-blue-500', icon: CheckCircle2, step: 2 },
-  preparing: { label: 'En préparation', color: 'bg-orange-500', icon: ChefHat, step: 3 },
-  ready: { label: 'Prête', color: 'bg-[#ff4000]', icon: Package, step: 4 },
-  delivered: { label: 'Livrée', color: 'bg-[#ff4000]', icon: CheckCircle2, step: 5 },
-  completed: { label: 'Terminée', color: 'bg-primary', icon: CheckCircle2, step: 6 },
-  cancelled: { label: 'Annulée', color: 'bg-destructive', icon: XCircle, step: 0 },
+  confirmed: { label: t('mesCommandes.confirmee'), color: 'bg-blue-500', icon: CheckCircle2, step: 2 },
+  preparing: { label: t('mesCommandes.enPreparation'), color: 'bg-orange-500', icon: ChefHat, step: 3 },
+  ready: { label: t('mesCommandes.prete'), color: 'bg-[#ff4000]', icon: Package, step: 4 },
+  delivered: { label: t('mesCommandes.livree'), color: 'bg-[#ff4000]', icon: CheckCircle2, step: 5 },
+  completed: { label: t('mesCommandes.terminee'), color: 'bg-primary', icon: CheckCircle2, step: 6 },
+  cancelled: { label: t('mesCommandes.annulee'), color: 'bg-destructive', icon: XCircle, step: 0 },
 };
 
 const taxiStatusConfig: Record<string, { label: string; color: string; icon: any; step: number }> = {
   requested: { label: 'Recherche chauffeur', color: 'bg-[#ff4000]', icon: Clock, step: 1 },
   accepted: { label: 'Chauffeur en route', color: 'bg-blue-500', icon: Bike, step: 2 },
-  arrived: { label: 'Chauffeur arrivé', color: 'bg-[#04439e]', icon: MapPin, step: 3 },
+  arrived: { label: t('mesCommandes.chauffeurArrive'), color: 'bg-[#04439e]', icon: MapPin, step: 3 },
   picked_up: { label: 'En course', color: 'bg-orange-500', icon: Bike, step: 4 },
-  completed: { label: 'Terminée', color: 'bg-[#ff4000]', icon: CheckCircle2, step: 5 },
-  cancelled: { label: 'Annulée', color: 'bg-destructive', icon: XCircle, step: 0 },
-  cancelled_by_customer: { label: 'Annulée', color: 'bg-destructive', icon: XCircle, step: 0 },
-  cancelled_by_driver: { label: 'Annulée par chauffeur', color: 'bg-destructive', icon: XCircle, step: 0 },
+  completed: { label: t('mesCommandes.terminee'), color: 'bg-[#ff4000]', icon: CheckCircle2, step: 5 },
+  cancelled: { label: t('mesCommandes.annulee'), color: 'bg-destructive', icon: XCircle, step: 0 },
+  cancelled_by_customer: { label: t('mesCommandes.annulee'), color: 'bg-destructive', icon: XCircle, step: 0 },
+  cancelled_by_driver: { label: t('mesCommandes.annuleeParChauffeur'), color: 'bg-destructive', icon: XCircle, step: 0 },
 };
 
 const restaurantSteps = ['En attente', 'Confirmée', 'Préparation', 'Prête', 'Livrée', 'Terminée'];
@@ -80,13 +81,14 @@ interface TaxiTripTracking {
 }
 
 function StatusStepper({ steps, currentStep, isCancelled }: { steps: string[]; currentStep: number; isCancelled: boolean }) {
+  const { t } = useTranslation();
   if (isCancelled) {
     return (
       <div className="flex items-center gap-2 py-3">
         <div className="w-6 h-6 rounded-full bg-destructive flex items-center justify-center">
           <XCircle className="w-4 h-4 text-destructive-foreground" />
         </div>
-        <span className="text-sm font-medium text-destructive">Commande annulée</span>
+        <span className="text-sm font-medium text-destructive">{t('mesCommandes.commandeAnnulee')}</span>
       </div>
     );
   }
@@ -128,6 +130,7 @@ function StatusStepper({ steps, currentStep, isCancelled }: { steps: string[]; c
 }
 
 function RestaurantOrderCard({ order }: { order: RestaurantOrderTracking }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const config = restaurantStatusConfig[order.status || 'pending'] || restaurantStatusConfig.pending;
@@ -150,7 +153,7 @@ function RestaurantOrderCard({ order }: { order: RestaurantOrderTracking }) {
   const canTrack = isDelivery && ['confirmed', 'preparing', 'ready', 'delivered'].includes(order.status || '');
   const openTracking = async () => {
     const { data } = await supabase.from('deliveries').select('id').eq('restaurant_order_id', order.id).maybeSingle();
-    if (!data?.id) { toast.info('Le livreur n\'a pas encore été assigné. Réessayez dans un instant.'); return; }
+    if (!data?.id) { toast.info(t('mesCommandes.leLivreurNAPas')); return; }
     setTrackDeliveryId(data.id); setTrackOpen(true);
   };
 
@@ -160,7 +163,7 @@ function RestaurantOrderCard({ order }: { order: RestaurantOrderTracking }) {
   // NOTER : avis VÉRIFIÉ via la RPC submit_restaurant_review (le serveur exige une commande
   // terminée/livrée pour ce restaurant + 1 seul avis par client = upsert). Actif après clôture.
   const submitReview = async () => {
-    if (!user?.id || stars < 1) { toast.error('Choisissez une note'); return; }
+    if (!user?.id || stars < 1) { toast.error(t('mesCommandes.choisissezUneNote')); return; }
     setSubmitting(true);
     try {
       const { error } = await supabase.rpc('submit_restaurant_review', {
@@ -169,7 +172,7 @@ function RestaurantOrderCard({ order }: { order: RestaurantOrderTracking }) {
         p_comment: comment.trim() || null,
       });
       if (error) throw error;
-      toast.success('Merci pour votre avis !');
+      toast.success(t('mesCommandes.merciPourVotreAvis'));
       setRated(true); setRateOpen(false);
     } catch (e: any) {
       const msg = String(e?.message || '');
@@ -258,7 +261,7 @@ function RestaurantOrderCard({ order }: { order: RestaurantOrderTracking }) {
       {/* Carte de suivi livreur temps réel */}
       <Dialog open={trackOpen} onOpenChange={setTrackOpen}>
         <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>Suivi de la livraison</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t('mesCommandes.suiviDeLaLivraison')}</DialogTitle></DialogHeader>
           {trackDeliveryId && <ClientDeliveryTracking deliveryId={trackDeliveryId} />}
         </DialogContent>
       </Dialog>
@@ -266,7 +269,7 @@ function RestaurantOrderCard({ order }: { order: RestaurantOrderTracking }) {
       {/* Dialogue de notation */}
       <Dialog open={rateOpen} onOpenChange={setRateOpen}>
         <DialogContent className="sm:max-w-sm">
-          <DialogHeader><DialogTitle>Noter votre commande</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t('mesCommandes.noterVotreCommande')}</DialogTitle></DialogHeader>
           <div className="flex justify-center gap-1.5 py-2">
             {[1, 2, 3, 4, 5].map((n) => (
               <button key={n} type="button" onClick={() => setStars(n)} aria-label={`${n} étoile${n > 1 ? 's' : ''}`}>
@@ -274,7 +277,7 @@ function RestaurantOrderCard({ order }: { order: RestaurantOrderTracking }) {
               </button>
             ))}
           </div>
-          <Textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Votre avis (optionnel)…" rows={3} />
+          <Textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder={t('mesCommandes.votreAvisOptionnel')} rows={3} />
           <Button onClick={submitReview} disabled={submitting || stars < 1} className="w-full">
             {submitting ? 'Envoi…' : 'Envoyer mon avis'}
           </Button>
@@ -285,6 +288,7 @@ function RestaurantOrderCard({ order }: { order: RestaurantOrderTracking }) {
 }
 
 function TaxiTripCard({ trip }: { trip: TaxiTripTracking }) {
+  const { t } = useTranslation();
   const config = taxiStatusConfig[trip.status || 'requested'] || taxiStatusConfig.requested;
   const StatusIcon = config.icon;
   const isCancelled = ['cancelled', 'cancelled_by_customer', 'cancelled_by_driver'].includes(trip.status || '');
@@ -343,6 +347,7 @@ function TaxiTripCard({ trip }: { trip: TaxiTripTracking }) {
 }
 
 export default function MesCommandes() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [restaurantOrders, setRestaurantOrders] = useState<RestaurantOrderTracking[]>([]);
@@ -438,7 +443,7 @@ export default function MesCommandes() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex-1 min-w-0">
-              <h1 className="text-lg font-bold truncate">Mes Commandes & Courses</h1>
+              <h1 className="text-lg font-bold truncate">{t('mesCommandes.mesCommandesCourses')}</h1>
               {totalActive > 0 && (
                 <p className="text-xs text-primary font-medium">
                   {totalActive} en cours
@@ -498,7 +503,7 @@ export default function MesCommandes() {
                 <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
                   <Package className="w-8 h-8 text-muted-foreground" />
                 </div>
-                <p className="text-muted-foreground font-medium">Aucune commande</p>
+                <p className="text-muted-foreground font-medium">{t('mesCommandes.aucuneCommande')}</p>
                 <p className="text-sm text-muted-foreground mt-1">
                   Vos commandes restaurant et courses taxi apparaëtront ici
                 </p>
