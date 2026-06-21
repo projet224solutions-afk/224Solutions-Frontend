@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * Service PHARMACIE — interface CLIENT (patient).
  * Accueil : « J'ai une ordonnance » + « Pharmacie de garde » + liste des pharmacies (public).
@@ -26,6 +27,7 @@ import {
 import { toast } from 'sonner';
 
 export default function Pharmacie() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
   const fc = useFormatCurrency();
@@ -53,7 +55,7 @@ export default function Pharmacie() {
   }, [pharmacies, onlyOnCall]);
 
   const startOrder = (p: PharmacyCard) => {
-    if (!user) { toast.info('Connectez-vous pour envoyer une ordonnance'); navigate('/auth'); return; }
+    if (!user) { toast.info(t('pharmacie.connectezVousPourEnvoyerUne')); navigate('/auth'); return; }
     setFlow(p); setPhotos([]); setDeliveryType('pickup'); setAddress(''); setName(''); setPhone('');
   };
 
@@ -65,12 +67,12 @@ export default function Pharmacie() {
         const res = await uploadPrescriptionPhoto(f, user.id);
         if (res?.path) setPhotos((p) => [...p, { path: res.path, preview: URL.createObjectURL(f) }]);
       }
-    } catch { toast.error('Échec de l\'upload'); } finally { setUploading(false); }
+    } catch { toast.error(t('pharmacie.echecDeLUpload')); } finally { setUploading(false); }
   };
 
   const submit = async () => {
-    if (!flow || photos.length === 0) { toast.error('Ajoutez au moins une photo de l\'ordonnance'); return; }
-    if (deliveryType === 'delivery' && !address.trim()) { toast.error('Adresse de livraison requise'); return; }
+    if (!flow || photos.length === 0) { toast.error(t('pharmacie.ajoutezAuMoinsUnePhoto')); return; }
+    if (deliveryType === 'delivery' && !address.trim()) { toast.error(t('pharmacie.adresseDeLivraisonRequise')); return; }
     setSending(true);
     const ok = await sendPrescription({ pharmacy_id: flow.id, photos: photos.map((p) => p.path), delivery_type: deliveryType, delivery_address: address.trim() || undefined, customer_name: name.trim() || undefined, customer_phone: phone.trim() || undefined });
     setSending(false);
@@ -89,10 +91,10 @@ export default function Pharmacie() {
         {/* 2 grandes entrées */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button onClick={() => { setTab('pharmacies'); setOnlyOnCall(false); }} className="flex items-center gap-3 rounded-xl bg-[#04439e] p-4 text-left text-white hover:opacity-95">
-            <FileText className="h-7 w-7" /><div><div className="font-bold">📋 J'ai une ordonnance</div><div className="text-xs text-white/80">Choisissez une pharmacie ci-dessous</div></div>
+            <FileText className="h-7 w-7" /><div><div className="font-bold">{t('pharmacie.jAiUneOrdonnance')}</div><div className="text-xs text-white/80">{t('pharmacie.choisissezUnePharmacieCiDessous')}</div></div>
           </button>
           <button onClick={() => { setTab('pharmacies'); setOnlyOnCall(true); }} className="flex items-center gap-3 rounded-xl bg-red-600 p-4 text-left text-white hover:opacity-95">
-            <ShieldPlus className="h-7 w-7" /><div><div className="font-bold">🏥 Pharmacie de garde</div><div className="text-xs text-white/80">Ouvertes en urgence (nuit / week-end)</div></div>
+            <ShieldPlus className="h-7 w-7" /><div><div className="font-bold">{t('pharmacie.pharmacieDeGarde')}</div><div className="text-xs text-white/80">Ouvertes en urgence (nuit / week-end)</div></div>
           </button>
         </div>
 
@@ -105,7 +107,7 @@ export default function Pharmacie() {
 
         {tab === 'pharmacies' ? (
           <>
-            {onlyOnCall && <p className="text-sm text-red-600 font-medium">Affichage des pharmacies de garde uniquement.</p>}
+            {onlyOnCall && <p className="text-sm text-red-600 font-medium">{t('pharmacie.affichageDesPharmaciesDeGarde')}</p>}
             {loading ? <div className="py-10 text-center"><Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" /></div>
               : list.length === 0 ? <Card><CardContent className="py-10 text-center text-muted-foreground">Aucune pharmacie {onlyOnCall ? 'de garde ' : ''}disponible.</CardContent></Card>
               : (
@@ -121,10 +123,10 @@ export default function Pharmacie() {
                           </div>
                         </div>
                         <div className="flex flex-wrap items-center gap-1.5">
-                          {p.on_call && <Badge className="bg-red-600 text-white gap-1"><ShieldPlus className="h-3 w-3" />De garde</Badge>}
-                          {p.total_reviews ? <Badge variant="outline" className="gap-1"><Star className="h-3 w-3 fill-amber-400 text-amber-400" />{Number(p.rating).toFixed(1)} ({p.total_reviews})</Badge> : <Badge variant="outline">Nouveau</Badge>}
+                          {p.on_call && <Badge className="bg-red-600 text-white gap-1"><ShieldPlus className="h-3 w-3" />{t('pharmacie.deGarde')}</Badge>}
+                          {p.total_reviews ? <Badge variant="outline" className="gap-1"><Star className="h-3 w-3 fill-amber-400 text-amber-400" />{Number(p.rating).toFixed(1)} ({p.total_reviews})</Badge> : <Badge variant="outline">{t('pharmacie.nouveau')}</Badge>}
                         </div>
-                        <Button className="w-full gap-1.5" size="sm" onClick={() => startOrder(p)}><FileText className="h-4 w-4" /> Envoyer une ordonnance</Button>
+                        <Button className="w-full gap-1.5" size="sm" onClick={() => startOrder(p)}><FileText className="h-4 w-4" /> {t('pharmacie.envoyerUneOrdonnance')}</Button>
                       </CardContent>
                     </Card>
                   ))}
@@ -143,7 +145,7 @@ export default function Pharmacie() {
         <DialogContent className="max-w-md max-h-[92vh] overflow-y-auto">
           <DialogHeader><DialogTitle className="flex items-center gap-2"><Camera className="h-5 w-5" /> Envoyer à {flow?.business_name}</DialogTitle></DialogHeader>
           <div className="space-y-3">
-            <p className="text-xs text-muted-foreground">Placez votre ordonnance sur une surface plane, bien éclairée, et cadrez-la entièrement. Vous pouvez ajouter plusieurs pages.</p>
+            <p className="text-xs text-muted-foreground">{t('pharmacie.placezVotreOrdonnanceSurUne')}</p>
             <div className="grid grid-cols-3 gap-2">
               {photos.map((ph, i) => (
                 <div key={i} className="relative"><img src={ph.preview} alt="" className="h-20 w-full rounded object-cover border" />
@@ -151,25 +153,25 @@ export default function Pharmacie() {
                 </div>
               ))}
               <label className="flex h-20 cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed text-muted-foreground hover:border-primary">
-                {uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <><Camera className="h-5 w-5" /><span className="text-[10px]">Ajouter</span></>}
+                {uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <><Camera className="h-5 w-5" /><span className="text-[10px]">{t('pharmacie.ajouter')}</span></>}
                 <input type="file" accept="image/*" capture="environment" multiple className="hidden" onChange={(e) => onPickPhotos(e.target.files)} />
               </label>
             </div>
             <div>
-              <Label className="text-xs">Mode de récupération</Label>
+              <Label className="text-xs">{t('pharmacie.modeDeRecuperation')}</Label>
               <div className="mt-1 grid grid-cols-2 gap-2">
                 <Button type="button" variant={deliveryType === 'pickup' ? 'default' : 'outline'} size="sm" className="gap-1.5" onClick={() => setDeliveryType('pickup')}><Store className="h-4 w-4" /> Retrait (gratuit)</Button>
-                <Button type="button" variant={deliveryType === 'delivery' ? 'default' : 'outline'} size="sm" className="gap-1.5" onClick={() => setDeliveryType('delivery')}><Truck className="h-4 w-4" /> Livraison</Button>
+                <Button type="button" variant={deliveryType === 'delivery' ? 'default' : 'outline'} size="sm" className="gap-1.5" onClick={() => setDeliveryType('delivery')}><Truck className="h-4 w-4" /> {t('pharmacie.livraison')}</Button>
               </div>
             </div>
-            {deliveryType === 'delivery' && <div><Label className="text-xs">Adresse de livraison</Label><Textarea rows={2} value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Votre adresse complète" /></div>}
+            {deliveryType === 'delivery' && <div><Label className="text-xs">{t('pharmacie.adresseDeLivraison')}</Label><Textarea rows={2} value={address} onChange={(e) => setAddress(e.target.value)} placeholder={t('pharmacie.votreAdresseComplete')} /></div>}
             <div className="grid grid-cols-2 gap-2">
               <div><Label className="text-xs">Nom (optionnel)</Label><Input value={name} onChange={(e) => setName(e.target.value)} /></div>
-              <div><Label className="text-xs">Téléphone</Label><Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+224…" /></div>
+              <div><Label className="text-xs">{t('pharmacie.telephone')}</Label><Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+224…" /></div>
             </div>
           </div>
           <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => setFlow(null)}>Annuler</Button>
+            <Button variant="outline" onClick={() => setFlow(null)}>{t('pharmacie.annuler')}</Button>
             <Button onClick={submit} disabled={sending || photos.length === 0} className="gap-1.5">{sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} Envoyer</Button>
           </DialogFooter>
         </DialogContent>
@@ -182,6 +184,7 @@ export default function Pharmacie() {
 
 /** Miniature d'ordonnance via URL signée (bucket privé). */
 function PrescriptionThumb({ prescriptionId, hasPhotos }: { prescriptionId: string; hasPhotos: boolean }) {
+  const { t } = useTranslation();
   const { urls } = usePrescriptionPhotos(prescriptionId, hasPhotos);
   if (!hasPhotos) return null;
   if (!urls[0]) return <div className="h-10 w-10 rounded border bg-muted flex items-center justify-center"><FileText className="h-4 w-4 text-muted-foreground" /></div>;
@@ -190,8 +193,9 @@ function PrescriptionThumb({ prescriptionId, hasPhotos }: { prescriptionId: stri
 
 /** Mes ordonnances : statut, devis (accepter & payer), suivi de commande. */
 function MyPrescriptions({ prescriptions, orders, loading, fc, pay, payingId }: any) {
+  const { t } = useTranslation();
   if (loading) return <div className="py-10 text-center"><Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" /></div>;
-  if (!prescriptions.length) return <Card><CardContent className="py-10 text-center text-muted-foreground"><FileText className="mx-auto mb-2 h-10 w-10 opacity-40" /> Aucune ordonnance envoyée.</CardContent></Card>;
+  if (!prescriptions.length) return <Card><CardContent className="py-10 text-center text-muted-foreground"><FileText className="mx-auto mb-2 h-10 w-10 opacity-40" /> {t('pharmacie.aucuneOrdonnanceEnvoyee')}</CardContent></Card>;
   const orderByPresc = new Map(orders.map((o: any) => [o.prescription_id, o]));
   const STEPS = ['preparing', 'ready', 'delivering', 'delivered'];
   return (
@@ -203,9 +207,9 @@ function MyPrescriptions({ prescriptions, orders, loading, fc, pay, payingId }: 
             <div className="flex items-center gap-2">
               <PrescriptionThumb prescriptionId={p.id} hasPhotos={!!p.photos?.length} />
               <div className="min-w-0 flex-1"><div className="text-xs text-muted-foreground flex items-center gap-1"><Clock className="h-3 w-3" />{new Date(p.created_at).toLocaleString('fr-FR')}</div></div>
-              {p.status === 'refused' && <Badge className="bg-gray-200 text-gray-700 gap-1"><XCircle className="h-3 w-3" />Refusée</Badge>}
-              {['pending', 'reviewing'].includes(p.status) && <Badge className="bg-orange-100 text-orange-700 gap-1"><Clock className="h-3 w-3" />En vérification</Badge>}
-              {order && <Badge className="bg-emerald-100 text-emerald-700">Payée</Badge>}
+              {p.status === 'refused' && <Badge className="bg-gray-200 text-gray-700 gap-1"><XCircle className="h-3 w-3" />{t('pharmacie.refusee')}</Badge>}
+              {['pending', 'reviewing'].includes(p.status) && <Badge className="bg-orange-100 text-orange-700 gap-1"><Clock className="h-3 w-3" />{t('pharmacie.enVerification')}</Badge>}
+              {order && <Badge className="bg-emerald-100 text-emerald-700">{t('pharmacie.payee')}</Badge>}
             </div>
 
             {p.status === 'refused' && p.refuse_reason && <p className="rounded bg-gray-50 p-2 text-xs text-gray-600">Motif : {p.refuse_reason}</p>}
@@ -213,15 +217,15 @@ function MyPrescriptions({ prescriptions, orders, loading, fc, pay, payingId }: 
             {/* Devis reçu → accepter et payer */}
             {p.status === 'quoted' && !order && (
               <div className="rounded-lg border p-2 space-y-1.5">
-                <div className="text-xs font-semibold">Devis du pharmacien</div>
+                <div className="text-xs font-semibold">{t('pharmacie.devisDuPharmacien')}</div>
                 {(p.medications_validated || []).map((m: any, i: number) => (
                   <div key={i} className="flex justify-between text-xs"><span>{m.quantity}× {m.name}{m.dosage ? ` (${m.dosage})` : ''}{m.available === false ? ' — équivalent proposé' : ''}</span><span>{fc(Number(m.price) * Number(m.quantity || 1))}</span></div>
                 ))}
                 {p.pharmacist_notes && <p className="text-[11px] text-muted-foreground">Note : {p.pharmacist_notes}</p>}
                 <div className="border-t pt-1.5 space-y-0.5">
-                  <div className="flex items-center justify-between text-[11px] text-muted-foreground"><span>Médicaments</span><span>{fc(p.total_quoted || 0)}</span></div>
-                  {p.delivery_type === 'delivery' && Number(p.delivery_fee) > 0 && <div className="flex items-center justify-between text-[11px] text-muted-foreground"><span>🛵 Livraison</span><span>{fc(p.delivery_fee)}</span></div>}
-                  <div className="flex items-center justify-between font-bold"><span>Total à payer</span><span className="text-primary">{fc((Number(p.total_quoted) || 0) + (p.delivery_type === 'delivery' ? Number(p.delivery_fee) || 0 : 0))}</span></div>
+                  <div className="flex items-center justify-between text-[11px] text-muted-foreground"><span>{t('pharmacie.medicaments')}</span><span>{fc(p.total_quoted || 0)}</span></div>
+                  {p.delivery_type === 'delivery' && Number(p.delivery_fee) > 0 && <div className="flex items-center justify-between text-[11px] text-muted-foreground"><span>{t('pharmacie.livraison2')}</span><span>{fc(p.delivery_fee)}</span></div>}
+                  <div className="flex items-center justify-between font-bold"><span>{t('pharmacie.totalAPayer')}</span><span className="text-primary">{fc((Number(p.total_quoted) || 0) + (p.delivery_type === 'delivery' ? Number(p.delivery_fee) || 0 : 0))}</span></div>
                 </div>
                 <Button className="w-full gap-1.5" size="sm" disabled={payingId === p.id} onClick={() => pay(p.id)}>{payingId === p.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} Accepter et payer</Button>
               </div>
@@ -248,6 +252,7 @@ function MyPrescriptions({ prescriptions, orders, loading, fc, pay, payingId }: 
 /** Mes rappels de prise : le client saisit nom + heures ; une notification le prévient à l'heure.
  *  ⚠️ Aucun conseil médical — c'est juste un réveil pour respecter le traitement prescrit. */
 function MyReminders() {
+  const { t } = useTranslation();
   const { reminders, loading, addReminder, removeReminder } = useMedicationReminders();
   const [name, setName] = useState('');
   const [times, setTimes] = useState<string[]>(['08:00']);
@@ -259,7 +264,7 @@ function MyReminders() {
   const removeTime = (i: number) => setTimes((t) => (t.length <= 1 ? t : t.filter((_, idx) => idx !== i)));
 
   const submit = async () => {
-    if (!name.trim()) { toast.error('Indiquez le nom du médicament'); return; }
+    if (!name.trim()) { toast.error(t('pharmacie.indiquezLeNomDuMedicament')); return; }
     setSaving(true);
     const ok = await addReminder({
       medication_name: name.trim(), times,
@@ -272,11 +277,11 @@ function MyReminders() {
   return (
     <div className="space-y-3">
       <Card><CardContent className="space-y-3 py-4">
-        <div className="flex items-center gap-2 text-sm font-semibold"><BellRing className="h-4 w-4 text-[#ff4000]" /> Nouveau rappel</div>
-        <p className="text-xs text-muted-foreground">Recevez une notification à l'heure de chaque prise. Ce rappel ne remplace pas l'avis du pharmacien ou du médecin.</p>
-        <div><Label className="text-xs">Médicament</Label><Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex : Paracétamol 500mg" /></div>
+        <div className="flex items-center gap-2 text-sm font-semibold"><BellRing className="h-4 w-4 text-[#ff4000]" /> {t('pharmacie.nouveauRappel')}</div>
+        <p className="text-xs text-muted-foreground">{t('pharmacie.recevezUneNotificationAL')}</p>
+        <div><Label className="text-xs">{t('pharmacie.medicament')}</Label><Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t('pharmacie.exParacetamol500mg')} /></div>
         <div>
-          <Label className="text-xs">Heures de prise</Label>
+          <Label className="text-xs">{t('pharmacie.heuresDePrise')}</Label>
           <div className="mt-1 flex flex-wrap items-center gap-2">
             {times.map((t, i) => (
               <div key={i} className="flex items-center gap-1">
@@ -287,12 +292,12 @@ function MyReminders() {
             {times.length < 6 && <Button type="button" variant="outline" size="sm" className="h-8 gap-1" onClick={addTime}><Plus className="h-3.5 w-3.5" /> Heure</Button>}
           </div>
         </div>
-        <div className="max-w-[200px]"><Label className="text-xs">Durée (jours, optionnel)</Label><Input type="number" min={1} value={durationDays} onChange={(e) => setDurationDays(e.target.value)} placeholder="Ex : 7" /></div>
+        <div className="max-w-[200px]"><Label className="text-xs">{t('pharmacie.dureeJoursOptionnel')}</Label><Input type="number" min={1} value={durationDays} onChange={(e) => setDurationDays(e.target.value)} placeholder="Ex : 7" /></div>
         <Button size="sm" onClick={submit} disabled={saving} className="gap-1.5">{saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />} Ajouter le rappel</Button>
       </CardContent></Card>
 
       {loading ? <div className="py-8 text-center"><Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" /></div>
-        : reminders.length === 0 ? <Card><CardContent className="py-8 text-center text-muted-foreground"><AlarmClock className="mx-auto mb-2 h-9 w-9 opacity-40" /> Aucun rappel. Ajoutez-en un ci-dessus.</CardContent></Card>
+        : reminders.length === 0 ? <Card><CardContent className="py-8 text-center text-muted-foreground"><AlarmClock className="mx-auto mb-2 h-9 w-9 opacity-40" /> {t('pharmacie.aucunRappelAjoutezEnUn')}</CardContent></Card>
         : (
           <div className="space-y-2">
             {reminders.map((r) => (

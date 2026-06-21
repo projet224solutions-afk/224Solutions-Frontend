@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🔍 RECHERCHE ET AFFICHAGE COMPLET DES ACTIVITÉS UTILISATEUR
  * Permet au PDG de voir TOUT l'historique d'un utilisateur - CONTENU COMPLET
@@ -69,6 +70,7 @@ function StatCard({
   subValue?: string;
   trend?: 'up' | 'down' | 'neutral';
 }) {
+  const { t } = useTranslation();
   return (
     <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
       <div className="p-2 bg-primary/10 rounded-lg">
@@ -91,6 +93,7 @@ function StatCard({
 
 // Composant pour afficher le contenu complet d'un message
 function MessageDetailDialog({ message }: { message: MessageActivity }) {
+  const { t } = useTranslation();
   const getMessageIcon = (type: string) => {
     switch (type) {
       case 'image': return Image;
@@ -146,7 +149,7 @@ function MessageDetailDialog({ message }: { message: MessageActivity }) {
           {/* IDs */}
           <div className="grid grid-cols-2 gap-4 text-sm font-mono">
             <div>
-              <span className="text-muted-foreground">Expéditeur:</span>
+              <span className="text-muted-foreground">{t('userActivitySearch.expediteur')}</span>
               <p className="text-xs break-all">{message.sender_id}</p>
             </div>
             <div>
@@ -159,7 +162,7 @@ function MessageDetailDialog({ message }: { message: MessageActivity }) {
 
           {/* Contenu COMPLET du message */}
           <div>
-            <h4 className="font-semibold mb-2">Contenu du message:</h4>
+            <h4 className="font-semibold mb-2">{t('userActivitySearch.contenuDuMessage')}</h4>
             <div className="bg-muted p-4 rounded-lg">
               {message.type === 'text' ? (
                 <p className="whitespace-pre-wrap break-words">{message.content}</p>
@@ -199,7 +202,7 @@ function MessageDetailDialog({ message }: { message: MessageActivity }) {
             <>
               <Separator />
               <details>
-                <summary className="cursor-pointer text-sm text-primary">Métadonnées</summary>
+                <summary className="cursor-pointer text-sm text-primary">{t('userActivitySearch.metadonnees')}</summary>
                 <pre className="text-xs bg-muted p-2 rounded mt-2 overflow-auto">
                   {JSON.stringify(message.metadata, null, 2)}
                 </pre>
@@ -252,6 +255,7 @@ function _TimelineEvent({
 }
 
 export function UserActivitySearch() {
+  const { t } = useTranslation();
   const [searchId, setSearchId] = useState('');
   const [searchError, setSearchError] = useState<{
     message: string;
@@ -351,7 +355,7 @@ export function UserActivitySearch() {
 
           {/* Préfixes valides */}
           <div className="flex flex-wrap gap-1">
-            <span className="text-xs text-muted-foreground mr-2">Préfixes valides:</span>
+            <span className="text-xs text-muted-foreground mr-2">{t('userActivitySearch.prefixesValides')}</span>
             {validPrefixes.map(prefix => (
               <Badge key={prefix} variant="outline" className="text-xs font-mono cursor-pointer hover:bg-muted"
                 onClick={() => setSearchId(prefix)}>
@@ -405,7 +409,7 @@ export function UserActivitySearch() {
               {/* Suggestions améliorées */}
               {searchError?.suggestions && searchError.suggestions.length > 0 && (
                 <div className="pt-2 border-t">
-                  <p className="text-sm text-muted-foreground mb-2">IDs similaires trouvés:</p>
+                  <p className="text-sm text-muted-foreground mb-2">{t('userActivitySearch.idsSimilairesTrouves')}</p>
                   <div className="flex flex-wrap gap-2">
                     {searchError.suggestions.map((suggestion: any, index: number) => {
                       const suggestionId = typeof suggestion === 'string' ? suggestion : suggestion.id;
@@ -439,7 +443,7 @@ export function UserActivitySearch() {
               {/* Correspondances multiples */}
               {searchError?.multipleMatches && searchError.multipleMatches.length > 0 && (
                 <div className="pt-2 border-t">
-                  <p className="text-sm text-muted-foreground mb-2">Plusieurs correspondances trouvées:</p>
+                  <p className="text-sm text-muted-foreground mb-2">{t('userActivitySearch.plusieursCorrespondancesTrouvees')}</p>
                   <div className="space-y-2">
                     {searchError.multipleMatches.map(match => (
                       <Button
@@ -576,7 +580,7 @@ export function UserActivitySearch() {
                 {/* Stats rapides */}
                 <div className="text-right">
                   <p className="text-2xl font-bold text-primary">{activityData.accountAge}</p>
-                  <p className="text-xs text-muted-foreground">jours d'ancienneté</p>
+                  <p className="text-xs text-muted-foreground">{t('userActivitySearch.joursDAnciennete')}</p>
                 </div>
               </div>
 
@@ -586,7 +590,7 @@ export function UserActivitySearch() {
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
                 <StatCard
                   icon={Wallet}
-                  label="Solde wallet"
+                  label={t('userActivitySearch.soldeWallet')}
                   value={formatAmount(activityData.wallet?.balance || 0)}
                 />
                 <StatCard
@@ -596,7 +600,7 @@ export function UserActivitySearch() {
                 />
                 <StatCard
                   icon={ShoppingCart}
-                  label="Commandes"
+                  label={t('userActivitySearch.commandes')}
                   value={activityData.totalOrders}
                 />
                 <StatCard
@@ -632,17 +636,17 @@ export function UserActivitySearch() {
                 <div className="p-3 bg-orange-50 dark:bg-[#ff4000] rounded-lg text-center">
                   <ArrowDownLeft className="h-5 w-5 mx-auto text-[#ff4000] mb-1" />
                   <p className="text-lg font-bold text-[#ff4000]">{formatAmount(activityData.totalReceived)}</p>
-                  <p className="text-xs text-muted-foreground">Total reçu</p>
+                  <p className="text-xs text-muted-foreground">{t('userActivitySearch.totalRecu')}</p>
                 </div>
                 <div className="p-3 bg-orange-50 dark:bg-[#ff4000] rounded-lg text-center">
                   <ArrowUpRight className="h-5 w-5 mx-auto text-[#ff4000] mb-1" />
                   <p className="text-lg font-bold text-[#ff4000]">{formatAmount(activityData.totalSpent)}</p>
-                  <p className="text-xs text-muted-foreground">Total dépensé</p>
+                  <p className="text-xs text-muted-foreground">{t('userActivitySearch.totalDepense')}</p>
                 </div>
                 <div className="p-3 bg-blue-50 dark:bg-blue-950 rounded-lg text-center">
                   <CreditCard className="h-5 w-5 mx-auto text-blue-600 mb-1" />
                   <p className="text-lg font-bold text-blue-600">{formatAmount(activityData.totalOrdersAmount)}</p>
-                  <p className="text-xs text-muted-foreground">Total commandes</p>
+                  <p className="text-xs text-muted-foreground">{t('userActivitySearch.totalCommandes')}</p>
                 </div>
               </div>
             </CardContent>
@@ -699,7 +703,7 @@ export function UserActivitySearch() {
                   <ScrollArea className="h-[500px]">
                     <div className="space-y-2">
                       {activityData.messages.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-8">Aucun message</p>
+                        <p className="text-center text-muted-foreground py-8">{t('userActivitySearch.aucunMessage')}</p>
                       ) : (
                         activityData.messages.map((msg) => (
                           <div key={msg.id} className={`flex items-start gap-3 p-3 rounded-lg ${
@@ -765,7 +769,7 @@ export function UserActivitySearch() {
             <TabsContent value="transactions">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Historique des Transactions</CardTitle>
+                  <CardTitle className="text-lg">{t('userActivitySearch.historiqueDesTransactions')}</CardTitle>
                   <CardDescription>
                     {activityData.totalTransactions} transactions •
                     Envoyé: {formatAmount(activityData.totalSpent)} •
@@ -776,7 +780,7 @@ export function UserActivitySearch() {
                   <ScrollArea className="h-[400px]">
                     <div className="space-y-2">
                       {activityData.transactions.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-8">Aucune transaction</p>
+                        <p className="text-center text-muted-foreground py-8">{t('userActivitySearch.aucuneTransaction')}</p>
                       ) : (
                         // Sécuriser l'affichage: certains backends peuvent renvoyer des doublons (même id)
                         activityData.transactions
@@ -829,7 +833,7 @@ export function UserActivitySearch() {
             <TabsContent value="orders">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Historique des Commandes</CardTitle>
+                  <CardTitle className="text-lg">{t('userActivitySearch.historiqueDesCommandes')}</CardTitle>
                   <CardDescription>
                     {activityData.totalOrders} commandes pour un total de {formatAmount(activityData.totalOrdersAmount)}
                   </CardDescription>
@@ -838,7 +842,7 @@ export function UserActivitySearch() {
                   <ScrollArea className="h-[400px]">
                     <div className="space-y-2">
                       {activityData.orders.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-8">Aucune commande</p>
+                        <p className="text-center text-muted-foreground py-8">{t('userActivitySearch.aucuneCommande')}</p>
                       ) : (
                         activityData.orders.map((order) => (
                           <div key={order.id} className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
@@ -892,7 +896,7 @@ export function UserActivitySearch() {
             <TabsContent value="security">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Historique de Sécurité</CardTitle>
+                  <CardTitle className="text-lg">{t('userActivitySearch.historiqueDeSecurite')}</CardTitle>
                   <CardDescription>
                     {activityData.totalLogins} connexions réussies • Dernière: {
                       activityData.lastLogin
@@ -905,7 +909,7 @@ export function UserActivitySearch() {
                   <ScrollArea className="h-[400px]">
                     <div className="space-y-2">
                       {activityData.loginHistory.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-8">Aucun historique de connexion</p>
+                        <p className="text-center text-muted-foreground py-8">{t('userActivitySearch.aucunHistoriqueDeConnexion')}</p>
                       ) : (
                         activityData.loginHistory.map((login) => (
                           <div key={login.id} className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
@@ -954,7 +958,7 @@ export function UserActivitySearch() {
                   <ScrollArea className="h-[400px]">
                     <div className="space-y-2">
                       {activityData.auditLogs.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-8">Aucun événement d'audit</p>
+                        <p className="text-center text-muted-foreground py-8">{t('userActivitySearch.aucunEvenementDAudit')}</p>
                       ) : (
                         activityData.auditLogs.map((log) => (
                           <div key={log.id} className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg">
@@ -1008,7 +1012,7 @@ export function UserActivitySearch() {
                   <CardContent>
                     <ScrollArea className="h-[300px]">
                       {activityData.deliveries.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-4">Aucune livraison</p>
+                        <p className="text-center text-muted-foreground py-4">{t('userActivitySearch.aucuneLivraison')}</p>
                       ) : (
                         activityData.deliveries.map((d) => (
                           <div key={d.id} className="p-3 mb-2 bg-muted/30 rounded-lg">
@@ -1038,7 +1042,7 @@ export function UserActivitySearch() {
                   <CardContent>
                     <ScrollArea className="h-[300px]">
                       {activityData.rides.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-4">Aucune course</p>
+                        <p className="text-center text-muted-foreground py-4">{t('userActivitySearch.aucuneCourse')}</p>
                       ) : (
                         activityData.rides.map((r) => (
                           <div key={r.id} className="p-3 mb-2 bg-muted/30 rounded-lg">
@@ -1074,7 +1078,7 @@ export function UserActivitySearch() {
                   <CardContent>
                     <ScrollArea className="h-[200px]">
                       {(activityData.reviewsGiven || []).length === 0 ? (
-                        <p className="text-center text-muted-foreground py-4">Aucun avis</p>
+                        <p className="text-center text-muted-foreground py-4">{t('userActivitySearch.aucunAvis')}</p>
                       ) : (
                         activityData.reviewsGiven.map((r) => (
                           <div key={r.id} className="p-2 mb-2 bg-muted/30 rounded-lg">
@@ -1108,7 +1112,7 @@ export function UserActivitySearch() {
                   <CardContent>
                     <ScrollArea className="h-[200px]">
                       {activityData.favorites.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-4">Aucun favori</p>
+                        <p className="text-center text-muted-foreground py-4">{t('userActivitySearch.aucunFavori')}</p>
                       ) : (
                         activityData.favorites.map((f: any) => (
                           <div key={f.id} className="p-2 mb-2 bg-muted/30 rounded-lg text-xs">
@@ -1134,7 +1138,7 @@ export function UserActivitySearch() {
                   <CardContent>
                     <ScrollArea className="h-[200px]">
                       {activityData.notifications.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-4">Aucune notification</p>
+                        <p className="text-center text-muted-foreground py-4">{t('userActivitySearch.aucuneNotification')}</p>
                       ) : (
                         activityData.notifications.slice(0, 20).map((n: any) => (
                           <div key={n.id} className="p-2 mb-2 bg-muted/30 rounded-lg text-xs">
@@ -1163,10 +1167,10 @@ export function UserActivitySearch() {
                       <p><strong>Business:</strong> {activityData.vendorInfo.business_name}</p>
                       <p><strong>Type:</strong> {activityData.vendorInfo.business_type}</p>
                       <p><strong>Actif:</strong> {activityData.vendorInfo.is_active ? 'Oui' : 'Non'}</p>
-                      <p><strong>Produits:</strong> {activityData.vendorInfo.total_products}</p>
+                      <p><strong>{t('userActivitySearch.produits')}</strong> {activityData.vendorInfo.total_products}</p>
                       {activityData.vendorInfo.products && activityData.vendorInfo.products.length > 0 && (
                         <details>
-                          <summary className="cursor-pointer text-primary">Voir les produits</summary>
+                          <summary className="cursor-pointer text-primary">{t('userActivitySearch.voirLesProduits')}</summary>
                           <ScrollArea className="h-[150px] mt-2">
                             {activityData.vendorInfo.products.map((p: any) => (
                               <div key={p.id} className="p-2 bg-muted rounded mb-1 text-xs">
@@ -1191,7 +1195,7 @@ export function UserActivitySearch() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-2 text-sm">
-                      <p><strong>Véhicule:</strong> {activityData.driverInfo.vehicle_type}</p>
+                      <p><strong>{t('userActivitySearch.vehicule')}</strong> {activityData.driverInfo.vehicle_type}</p>
                       <p><strong>Licence:</strong> {activityData.driverInfo.license_number}</p>
                       <p><strong>Statut:</strong> {activityData.driverInfo.status}</p>
                       <p><strong>Note:</strong> {activityData.driverInfo.rating}★</p>
