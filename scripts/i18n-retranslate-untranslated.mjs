@@ -24,9 +24,16 @@ const LANGS = (opt('--langs', 'wo,su,ff')).split(',');
 const LANG_NAMES = { wo: 'Wolof', su: 'Susu (Soussou, spoken in Guinea)', ff: 'Pulaar/Fulani (Fula)', sw: 'Swahili' };
 
 function loadKey() {
-  const env = fs.readFileSync(path.resolve(process.cwd(), 'backend/.env'), 'utf8');
-  const m = env.match(/OPENAI_API_KEY=(.*)/);
-  return m[1].trim().replace(/^["']|["']$/g, '');
+  if (process.env.OPENAI_API_KEY) return process.env.OPENAI_API_KEY;
+  // Cherche dans plusieurs emplacements (backend séparé désormais voisin : ../backend/.env)
+  for (const f of ['backend/.env', '../backend/.env', '.env', '.env.local']) {
+    try {
+      const env = fs.readFileSync(path.resolve(process.cwd(), f), 'utf8');
+      const m = env.match(/^OPENAI_API_KEY=(.*)$/m);
+      if (m && m[1].trim()) return m[1].trim().replace(/^["']|["']$/g, '');
+    } catch { /* fichier suivant */ }
+  }
+  throw new Error('OPENAI_API_KEY introuvable (cherché: env, backend/.env, ../backend/.env, .env)');
 }
 function parseTranslations(text) {
   const start = text.indexOf('{', text.indexOf('translations'));

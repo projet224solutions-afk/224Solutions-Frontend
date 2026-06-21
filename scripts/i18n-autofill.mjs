@@ -34,7 +34,7 @@ const LANG_NAMES = {
 // ---- Chargement clé API depuis backend/.env (sans dotenv) ----
 function loadKey() {
   if (process.env.ANTHROPIC_API_KEY) return process.env.ANTHROPIC_API_KEY;
-  for (const f of ['backend/.env', '.env', 'backend/.env.local', '.env.local']) {
+  for (const f of ['backend/.env', '../backend/.env', '.env', 'backend/.env.local', '.env.local']) {
     try {
       const txt = fs.readFileSync(path.join(ROOT, f), 'utf8');
       const m = txt.match(/^ANTHROPIC_API_KEY=(.*)$/m);
