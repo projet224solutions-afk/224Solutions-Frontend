@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * COMPOSANT - BANNIÈRE DE NOTIFICATION BROADCAST
  * Affiche les messages de diffusion aux utilisateurs
@@ -41,6 +42,7 @@ const BroadcastNotificationBanner: React.FC<BroadcastNotificationBannerProps> = 
   showBanner = true,
   className
 }) => {
+  const { t } = useTranslation();
   const {
     broadcasts,
     stats,
@@ -186,7 +188,7 @@ const BroadcastNotificationBanner: React.FC<BroadcastNotificationBannerProps> = 
             {broadcasts.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
                 <Bell className="h-8 w-8 mb-2 opacity-50" />
-                <p className="text-sm">Aucun message</p>
+                <p className="text-sm">{t('broadcastNotificationBanner.aucunMessage')}</p>
               </div>
             ) : (
               <div className="divide-y">

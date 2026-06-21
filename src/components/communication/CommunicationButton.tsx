@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 💬 BOUTON COMMUNICATION - 224SOLUTIONS
  * Composant professionnel pour initier une conversation
@@ -64,6 +65,7 @@ export function CommunicationButton({
   onSuccess,
   onError
 }: CommunicationButtonProps) {
+  const { t } = useTranslation();
   const { isLoading, startConversation } = useCommunicationButton({
     initialMessage: initialText,
     autoNavigate,
@@ -133,6 +135,7 @@ export function CommunicationIconButton({
   onSuccess,
   onError
 }: Omit<CommunicationButtonProps, 'label' | 'showIcon' | 'variant' | 'size'>) {
+  const { t } = useTranslation();
   const { isLoading, startConversation } = useCommunicationButton({
     initialMessage: initialText,
     autoNavigate,
@@ -160,7 +163,7 @@ export function CommunicationIconButton({
       size="icon"
       className={cn('h-9 w-9', className)}
       aria-busy={isLoading}
-      aria-label="Envoyer un message"
+      aria-label={t('communicationButton.envoyerUnMessage')}
     >
       {isLoading ? (
         <Loader2 className="w-4 h-4 animate-spin" />
@@ -183,6 +186,7 @@ export function CommunicationCompactButton({
   onSuccess,
   onError
 }: Omit<CommunicationButtonProps, 'label' | 'showIcon' | 'variant' | 'size' | 'autoNavigate'>) {
+  const { t } = useTranslation();
   return (
     <CommunicationButton
       userId={userId}
