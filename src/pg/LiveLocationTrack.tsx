@@ -92,7 +92,7 @@ export default function LiveLocationTrack() {
                 <Button
                   className="w-full"
                   onClick={() =>
-                    window.open(googleMapsDirectionsUrl(position.lat, position.lng), '_blank')
+                    window.open(googleMapsDirectionsUrl(position.lat, position.lng), '_blank', 'noopener,noreferrer')
                   }
                 >
                   <Navigation className="w-4 h-4 mr-2" />

@@ -134,7 +134,7 @@ export function ActiveDeliveryPanel({
   const openNavigation = (destination: { lat: number; lng: number }, label: string) => {
     // Ouvrir Google Maps ou Apple Maps
     const url = `https://www.google.com/maps/dir/?api=1&destination=${destination.lat},${destination.lng}&travelmode=driving`;
-    window.open(url, '_blank');
+    window.open(url, '_blank', 'noopener,noreferrer');
     toast.info(`Navigation vers ${label} ouverte`);
   };
 

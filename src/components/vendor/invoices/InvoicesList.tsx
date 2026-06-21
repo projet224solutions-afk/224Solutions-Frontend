@@ -126,7 +126,7 @@ export default function InvoicesList() {
       toast.success(t('invoice.downloadStarted'));
     } catch (error) {
       console.error('Erreur téléchargement:', error);
-      const opened = window.open(invoice.pdf_url, '_blank', 'noopener,noreferrer');
+      const opened = window.open(invoice.pdf_url, '_blank');
       if (opened) {
         toast.success(t('invoice.pdfOpenedNewTab'));
       } else {

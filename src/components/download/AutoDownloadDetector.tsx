@@ -299,7 +299,7 @@ export default function AutoDownloadDetector() {
         });
 
         // Ouvrir le lien de téléchargement
-        window.open(download.downloadUrl, '_blank');
+        window.open(download.downloadUrl, '_blank', 'noopener,noreferrer');
 
         // Afficher les instructions
         setTimeout(() => {

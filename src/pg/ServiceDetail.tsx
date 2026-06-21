@@ -511,10 +511,10 @@ export default function ServiceDetailPage() {
   const handleLocateRestaurant = () => {
     if (service?.has_real_coordinates && service.latitude && service.longitude) {
       const url = `https://www.google.com/maps/dir/?api=1&destination=${service.latitude},${service.longitude}&travelmode=driving`;
-      window.open(url, '_blank');
+      window.open(url, '_blank', 'noopener,noreferrer');
     } else if (service?.address) {
       const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(service.address)}&travelmode=driving`;
-      window.open(url, '_blank');
+      window.open(url, '_blank', 'noopener,noreferrer');
     } else {
       toast.error(t('serviceDetail.positionDuServiceNonDisponible'));
     }
@@ -579,10 +579,10 @@ export default function ServiceDetailPage() {
   const openInMaps = () => {
     if (service?.has_real_coordinates && service.latitude && service.longitude) {
       const url = `https://www.google.com/maps/place/${service.latitude},${service.longitude}/@${service.latitude},${service.longitude},17z`;
-      window.open(url, '_blank');
+      window.open(url, '_blank', 'noopener,noreferrer');
     } else if (service?.address) {
       const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(service.address)}`;
-      window.open(url, '_blank');
+      window.open(url, '_blank', 'noopener,noreferrer');
     } else {
       toast.error(t('serviceDetail.coordonneesNonDisponibles'));
     }

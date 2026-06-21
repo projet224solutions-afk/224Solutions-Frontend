@@ -529,7 +529,7 @@ export default function PDGSyndicatManagement() {
                           <Button
                             size="sm"
                             className="shrink-0"
-                            onClick={() => window.open(`/bureau/${bureau.access_token}`, '_blank')}
+                            onClick={() => window.open(`/bureau/${bureau.access_token}`, '_blank', 'noopener,noreferrer')}
                           >
                             <Eye className="w-4 h-4 mr-2" />
                             Ouvrir l'interface

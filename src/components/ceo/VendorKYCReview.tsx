@@ -575,7 +575,7 @@ export function VendorKYCReview() {
             </Button>
             {selectedKYC?.id_document_url && (
               <Button
-                onClick={() => window.open(selectedKYC.id_document_url, '_blank')}
+                onClick={() => window.open(selectedKYC.id_document_url, '_blank', 'noopener,noreferrer')}
               >
                 <Download className="w-4 h-4 mr-2" />
                 Télécharger

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { secureRandomString } from '@/lib/security/inputSanitizer';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useCurrentVendor } from './useCurrentVendor';
@@ -249,7 +250,7 @@ export function usePaymentLinks() {
       const total = montantFinal + frais;
 
       const timestamp = Date.now();
-      const randomPart = Math.random().toString(36).substring(2, 9).toUpperCase();
+      const randomPart = secureRandomString(8).toUpperCase();
       const paymentId = `PAY-${timestamp}-${randomPart}`;
 
       // Resolve client UUID if provided

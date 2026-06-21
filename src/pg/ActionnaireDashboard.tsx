@@ -1157,7 +1157,7 @@ function DocumentsTab({ documents }: { documents: ReturnType<typeof useSharehold
                   size="sm"
                   variant="outline"
                   className="h-8 text-xs shrink-0"
-                  onClick={() => window.open(doc.file_url!, '_blank')}
+                  onClick={() => window.open(doc.file_url!, '_blank', 'noopener,noreferrer')}
                 >
                   Télécharger
                   <ChevronRight className="w-3.5 h-3.5 ml-1" />

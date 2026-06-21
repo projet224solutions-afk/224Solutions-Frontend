@@ -193,7 +193,7 @@ export function useDjomyPayment() {
 
     if (result.success && result.redirectUrl) {
       // Open in new tab
-      window.open(result.redirectUrl, '_blank');
+      window.open(result.redirectUrl, '_blank', 'noopener,noreferrer');
       return true;
     }
 

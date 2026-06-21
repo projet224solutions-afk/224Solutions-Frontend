@@ -342,7 +342,7 @@ export function GoogleMapsNavigation({
           ? activeRide.pickup.coords
           : activeRide.destination.coords;
       const url = `https://www.google.com/maps/dir/?api=1&origin=${currentLocation.latitude},${currentLocation.longitude}&destination=${target.latitude},${target.longitude}&travelmode=driving`;
-      window.open(url, '_blank');
+      window.open(url, '_blank', 'noopener,noreferrer');
     } else {
       window.open(
         `https://www.google.com/maps/@${currentLocation.latitude},${currentLocation.longitude},15z`,

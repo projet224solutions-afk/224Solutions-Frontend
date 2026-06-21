@@ -74,7 +74,7 @@ export default function QuoteDetails({ quote, open, onClose, onConvert }: QuoteD
       toast.success(t('invoice.downloadStarted'));
     } catch (error) {
       console.error('Erreur téléchargement:', error);
-      const opened = window.open(pdfUrl, '_blank', 'noopener,noreferrer');
+      const opened = window.open(pdfUrl, '_blank');
       if (opened) {
         toast.success(t('invoice.pdfOpenedNewTab'));
       } else {

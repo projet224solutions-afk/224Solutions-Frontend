@@ -236,7 +236,7 @@ export default function DigitalPurchaseDownload() {
         setAccess(prev => prev ? { ...prev, download_count: (prev.download_count || 0) + 1 } : prev);
       }
 
-      window.open(fileUrl, '_blank');
+      window.open(fileUrl, '_blank', 'noopener,noreferrer');
       toast.success(t('digitalPurchaseDownload.telechargementLance'));
     } catch (error) {
       console.error('Erreur téléchargement:', error);

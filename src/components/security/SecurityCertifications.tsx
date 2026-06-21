@@ -158,7 +158,7 @@ export function SecurityCertifications() {
                     variant="link"
                     size="sm"
                     className="p-0 h-auto"
-                    onClick={() => window.open(cert.certificate_url, '_blank')}
+                    onClick={() => window.open(cert.certificate_url, '_blank', 'noopener,noreferrer')}
                   >
                     Voir le certificat →
                   </Button>

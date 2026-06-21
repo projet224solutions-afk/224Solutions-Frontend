@@ -532,7 +532,7 @@ export function DropshippingDashboard({ vendorId }: DropshippingDashboardProps) 
                 p.id === id ? { ...p, isPublished: published } : p
               ));
             }}
-            onViewOnSource={(url) => window.open(url, '_blank')}
+            onViewOnSource={(url) => window.open(url, '_blank', 'noopener,noreferrer')}
           />
         </TabsContent>
 

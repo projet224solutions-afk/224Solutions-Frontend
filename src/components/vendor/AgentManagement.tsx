@@ -411,7 +411,7 @@ export default function AgentManagement() {
 
   const handleOpenAgentInterface = (accessToken: string) => {
     const agentLink = `${window.location.origin}/vendor-agent/${accessToken}`;
-    window.open(agentLink, '_blank');
+    window.open(agentLink, '_blank', 'noopener,noreferrer');
   };
 
   if (loading) {

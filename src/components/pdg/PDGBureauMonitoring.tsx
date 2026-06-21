@@ -151,7 +151,7 @@ export default function PDGBureauMonitoring() {
   const openBureauMonitoring = (bureauId: string) => {
     // Stocker le bureau ID et rediriger vers le monitoring
     sessionStorage.setItem('pdg_selected_bureau_id', bureauId);
-    window.open(`/bureau/monitoring?bureau=${bureauId}`, '_blank');
+    window.open(`/bureau/monitoring?bureau=${bureauId}`, '_blank', 'noopener,noreferrer');
   };
 
   return (

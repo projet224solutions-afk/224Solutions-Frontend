@@ -200,7 +200,7 @@ export default function DigitalProducts() {
 
   const handleProductClick = (product: any) => {
     if (product.product_mode === 'affiliate' && product.affiliate_url) {
-      window.open(product.affiliate_url, '_blank');
+      window.open(product.affiliate_url, '_blank', 'noopener,noreferrer');
     } else {
       navigate(`/digital-product/${product.id}`);
     }

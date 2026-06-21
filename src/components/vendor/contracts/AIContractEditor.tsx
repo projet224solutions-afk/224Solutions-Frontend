@@ -146,7 +146,7 @@ export default function AIContractEditor({ contract, onSaved, onClose }: AIContr
       if (data.html) {
         const blob = new Blob([data.html], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
-        window.open(url, '_blank');
+        window.open(url, '_blank', 'noopener,noreferrer');
       }
     } catch (error: any) {
       toast({
@@ -215,9 +215,9 @@ export default function AIContractEditor({ contract, onSaved, onClose }: AIContr
           '_blank',
         );
       } else if (method === 'sms') {
-        window.open(`sms:${clientPhone || ''}?&body=${encodeURIComponent(msg)}`, '_blank');
+        window.open(`sms:${clientPhone || ''}?&body=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
       } else if (method === 'email') {
-        window.open(`mailto:?subject=${encodeURIComponent('Votre contrat à signer')}&body=${encodeURIComponent(msg)}`, '_blank');
+        window.open(`mailto:?subject=${encodeURIComponent('Votre contrat à signer')}&body=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
       } else {
         try { await navigator.clipboard.writeText(signUrl); } catch { /* presse-papier indisponible */ }
       }

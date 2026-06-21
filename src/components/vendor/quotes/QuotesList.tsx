@@ -132,7 +132,7 @@ export default function QuotesList({ refresh }: { refresh?: number }) {
       console.error('Erreur téléchargement:', error);
 
       // Fallback fiable (évite CORS): ouvrir le PDF dans un nouvel onglet
-      const opened = window.open(pdfUrl, '_blank', 'noopener,noreferrer');
+      const opened = window.open(pdfUrl, '_blank');
       if (opened) {
         toast.success(t('quotesList.pdfOuvertDansUnNouvel'));
       } else {

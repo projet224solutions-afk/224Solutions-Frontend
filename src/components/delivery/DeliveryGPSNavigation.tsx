@@ -163,7 +163,7 @@ export function DeliveryGPSNavigation({ activeDelivery, currentLocation, onConta
       return;
     }
 
-    window.open(mapsUrl, '_blank');
+    window.open(mapsUrl, '_blank', 'noopener,noreferrer');
     toast.success(t('deliveryGPSNavigation.navigationOuverteDansGoogleMaps'));
   };
 

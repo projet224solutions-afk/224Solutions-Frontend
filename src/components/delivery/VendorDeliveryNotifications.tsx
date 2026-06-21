@@ -347,7 +347,7 @@ export function VendorDeliveryNotifications() {
                     variant="outline"
                     size="sm"
                     className="w-full"
-                    onClick={() => window.open(selectedNotification.delivery?.proof_photo_url || '', '_blank')}
+                    onClick={() => window.open(selectedNotification.delivery?.proof_photo_url || '', '_blank', 'noopener,noreferrer')}
                   >
                     <ExternalLink className="h-4 w-4 mr-2" />
                     Voir en grand

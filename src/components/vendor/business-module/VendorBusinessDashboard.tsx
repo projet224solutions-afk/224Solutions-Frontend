@@ -159,7 +159,7 @@ export function VendorBusinessDashboard({
                   <Button
                     variant="outline"
                     className="gap-2 justify-start"
-                    onClick={() => window.open('https://docs.224solutions.com/guide-vendeur', '_blank')}
+                    onClick={() => window.open('https://docs.224solutions.com/guide-vendeur', '_blank', 'noopener,noreferrer')}
                   >
                     <BookOpen className="w-4 h-4" />
                     Guide

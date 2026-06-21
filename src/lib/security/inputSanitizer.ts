@@ -32,6 +32,26 @@ export const escapeHtml = (input: unknown): string => {
 };
 
 /**
+ * Génère une chaîne aléatoire cryptographiquement sûre (CSPRNG via Web Crypto API).
+ * À utiliser pour TOUT secret/jeton/mot de passe temporaire — JAMAIS `Math.random()`
+ * qui est prévisible (non cryptographique) et donc devinable par un attaquant.
+ */
+export const secureRandomString = (length = 16): string => {
+  const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const cryptoObj: Crypto | undefined =
+    (typeof globalThis !== 'undefined' && (globalThis.crypto || (globalThis as any).msCrypto)) || undefined;
+  if (!cryptoObj?.getRandomValues) {
+    // Repli extrêmement improbable (tous les navigateurs cibles ont Web Crypto).
+    throw new Error('Web Crypto API indisponible : génération aléatoire sûre impossible');
+  }
+  const bytes = new Uint8Array(length);
+  cryptoObj.getRandomValues(bytes);
+  let out = '';
+  for (let i = 0; i < length; i++) out += charset[bytes[i] % charset.length];
+  return out;
+};
+
+/**
  * Échapper caractères SQL dangereux
  */
 export const escapeSQLString = (input: string): string => {

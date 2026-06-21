@@ -5,6 +5,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { secureRandomString } from '@/lib/security/inputSanitizer';
 
 export interface CreateUserData {
   firstName: string;
@@ -109,7 +110,7 @@ export const useAgentActions = (options: UseAgentActionsOptions = {}) => {
       // Utiliser le mot de passe fourni ou en générer un automatiquement
       const password = userData.password && userData.password.length >= 8
         ? userData.password
-        : Math.random().toString(36).slice(-8) + 'Aa1!';
+        : secureRandomString(12) + 'Aa1!';
 
       const requestBody: any = {
         email: userData.email,
@@ -200,7 +201,7 @@ export const useAgentActions = (options: UseAgentActionsOptions = {}) => {
       const agentCode = `SA-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
       // Générer un mot de passe temporaire sécurisé
-      const tempPassword = Math.random().toString(36).slice(-8) + 'Aa1!' + Math.random().toString(36).slice(-4);
+      const tempPassword = secureRandomString(14) + 'Aa1!';
 
       console.log('📤 [useAgentActions] Appel edge function create-sub-agent:', {
         parentAgentId,

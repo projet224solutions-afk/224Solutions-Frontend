@@ -145,7 +145,7 @@ export default function UserActivationPage() {
                 <Button
                   size="lg"
                   className="bg-[#04439e]"
-                  onClick={() => window.open(activationResult.downloadUrl, '_blank')}
+                  onClick={() => window.open(activationResult.downloadUrl, '_blank', 'noopener,noreferrer')}
                 >
                   <Download className="w-5 h-5 mr-2" />
                   Télécharger Maintenant

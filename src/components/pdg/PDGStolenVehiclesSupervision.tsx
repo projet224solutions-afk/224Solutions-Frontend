@@ -247,7 +247,7 @@ export default function PDGStolenVehiclesSupervision() {
     }, [loadData]);
 
     const openGoogleMaps = (lat: number, lng: number) => {
-        window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+        window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank', 'noopener,noreferrer');
     };
 
     const filteredVehicles = stolenVehicles.filter(v =>

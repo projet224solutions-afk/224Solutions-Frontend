@@ -329,7 +329,7 @@ export function DriverNavigation({
                     : activeRide.pickup.coords;
                   // Ouvrir Google Maps avec les coordonnées
                   const url = `https://www.google.com/maps/dir/?api=1&destination=${destination.latitude},${destination.longitude}${location ? `&origin=${location.latitude},${location.longitude}` : ''}`;
-                  window.open(url, '_blank');
+                  window.open(url, '_blank', 'noopener,noreferrer');
                 }}
                 className="w-full mt-4 bg-blue-600 hover:bg-blue-700"
                 size="lg"

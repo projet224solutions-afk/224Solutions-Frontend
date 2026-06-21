@@ -121,7 +121,7 @@ export function ActiveRideNavigationPanel({
     const destination = `${target.latitude},${target.longitude}`;
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
 
-    window.open(mapsUrl, '_blank');
+    window.open(mapsUrl, '_blank', 'noopener,noreferrer');
   };
 
   // Ouvrir Waze
@@ -135,7 +135,7 @@ export function ActiveRideNavigationPanel({
     const target = isGoingToPickup ? activeRide.pickup.coords : activeRide.destination.coords;
 
     const wazeUrl = `https://waze.com/ul?ll=${target.latitude},${target.longitude}&navigate=yes`;
-    window.open(wazeUrl, '_blank');
+    window.open(wazeUrl, '_blank', 'noopener,noreferrer');
   };
 
   if (!activeRide) {

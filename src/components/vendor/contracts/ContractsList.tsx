@@ -102,7 +102,7 @@ export default function ContractsList({ refresh }: ContractsListProps) {
       if (data.html) {
         const blob = new Blob([data.html], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
-        window.open(url, '_blank');
+        window.open(url, '_blank', 'noopener,noreferrer');
       }
 
       loadContracts();
@@ -194,7 +194,7 @@ export default function ContractsList({ refresh }: ContractsListProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open(contract.pdf_url!, '_blank')}
+                  onClick={() => window.open(contract.pdf_url!, '_blank', 'noopener,noreferrer')}
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   Voir

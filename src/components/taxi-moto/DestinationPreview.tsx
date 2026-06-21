@@ -42,10 +42,10 @@ export default function DestinationPreview({
     const openInGoogleMaps = () => {
         if (pickupCoords && destinationCoords) {
             const url = `https://www.google.com/maps/dir/${pickupCoords.latitude},${pickupCoords.longitude}/${destinationCoords.latitude},${destinationCoords.longitude}`;
-            window.open(url, '_blank');
+            window.open(url, '_blank', 'noopener,noreferrer');
         } else if (destinationCoords) {
             const url = `https://www.google.com/maps/search/?api=1&query=${destinationCoords.latitude},${destinationCoords.longitude}`;
-            window.open(url, '_blank');
+            window.open(url, '_blank', 'noopener,noreferrer');
         }
     };
 

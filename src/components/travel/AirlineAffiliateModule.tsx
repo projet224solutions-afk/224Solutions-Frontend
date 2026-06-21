@@ -97,7 +97,7 @@ export function AirlineAffiliateModule({ onBack }: AirlineAffiliateModuleProps) 
 
   const handleProductClick = (product: any) => {
     if (product.affiliate_url) {
-      window.open(product.affiliate_url, '_blank');
+      window.open(product.affiliate_url, '_blank', 'noopener,noreferrer');
     } else {
       navigate(`/digital-product/${product.id}`);
     }
