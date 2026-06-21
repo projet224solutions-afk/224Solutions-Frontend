@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * DASHBOARD DE SÉCURITÉ ULTRA-PROFESSIONNEL - 224SOLUTIONS
  * Interface centralisée pour le monitoring et la gestion de la sécurité
@@ -58,6 +59,7 @@ import { toast } from 'sonner';
 // =====================================================
 
 export default function SecurityDashboard() {
+  const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('overview');
     const [isRealTime, setIsRealTime] = useState(true);
 
@@ -69,8 +71,8 @@ export default function SecurityDashboard() {
                     <div className="flex items-center space-x-2">
                         <Shield className="w-8 h-8 text-blue-600" />
                         <div>
-                            <h1 className="text-2xl font-bold text-gray-900">Centre de Sécurité</h1>
-                            <p className="text-sm text-gray-600">Monitoring et protection en temps réel</p>
+                            <h1 className="text-2xl font-bold text-gray-900">{t('securityDashboard.centreDeSecurite')}</h1>
+                            <p className="text-sm text-gray-600">{t('securityDashboard.monitoringEtProtectionEnTemps')}</p>
                         </div>
                     </div>
                 </div>
@@ -154,6 +156,7 @@ export default function SecurityDashboard() {
 // =====================================================
 
 function SecurityOverview({ isRealTime }: { isRealTime: boolean }) {
+  const { t } = useTranslation();
     const { stats, loading } = useSecurity();
     const { alerts, unreadCount } = useSecurityAlerts();
     const { _incidents } = useSecurityIncidents();
@@ -189,8 +192,8 @@ function SecurityOverview({ isRealTime }: { isRealTime: boolean }) {
                 <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
                         <Activity className="w-5 h-5" />
-                        <span>Statut Global du Système</span>
-                        {isRealTime && <Badge variant="outline" className="ml-auto">Temps Réel</Badge>}
+                        <span>{t('securityDashboard.statutGlobalDuSysteme')}</span>
+                        {isRealTime && <Badge variant="outline" className="ml-auto">{t('securityDashboard.tempsReel')}</Badge>}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -199,13 +202,13 @@ function SecurityOverview({ isRealTime }: { isRealTime: boolean }) {
                             {getHealthIcon(stats?.systemHealth || 'good')}
                             <div>
                                 <div className="font-semibold capitalize">{stats?.systemHealth || 'Bon'}</div>
-                                <div className="text-sm opacity-80">Santé du système</div>
+                                <div className="text-sm opacity-80">{t('securityDashboard.santeDuSysteme')}</div>
                             </div>
                         </div>
 
                         <div className="text-right">
                             <div className="text-2xl font-bold">{stats?.threatScore || 0}/10</div>
-                            <div className="text-sm text-gray-600">Score de menace</div>
+                            <div className="text-sm text-gray-600">{t('securityDashboard.scoreDeMenace')}</div>
                         </div>
                     </div>
 
@@ -221,7 +224,7 @@ function SecurityOverview({ isRealTime }: { isRealTime: boolean }) {
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-gray-600">Événements Totaux</p>
+                                <p className="text-sm font-medium text-gray-600">{t('securityDashboard.evenementsTotaux')}</p>
                                 <p className="text-2xl font-bold">{stats?.totalEvents || 0}</p>
                             </div>
                             <Activity className="w-8 h-8 text-blue-600" />
@@ -237,7 +240,7 @@ function SecurityOverview({ isRealTime }: { isRealTime: boolean }) {
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-gray-600">Événements Critiques</p>
+                                <p className="text-sm font-medium text-gray-600">{t('securityDashboard.evenementsCritiques')}</p>
                                 <p className="text-2xl font-bold text-[#ff4000]">{stats?.criticalEvents || 0}</p>
                             </div>
                             <AlertTriangle className="w-8 h-8 text-[#ff4000]" />
@@ -253,7 +256,7 @@ function SecurityOverview({ isRealTime }: { isRealTime: boolean }) {
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-gray-600">IPs Bloquées</p>
+                                <p className="text-sm font-medium text-gray-600">{t('securityDashboard.ipsBloquees')}</p>
                                 <p className="text-2xl font-bold">{stats?.blockedIPs || 0}</p>
                             </div>
                             <Ban className="w-8 h-8 text-orange-600" />
@@ -288,7 +291,7 @@ function SecurityOverview({ isRealTime }: { isRealTime: boolean }) {
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center justify-between">
-                            <span>Alertes Récentes</span>
+                            <span>{t('securityDashboard.alertesRecentes')}</span>
                             <Badge variant="destructive">{unreadCount}</Badge>
                         </CardTitle>
                     </CardHeader>
@@ -323,7 +326,7 @@ function SecurityOverview({ isRealTime }: { isRealTime: boolean }) {
                 {/* Graphique des menaces */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Tendances des Menaces (7 jours)</CardTitle>
+                        <CardTitle>{t('securityDashboard.tendancesDesMenaces7Jours')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ResponsiveContainer width="100%" height={250}>
@@ -357,6 +360,7 @@ function SecurityOverview({ isRealTime }: { isRealTime: boolean }) {
 // =====================================================
 
 function RealTimeMonitoring({ isRealTime }: { isRealTime: boolean }) {
+  const { t } = useTranslation();
     const { events, isConnected } = useRealTimeMonitoring();
     const [filter, setFilter] = useState('all');
 
@@ -392,12 +396,12 @@ function RealTimeMonitoring({ isRealTime }: { isRealTime: boolean }) {
                             {isConnected && isRealTime ? (
                                 <>
                                     <Wifi className="w-5 h-5 text-[#ff4000]" />
-                                    <span className="text-[#ff4000] font-medium">Connecté - Monitoring actif</span>
+                                    <span className="text-[#ff4000] font-medium">{t('securityDashboard.connecteMonitoringActif')}</span>
                                 </>
                             ) : (
                                 <>
                                     <WifiOff className="w-5 h-5 text-[#ff4000]" />
-                                    <span className="text-[#ff4000] font-medium">Déconnecté - Monitoring en pause</span>
+                                    <span className="text-[#ff4000] font-medium">{t('securityDashboard.deconnecteMonitoringEnPause')}</span>
                                 </>
                             )}
                         </div>
@@ -412,7 +416,7 @@ function RealTimeMonitoring({ isRealTime }: { isRealTime: boolean }) {
                                 onChange={(e) => setFilter(e.target.value)}
                                 className="text-sm border rounded px-2 py-1"
                             >
-                                <option value="all">Tous</option>
+                                <option value="all">{t('securityDashboard.tous')}</option>
                                 <option value="critical">Critique</option>
                                 <option value="warning">Avertissement</option>
                                 <option value="info">Information</option>
@@ -427,7 +431,7 @@ function RealTimeMonitoring({ isRealTime }: { isRealTime: boolean }) {
                 <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
                         <Activity className="w-5 h-5" />
-                        <span>Flux d'Événements Temps Réel</span>
+                        <span>{t('securityDashboard.fluxDEvenementsTempsReel')}</span>
                         {isRealTime && (
                             <div className="flex items-center space-x-1 ml-auto">
                                 <div className="w-2 h-2 bg-[#ff4000] rounded-full animate-pulse"></div>
@@ -491,6 +495,7 @@ function RealTimeMonitoring({ isRealTime }: { isRealTime: boolean }) {
 // =====================================================
 
 function ThreatManagement() {
+  const { t } = useTranslation();
     const { blockIP, analyzeThreat } = useSecurity();
     const [ipToAnalyze, setIpToAnalyze] = useState('');
     const [analysisResult, setAnalysisResult] = useState<unknown>(null);
@@ -504,7 +509,7 @@ function ThreatManagement() {
             const result = await analyzeThreat(ipToAnalyze);
             setAnalysisResult(result);
         } catch (_error) {
-            toast.error('Erreur lors de l\'analyse');
+            toast.error(t('securityDashboard.erreurLorsDeLAnalyse'));
         } finally {
             setLoading(false);
         }
@@ -523,13 +528,13 @@ function ThreatManagement() {
             {/* Analyse d'IP */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Analyse de Menaces IP</CardTitle>
+                    <CardTitle>{t('securityDashboard.analyseDeMenacesIp')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="flex space-x-3">
                         <input
                             type="text"
-                            placeholder="Adresse IP à analyser (ex: 192.168.1.1)"
+                            placeholder={t('securityDashboard.adresseIpAAnalyserEx')}
                             value={ipToAnalyze}
                             onChange={(e) => setIpToAnalyze(e.target.value)}
                             className="flex-1 px-3 py-2 border rounded-lg"
@@ -554,7 +559,7 @@ function ThreatManagement() {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <p className="text-sm text-gray-600">Score de menace</p>
+                                    <p className="text-sm text-gray-600">{t('securityDashboard.scoreDeMenace')}</p>
                                     <div className="flex items-center space-x-2">
                                         <Progress value={analysisResult.threat_score * 10} className="flex-1" />
                                         <span className="text-sm font-medium">{analysisResult.threat_score}/10</span>
@@ -562,14 +567,14 @@ function ThreatManagement() {
                                 </div>
 
                                 <div>
-                                    <p className="text-sm text-gray-600">Activité récente</p>
+                                    <p className="text-sm text-gray-600">{t('securityDashboard.activiteRecente')}</p>
                                     <p className="font-medium">{analysisResult.recent_activity.length} événements</p>
                                 </div>
                             </div>
 
                             {analysisResult.risk_factors.length > 0 && (
                                 <div>
-                                    <p className="text-sm text-gray-600 mb-2">Facteurs de risque:</p>
+                                    <p className="text-sm text-gray-600 mb-2">{t('securityDashboard.facteursDeRisque')}</p>
                                     <div className="space-y-1">
                                         {analysisResult.risk_factors.map((factor: string, index: number) => (
                                             <div key={index} className="flex items-center space-x-2">
@@ -600,7 +605,7 @@ function ThreatManagement() {
             {/* Top des menaces */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Top des Menaces Détectées</CardTitle>
+                    <CardTitle>{t('securityDashboard.topDesMenacesDetectees')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-3">
@@ -641,6 +646,7 @@ function ThreatManagement() {
 // =====================================================
 
 function IncidentManagement() {
+  const { t } = useTranslation();
     const { incidents, _createIncident } = useSecurityIncidents();
     const [_showCreateForm, setShowCreateForm] = useState(false);
 
@@ -648,7 +654,7 @@ function IncidentManagement() {
         <div className="space-y-6">
             {/* Header avec bouton de création */}
             <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold">Gestion des Incidents</h2>
+                <h2 className="text-xl font-semibold">{t('securityDashboard.gestionDesIncidents')}</h2>
                 <Button onClick={() => setShowCreateForm(true)}>
                     Créer un Incident
                 </Button>
@@ -702,6 +708,7 @@ function IncidentManagement() {
 // =====================================================
 
 function ActiveProtection() {
+  const { t } = useTranslation();
     const { protectionStatus, threatLevel, toggleProtection } = useRealTimeProtection();
 
     const getThreatLevelColor = (level: string) => {
@@ -719,13 +726,13 @@ function ActiveProtection() {
             {/* Niveau de menace global */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Niveau de Menace Global</CardTitle>
+                    <CardTitle>{t('securityDashboard.niveauDeMenaceGlobal')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className={`flex items-center justify-center p-6 rounded-lg ${getThreatLevelColor(threatLevel)}`}>
                         <div className="text-center">
                             <div className="text-3xl font-bold capitalize">{threatLevel}</div>
-                            <div className="text-sm opacity-80">Niveau de menace actuel</div>
+                            <div className="text-sm opacity-80">{t('securityDashboard.niveauDeMenaceActuel')}</div>
                         </div>
                     </div>
                 </CardContent>
@@ -734,7 +741,7 @@ function ActiveProtection() {
             {/* Services de protection */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Services de Protection</CardTitle>
+                    <CardTitle>{t('securityDashboard.servicesDeProtection')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -770,6 +777,7 @@ function ActiveProtection() {
 // =====================================================
 
 function SecurityAudit() {
+  const { t } = useTranslation();
     const { auditLogs, loading, filters, updateFilters, exportLogs } = useSecurityAudit();
 
     return (
@@ -784,7 +792,7 @@ function SecurityAudit() {
                                 onChange={(e) => updateFilters({ dateRange: e.target.value })}
                                 className="text-sm border rounded px-2 py-1"
                             >
-                                <option value="24h">Dernières 24h</option>
+                                <option value="24h">{t('securityDashboard.dernieres24h')}</option>
                                 <option value="7d">7 derniers jours</option>
                                 <option value="30d">30 derniers jours</option>
                             </select>
@@ -794,10 +802,10 @@ function SecurityAudit() {
                                 onChange={(e) => updateFilters({ severity: e.target.value })}
                                 className="text-sm border rounded px-2 py-1"
                             >
-                                <option value="all">Toutes les sévérités</option>
+                                <option value="all">{t('securityDashboard.toutesLesSeverites')}</option>
                                 <option value="low">Faible</option>
                                 <option value="medium">Moyen</option>
-                                <option value="high">Élevé</option>
+                                <option value="high">{t('securityDashboard.eleve')}</option>
                             </select>
                         </div>
 
@@ -822,7 +830,7 @@ function SecurityAudit() {
                 </CardHeader>
                 <CardContent>
                     {loading ? (
-                        <div className="text-center py-8">Chargement des logs...</div>
+                        <div className="text-center py-8">{t('securityDashboard.chargementDesLogs')}</div>
                     ) : (
                         <ScrollArea className="h-96">
                             <div className="space-y-2">
@@ -868,6 +876,7 @@ function SecurityAudit() {
 // =====================================================
 
 function SecurityReports() {
+  const { t } = useTranslation();
     const { analysisData, loading, runAnalysis } = useSecurityAnalysis();
 
     return (
@@ -876,7 +885,7 @@ function SecurityReports() {
             <Card>
                 <CardContent className="p-4">
                     <div className="flex items-center justify-between">
-                        <h3 className="font-semibold">Analyse de Sécurité Avancée</h3>
+                        <h3 className="font-semibold">{t('securityDashboard.analyseDeSecuriteAvancee')}</h3>
                         <Button onClick={runAnalysis} disabled={loading}>
                             {loading ? 'Analyse en cours...' : 'Lancer l\'Analyse'}
                         </Button>
@@ -889,7 +898,7 @@ function SecurityReports() {
                     {/* Score de sécurité */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Score de Sécurité Global</CardTitle>
+                            <CardTitle>{t('securityDashboard.scoreDeSecuriteGlobal')}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="flex items-center justify-center">
@@ -934,7 +943,7 @@ function SecurityReports() {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Tendances des Menaces</CardTitle>
+                                <CardTitle>{t('securityDashboard.tendancesDesMenaces')}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <ResponsiveContainer width="100%" height={200}>
@@ -951,7 +960,7 @@ function SecurityReports() {
 
                         <Card>
                             <CardHeader>
-                                <CardTitle>Top des Menaces</CardTitle>
+                                <CardTitle>{t('securityDashboard.topDesMenaces')}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-3">
@@ -977,7 +986,7 @@ function SecurityReports() {
                     {/* Recommandations */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Recommandations de Sécurité</CardTitle>
+                            <CardTitle>{t('securityDashboard.recommandationsDeSecurite')}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-3">
