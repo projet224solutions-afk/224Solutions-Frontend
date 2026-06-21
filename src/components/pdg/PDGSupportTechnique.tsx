@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -107,6 +108,7 @@ const categoryLabels: Record<string, string> = {
 };
 
 const StatusIcon = ({ status }: { status: string }) => {
+  const { t } = useTranslation();
   if (status === 'open') return <AlertTriangle className="w-4 h-4 text-blue-500" />;
   if (status === 'in_progress') return <Clock className="w-4 h-4 text-[#ff4000]" />;
   if (status === 'resolved') return <CheckCircle2 className="w-4 h-4 text-[#ff4000]" />;
@@ -115,6 +117,7 @@ const StatusIcon = ({ status }: { status: string }) => {
 };
 
 function InfoRow({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value?: string | null }) {
+  const { t } = useTranslation();
   if (!value) return null;
   return (
     <div className="flex items-start gap-2 text-sm">
@@ -126,6 +129,7 @@ function InfoRow({ icon: Icon, label, value }: { icon: React.ElementType; label:
 }
 
 export default function PDGSupportTechnique() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
@@ -152,7 +156,7 @@ export default function PDGSupportTechnique() {
       if (error) throw error;
       setTickets(data || []);
     } catch (err: any) {
-      toast.error('Impossible de charger les tickets');
+      toast.error(t('pDGSupportTechnique.impossibleDeChargerLesTickets'));
     } finally {
       setLoading(false);
     }
@@ -224,9 +228,9 @@ export default function PDGSupportTechnique() {
       }
       setReply('');
       loadMessages(selectedTicket.id);
-      toast.success('Réponse envoyée');
+      toast.success(t('pDGSupportTechnique.reponseEnvoyee'));
     } catch {
-      toast.error('Erreur envoi réponse');
+      toast.error(t('pDGSupportTechnique.erreurEnvoiReponse'));
     } finally {
       setSendingReply(false);
     }
@@ -246,7 +250,7 @@ export default function PDGSupportTechnique() {
       setTickets(prev => prev.map(t => t.id === selectedTicket.id ? { ...t, ...extra } : t));
       toast.success(`Statut mis à jour : ${statusLabels[newStatus]}`);
     } catch {
-      toast.error('Erreur mise à jour statut');
+      toast.error(t('pDGSupportTechnique.erreurMiseAJourStatut'));
     } finally {
       setUpdatingStatus(false);
     }
@@ -310,7 +314,7 @@ export default function PDGSupportTechnique() {
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input placeholder="Rechercher par sujet ou numéro..." value={search} onChange={e => setSearch(e.target.value)} className="pl-10" />
+              <Input placeholder={t('pDGSupportTechnique.rechercherParSujetOuNumero')} value={search} onChange={e => setSearch(e.target.value)} className="pl-10" />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-[160px]">
@@ -318,16 +322,16 @@ export default function PDGSupportTechnique() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tous les statuts</SelectItem>
+                <SelectItem value="all">{t('pDGSupportTechnique.tousLesStatuts')}</SelectItem>
                 {Object.entries(statusLabels).map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}
               </SelectContent>
             </Select>
             <Select value={priorityFilter} onValueChange={setPriorityFilter}>
               <SelectTrigger className="w-[150px]">
-                <SelectValue placeholder="Priorité" />
+                <SelectValue placeholder={t('pDGSupportTechnique.priorite')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Toutes priorités</SelectItem>
+                <SelectItem value="all">{t('pDGSupportTechnique.toutesPriorites')}</SelectItem>
                 {Object.entries(priorityLabels).map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}
               </SelectContent>
             </Select>
@@ -339,12 +343,12 @@ export default function PDGSupportTechnique() {
       {loading ? (
         <Card><CardContent className="flex items-center justify-center py-12">
           <RefreshCw className="w-5 h-5 animate-spin mr-2 text-muted-foreground" />
-          <span className="text-muted-foreground">Chargement des tickets...</span>
+          <span className="text-muted-foreground">{t('pDGSupportTechnique.chargementDesTickets')}</span>
         </CardContent></Card>
       ) : filtered.length === 0 ? (
         <Card><CardContent className="flex flex-col items-center justify-center py-16">
           <Headphones className="w-12 h-12 text-muted-foreground mb-3" />
-          <p className="text-lg font-medium">Aucun ticket trouvé</p>
+          <p className="text-lg font-medium">{t('pDGSupportTechnique.aucunTicketTrouve')}</p>
           <p className="text-muted-foreground text-sm">
             {tickets.length === 0 ? 'Aucun ticket créé pour le moment' : 'Modifiez vos filtres'}
           </p>
@@ -428,7 +432,7 @@ export default function PDGSupportTechnique() {
                         )}
                         <InfoRow icon={User} label="Nom" value={requester?.full_name} />
                         <InfoRow icon={Mail} label="Email" value={requester?.email} />
-                        <InfoRow icon={Phone} label="Téléphone" value={requester?.phone} />
+                        <InfoRow icon={Phone} label={t('pDGSupportTechnique.telephone')} value={requester?.phone} />
                         <InfoRow icon={MapPin} label="Ville" value={requester?.city} />
                         <InfoRow icon={MapPin} label="Pays" value={requester?.country} />
                         {requester?.custom_id && (
@@ -460,7 +464,7 @@ export default function PDGSupportTechnique() {
                             <InfoRow icon={Store} label="Nom" value={vendor.business_name} />
                             <InfoRow icon={Store} label="Type" value={vendor.business_type} />
                             <InfoRow icon={Mail} label="Email" value={vendor.email} />
-                            <InfoRow icon={Phone} label="Tél" value={vendor.phone} />
+                            <InfoRow icon={Phone} label={t('pDGSupportTechnique.tel')} value={vendor.phone} />
                             <InfoRow icon={MapPin} label="Ville" value={vendor.city} />
                             <InfoRow icon={MapPin} label="Pays" value={vendor.country} />
                             <InfoRow icon={MapPin} label="Adresse" value={vendor.address} />
@@ -539,14 +543,14 @@ export default function PDGSupportTechnique() {
                 {isClosed ? (
                   <div className="px-4 py-3 border-t bg-muted/20 flex items-center gap-2 text-muted-foreground text-sm">
                     <Lock className="w-4 h-4" />
-                    <span>Ce ticket est <strong>{statusLabels[selectedTicket.status]}</strong> — les réponses sont désactivées.</span>
+                    <span>Ce ticket est <strong>{statusLabels[selectedTicket.status]}</strong> {t('pDGSupportTechnique.lesReponsesSontDesactivees')}</span>
                   </div>
                 ) : (
                   <div className="px-4 py-3 border-t bg-background flex gap-2">
                     <Textarea
                       value={reply}
                       onChange={e => setReply(e.target.value)}
-                      placeholder="Votre réponse au vendeur... (Entrée pour envoyer)"
+                      placeholder={t('pDGSupportTechnique.votreReponseAuVendeurEntree')}
                       rows={3}
                       className="flex-1 resize-none"
                       onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendReply(); } }}

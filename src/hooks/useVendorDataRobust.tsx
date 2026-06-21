@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🏪🛡️ HOOK DONNÉES VENDEUR - VERSION ENTERPRISE ROBUSTE
  * Gestion complète des données vendeur avec protection maximale
@@ -91,6 +92,7 @@ const CACHE_TTL = 3 * 60 * 1000; // 3 minutes
 
 // Hook Stats Vendeur Robuste
 export function useVendorStatsRobust() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [stats, setStats] = useState<VendorStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -189,7 +191,7 @@ export function useVendorStatsRobust() {
       // Utiliser le cache stale en cas d'erreur
       if (cacheRef.current) {
         setStats(cacheRef.current.data);
-        if (!silent) toast.warning('Données potentiellement obsolètes');
+        if (!silent) toast.warning(t('useVendorDataRobust.donneesPotentiellementObsoletes'));
       }
     } finally {
       setLoading(false);
@@ -218,6 +220,7 @@ export function useVendorStatsRobust() {
 
 // Hook Prospects Robuste
 export function useProspectsRobust() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [loading, setLoading] = useState(true);
@@ -298,7 +301,7 @@ export function useProspectsRobust() {
 
       if (result) {
         setProspects(prev => [result as Prospect, ...prev]);
-        toast.success('Prospect créé avec succès');
+        toast.success(t('useVendorDataRobust.prospectCreeAvecSucces'));
       }
 
       return result as Prospect;
@@ -306,7 +309,7 @@ export function useProspectsRobust() {
     } catch (err: any) {
       console.error('❌ Erreur création prospect:', err);
       setError(err.message);
-      toast.error('Erreur lors de la création');
+      toast.error(t('useVendorDataRobust.erreurLorsDeLaCreation'));
       return null;
     } finally {
       setProcessing(false);
@@ -330,13 +333,13 @@ export function useProspectsRobust() {
       }, MUTATION_RETRY_CONFIG);
 
       setProspects(prev => prev.map(p => p.id === id ? { ...p, ...updates } : p));
-      toast.success('Prospect mis à jour');
+      toast.success(t('useVendorDataRobust.prospectMisAJour'));
       return true;
 
     } catch (err: any) {
       console.error('❌ Erreur mise à jour prospect:', err);
       setError(err.message);
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t('useVendorDataRobust.erreurLorsDeLaMise'));
       return false;
     } finally {
       setProcessing(false);
@@ -357,12 +360,12 @@ export function useProspectsRobust() {
       }, MUTATION_RETRY_CONFIG);
 
       setProspects(prev => prev.filter(p => p.id !== id));
-      toast.success('Prospect supprimé');
+      toast.success(t('useVendorDataRobust.prospectSupprime'));
       return true;
 
     } catch (err: any) {
       console.error('❌ Erreur suppression prospect:', err);
-      toast.error('Erreur lors de la suppression');
+      toast.error(t('useVendorDataRobust.erreurLorsDeLaSuppression'));
       return false;
     } finally {
       setProcessing(false);
@@ -462,7 +465,7 @@ export function usePromoCodesRobust() {
 
       if (result) {
         setPromoCodes(prev => [result as PromoCode, ...prev]);
-        toast.success('Code promo créé');
+        toast.success(t('useVendorDataRobust.codePromoCree'));
       }
 
       return result as PromoCode;
@@ -470,7 +473,7 @@ export function usePromoCodesRobust() {
     } catch (err: any) {
       console.error('❌ Erreur création code promo:', err);
       setError(err.message);
-      toast.error('Erreur lors de la création');
+      toast.error(t('useVendorDataRobust.erreurLorsDeLaCreation'));
       return null;
     } finally {
       setProcessing(false);
@@ -499,7 +502,7 @@ export function usePromoCodesRobust() {
 
     } catch (err: any) {
       console.error('❌ Erreur toggle code promo:', err);
-      toast.error('Erreur lors de la modification');
+      toast.error(t('useVendorDataRobust.erreurLorsDeLaModification'));
       return false;
     } finally {
       setProcessing(false);
@@ -593,12 +596,12 @@ export function useSupportTicketsRobust() {
       }, MUTATION_RETRY_CONFIG);
 
       setTickets(prev => prev.map(t => t.id === id ? { ...t, status } : t));
-      toast.success('Statut mis à jour');
+      toast.success(t('useVendorDataRobust.statutMisAJour'));
       return true;
 
     } catch (err: any) {
       console.error('❌ Erreur mise à jour ticket:', err);
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t('useVendorDataRobust.erreurLorsDeLaMise'));
       return false;
     } finally {
       setProcessing(false);

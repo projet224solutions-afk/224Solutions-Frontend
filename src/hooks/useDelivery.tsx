@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * Hook pour gérer les livraisons
  * Connecté à la base de données Supabase
@@ -68,6 +69,7 @@ interface TrackingPoint {
 }
 
 export function useDelivery() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [currentDelivery, setCurrentDelivery] = useState<Delivery | null>(null);
   const [deliveryHistory, setDeliveryHistory] = useState<Delivery[]>([]);
@@ -207,7 +209,7 @@ export function useDelivery() {
     } catch (error: any) {
       console.error('❌ Erreur chargement livraisons:', error);
       setError(error.message);
-      toast.error('Erreur lors du chargement des livraisons');
+      toast.error(t('useDelivery.erreurLorsDuChargementDes'));
     } finally {
       setLoading(false);
     }
@@ -228,11 +230,11 @@ export function useDelivery() {
       if (result.data) setCurrentDelivery(result.data);
       else await loadCurrentDelivery();
       setNearbyDeliveries(prev => prev.filter(d => d.id !== deliveryId));
-      toast.success('Livraison acceptée !');
+      toast.success(t('useDelivery.livraisonAcceptee'));
       return result.data;
     } catch (error: any) {
       console.error('❌ Error accepting delivery:', error);
-      toast.error('Erreur lors de l\'acceptation');
+      toast.error(t('useDelivery.erreurLorsDeLAcceptation'));
       throw error;
     }
   }, [user, findNearbyDeliveries, loadCurrentDelivery]);
@@ -247,11 +249,11 @@ export function useDelivery() {
       }
       if (result.data) setCurrentDelivery(result.data);
       else await loadCurrentDelivery();
-      toast.success('Livraison démarrée !');
+      toast.success(t('useDelivery.livraisonDemarree'));
       return result.data;
     } catch (error: any) {
       console.error('Erreur démarrage livraison:', error);
-      toast.error('Erreur lors du démarrage');
+      toast.error(t('useDelivery.erreurLorsDuDemarrage'));
       throw error;
     }
   }, [loadCurrentDelivery]);
@@ -271,10 +273,10 @@ export function useDelivery() {
         return;
       }
       setCurrentDelivery(null);
-      toast.success('Livraison annulée');
+      toast.success(t('useDelivery.livraisonAnnulee'));
     } catch (error: any) {
       console.error('Erreur annulation livraison:', error);
-      toast.error('Erreur lors de l\'annulation');
+      toast.error(t('useDelivery.erreurLorsDeLAnnulation'));
       throw error;
     }
   }, []);

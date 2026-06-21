@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 👥🛡️ HOOK GESTION AGENTS - VERSION ENTERPRISE ROBUSTE
  * Gestion complète des agents avec protection et récupération automatique
@@ -60,6 +61,7 @@ const MUTATION_RETRY_CONFIG: Partial<RetryConfig> = {
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 export const useAgentManagementRobust = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [agents, setAgents] = useState<Agent[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
@@ -82,7 +84,7 @@ export const useAgentManagementRobust = () => {
     const unsubscribe = circuitBreaker.subscribe(circuitName, (state) => {
       setCircuitState(state);
       if (state === 'OPEN') {
-        toast.warning('Service agents temporairement indisponible');
+        toast.warning(t('useAgentManagementRobust.serviceAgentsTemporairementIndisponible'));
       }
     });
     return unsubscribe;
@@ -239,7 +241,7 @@ export const useAgentManagementRobust = () => {
       // Retourner le cache stale si disponible
       if (agentsCacheRef.current) {
         setAgents(agentsCacheRef.current.data);
-        toast.warning('Données agents potentiellement obsolètes');
+        toast.warning(t('useAgentManagementRobust.donneesAgentsPotentiellementObsoletes'));
         return agentsCacheRef.current.data;
       }
       return [];
@@ -254,7 +256,7 @@ export const useAgentManagementRobust = () => {
     role_id: string;
   }): Promise<Agent | null> => {
     if (!user) {
-      toast.error('Non authentifié');
+      toast.error(t('useAgentManagementRobust.nonAuthentifie'));
       return null;
     }
 
@@ -300,7 +302,7 @@ export const useAgentManagementRobust = () => {
         // Invalider le cache
         agentsCacheRef.current = null;
 
-        toast.success('Agent créé avec succès');
+        toast.success(t('useAgentManagementRobust.agentCreeAvecSucces'));
         return newAgent;
       }
 
@@ -376,7 +378,7 @@ export const useAgentManagementRobust = () => {
       // Invalider le cache
       agentsCacheRef.current = null;
 
-      toast.success('Agent supprimé');
+      toast.success(t('useAgentManagementRobust.agentSupprime'));
       return true;
 
     } catch (err: any) {
@@ -420,7 +422,7 @@ export const useAgentManagementRobust = () => {
       // Invalider le cache
       agentsCacheRef.current = null;
 
-      toast.success('Rôle mis à jour');
+      toast.success(t('useAgentManagementRobust.roleMisAJour'));
       return true;
 
     } catch (err: any) {
