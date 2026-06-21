@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { useState, useCallback } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -25,6 +26,7 @@ export const ImprovedTransferDialog = ({
   onSuccess,
   currentBalance = 0
 }: ImprovedTransferDialogProps) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { format: fmtMoney, userCurrency } = useMoneyFormat();
   const [recipientCode, setRecipientCode] = useState('');
@@ -49,18 +51,18 @@ export const ImprovedTransferDialog = ({
   // Step 1: Preview the transfer to detect international
   const handlePreviewAndTransfer = useCallback(async () => {
     if (!user?.id || !recipientCode || !amount || !description) {
-      toast.error('Veuillez remplir tous les champs');
+      toast.error(t('improvedTransferDialog.veuillezRemplirTousLesChamps'));
       throw new Error('Champs manquants');
     }
 
     const transferAmount = parseFloat(amount);
     if (isNaN(transferAmount) || transferAmount <= 0) {
-      toast.error('Montant invalide');
+      toast.error(t('improvedTransferDialog.montantInvalide'));
       throw new Error('Montant invalide');
     }
 
     if (transferAmount > currentBalance) {
-      toast.error('Solde insuffisant');
+      toast.error(t('improvedTransferDialog.soldeInsuffisant'));
       throw new Error('Solde insuffisant');
     }
 
@@ -174,7 +176,7 @@ export const ImprovedTransferDialog = ({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Effectuer un transfert</DialogTitle>
+            <DialogTitle>{t('improvedTransferDialog.effectuerUnTransfert')}</DialogTitle>
             <DialogDescription>
               Transférez des fonds à un autre utilisateur — local ou international 🌍
             </DialogDescription>
@@ -186,11 +188,11 @@ export const ImprovedTransferDialog = ({
               onChange={setRecipientCode}
               onUserSelect={handleUserSelect}
               label="Destinataire"
-              placeholder="ID, email ou téléphone"
+              placeholder={t('improvedTransferDialog.idEmailOuTelephone')}
             />
 
             <div className="space-y-2">
-              <Label htmlFor="amount">Montant</Label>
+              <Label htmlFor="amount">{t('improvedTransferDialog.montant')}</Label>
               <Input
                 id="amount"
                 type="number"
@@ -204,10 +206,10 @@ export const ImprovedTransferDialog = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Motif du transfert</Label>
+              <Label htmlFor="description">{t('improvedTransferDialog.motifDuTransfert')}</Label>
               <Input
                 id="description"
-                placeholder="Ex: Paiement produit, Remboursement..."
+                placeholder={t('improvedTransferDialog.exPaiementProduitRemboursement')}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />

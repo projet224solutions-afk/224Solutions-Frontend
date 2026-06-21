@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * Composant de challenge de sécurité (alternative légère au CAPTCHA)
  */
@@ -27,6 +28,7 @@ export const SecurityChallenge: React.FC<SecurityChallengeProps> = ({
   maxAttempts = 3,
   difficulty = 'medium'
 }) => {
+  const { t } = useTranslation();
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [userAnswer, setUserAnswer] = useState('');
   const [attempts, setAttempts] = useState(0);
@@ -117,7 +119,7 @@ export const SecurityChallenge: React.FC<SecurityChallengeProps> = ({
       <Card className="w-full max-w-md mx-auto border-[#ff4000] bg-orange-50">
         <CardContent className="flex flex-col items-center justify-center py-8">
           <CheckCircle className="w-16 h-16 text-[#ff4000] mb-4" />
-          <p className="text-[#ff4000] font-semibold">Vérification réussie !</p>
+          <p className="text-[#ff4000] font-semibold">{t('securityChallenge.verificationReussie')}</p>
         </CardContent>
       </Card>
     );
@@ -128,8 +130,8 @@ export const SecurityChallenge: React.FC<SecurityChallengeProps> = ({
       <Card className="w-full max-w-md mx-auto border-[#ff4000] bg-orange-50">
         <CardContent className="flex flex-col items-center justify-center py-8">
           <XCircle className="w-16 h-16 text-[#ff4000] mb-4" />
-          <p className="text-[#ff4000] font-semibold">Trop de tentatives échouées</p>
-          <p className="text-[#ff4000] text-sm mt-2">Veuillez réessayer plus tard</p>
+          <p className="text-[#ff4000] font-semibold">{t('securityChallenge.tropDeTentativesEchouees')}</p>
+          <p className="text-[#ff4000] text-sm mt-2">{t('securityChallenge.veuillezReessayerPlusTard')}</p>
         </CardContent>
       </Card>
     );
@@ -139,7 +141,7 @@ export const SecurityChallenge: React.FC<SecurityChallengeProps> = ({
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="flex flex-row items-center gap-2">
         <Shield className="w-5 h-5 text-blue-500" />
-        <CardTitle className="text-lg">Vérification de sécurité</CardTitle>
+        <CardTitle className="text-lg">{t('securityChallenge.verificationDeSecurite')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="bg-slate-100 p-4 rounded-lg">
@@ -151,7 +153,7 @@ export const SecurityChallenge: React.FC<SecurityChallengeProps> = ({
             type="text"
             value={userAnswer}
             onChange={(e) => setUserAnswer(e.target.value)}
-            placeholder="Votre réponse"
+            placeholder={t('securityChallenge.votreReponse')}
             onKeyDown={(e) => e.key === 'Enter' && handleVerify()}
             disabled={isVerifying}
             className="flex-1"
@@ -161,7 +163,7 @@ export const SecurityChallenge: React.FC<SecurityChallengeProps> = ({
             size="icon"
             onClick={handleRefresh}
             disabled={isVerifying}
-            title="Nouveau challenge"
+            title={t('securityChallenge.nouveauChallenge')}
           >
             <RefreshCw className="w-4 h-4" />
           </Button>
