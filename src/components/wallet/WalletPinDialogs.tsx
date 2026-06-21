@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -25,6 +26,7 @@ export function WalletPinPromptDialog({
   onConfirm,
   onForgotPin,
 }: WalletPinPromptDialogProps) {
+  const { t } = useTranslation();
   const [pin, setPin] = useState('');
 
   const handleConfirm = async () => {
@@ -63,7 +65,7 @@ export function WalletPinPromptDialog({
           ) : null}
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>Annuler</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>{t('walletPinDialogs.annuler')}</Button>
           <Button onClick={handleConfirm} disabled={loading || pin.length !== 6}>Confirmer</Button>
         </DialogFooter>
       </DialogContent>
@@ -90,6 +92,7 @@ export function WalletPinSetupDialog({
   onSubmit,
   onForgotPin,
 }: WalletPinSetupDialogProps) {
+  const { t } = useTranslation();
   const [currentPin, setCurrentPin] = useState('');
   const [accountPassword, setAccountPassword] = useState('');
   const [pin, setPin] = useState('');
@@ -154,18 +157,18 @@ export function WalletPinSetupDialog({
           ) : null}
           {mode === 'reset' ? (
             <div>
-              <Label htmlFor="wallet-account-password">Mot de passe du compte</Label>
+              <Label htmlFor="wallet-account-password">{t('walletPinDialogs.motDePasseDuCompte')}</Label>
               <Input
                 id="wallet-account-password"
                 type="password"
                 value={accountPassword}
                 onChange={(e) => setAccountPassword(e.target.value)}
-                placeholder="Votre mot de passe de connexion"
+                placeholder={t('walletPinDialogs.votreMotDePasseDe')}
               />
             </div>
           ) : null}
           <div>
-            <Label htmlFor="wallet-pin-new">Nouveau code PIN</Label>
+            <Label htmlFor="wallet-pin-new">{t('walletPinDialogs.nouveauCodePin')}</Label>
             <Input
               id="wallet-pin-new"
               type="password"
@@ -178,7 +181,7 @@ export function WalletPinSetupDialog({
             />
           </div>
           <div>
-            <Label htmlFor="wallet-pin-confirm-new">Confirmer le code PIN</Label>
+            <Label htmlFor="wallet-pin-confirm-new">{t('walletPinDialogs.confirmerLeCodePin')}</Label>
             <Input
               id="wallet-pin-confirm-new"
               type="password"
@@ -193,7 +196,7 @@ export function WalletPinSetupDialog({
           {error ? <p className="text-sm text-destructive">{error}</p> : null}
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>Annuler</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>{t('walletPinDialogs.annuler')}</Button>
           <Button
             onClick={handleSubmit}
             disabled={loading || pin.length !== 6 || confirmPin.length !== 6 || (mode === 'change' && currentPin.length !== 6) || (mode === 'reset' && accountPassword.trim().length === 0)}

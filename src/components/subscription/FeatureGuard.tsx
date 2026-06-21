@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { ReactNode, useState } from 'react';
 import { useSubscriptionFeatures, SubscriptionFeature, FEATURE_MIN_PLAN } from '@/hooks/useSubscriptionFeatures';
 import { Button } from '@/components/ui/button';
@@ -80,6 +81,7 @@ export function FeatureGuard({
   fallback,
   showUpgradePrompt = true
 }: FeatureGuardProps) {
+  const { t } = useTranslation();
   const { canAccessFeature, loading, getPlanName, isActive } = useSubscriptionFeatures();
   const [showDialog, setShowDialog] = useState(false);
   const [showPlanSelector, setShowPlanSelector] = useState(false);
@@ -127,11 +129,11 @@ export function FeatureGuard({
                 <Lock className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold">Fonctionnalité Premium</h3>
+                <h3 className="text-lg font-semibold">{t('featureGuard.fonctionnalitePremium')}</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   {!isActive()
                     ? "Votre abonnement est expiré ou inactif."
-                    : <>Requiert le plan <Badge className={PLAN_COLORS[minPlan]}>{minPlanDisplay}</Badge> ou supérieur</>
+                    : <>{t('featureGuard.requiertLePlan')} <Badge className={PLAN_COLORS[minPlan]}>{minPlanDisplay}</Badge> {t('featureGuard.ouSuperieur')}</>
                   }
                 </p>
               </div>
@@ -154,7 +156,7 @@ export function FeatureGuard({
                 <div className="p-2 rounded-full bg-gradient-to-br from-[#ff4000] to-orange-500">
                   <Crown className="w-5 h-5 text-white" />
                 </div>
-                <span>Fonctionnalité Premium</span>
+                <span>{t('featureGuard.fonctionnalitePremium')}</span>
               </DialogTitle>
               <DialogDescription className="pt-2">
                 {!isActive() ? (
@@ -173,7 +175,7 @@ export function FeatureGuard({
             <div className="py-4 space-y-4">
               {/* Plan actuel */}
               <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                <span className="text-sm text-muted-foreground">Votre plan actuel</span>
+                <span className="text-sm text-muted-foreground">{t('featureGuard.votrePlanActuel')}</span>
                 <Badge variant="outline">{getPlanName()}</Badge>
               </div>
 
@@ -244,6 +246,7 @@ export function FeatureButton({
   size = 'default',
   disabled = false
 }: FeatureButtonProps) {
+  const { t } = useTranslation();
   const { canAccessFeature, loading, isActive, getPlanName } = useSubscriptionFeatures();
   const [showDialog, setShowDialog] = useState(false);
   const [showPlanSelector, setShowPlanSelector] = useState(false);
