@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * Gestionnaire de réservations pour le restaurant
  * Permet au propriétaire de voir et gérer toutes les réservations
@@ -33,6 +34,7 @@ interface RestaurantReservationsManagerProps {
 }
 
 export function RestaurantReservationsManager({ serviceId }: RestaurantReservationsManagerProps) {
+  const { t } = useTranslation();
   const {
     reservations,
     loading,
@@ -124,17 +126,17 @@ export function RestaurantReservationsManager({ serviceId }: RestaurantReservati
       await updateReservationStatus(id, newStatus);
       toast.success(`Réservation ${getStatusConfig(newStatus).label.toLowerCase()}`);
     } catch (_error) {
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t('restaurantReservationsManager.erreurLorsDeLaMise'));
     }
   };
 
   const handleCancel = async (id: string) => {
     try {
       await cancelReservation(id);
-      toast.success('Réservation annulée');
+      toast.success(t('restaurantReservationsManager.reservationAnnulee'));
       setShowDetailModal(false);
     } catch (_error) {
-      toast.error('Erreur lors de l\'annulation');
+      toast.error(t('restaurantReservationsManager.erreurLorsDeLAnnulation'));
     }
   };
 
@@ -258,7 +260,7 @@ export function RestaurantReservationsManager({ serviceId }: RestaurantReservati
         <Card>
           <CardContent className="py-12 text-center">
             <Calendar className="w-16 h-16 text-muted-foreground mx-auto mb-4 opacity-50" />
-            <p className="text-muted-foreground">Aucune réservation</p>
+            <p className="text-muted-foreground">{t('restaurantReservationsManager.aucuneReservation')}</p>
           </CardContent>
         </Card>
       );
@@ -338,7 +340,7 @@ export function RestaurantReservationsManager({ serviceId }: RestaurantReservati
         <Card className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-[#ff4000]/20 dark:to-[#ff4000]/10">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-[#ff4000]">{stats.confirmed}</div>
-            <div className="text-xs text-[#ff4000]/80">Confirmées</div>
+            <div className="text-xs text-[#ff4000]/80">{t('restaurantReservationsManager.confirmees')}</div>
           </CardContent>
         </Card>
       </div>
@@ -348,7 +350,7 @@ export function RestaurantReservationsManager({ serviceId }: RestaurantReservati
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Rechercher par nom, téléphone..."
+            placeholder={t('restaurantReservationsManager.rechercherParNomTelephone')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -360,12 +362,12 @@ export function RestaurantReservationsManager({ serviceId }: RestaurantReservati
             <SelectValue placeholder="Statut" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Tous les statuts</SelectItem>
+            <SelectItem value="all">{t('restaurantReservationsManager.tousLesStatuts')}</SelectItem>
             <SelectItem value="pending">En attente</SelectItem>
-            <SelectItem value="confirmed">Confirmées</SelectItem>
-            <SelectItem value="seated">À table</SelectItem>
-            <SelectItem value="completed">Terminées</SelectItem>
-            <SelectItem value="cancelled">Annulées</SelectItem>
+            <SelectItem value="confirmed">{t('restaurantReservationsManager.confirmees')}</SelectItem>
+            <SelectItem value="seated">{t('restaurantReservationsManager.aTable')}</SelectItem>
+            <SelectItem value="completed">{t('restaurantReservationsManager.terminees')}</SelectItem>
+            <SelectItem value="cancelled">{t('restaurantReservationsManager.annulees')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -407,7 +409,7 @@ export function RestaurantReservationsManager({ serviceId }: RestaurantReservati
       <Dialog open={showDetailModal} onOpenChange={setShowDetailModal}>
         <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Détails de la réservation</DialogTitle>
+            <DialogTitle>{t('restaurantReservationsManager.detailsDeLaReservation')}</DialogTitle>
           </DialogHeader>
 
           {selectedReservation && (
@@ -481,7 +483,7 @@ export function RestaurantReservationsManager({ serviceId }: RestaurantReservati
               {/* Table assignée */}
               {selectedReservation.table_number && (
                 <div className="p-3 bg-orange-50 dark:bg-[#ff4000]/20 rounded-lg text-center">
-                  <span className="text-sm text-[#ff4000]">Table assignée: </span>
+                  <span className="text-sm text-[#ff4000]">{t('restaurantReservationsManager.tableAssignee')} </span>
                   <span className="font-bold text-[#ff4000]">{selectedReservation.table_number}</span>
                 </div>
               )}
