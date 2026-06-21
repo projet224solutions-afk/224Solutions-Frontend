@@ -166,7 +166,7 @@ export default function PaymentManagement() {
               <div>
                 <p className="text-sm text-muted-foreground">Revenu total</p>
                 <p className="text-2xl font-bold">{fc(totalRevenue)}</p>
-                <p className="text-sm text-blue-600">Net reçu</p>
+                <p className="text-sm text-blue-600">{t('paymentManagement.netRecu')}</p>
               </div>
             </div>
           </CardContent>

@@ -45,6 +45,13 @@ upabase
 
 # Cache intermédiaire des traductions auto (régénérable)
 scripts/.i18n-cache/
+scripts/.i18n-retrans-cache.json
+scripts/.i18n-new-keys.json*
+
+# Sauvegardes automatiques de translations.ts (régénérables, ne pas committer)
+*.bak
+*.bak[0-9]
+src/i18n/*.bak*
 
 # Fichier de remplacement de la purge de secrets (contient les tokens fuités — NE JAMAIS committer)
 scripts/security/.purge-replacements.txt

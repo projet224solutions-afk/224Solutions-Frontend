@@ -109,7 +109,7 @@ const POSLockedPage = memo(function POSLockedPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>POS verrouillé</CardTitle>
+        <CardTitle>{t('vendorRoutes.posVerrouille')}</CardTitle>
         <CardDescription>
           Votre boutique est configurée en "En ligne uniquement". Le POS est désactivé.
         </CardDescription>
@@ -152,7 +152,7 @@ const CopilotePage = memo(function CopilotePage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Copilote IA Vendeur</CardTitle>
+        <CardTitle>{t('vendorRoutes.copiloteIaVendeur')}</CardTitle>
         <CardDescription>
           Votre assistant intelligent pour gérer votre boutique
         </CardDescription>

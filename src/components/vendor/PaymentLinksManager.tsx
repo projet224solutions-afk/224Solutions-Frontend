@@ -363,7 +363,7 @@ export default function PaymentLinksManager() {
                   {/* Panier multi-produits pour le type checkout (facture façon Alibaba) */}
                   {formData.linkType === 'checkout' && (
                     <div className="space-y-2">
-                      <Label>Sélectionnez les produits (cliquez pour ajouter)</Label>
+                      <Label>{t('paymentLinksManager.selectionnezLesProduitsCliquezPour')}</Label>
                       {products.length > 0 ? (
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-64 overflow-y-auto p-1 border rounded-lg">
                           {products.map(p => {
@@ -405,7 +405,7 @@ export default function PaymentLinksManager() {
                             );
                           })}
                         </div>
-                      ) : <p className="text-xs text-muted-foreground">Aucun produit disponible</p>}
+                      ) : <p className="text-xs text-muted-foreground">{t('paymentLinksManager.aucunProduitDisponible')}</p>}
 
                       {cart.length > 0 && (
                         <div className="border rounded-lg divide-y">
@@ -590,7 +590,7 @@ export default function PaymentLinksManager() {
                   {creating
                     ? <><RefreshCw className="w-4 h-4 mr-2 animate-spin" />{editingPaymentId ? 'Enregistrement…' : t('paymentLinksManager.creation')}</>
                     : editingPaymentId
-                      ? <><Edit className="w-4 h-4 mr-2" />Enregistrer les modifications</>
+                      ? <><Edit className="w-4 h-4 mr-2" />{t('paymentLinksManager.enregistrerLesModifications')}</>
                       : <><Plus className="w-4 h-4 mr-2" />{t('paymentLinksManager.creerLeLien')}</>}
                 </Button>
               </div>
@@ -716,7 +716,7 @@ export default function PaymentLinksManager() {
                                 <QrCode className="w-4 h-4" />
                               </Button>
                               {link.status === 'pending' && (
-                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(link)} title="Modifier">
+                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(link)} title={t('paymentLinksManager.modifier')}>
                                   <Edit className="w-4 h-4" />
                                 </Button>
                               )}

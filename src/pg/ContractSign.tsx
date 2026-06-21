@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { backendFetch } from '@/services/backendApi';
@@ -19,6 +20,7 @@ interface PublicContract {
 type ApiResp<T> = { success: boolean; data?: T; error?: string; already_signed?: boolean };
 
 export default function ContractSign() {
+  const { t } = useTranslation();
   const { token } = useParams<{ token: string }>();
   const [contract, setContract] = useState<PublicContract | null>(null);
   const [loading, setLoading] = useState(true);
@@ -84,7 +86,7 @@ export default function ContractSign() {
     const ctx = canvas.getContext('2d');
     const data = ctx?.getImageData(0, 0, canvas.width, canvas.height).data;
     const hasInk = data ? data.some((_, i) => i % 4 === 3 && data[i] !== 0) : false;
-    if (!hasInk) { toast.error('Veuillez signer avant de valider'); return; }
+    if (!hasInk) { toast.error(t('contractSign.veuillezSignerAvantDeValider')); return; }
 
     setSigning(true);
     try {
@@ -95,12 +97,12 @@ export default function ContractSign() {
       });
       if (res.success) {
         setSigned(true);
-        toast.success('Contrat signé avec succès. Merci !');
+        toast.success(t('contractSign.contratSigneAvecSuccesMerci'));
       } else {
         toast.error(res.error || 'Échec de la signature');
       }
     } catch {
-      toast.error('Erreur réseau');
+      toast.error(t('contractSign.erreurReseau'));
     } finally {
       setSigning(false);
     }
@@ -122,7 +124,7 @@ export default function ContractSign() {
       <div className="max-w-2xl mx-auto space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><PenLine className="w-5 h-5" /> Contrat à signer</CardTitle>
+            <CardTitle className="flex items-center gap-2"><PenLine className="w-5 h-5" /> {t('contractSign.contratASigner')}</CardTitle>
             <p className="text-sm text-muted-foreground">Destinataire : {contract.client_name}</p>
           </CardHeader>
           <CardContent>
@@ -136,7 +138,7 @@ export default function ContractSign() {
           <Card>
             <CardContent className="p-6 text-center space-y-2">
               <CheckCircle2 className="w-10 h-10 text-green-600 mx-auto" />
-              <p className="font-medium">Ce contrat a été signé.</p>
+              <p className="font-medium">{t('contractSign.ceContratAEteSigne')}</p>
               {contract.signed_at && (
                 <p className="text-xs text-muted-foreground">Le {new Date(contract.signed_at).toLocaleString('fr-FR')}</p>
               )}
@@ -144,7 +146,7 @@ export default function ContractSign() {
           </Card>
         ) : (
           <Card>
-            <CardHeader><CardTitle className="text-base">Votre signature</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-base">{t('contractSign.votreSignature')}</CardTitle></CardHeader>
             <CardContent className="space-y-3">
               <canvas
                 ref={canvasRef}

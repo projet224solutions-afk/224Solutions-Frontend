@@ -448,7 +448,7 @@ export function DirectSaleForm({ data, onChange }: DirectSaleFormProps) {
               <Share2 className="w-4 h-4 text-primary" />
               <div>
                 <p className="text-sm font-medium">Activer l'affiliation</p>
-                <p className="text-xs text-muted-foreground">Tout utilisateur peut générer un lien et toucher une commission</p>
+                <p className="text-xs text-muted-foreground">{t('directSaleForm.toutUtilisateurPeutGenererUn')}</p>
               </div>
             </div>
             <Switch

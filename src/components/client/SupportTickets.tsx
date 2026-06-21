@@ -314,8 +314,8 @@ export function SupportTickets() {
                     <SelectContent>
                       <SelectItem value="technique">Technique</SelectItem>
                       <SelectItem value="facturation">Facturation</SelectItem>
-                      <SelectItem value="produit">Produit</SelectItem>
-                      <SelectItem value="livraison">Livraison</SelectItem>
+                      <SelectItem value="produit">{t('supportTickets.produit')}</SelectItem>
+                      <SelectItem value="livraison">{t('supportTickets.livraison')}</SelectItem>
                       <SelectItem value="autre">Autre</SelectItem>
                     </SelectContent>
                   </Select>

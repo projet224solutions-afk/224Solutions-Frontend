@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ interface ProgramInfo {
  *  - Propose à tout utilisateur connecté (hors propriétaire) d'obtenir son lien d'affiliation.
  */
 export default function ProductAffiliateBox({ productId }: { productId: string }) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [searchParams] = useSearchParams();
   const [info, setInfo] = useState<ProgramInfo | null>(null);
@@ -62,10 +64,10 @@ export default function ProductAffiliateBox({ productId }: { productId: string }
     try {
       await navigator.clipboard.writeText(link);
       setCopied(true);
-      toast.success("Lien d'affiliation copié");
+      toast.success(t('productAffiliateBox.lienDAffiliationCopie'));
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("Impossible de copier le lien");
+      toast.error(t('productAffiliateBox.impossibleDeCopierLeLien'));
     }
   };
 

@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { useState } from 'react';
 import { backendFetch } from '@/services/backendApi';
 import { toast } from 'sonner';
@@ -26,13 +27,14 @@ interface Props {
 
 /** Bouton + dialogue : le client demande un retour/remboursement d'une commande livrée. */
 export function ReturnRequestDialog({ orderId, orderNumber, onCreated }: Props) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [reason, setReason] = useState('');
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const submit = async () => {
-    if (!reason) { toast.error('Choisissez un motif de retour'); return; }
+    if (!reason) { toast.error(t('returnRequestDialog.choisissezUnMotifDeRetour')); return; }
     setSubmitting(true);
     try {
       const res = await backendFetch<{ success: boolean; error?: string }>('/api/returns', {
@@ -40,7 +42,7 @@ export function ReturnRequestDialog({ orderId, orderNumber, onCreated }: Props) 
         body: { order_id: orderId, reason, comment: comment.trim() || undefined },
       });
       if (res.success) {
-        toast.success('Demande de retour envoyée. Le vendeur va l\'examiner.');
+        toast.success(t('returnRequestDialog.demandeDeRetourEnvoyeeLe'));
         setOpen(false);
         setReason(''); setComment('');
         onCreated?.();
@@ -48,7 +50,7 @@ export function ReturnRequestDialog({ orderId, orderNumber, onCreated }: Props) 
         toast.error(res.error || 'Échec de la demande');
       }
     } catch {
-      toast.error('Erreur réseau');
+      toast.error(t('returnRequestDialog.erreurReseau'));
     } finally {
       setSubmitting(false);
     }
@@ -63,7 +65,7 @@ export function ReturnRequestDialog({ orderId, orderNumber, onCreated }: Props) 
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Demander un retour</DialogTitle>
+          <DialogTitle>{t('returnRequestDialog.demanderUnRetour')}</DialogTitle>
           <DialogDescription>
             Commande {orderNumber || ''} — votre demande sera examinée par le vendeur. Le remboursement
             est effectué à la réception du produit retourné.
@@ -73,7 +75,7 @@ export function ReturnRequestDialog({ orderId, orderNumber, onCreated }: Props) 
           <div>
             <Label>Motif *</Label>
             <Select value={reason} onValueChange={setReason}>
-              <SelectTrigger><SelectValue placeholder="Choisir un motif" /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder={t('returnRequestDialog.choisirUnMotif')} /></SelectTrigger>
               <SelectContent>
                 {REASONS.map(r => <SelectItem key={r.value} value={r.value}>{r.label}</SelectItem>)}
               </SelectContent>
@@ -82,11 +84,11 @@ export function ReturnRequestDialog({ orderId, orderNumber, onCreated }: Props) 
           <div>
             <Label>Commentaire (optionnel)</Label>
             <Textarea value={comment} onChange={(e) => setComment(e.target.value)} rows={3}
-              placeholder="Précisez le problème…" />
+              placeholder={t('returnRequestDialog.precisezLeProbleme')} />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} disabled={submitting}>Annuler</Button>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={submitting}>{t('returnRequestDialog.annuler')}</Button>
           <Button onClick={submit} disabled={submitting}>{submitting ? 'Envoi…' : 'Envoyer la demande'}</Button>
         </DialogFooter>
       </DialogContent>

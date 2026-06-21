@@ -75,8 +75,8 @@ export function SupplierDebts({ vendorId }: SupplierDebtsProps) {
   const submitPay = async () => {
     if (!payDebt) return;
     const amount = Number(payAmount);
-    if (!Number.isFinite(amount) || amount <= 0) { toast.error('Montant invalide'); return; }
-    if (amount > payDebt.remaining_amount + 0.01) { toast.error('Le montant dépasse le restant dû'); return; }
+    if (!Number.isFinite(amount) || amount <= 0) { toast.error(t('supplierDebts.montantInvalide')); return; }
+    if (amount > payDebt.remaining_amount + 0.01) { toast.error(t('supplierDebts.leMontantDepasseLeRestant')); return; }
     setPaying(true);
     try {
       const res = await backendFetch<any>('/api/inventory/pay-supplier-debt', {
@@ -87,7 +87,7 @@ export function SupplierDebts({ vendorId }: SupplierDebtsProps) {
       toast.success(`Règlement de ${formatAmount(amount)} effectué`);
       setPayDebt(null);
       await loadDebts();
-    } catch { toast.error('Erreur réseau'); }
+    } catch { toast.error(t('supplierDebts.erreurReseau')); }
     finally { setPaying(false); }
   };
 
@@ -107,7 +107,7 @@ export function SupplierDebts({ vendorId }: SupplierDebtsProps) {
 
   if (loading) return <div className="text-center py-8">{t('supplierDebts.chargementDesDettes')}</div>;
   if (debts.length === 0) {
-    return <div className="text-center py-12 text-muted-foreground">Aucune dette fournisseur pour le moment</div>;
+    return <div className="text-center py-12 text-muted-foreground">{t('supplierDebts.aucuneDetteFournisseurPourLe')}</div>;
   }
 
   return (
@@ -158,18 +158,18 @@ export function SupplierDebts({ vendorId }: SupplierDebtsProps) {
       <Dialog open={!!payDebt} onOpenChange={(o) => !o && setPayDebt(null)}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Régler une tranche</DialogTitle>
+            <DialogTitle>{t('supplierDebts.reglerUneTranche')}</DialogTitle>
             <DialogDescription>
               {payDebt?.supplier?.name} — restant dû : <strong>{payDebt ? formatAmount(payDebt.remaining_amount) : ''}</strong>
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-2">
-            <Label>Montant à régler (GNF)</Label>
+            <Label>{t('supplierDebts.montantAReglerGnf')}</Label>
             <Input type="number" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
-            <p className="text-xs text-muted-foreground">Le montant sera débité de votre wallet et déduit de la dette.</p>
+            <p className="text-xs text-muted-foreground">{t('supplierDebts.leMontantSeraDebiteDe')}</p>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setPayDebt(null)} disabled={paying}>Annuler</Button>
+            <Button variant="outline" onClick={() => setPayDebt(null)} disabled={paying}>{t('supplierDebts.annuler')}</Button>
             <Button onClick={submitPay} disabled={paying}>
               {paying ? 'Règlement…' : 'Confirmer le règlement'}
             </Button>

@@ -568,7 +568,7 @@ export default function ExpenseManagementDashboard({ className }: ExpenseManagem
                           <td className="py-2 pr-0 text-right">
                             {e?.is_locked ? (
                               // Dépense liée à un achat fournisseur → verrouillée (non supprimable).
-                              <span className="text-xs text-muted-foreground inline-flex items-center gap-1" title="Dépense liée à un achat — non modifiable">
+                              <span className="text-xs text-muted-foreground inline-flex items-center gap-1" title={t('expenseManagementDashboard.depenseLieeAUnAchat')}>
                                 <Lock className="w-3.5 h-3.5" /> Achat
                               </span>
                             ) : (

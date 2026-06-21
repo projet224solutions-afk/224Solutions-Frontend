@@ -354,7 +354,7 @@ export function MonthlyProfitAnalysis({ vendorId, userId }: MonthlyProfitAnalysi
       {/* En-tête */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h3 className="text-lg font-semibold">Analyse de Profit</h3>
+          <h3 className="text-lg font-semibold">{t('monthlyProfitAnalysis.analyseDeProfit')}</h3>
           <p className="text-sm text-muted-foreground capitalize">{periodRange.label}</p>
           {/* Sélecteur de période : pilote ventes ET achats (mêmes dates). */}
           <div className="flex flex-wrap gap-1.5 mt-2">

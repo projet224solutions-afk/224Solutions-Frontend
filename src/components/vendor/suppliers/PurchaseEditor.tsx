@@ -1018,7 +1018,7 @@ export function PurchaseEditor({ purchase, vendorId, onClose }: PurchaseEditorPr
 
               {/* Mode de paiement : payé (dépense) ou à crédit (dette fournisseur) */}
               <div className="mt-3 rounded-lg border p-3 space-y-2">
-                <p className="text-sm font-medium text-foreground">Règlement</p>
+                <p className="text-sm font-medium text-foreground">{t('purchaseEditor.reglement')}</p>
                 <div className="flex gap-2">
                   <button type="button" onClick={() => setPaymentMode('cash')}
                     className={`flex-1 rounded-md border px-3 py-2 text-sm ${paymentMode === 'cash' ? 'border-primary bg-primary/10 font-medium' : 'border-border'}`}>
