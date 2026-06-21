@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🎯 DASHBOARD COPILOTE PDG
  * Interface de chat pour le PDG
@@ -15,6 +16,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const PDGCopilotDashboard: React.FC = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { messages, loading, error, sendMessage, analyzeVendor, analyzeCustomer, getFinancialSummary, clearMessages } = usePDGCopilot();
 
@@ -139,7 +141,7 @@ const PDGCopilotDashboard: React.FC = () => {
               {/* Input */}
               <div className="flex gap-2">
                 <Input
-                  placeholder="Entrez un ID vendeur, client ou posez votre question..."
+                  placeholder={t('pDGCopilotDashboard.entrezUnIdVendeurClient')}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
@@ -164,13 +166,13 @@ const PDGCopilotDashboard: React.FC = () => {
 
               {/* Exemples */}
               <div className="text-xs text-gray-500 space-y-1">
-                <p className="font-semibold">💡 Exemples de requêtes :</p>
+                <p className="font-semibold">{t('pDGCopilotDashboard.exemplesDeRequetes')}</p>
                 <ul className="list-disc list-inside space-y-1 ml-2">
-                  <li>VND-123456 (analyse complète d'un vendeur)</li>
-                  <li>CLT-789012 (analyse complète d'un client)</li>
-                  <li>"Résumé financier du jour"</li>
-                  <li>"Top 10 vendeurs de la semaine"</li>
-                  <li>"Clients à risque élevé"</li>
+                  <li>{t('pDGCopilotDashboard.vnd123456AnalyseCompleteD')}</li>
+                  <li>{t('pDGCopilotDashboard.clt789012AnalyseCompleteD')}</li>
+                  <li>{t('pDGCopilotDashboard.resumeFinancierDuJour')}</li>
+                  <li>{t('pDGCopilotDashboard.top10VendeursDeLa')}</li>
+                  <li>{t('pDGCopilotDashboard.clientsARisqueEleve')}</li>
                 </ul>
               </div>
             </TabsContent>
@@ -334,6 +336,7 @@ const PDGCopilotDashboard: React.FC = () => {
  * Composant message bubble
  */
 const MessageBubble: React.FC<{ message: ChatMessage }> = ({ message }) => {
+  const { t } = useTranslation();
   const isUser = message.role === 'user';
 
   return (

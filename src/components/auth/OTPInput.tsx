@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import React, { useState, useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -20,6 +21,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({
   isLoading = false,
   expiresAt
 }) => {
+  const { t } = useTranslation();
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -35,7 +37,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({
       setTimeLeft(diff);
 
       if (diff === 0) {
-        toast.error('Code OTP expiré. Demandez un nouveau code.');
+        toast.error(t('oTPInput.codeOtpExpireDemandezUn'));
       }
     };
 
@@ -86,7 +88,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({
     const pastedData = e.clipboardData.getData('text').trim();
 
     if (!/^\d{6}$/.test(pastedData)) {
-      toast.error('Code invalide. Collez un code à 6 chiffres.');
+      toast.error(t('oTPInput.codeInvalideCollezUnCode'));
       return;
     }
 
@@ -101,12 +103,12 @@ export const OTPInput: React.FC<OTPInputProps> = ({
   // Vérifier OTP
   const handleVerify = async (otpCode: string) => {
     if (otpCode.length !== 6) {
-      toast.error('Code incomplet. Entrez les 6 chiffres.');
+      toast.error(t('oTPInput.codeIncompletEntrezLes6'));
       return;
     }
 
     if (timeLeft !== null && timeLeft <= 0) {
-      toast.error('Code expiré. Demandez un nouveau code.');
+      toast.error(t('oTPInput.codeExpireDemandezUnNouveau'));
       return;
     }
 
@@ -134,7 +136,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({
             <Lock className="h-6 w-6 text-primary" />
           </div>
         </div>
-        <CardTitle className="text-2xl text-center">Vérification en 2 étapes</CardTitle>
+        <CardTitle className="text-2xl text-center">{t('oTPInput.verificationEn2Etapes')}</CardTitle>
         <CardDescription className="text-center">
           Un code de sécurité à 6 chiffres a été envoyé à
         </CardDescription>

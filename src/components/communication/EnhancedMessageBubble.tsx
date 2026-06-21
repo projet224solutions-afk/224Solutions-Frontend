@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * Composant de bulle de message amélioré
  * Supporte: réponse à un message, statut de lecture, suppression
@@ -63,6 +64,7 @@ export function EnhancedMessageBubble({
   showSenderName = false,
   className,
 }: EnhancedMessageBubbleProps) {
+  const { t } = useTranslation();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteForEveryone, setDeleteForEveryone] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
@@ -104,7 +106,7 @@ export function EnhancedMessageBubble({
       <div className={cn('flex', isOwn ? 'justify-end' : 'justify-start', className)}>
         <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-muted/50 text-muted-foreground italic text-sm">
           <X className="w-4 h-4" />
-          <span>Ce message a été supprimé</span>
+          <span>{t('enhancedMessageBubble.ceMessageAEteSupprime')}</span>
         </div>
       </div>
     );
@@ -242,7 +244,7 @@ export function EnhancedMessageBubble({
 
             {/* Indicateur de modification */}
             {message.edited_at && (
-              <span className="text-[10px] opacity-60 ml-1">(modifié)</span>
+              <span className="text-[10px] opacity-60 ml-1">{t('enhancedMessageBubble.modifie')}</span>
             )}
           </div>
 
@@ -273,7 +275,7 @@ export function EnhancedMessageBubble({
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Supprimer le message ?</AlertDialogTitle>
+            <AlertDialogTitle>{t('enhancedMessageBubble.supprimerLeMessage')}</AlertDialogTitle>
             <AlertDialogDescription>
               {deleteForEveryone
                 ? 'Ce message sera supprimé pour tous les participants de la conversation. Cette action est irréversible.'
@@ -281,7 +283,7 @@ export function EnhancedMessageBubble({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogCancel>{t('enhancedMessageBubble.annuler')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteConfirm}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
@@ -305,6 +307,7 @@ interface ReplyBarProps {
 }
 
 export function ReplyBar({ message, onCancel, className }: ReplyBarProps) {
+  const { t } = useTranslation();
   return (
     <div
       className={cn(

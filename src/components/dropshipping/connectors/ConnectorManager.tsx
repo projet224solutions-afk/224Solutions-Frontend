@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * CONNECTOR MANAGER COMPONENT
  * Interface admin pour gérer les connecteurs dropshipping
@@ -75,6 +76,7 @@ function ConnectorCard({
   onDeactivate,
   onConfigure
 }: ConnectorCardProps) {
+  const { t } = useTranslation();
   const getRegionIcon = () => {
     switch (connector.region) {
       case 'CHINA': return '🇨🇳';
@@ -91,7 +93,7 @@ function ConnectorCard({
     switch (connector.status) {
       case 'stable': return <Badge variant="outline">Disponible</Badge>;
       case 'beta': return <Badge variant="secondary">Beta</Badge>;
-      case 'deprecated': return <Badge variant="destructive">Obsolète</Badge>;
+      case 'deprecated': return <Badge variant="destructive">{t('connectorManager.obsolete')}</Badge>;
     }
   };
 
@@ -133,7 +135,7 @@ function ConnectorCard({
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : isActive ? (
-                <><PowerOff className="w-4 h-4 mr-1" /> Désactiver</>
+                <><PowerOff className="w-4 h-4 mr-1" /> {t('connectorManager.desactiver')}</>
               ) : (
                 <><Power className="w-4 h-4 mr-1" /> Activer</>
               )}
@@ -176,6 +178,7 @@ function ConnectorCard({
 // ==================== MAIN COMPONENT ====================
 
 export function ConnectorManager({ vendorId }: ConnectorManagerProps) {
+  const { t } = useTranslation();
   const {
     loading,
     availableConnectors,
@@ -326,11 +329,11 @@ export function ConnectorManager({ vendorId }: ConnectorManagerProps) {
 
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="apiKey">Clé API</Label>
+              <Label htmlFor="apiKey">{t('connectorManager.cleApi')}</Label>
               <Input
                 id="apiKey"
                 type="password"
-                placeholder="Entrez votre clé API"
+                placeholder={t('connectorManager.entrezVotreCleApi')}
                 value={config.apiKey || ''}
                 onChange={(e) => setConfig(prev => ({ ...prev, apiKey: e.target.value }))}
               />
@@ -367,7 +370,7 @@ export function ConnectorManager({ vendorId }: ConnectorManagerProps) {
 
             {config.autoSync && (
               <div className="space-y-2">
-                <Label htmlFor="syncInterval">Intervalle de sync (minutes)</Label>
+                <Label htmlFor="syncInterval">{t('connectorManager.intervalleDeSyncMinutes')}</Label>
                 <Input
                   id="syncInterval"
                   type="number"

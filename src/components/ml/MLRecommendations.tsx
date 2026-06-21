@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * COMPOSANT RECOMMANDATIONS ML - 224SOLUTIONS
  * Affiche les produits recommandés basés sur l'IA
@@ -170,6 +171,7 @@ export function MLRecommendations({
   productId,
   onProductClick
 }: MLRecommendationsProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
@@ -216,7 +218,7 @@ export function MLRecommendations({
       image: rec.product_image,
       vendor_id: rec.vendor_id
     });
-    toast.success('Produit ajouté au panier', {
+    toast.success(t('mLRecommendations.produitAjouteAuPanier'), {
       description: rec.product_name
     });
   };
@@ -278,7 +280,7 @@ export function MLRecommendations({
                 ))
               ) : (
                 <div className="flex items-center justify-center w-full py-8 text-muted-foreground">
-                  <p>Pas de recommandations disponibles</p>
+                  <p>{t('mLRecommendations.pasDeRecommandationsDisponibles')}</p>
                 </div>
               )}
             </div>
@@ -302,7 +304,7 @@ export function MLRecommendations({
               ))
             ) : (
               <div className="col-span-full flex items-center justify-center py-8 text-muted-foreground">
-                <p>Pas de recommandations disponibles</p>
+                <p>{t('mLRecommendations.pasDeRecommandationsDisponibles')}</p>
               </div>
             )}
           </div>
@@ -318,6 +320,7 @@ export function ProductRecommendations({
   title = 'Vous aimerez aussi',
   ...props
 }: MLRecommendationsProps & { productId: string }) {
+  const { t } = useTranslation();
   return (
     <MLRecommendations
       productId={productId}

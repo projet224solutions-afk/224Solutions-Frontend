@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * Dashboard de monitoring temps réel pour les bureaux/syndicats
  */
@@ -32,6 +33,7 @@ interface BureauRealtimeDashboardProps {
 }
 
 export function BureauRealtimeDashboard({ bureauId, bureauName }: BureauRealtimeDashboardProps) {
+  const { t } = useTranslation();
   const { stats, onlineDrivers, recentActivity, loading, error, refresh } = useBureauRealtimeStats(bureauId);
   const [lastUpdate, setLastUpdate] = useState(new Date());
 
@@ -71,7 +73,7 @@ export function BureauRealtimeDashboard({ bureauId, bureauName }: BureauRealtime
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Monitoring Temps Réel</h2>
+          <h2 className="text-2xl font-bold">{t('bureauRealtimeDashboard.monitoringTempsReel')}</h2>
           {bureauName && <p className="text-muted-foreground">{bureauName}</p>}
         </div>
         <div className="flex items-center gap-4">
@@ -144,7 +146,7 @@ export function BureauRealtimeDashboard({ bureauId, bureauName }: BureauRealtime
               {onlineDrivers.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
                   <WifiOff className="h-12 w-12 mb-2" />
-                  <p>Aucun chauffeur en ligne</p>
+                  <p>{t('bureauRealtimeDashboard.aucunChauffeurEnLigne')}</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -170,7 +172,7 @@ export function BureauRealtimeDashboard({ bureauId, bureauName }: BureauRealtime
               {recentActivity.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
                   <Activity className="h-12 w-12 mb-2" />
-                  <p>Aucune activité récente</p>
+                  <p>{t('bureauRealtimeDashboard.aucuneActiviteRecente')}</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -223,6 +225,7 @@ interface StatCardProps {
 }
 
 function StatCard({ title, value, icon, color, badge, urgent, isText }: StatCardProps) {
+  const { t } = useTranslation();
   return (
     <Card className={urgent ? 'border-[#ff4000] animate-pulse' : ''}>
       <CardContent className="pt-4 pb-3">
@@ -244,6 +247,7 @@ function StatCard({ title, value, icon, color, badge, urgent, isText }: StatCard
 }
 
 function DriverCard({ driver }: { driver: OnlineDriver }) {
+  const { t } = useTranslation();
   const statusColors = {
     available: 'bg-[#ff4000]',
     on_trip: 'bg-[#ff4000]',
@@ -294,6 +298,7 @@ function DriverCard({ driver }: { driver: OnlineDriver }) {
 }
 
 function ActivityItem({ activity }: { activity: RecentActivity }) {
+  const { t } = useTranslation();
   const typeIcons = {
     trip: <Car className="h-4 w-4" />,
     sos: <AlertTriangle className="h-4 w-4 text-[#ff4000]" />,

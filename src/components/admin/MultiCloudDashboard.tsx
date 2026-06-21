@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * Dashboard Multi-Cloud Health Check - Production-grade
  * Real-time monitoring with DB-backed status and Supabase Realtime
@@ -32,6 +33,7 @@ const providerConfig: Record<CloudProvider, { label: string; icon: typeof Cloud;
 };
 
 function StatusDot({ status, pulse = false }: { status: ServiceStatus; pulse?: boolean }) {
+  const { t } = useTranslation();
   return (
     <div className={cn(
       'w-2.5 h-2.5 rounded-full',
@@ -42,6 +44,7 @@ function StatusDot({ status, pulse = false }: { status: ServiceStatus; pulse?: b
 }
 
 function ServiceRow({ svc }: { svc: CloudServiceCheck }) {
+  const { t } = useTranslation();
   const config = statusConfig[svc.status];
   const Icon = config.icon;
   const latencyColor = svc.responseTime < 500 ? 'text-[#ff4000]' : svc.responseTime < 1500 ? 'text-[#ff4000]' : 'text-[#ff4000]';
@@ -62,7 +65,7 @@ function ServiceRow({ svc }: { svc: CloudServiceCheck }) {
           <div className="space-y-1">
             <p className="font-semibold text-sm">{svc.service}</p>
             <p className="text-xs text-muted-foreground">{svc.message}</p>
-            <p className="text-xs text-muted-foreground">✅ Vérification réelle</p>
+            <p className="text-xs text-muted-foreground">{t('multiCloudDashboard.verificationReelle')}</p>
             <p className="text-xs text-muted-foreground">
               Vérifié : {new Date(svc.lastChecked).toLocaleTimeString('fr-FR')}
             </p>
@@ -74,6 +77,7 @@ function ServiceRow({ svc }: { svc: CloudServiceCheck }) {
 }
 
 export default function MultiCloudDashboard() {
+  const { t } = useTranslation();
   const { report, isChecking, refresh, history, providers: dbProviders, services: dbServices, incidents: dbIncidents, lastUpdate } = useMultiCloudHealth(30000);
   const [showHistory, setShowHistory] = useState(false);
 
@@ -85,8 +89,8 @@ export default function MultiCloudDashboard() {
           <RefreshCw className="h-5 w-5 animate-spin text-primary absolute -bottom-1 -right-1" />
         </div>
         <div className="text-center space-y-1">
-          <p className="font-medium text-foreground">Analyse de l'infrastructure...</p>
-          <p className="text-sm text-muted-foreground">Vérification de 10 services cloud en cours</p>
+          <p className="font-medium text-foreground">{t('multiCloudDashboard.analyseDeLInfrastructure')}</p>
+          <p className="text-sm text-muted-foreground">{t('multiCloudDashboard.verificationDe10ServicesCloud')}</p>
         </div>
       </div>
     );
@@ -335,7 +339,7 @@ export default function MultiCloudDashboard() {
             <span>{val.label}</span>
           </div>
         ))}
-        <span className="ml-2 text-[10px]">• Données persistées en DB + Supabase Realtime</span>
+        <span className="ml-2 text-[10px]">{t('multiCloudDashboard.donneesPersisteesEnDbSupabase')}</span>
       </div>
     </div>
   );

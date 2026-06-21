@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * STRIPE CHECKOUT BUTTON - Paiement par carte bancaire via Stripe
  * Remplace PayPalCheckoutButton
@@ -59,6 +60,7 @@ function CheckoutForm({
   onError?: (error: string) => void;
   creditWallet?: boolean;
 }) {
+  const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
@@ -97,7 +99,7 @@ function CheckoutForm({
             );
             if (confirmError) {
               console.error('❌ [DEPOSIT CONFIRM] Error:', confirmError);
-              toast.error('Paiement reçu mais erreur de crédit. Contactez le support.');
+              toast.error(t('stripeCheckoutButton.paiementRecuMaisErreurDe'));
               onError?.('Erreur de confirmation du dépôt');
               return;
             }
@@ -107,10 +109,10 @@ function CheckoutForm({
               onError?.(confirmData?.error || 'Erreur de confirmation');
               return;
             }
-            toast.success('Wallet crédité avec succès !');
+            toast.success(t('stripeCheckoutButton.walletCrediteAvecSucces'));
           } catch (confirmErr) {
             console.error('❌ [DEPOSIT CONFIRM] Exception:', confirmErr);
-            toast.error('Paiement reçu mais erreur de crédit. Contactez le support.');
+            toast.error(t('stripeCheckoutButton.paiementRecuMaisErreurDe'));
             onError?.('Erreur de confirmation du dépôt');
             return;
           }
@@ -125,7 +127,7 @@ function CheckoutForm({
           currency,
         });
       } else if (paymentIntent?.status === 'processing') {
-        toast.info('Paiement en cours de traitement...');
+        toast.info(t('stripeCheckoutButton.paiementEnCoursDeTraitement'));
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Erreur inconnue';
@@ -173,7 +175,7 @@ function CheckoutForm({
 
       <div className="flex items-center gap-2 justify-center">
         <Shield className="w-3.5 h-3.5 text-muted-foreground" />
-        <p className="text-xs text-muted-foreground">Paiement sécurisé via Stripe</p>
+        <p className="text-xs text-muted-foreground">{t('stripeCheckoutButton.paiementSecuriseViaStripe')}</p>
       </div>
     </form>
   );
@@ -193,6 +195,7 @@ export default function StripeCheckoutButton({
   creditWallet = false,
   disabled = false,
 }: StripeCheckoutButtonProps) {
+  const { t } = useTranslation();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [stripe, setStripe] = useState<Stripe | null>(null);
   const [loading, setLoading] = useState(true);
@@ -363,7 +366,7 @@ export default function StripeCheckoutButton({
     return (
       <div className="flex items-center justify-center p-4 gap-2">
         <Loader2 className="w-4 h-4 animate-spin text-primary" />
-        <span className="text-sm text-muted-foreground">Chargement du paiement...</span>
+        <span className="text-sm text-muted-foreground">{t('stripeCheckoutButton.chargementDuPaiement')}</span>
       </div>
     );
   }

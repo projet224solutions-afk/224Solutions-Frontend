@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * OFFLINE STATUS COMPONENTS - 224SOLUTIONS
  * Composants UI pour afficher le statut offline
@@ -16,6 +17,7 @@ import useOfflineMode from '@/hooks/useOfflineMode';
  * Bannière de statut offline (fixée en haut)
  */
 export function OfflineBanner() {
+  const { t } = useTranslation();
   const {
     isOnline,
     showOfflineBanner,
@@ -93,6 +95,7 @@ export function OfflineBanner() {
  * Indicateur compact de synchronisation
  */
 export function SyncIndicator() {
+  const { t } = useTranslation();
   const { showSyncIndicator, queueStatus, isOnline } = useOfflineMode();
 
   if (!showSyncIndicator && queueStatus.pending === 0) return null;
@@ -124,6 +127,7 @@ export function SyncIndicator() {
  * Widget de statut détaillé
  */
 export function OfflineStatusWidget() {
+  const { t } = useTranslation();
   const {
     isOnline,
     offlineStatus,
@@ -181,14 +185,14 @@ export function OfflineStatusWidget() {
               <CheckCircle className="h-4 w-4 text-[#ff4000]" />
             </div>
             <p className="text-2xl font-bold">{queueStatus.completed}</p>
-            <p className="text-xs text-muted-foreground">Synchronisés</p>
+            <p className="text-xs text-muted-foreground">{t('offlineStatusComponents.synchronises')}</p>
           </div>
           <div className="space-y-1">
             <div className="flex items-center justify-center">
               <AlertCircle className="h-4 w-4 text-[#ff4000]" />
             </div>
             <p className="text-2xl font-bold">{queueStatus.failed}</p>
-            <p className="text-xs text-muted-foreground">Échoués</p>
+            <p className="text-xs text-muted-foreground">{t('offlineStatusComponents.echoues')}</p>
           </div>
         </div>
 
@@ -196,7 +200,7 @@ export function OfflineStatusWidget() {
         {(totalOperations > 0 || queueStatus.completed > 0) && (
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>Progression de synchronisation</span>
+              <span>{t('offlineStatusComponents.progressionDeSynchronisation')}</span>
               <span>{Math.round(progress)}%</span>
             </div>
             <Progress value={progress} className="h-2" />
@@ -274,6 +278,7 @@ export function OfflineStatusBadge({
   showLabel?: boolean;
   size?: 'sm' | 'default' | 'lg';
 }) {
+  const { t } = useTranslation();
   const { isOnline, queueStatus } = useOfflineMode();
 
   const sizeClasses = {
