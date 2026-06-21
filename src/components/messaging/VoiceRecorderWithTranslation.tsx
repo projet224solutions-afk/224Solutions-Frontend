@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🎙️ COMPOSANT D'ENREGISTREMENT VOCAL AVEC TRADUCTION AUTOMATIQUE
  * Enregistre un message vocal, l'envoie et déclenche automatiquement
@@ -29,6 +30,7 @@ export function VoiceRecorderWithTranslation({
   className,
   compact = false
 }: VoiceRecorderWithTranslationProps) {
+  const { t } = useTranslation();
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
@@ -197,6 +199,7 @@ export function VoiceRecorderWithTranslation({
 
   // Status de traduction indicator
   const TranslationIndicator = () => {
+    const { t } = useTranslation();
     if (translationStatus === 'idle') return null;
 
     return (
@@ -219,7 +222,7 @@ export function VoiceRecorderWithTranslation({
           </>
         )}
         {translationStatus === 'failed' && (
-          <span>Échec traduction</span>
+          <span>{t('voiceRecorderWithTranslation.echecTraduction')}</span>
         )}
       </div>
     );
@@ -233,7 +236,7 @@ export function VoiceRecorderWithTranslation({
         size="icon"
         onClick={startRecording}
         className={cn("rounded-full", className)}
-        title="Enregistrer un message vocal"
+        title={t('voiceRecorderWithTranslation.enregistrerUnMessageVocal')}
       >
         <Mic className="h-5 w-5" />
       </Button>

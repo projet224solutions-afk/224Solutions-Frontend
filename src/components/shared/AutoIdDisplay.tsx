@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Copy, Check } from "lucide-react";
@@ -23,6 +24,7 @@ export function AutoIdDisplay({
   className = '',
   variant = 'outline'
 }: AutoIdDisplayProps) {
+  const { t } = useTranslation();
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = async () => {
@@ -31,10 +33,10 @@ export function AutoIdDisplay({
     try {
       await navigator.clipboard.writeText(id);
       setCopied(true);
-      toast.success('ID copié dans le presse-papier');
+      toast.success(t('autoIdDisplay.idCopieDansLePresse'));
       setTimeout(() => setCopied(false), 2000);
     } catch (_error) {
-      toast.error('Erreur lors de la copie');
+      toast.error(t('autoIdDisplay.erreurLorsDeLaCopie'));
     }
   };
 
@@ -72,6 +74,7 @@ interface AutoIdCardProps {
  * Carte d'affichage d'ID avec label
  */
 export function AutoIdCard({ id, roleType, label }: AutoIdCardProps) {
+  const { t } = useTranslation();
   const getRoleLabel = (type: RoleType): string => {
     const labels: Record<RoleType, string> = {
       agent: 'Code Agent',

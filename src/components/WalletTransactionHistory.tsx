@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -38,6 +39,7 @@ export const WalletTransactionHistory = ({
   className = '',
   limit = 50
 }: WalletTransactionHistoryProps) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -334,7 +336,7 @@ export const WalletTransactionHistory = ({
         {error ? (
           <div className="text-center py-8">
             <XCircle className="w-12 h-12 text-[#ff4000] mx-auto mb-3" />
-            <p className="text-[#ff4000] font-semibold mb-2">Erreur de chargement</p>
+            <p className="text-[#ff4000] font-semibold mb-2">{t('walletTransactionHistory.erreurDeChargement')}</p>
             <p className="text-sm text-gray-600 mb-4">
               {error}
             </p>
@@ -351,7 +353,7 @@ export const WalletTransactionHistory = ({
         ) : transactions.length === 0 ? (
           <div className="text-center py-8">
             <ArrowUpDown className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-600 mb-2">Aucune transaction</p>
+            <p className="text-gray-600 mb-2">{t('walletTransactionHistory.aucuneTransaction')}</p>
             <p className="text-sm text-gray-500">
               Vos transactions apparaîtront ici
             </p>

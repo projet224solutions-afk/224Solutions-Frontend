@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 📖 DOCUMENTATION UTILISATEUR (PDG) — version ILLUSTRÉE
  * Guides par interface, consultables en ligne (avec schémas de parcours dessinés) et
@@ -205,6 +206,7 @@ const GUIDES: Guide[] = [
 
 // ── Diagramme de parcours À L'ÉCRAN (boîtes + chevrons) ──────────────────────
 function FlowDiagram({ steps, color }: { steps: string[]; color: { r: number; g: number; b: number } }) {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-wrap items-stretch gap-2">
       {steps.map((s, i) => (
@@ -404,6 +406,7 @@ function generatePdf(guides: Guide[], filename: string) {
 
 // ── Composant ────────────────────────────────────────────────────────────────
 export default function PdgDocumentation() {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState<string | null>(null);
 
   const handleDownload = (guide: Guide) => {
@@ -412,17 +415,17 @@ export default function PdgDocumentation() {
       toast.success(`Guide « ${guide.title} » téléchargé`);
     } catch (e) {
       console.error(e);
-      toast.error('Échec de la génération du PDF');
+      toast.error(t('pdgDocumentation.echecDeLaGenerationDu'));
     }
   };
 
   const handleDownloadAll = () => {
     try {
       generatePdf(GUIDES, 'Documentation-224Solutions-complete.pdf');
-      toast.success('Documentation complète téléchargée');
+      toast.success(t('pdgDocumentation.documentationCompleteTelechargee'));
     } catch (e) {
       console.error(e);
-      toast.error('Échec de la génération du PDF');
+      toast.error(t('pdgDocumentation.echecDeLaGenerationDu'));
     }
   };
 

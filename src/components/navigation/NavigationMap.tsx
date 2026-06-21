@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🗺️ CARTE DE NAVIGATION GPS - 224SOLUTIONS
  * Affichage itinéraire avec guidage visuel temps réel
@@ -38,6 +39,7 @@ export const NavigationMap: React.FC<NavigationMapProps> = ({
   onNavigationEnd,
   className
 }) => {
+  const { t } = useTranslation();
   const mapRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -238,7 +240,7 @@ export const NavigationMap: React.FC<NavigationMapProps> = ({
             <div className="text-center space-y-4 p-8">
               <Navigation className="h-16 w-16 text-primary mx-auto animate-pulse" />
               <div className="space-y-2">
-                <p className="font-medium">🗺️ Carte de navigation</p>
+                <p className="font-medium">{t('navigationMap.carteDeNavigation')}</p>
                 <p className="text-sm text-muted-foreground max-w-sm">
                   Intégrer ici: Mapbox GL JS ou Google Maps avec affichage de l'itinéraire en bleu
                 </p>
@@ -296,7 +298,7 @@ export const NavigationMap: React.FC<NavigationMapProps> = ({
                   </div>
                   <div className="w-px h-8 bg-border"></div>
                   <div>
-                    <p className="text-xs text-muted-foreground">Étape</p>
+                    <p className="text-xs text-muted-foreground">{t('navigationMap.etape')}</p>
                     <p className="font-semibold">
                       {navigationState.currentStep + 1}/{route?.steps.length || 0}
                     </p>

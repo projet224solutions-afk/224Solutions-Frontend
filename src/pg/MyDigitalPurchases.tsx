@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 ﻿/**
  * 📚 MES ACHATS NUMÉRIQUES - Vue unifiée achats + abonnements
  */
@@ -42,6 +43,7 @@ interface PurchaseItem {
 }
 
 export default function MyDigitalPurchases() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [items, setItems] = useState<PurchaseItem[]>([]);
@@ -174,7 +176,7 @@ export default function MyDigitalPurchases() {
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div className="flex-1">
-            <h1 className="text-lg font-bold text-foreground">Mes achats numériques</h1>
+            <h1 className="text-lg font-bold text-foreground">{t('myDigitalPurchases.mesAchatsNumeriques')}</h1>
             <p className="text-xs text-muted-foreground">
               {totalPurchases} achat{totalPurchases > 1 ? 's' : ''} à {activeSubscriptions} abonnement{activeSubscriptions > 1 ? 's' : ''} actif{activeSubscriptions > 1 ? 's' : ''}
             </p>
@@ -200,8 +202,8 @@ export default function MyDigitalPurchases() {
           <Card>
             <CardContent className="p-12 text-center">
               <Package className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <h3 className="text-lg font-semibold mb-2">Aucun achat</h3>
-              <p className="text-muted-foreground mb-4">Vous n'avez pas encore acheté de produit numérique.</p>
+              <h3 className="text-lg font-semibold mb-2">{t('myDigitalPurchases.aucunAchat')}</h3>
+              <p className="text-muted-foreground mb-4">{t('myDigitalPurchases.vousNAvezPasEncore')}</p>
               <Button onClick={() => navigate('/marketplace')}>
                 Découvrir le marketplace
               </Button>
@@ -235,6 +237,7 @@ function PurchaseCard({
   onNavigate: () => void;
   onManageSub: () => void;
 }) {
+  const { t } = useTranslation();
   const isSubscription = item.type === 'subscription';
   const isActive = item.status === 'active';
   const daysLeft = item.current_period_end ? getDaysRemaining(item.current_period_end) : 0;

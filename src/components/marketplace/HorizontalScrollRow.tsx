@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * HorizontalScrollRow - Défilement horizontal professionnel style Alibaba/Amazon
  * Support: Touch swipe, boutons flèches, scroll molette, snap points
@@ -29,6 +30,7 @@ export function HorizontalScrollRow({
   autoScroll = false,
   autoScrollInterval = 4000,
 }: HorizontalScrollRowProps) {
+  const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -110,7 +112,7 @@ export function HorizontalScrollRow({
             'active:scale-95',
             arrowSizes[arrowSize]
           )}
-          aria-label="Défiler à gauche"
+          aria-label={t('horizontalScrollRow.defilerAGauche')}
         >
           <ChevronLeft className={iconSizes[arrowSize]} />
         </button>
@@ -129,7 +131,7 @@ export function HorizontalScrollRow({
             'active:scale-95',
             arrowSizes[arrowSize]
           )}
-          aria-label="Défiler à droite"
+          aria-label={t('horizontalScrollRow.defilerADroite')}
         >
           <ChevronRight className={iconSizes[arrowSize]} />
         </button>
@@ -172,6 +174,7 @@ export function ScrollItem({
   width?: string;
   snapAlign?: 'start' | 'center' | 'end';
 }) {
+  const { t } = useTranslation();
   return (
     <div
       className={cn(
