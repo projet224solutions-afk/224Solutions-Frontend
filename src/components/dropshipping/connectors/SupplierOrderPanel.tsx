@@ -187,7 +187,6 @@ function getStatusConfig(status: string) {
 // ==================== SUB COMPONENTS ====================
 
 function TrackingTimeline({ tracking }: { tracking: TrackingInfo }) {
-  const { t } = useTranslation();
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
@@ -251,7 +250,6 @@ function OrderCard({
   const StatusIcon = statusConfig.icon;
 
   const handleCreateOrder = async () => {
-    const { t } = useTranslation();
     setLoading(true);
     await onCreateOrder();
     setLoading(false);
