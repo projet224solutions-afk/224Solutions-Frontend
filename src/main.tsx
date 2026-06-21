@@ -293,7 +293,11 @@ function logPwaDiagnostics() {
 // `preconnect` ouvre la connexion en amont SANS aucune requête HTTP → même gain, zéro erreur.
 function warmUpConnections() {
   if (typeof document === 'undefined') return;
-  const supabaseRef = 'uakkxaibujzxdiqzpnpr';
+  // Extraire le project ID depuis la variable d'environnement VITE_SUPABASE_URL
+  // Format attendu : https://<project-id>.supabase.co
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+  const supabaseRef = supabaseUrl ? new URL(supabaseUrl).hostname.split('.')[0] : '';
+  if (!supabaseRef) return; // Ne pas tenter de preconnect si l'URL n'est pas configurée
   const hosts = [
     `https://${supabaseRef}.supabase.co`,            // DB / REST / Auth / Storage
     `https://${supabaseRef}.functions.supabase.co`,  // Edge Functions

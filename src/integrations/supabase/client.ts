@@ -4,11 +4,13 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 import { shouldAssumeOffline } from '@/lib/networkHealth';
 
-// Configuration Supabase - variables d'environnement Vercel avec fallback hardcodé
-// Une fois VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY configurés sur Vercel,
-// les fallbacks ne seront plus utilisés.
-const SUPABASE_URL = import.meta.env.NEXT_PUBLIC_VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL || "";
-const SUPABASE_KEY = import.meta.env.NEXT_PUBLIC_VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY || "";
+// Configuration Supabase — variables d'environnement Vite
+// Sur Vercel/Netlify/VPS : définir VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY
+// dans les variables d'environnement de la plateforme de déploiement.
+// ⚠️ Utiliser UNIQUEMENT le préfixe VITE_ (standard Vite).
+//    Ne pas utiliser NEXT_PUBLIC_ (convention Next.js incompatible avec Vite).
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
   console.error('❌ [CRITICAL] Supabase URL or Key missing. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');

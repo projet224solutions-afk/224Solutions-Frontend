@@ -265,8 +265,14 @@ class HealthCheckService {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 5000);
 
+      // URL construite depuis VITE_SUPABASE_URL pour éviter le project ID hardcodé
+      const _supabaseUrlEnv = import.meta.env.VITE_SUPABASE_URL || '';
+      const _supabaseRef = _supabaseUrlEnv
+        ? (() => { try { return new URL(_supabaseUrlEnv).hostname.split('.')[0]; } catch { return 'uakkxaibujzxdiqzpnpr'; } })()
+        : 'uakkxaibujzxdiqzpnpr';
+
       const response = await fetch(
-        `https://uakkxaibujzxdiqzpnpr.functions.supabase.co/health-check`,
+        `https://${_supabaseRef}.functions.supabase.co/health-check`,
         {
           method: 'POST',
           signal: controller.signal,

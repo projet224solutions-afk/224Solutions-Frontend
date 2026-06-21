@@ -10,6 +10,9 @@
 # This proxies /s/:code to the Edge Function which handles bot detection
 [[redirects]]
   from = "/s/*"
+  # ⚠️ MAINTENANCE : project ID Supabase hardcodé ici car netlify.toml ne supporte
+  # pas les variables d'env dans les redirects. À mettre à jour avec vercel.json
+  # et les fichiers src/ en cas de migration vers un nouveau projet Supabase.
   to = "https://uakkxaibujzxdiqzpnpr.supabase.co/functions/v1/short-link/:splat"
   status = 200
   force = true

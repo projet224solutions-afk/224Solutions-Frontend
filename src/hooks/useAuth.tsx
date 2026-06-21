@@ -910,7 +910,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // déconnexion laisse l'accès UI agent/bureau actif (ProtectedRoute.checkCustomSession) et
       // le cache profil offline pourrait reconférer un rôle.
       localStorage.removeItem('supabase.auth.token');
-      localStorage.removeItem('sb-uakkxaibujzxdiqzpnpr-auth-token');
+      // Nettoyage token auth : utiliser la clé dynamique extraite de la session
+      // plutôt qu'un project ID hardcodé pour résister aux migrations Supabase.
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+      const projectRef = supabaseUrl ? (() => { try { return new URL(supabaseUrl).hostname.split('.')[0]; } catch { return 'uakkxaibujzxdiqzpnpr'; } })() : 'uakkxaibujzxdiqzpnpr';
+      localStorage.removeItem(`sb-${projectRef}-auth-token`);
       // Sessions custom agent / bureau (UI) + jetons associés
       localStorage.removeItem('agent_token');
       localStorage.removeItem('agent_session');

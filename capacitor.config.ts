@@ -7,7 +7,9 @@ const config: CapacitorConfig = {
   server: {
     // URL du sandbox pour hot-reload en développement (commenter en production)
     // url: 'https://a00e0cf7-bf68-445f-848b-f2c774cf80ce.lovableproject.com?forceHideBadge=true',
-    cleartext: true
+    // ⚠️ PRODUCTION : cleartext désactivé — toutes les communications doivent être HTTPS.
+    // Pour le développement local uniquement, remettre temporairement à true.
+    cleartext: false,
   },
   plugins: {
     // Configuration Deep Links
@@ -18,8 +20,9 @@ const config: CapacitorConfig = {
   },
   // Configuration Android pour Deep Links
   android: {
-    // Permet les liens HTTP non sécurisés en dev
-    allowMixedContent: true,
+    // ⚠️ PRODUCTION : mixedContent désactivé — ne jamais servir de contenu HTTP
+    // dans une app HTTPS. Pour debug local uniquement, remettre temporairement à true.
+    allowMixedContent: false,
   },
   // Configuration iOS pour Deep Links
   ios: {
