@@ -53,7 +53,7 @@ const DigitalVendorHeader = memo(function DigitalVendorHeader({
                 Catalogue • ventes • revenus
               </p>
               <p className="mt-1 flex items-center gap-2 text-xs text-slate-600 md:text-sm">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff6a1a] shadow-[0_0_0_5px_rgba(255,106,26,0.16)]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#16a34a] shadow-[0_0_0_5px_rgba(22,163,74,0.16)] animate-pulse" />
                 <span className="truncate max-w-[220px] sm:max-w-[340px]">{displayName}</span>
               </p>
               {sellerCode ? (

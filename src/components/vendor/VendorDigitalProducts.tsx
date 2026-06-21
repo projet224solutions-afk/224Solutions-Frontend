@@ -46,11 +46,11 @@ const categoryIcons: Record<string, React.ComponentType<any>> = {
 };
 
 const statusColors: Record<string, string> = {
-  published: "bg-primary text-primary-foreground",
-  draft: "bg-muted text-foreground",
-  pending: "bg-secondary text-secondary-foreground",
-  rejected: "bg-destructive text-destructive-foreground",
-  archived: "bg-muted text-muted-foreground",
+  published: "bg-[#16a34a] text-white",            // Vert — produit actif/publié
+  draft:     "bg-muted text-foreground",            // Gris — brouillon
+  pending:   "bg-[#04439e]/10 text-[#04439e]",      // Bleu pâle — en attente de validation
+  rejected:  "bg-destructive/10 text-destructive",  // Rouge — rejeté
+  archived:  "bg-muted text-muted-foreground",      // Gris — archivé
 };
 
 const statusLabels: Record<string, string> = {
@@ -105,7 +105,8 @@ export default function VendorDigitalProducts() {
       const { error } = await supabase
         .from('digital_products')
         .update({ status: 'archived' as any })
-        .eq('id', deleteProduct.id);
+        .eq('id', deleteProduct.id)
+        .eq('merchant_id', deleteProduct.merchant_id);
       if (error) throw error;
       toast.success(t('vendorDigitalProducts.produitArchive'), { description: "Le produit reste accessible pour les acheteurs existants." });
       refresh();
@@ -126,7 +127,8 @@ export default function VendorDigitalProducts() {
       const { error } = await supabase
         .from('digital_products')
         .delete()
-        .eq('id', deleteProduct.id);
+        .eq('id', deleteProduct.id)
+        .eq('merchant_id', deleteProduct.merchant_id);
       if (error) throw error;
       toast.success(t('vendorDigitalProducts.produitSupprimeDefinitivement'));
       refresh();
@@ -147,7 +149,8 @@ export default function VendorDigitalProducts() {
       const { error } = await supabase
         .from('digital_products')
         .update({ status: newStatus as any })
-        .eq('id', product.id);
+        .eq('id', product.id)
+        .eq('merchant_id', product.merchant_id);
       if (error) throw error;
       toast.success(
         product.status === 'archived' ? "Produit restauré en brouillon" : "Produit soumis pour réexamen",

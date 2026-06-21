@@ -51,7 +51,11 @@ const DigitalVendorRoutes = memo(function DigitalVendorRoutes({ vendorId }: Digi
 
         {/* Produits numériques */}
         <Route path="products" element={<VendorDigitalProducts />} />
-        <Route path="add-product" element={<DigitalProducts />} />
+        <Route path="add-product" element={
+          <ProtectedRoute feature="products_basic">
+            <DigitalProducts />
+          </ProtectedRoute>
+        } />
 
         {/* Marketplace (vue publique) */}
         <Route path="marketplace" element={<DigitalProducts />} />
@@ -70,7 +74,11 @@ const DigitalVendorRoutes = memo(function DigitalVendorRoutes({ vendorId }: Digi
         } />
 
         {/* Liens de paiement */}
-        <Route path="payment-links" element={<PaymentLinksManager />} />
+        <Route path="payment-links" element={
+          <ProtectedRoute feature="payment_links">
+            <PaymentLinksManager />
+          </ProtectedRoute>
+        } />
 
         {/* Finance */}
         <Route path="wallet" element={<UniversalWalletTransactions />} />

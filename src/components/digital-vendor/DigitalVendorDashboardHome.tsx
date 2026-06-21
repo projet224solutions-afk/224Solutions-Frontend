@@ -239,7 +239,7 @@ const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
               const Icon = metric.icon;
 
               return (
-                <div key={metric.label} className="min-w-0 rounded-[18px] border border-[#dbe6fb] bg-[linear-gradient(135deg,#f8fbff_0%,#eff5ff_100%)] p-3 sm:rounded-[22px] sm:p-4">
+                <div key={metric.label} className="min-w-0 rounded-[18px] border border-[#04439e]/10 bg-[#04439e]/5 p-3 sm:rounded-[22px] sm:p-4">
                   <div className="flex items-start justify-between gap-2 sm:gap-3">
                     <div className="min-w-0 flex-1">
                       <p className="text-[9px] font-semibold uppercase tracking-[0.08em] text-[#5f78a5] min-[400px]:text-[8px] sm:text-[11px] sm:tracking-[0.18em]">{metric.label}</p>

@@ -207,7 +207,6 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
 
       if (error) throw error;
 
-      console.log('[DigitalProductForm] AI description response:', data);
 
       const nextDescription = (data?.description ?? '').toString();
       const nextShort = (data?.shortDescription ?? data?.short_description ?? '').toString().trim();
@@ -224,7 +223,6 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
 
       toast.success(t('digitalProductForm.descriptionGenereeAvecSucces'));
     } catch (error) {
-      console.error('Erreur génération description:', error);
       toast.error(t('digitalProductForm.erreurLorsDeLaGeneration'));
     } finally {
       setGeneratingDescription(false);
@@ -477,7 +475,6 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
     const uploadedUrls: string[] = [];
 
     for (const file of Array.from(files)) {
-      console.log(`[DigitalProductForm] Uploading image to GCS...`);
 
       const uploadResult = await uploadToGCS(file, {
         folder: 'products',
@@ -485,7 +482,6 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
       });
 
       if (uploadResult.success && uploadResult.publicUrl) {
-        console.log(`[DigitalProductForm] ✅ Image uploaded via ${uploadResult.provider}: ${uploadResult.publicUrl}`);
         uploadedUrls.push(uploadResult.publicUrl);
       }
     }
@@ -501,7 +497,6 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
     const uploadedUrls: string[] = [];
 
     for (const file of Array.from(files)) {
-      console.log(`[DigitalProductForm] Uploading deliverable file...`, file.name, file.size);
 
       try {
         // Use digital-products bucket with Supabase fallback preferred for reliability
@@ -512,14 +507,13 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
         });
 
         if (uploadResult.success && uploadResult.publicUrl) {
-          console.log(`[DigitalProductForm] ✅ Deliverable uploaded via ${uploadResult.provider}: ${uploadResult.publicUrl}`);
           uploadedUrls.push(uploadResult.publicUrl);
         } else {
-          console.error(`[DigitalProductForm] ❌ Upload failed for ${file.name}:`, uploadResult.error);
+          console.error('[DigitalProductForm] Upload failed for file');
           toast.error(`Erreur upload: ${file.name} - ${uploadResult.error || 'Échec inconnu'}`);
         }
       } catch (err: any) {
-        console.error(`[DigitalProductForm] ❌ Upload exception for ${file.name}:`, err);
+        console.error('[DigitalProductForm] Upload exception');
         toast.error(`Erreur upload: ${file.name}`);
       }
     }
@@ -619,7 +613,8 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
             return false;
           }
         } else {
-          if (!directData.price || parseFloat(directData.price) < 0) {
+          const parsedPrice = parseFloat(directData.price);
+          if (!directData.price || isNaN(parsedPrice) || parsedPrice <= 0) {
             toast.error(t('digitalProductForm.lePrixEstObligatoire'));
             return false;
           }
@@ -660,7 +655,6 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
       let videoUrl: string | null = isEdit ? (initialProduct?.video_url || null) : null;
       if (videoFile) {
         setUploadingVideo(true);
-        console.log(`[DigitalProductForm] Uploading video to GCS...`);
 
         const uploadResult = await uploadToGCS(videoFile, {
           folder: 'videos',
@@ -668,7 +662,6 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
         });
 
         if (uploadResult.success && uploadResult.publicUrl) {
-          console.log(`[DigitalProductForm] ✅ Video uploaded via ${uploadResult.provider}: ${uploadResult.publicUrl}`);
           videoUrl = uploadResult.publicUrl;
         }
         setUploadingVideo(false);
@@ -791,16 +784,13 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
   };
 
   const renderStepContent = () => {
-    console.log('[DigitalProductForm] Rendering step:', currentStep, 'salesMode:', salesMode);
 
     switch (currentStep) {
       case 'mode':
-        console.log('[DigitalProductForm] Rendering SalesModeSelector');
         return (
           <SalesModeSelector
             value={salesMode}
             onChange={(mode) => {
-              console.log('[DigitalProductForm] Mode changed to:', mode);
               setSalesMode(mode);
             }}
             disabled={!config.allowDirectSale && !config.allowAffiliate}
