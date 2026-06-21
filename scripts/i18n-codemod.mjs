@@ -127,6 +127,16 @@ function processFile(file, keys) {
       return `${fn}(t('${k}')`;
     });
 
+    // 4) Valeurs de propriétés d'objet UI (label/note/title/message/description…)
+    //    ex: `label: 'Ventes confirmées'` → `label: t('clé')`. Réservé à des CLÉS
+    //    clairement d'affichage + filtre looksFrench (limite les faux positifs).
+    line = line.replace(/\b(label|note|title|message|description|subtitle|hint|tooltip|successMessage|errorMessage|confirmText|cancelText|helperText|emptyMessage|placeholderText)\s*:\s*(["'])((?:\\.|(?!\2).)*?)\2/g, (full, key, q, raw) => {
+      const txt = raw.replace(/\\(['"\\])/g, '$1');
+      if (!looksFrench(txt)) return full;
+      const k = mkKey(txt.trim()); count++;
+      return `${key}: t('${k}')`;
+    });
+
     lines[i] = line;
   }
 

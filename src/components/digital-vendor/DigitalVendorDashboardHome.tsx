@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * Dashboard Home dédié pour les vendeurs de produits numériques
  * Stats réelles avec ventilation : CA brut, commissions, revenu net
@@ -43,6 +44,7 @@ interface MerchantStats {
 }
 
 const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { products, loading } = useMerchantDigitalProducts();
@@ -104,9 +106,9 @@ const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
 
   const primaryMetrics = [
     {
-      label: 'Ventes confirmées',
+      label: t('digitalVendorDashboardHome.ventesConfirmees'),
       value: statsLoading ? '...' : fmtNum(stats.totalSales),
-      note: 'transactions finalisées',
+      note: t('digitalVendorDashboardHome.transactionsFinalisees'),
       icon: ShoppingCart,
       cardBg: 'bg-[#04439e]',
       valueTone: 'text-white',
@@ -140,7 +142,7 @@ const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
       iconColor: 'text-white',
     },
     {
-      label: 'Abonnés actifs',
+      label: t('digitalVendorDashboardHome.abonnesActifs'),
       value: statsLoading ? '...' : fmtNum(stats.activeSubscribers),
       note: stats.subscriptionRevenue > 0 ? `${fc(stats.subscriptionRevenue)} par période` : 'aucun abonnement actif',
       icon: Users,
@@ -161,19 +163,19 @@ const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
       icon: Package,
     },
     {
-      label: 'Produits publiés',
+      label: t('digitalVendorDashboardHome.produitsPublies'),
       value: fmtNum(publishedCount),
       note: draftCount > 0 ? `${draftCount} brouillon${draftCount > 1 ? 's' : ''}` : 'aucun brouillon',
       icon: BarChart3,
     },
     {
-      label: 'Téléchargements',
+      label: t('digitalVendorDashboardHome.telechargements'),
       value: statsLoading ? '...' : fmtNum(stats.totalDownloads),
-      note: 'livraisons déjà consommées',
+      note: t('digitalVendorDashboardHome.livraisonsDejaConsommees'),
       icon: Download,
     },
     {
-      label: 'Visibilité totale',
+      label: t('digitalVendorDashboardHome.visibiliteTotale'),
       value: fmtNum(totalViews),
       note: stats.totalSales > 0 ? `conversion ${((stats.totalSales / Math.max(totalViews, 1)) * 100).toFixed(1)}%` : 'conversion à construire',
       icon: Eye,
@@ -189,8 +191,8 @@ const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
           <div className="flex flex-col gap-5 sm:gap-6">
             <div className="max-w-3xl">
               <h2 className="text-center text-xl font-extrabold uppercase leading-tight tracking-[-0.02em] text-[#0b1b33] xl:text-left sm:text-3xl lg:text-[2.6rem]">
-                <span className="text-[#04439e]">Pilotez vos produits numériques</span>{' '}
-                <span className="text-[#0b1b33]">comme un vrai business</span>{' '}
+                <span className="text-[#04439e]">{t('digitalVendorDashboardHome.pilotezVosProduitsNumeriques')}</span>{' '}
+                <span className="text-[#0b1b33]">{t('digitalVendorDashboardHome.commeUnVraiBusiness')}</span>{' '}
                 <span className="text-[#ff6a1a]">international.</span>
               </h2>
               <p className="mt-4 max-w-2xl text-center text-sm leading-6 text-[#425466] xl:text-left sm:text-base">
@@ -230,7 +232,7 @@ const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
         <Card className="overflow-hidden rounded-[28px] border border-[#04439e]/10 bg-white shadow-[0_22px_55px_rgba(4,67,158,0.12)]">
           <CardHeader className="border-b border-[#e3ecfa] px-4 pb-4 pt-4 sm:px-6 sm:pt-6">
             <CardTitle className="text-base font-semibold text-[#0b1b33] sm:text-xl">Vue business</CardTitle>
-            <CardDescription className="text-xs text-[#5f78a5] sm:text-sm">Lecture rapide des signaux business et de la santé du catalogue.</CardDescription>
+            <CardDescription className="text-xs text-[#5f78a5] sm:text-sm">{t('digitalVendorDashboardHome.lectureRapideDesSignauxBusiness')}</CardDescription>
           </CardHeader>
           <CardContent className="grid min-w-0 grid-cols-1 gap-2.5 px-4 pb-4 pt-4 sm:grid-cols-2 sm:gap-3 sm:px-6 sm:pb-6">
             {secondaryMetrics.map((metric) => {
@@ -259,8 +261,8 @@ const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
         <CardHeader className="border-b border-gray-100 pb-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <CardTitle className="text-xl font-semibold text-gray-900">Catalogue récent</CardTitle>
-              <CardDescription className="mt-1 text-sm text-gray-500">Vos offres digitales les plus récentes avec leur statut commercial et leur niveau de traction.</CardDescription>
+              <CardTitle className="text-xl font-semibold text-gray-900">{t('digitalVendorDashboardHome.catalogueRecent')}</CardTitle>
+              <CardDescription className="mt-1 text-sm text-gray-500">{t('digitalVendorDashboardHome.vosOffresDigitalesLesPlus')}</CardDescription>
             </div>
             <Button variant="outline" size="sm" onClick={() => navigate('/vendeur-digital/products')} className="rounded-xl border-[#04439e]/20 bg-[#04439e] font-semibold text-white hover:bg-[#04439e]/90 hover:text-white">
               Voir tout
@@ -273,8 +275,8 @@ const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
           ) : products.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-[24px] border border-dashed border-gray-200 bg-gray-50 py-12 text-center">
               <Laptop className="mb-4 h-14 w-14 text-gray-300" />
-              <p className="text-base font-semibold text-gray-900">Aucun produit numérique</p>
-              <p className="mb-4 mt-2 max-w-sm text-sm text-gray-500">Commencez à vendre avec une première offre digitale claire, crédible et prête à convertir.</p>
+              <p className="text-base font-semibold text-gray-900">{t('digitalVendorDashboardHome.aucunProduitNumerique')}</p>
+              <p className="mb-4 mt-2 max-w-sm text-sm text-gray-500">{t('digitalVendorDashboardHome.commencezAVendreAvecUne')}</p>
               <Button onClick={() => navigate('/vendeur-digital/add-product')} size="sm" className="gap-2 rounded-xl bg-[#ff4000] font-semibold text-white hover:bg-[#e53900]">
                 <Plus className="w-4 h-4" />
                 Créer mon premier produit
@@ -342,7 +344,7 @@ const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
       </Card>
 
       <RecentlyViewedProducts
-        title="Produits consultés récemment"
+        title={t('digitalVendorDashboardHome.produitsConsultesRecemment')}
         subtitle="Retrouvez rapidement les dernières fiches ouvertes dans votre espace digital."
         maxItems={6}
       />
