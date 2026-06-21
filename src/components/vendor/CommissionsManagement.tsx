@@ -405,7 +405,7 @@ export default function CommissionsManagement() {
                     return (
                       <div
                         key={setting.id}
-                        className="flex items-center justify-between p-4 border rounded-lg bg-gradient-to-r from-gray-50 to-white"
+                        className="flex items-center justify-between p-4 border rounded-lg bg-gray-50"
                       >
                         <div className="flex items-center gap-3">
                           <div className="p-2 rounded-full bg-primary/10 text-primary">

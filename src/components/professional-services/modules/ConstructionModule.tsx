@@ -50,7 +50,7 @@ export function ConstructionModule({ serviceId, businessName }: { serviceId: str
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <div className="rounded-xl bg-gradient-to-br from-[#ff4000] to-orange-500 p-3"><HardHat className="h-8 w-8 text-white" /></div>
+        <div className="rounded-xl bg-[#ff4000] p-3"><HardHat className="h-8 w-8 text-white" /></div>
         <div><h2 className="text-2xl font-bold">{businessName || 'Entreprise BTP'}</h2><p className="text-muted-foreground">{t('constructionModule.gestionDeChantiersDevisJalons')}</p></div>
         <Button className="ml-auto" onClick={() => setOpen(true)}><Plus className="h-4 w-4 mr-1" />{t('constructionModule.nouveauProjet')}</Button>
       </div>

@@ -67,7 +67,7 @@ export function NumericKeypadPopup({
         <div className={`bg-gradient-to-r ${isQuantityMode ? 'from-blue-500/10 via-blue-500/5' : 'from-primary/10 via-primary/5'} to-transparent p-4 border-b border-border/50`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-xl bg-[#04439e] ${isQuantityMode ? '' : 'from-primary to-primary/80'} flex items-center justify-center shadow-lg`}>
+              <div className={`w-10 h-10 rounded-xl bg-[#04439e] ${isQuantityMode ? '' : 'from-primary'} flex items-center justify-center shadow-lg`}>
                 {isQuantityMode ? (
                   <Package className="h-5 w-5 text-white" />
                 ) : (

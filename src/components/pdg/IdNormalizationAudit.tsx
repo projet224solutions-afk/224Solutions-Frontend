@@ -892,7 +892,7 @@ export default function IdNormalizationAudit() {
                   <Button
                     onClick={handleCorrectAllIds}
                     disabled={correctingAll}
-                    className="gap-2 bg-gradient-to-r from-[#ff4000] to-orange-500 hover:from-[#ff4000] hover:to-orange-600 text-white"
+                    className="gap-2 bg-[#ff4000] text-white"
                   >
                     {correctingAll ? (
                       <Loader2 className="w-4 h-4 animate-spin" />

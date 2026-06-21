@@ -267,7 +267,7 @@ export default function TransportTicketGenerator({ bureauId, bureauName }: { bur
     <div className="space-y-6">
       {/* Formulaire de configuration */}
       <Card className="border-0 shadow-xl rounded-2xl">
-        <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-50 rounded-t-2xl">
+        <CardHeader className="bg-[#ff4000]/5 rounded-t-2xl">
           <div className="flex items-center justify-between">
             <CardTitle className="text-xl font-bold text-gray-800 flex items-center gap-2">
               <FileText className="w-5 h-5 text-[#ff4000]" />
@@ -428,7 +428,7 @@ export default function TransportTicketGenerator({ bureauId, bureauName }: { bur
             <Button
               onClick={handleGenerateTickets}
               disabled={isGenerating}
-              className="bg-gradient-to-r from-[#ff4000] to-orange-600 hover:from-[#ff4000] hover:to-orange-700 text-white px-8 py-3 text-lg font-bold shadow-lg"
+              className="bg-[#ff4000] text-white px-8 py-3 text-lg font-bold shadow-lg"
             >
               {isGenerating ? (
                 <>

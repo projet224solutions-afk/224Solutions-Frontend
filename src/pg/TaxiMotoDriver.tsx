@@ -475,7 +475,7 @@ export default function TaxiMotoDriver() {
                 <div className="min-h-screen bg-gray-950 pb-24 pt-4 px-3 sm:px-4">
                     <div className="space-y-6">
                         <h2 className="text-white font-bold text-base sm:text-lg">{t('taxiMotoDriver.votreNote')}</h2>
-                        <div className="bg-gradient-to-br from-[#ff4000]/20 to-[#ff4000]/10 rounded-2xl p-4 sm:p-6 border border-[#ff4000]/30 text-center">
+                        <div className="bg-[#ff4000]/20 rounded-2xl p-4 sm:p-6 border border-[#ff4000]/30 text-center">
                             <div className="text-4xl sm:text-5xl font-bold text-[#ff4000] mb-2">
                                 {driverStats.rating > 0 ? driverStats.rating.toFixed(1) : '-'}
                             </div>

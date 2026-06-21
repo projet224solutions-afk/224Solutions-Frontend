@@ -33,7 +33,7 @@ const PLAN_COLORS: Record<string, string> = {
   'basic': 'bg-blue-100 text-blue-700',
   'pro': 'bg-blue-100 text-[#04439e]',
   'business': 'bg-orange-100 text-orange-700',
-  'premium': 'bg-gradient-to-r from-[#ff4000] to-orange-500 text-white',
+  'premium': 'bg-[#ff4000] text-white',
 };
 
 const _PLAN_DESCRIPTIONS: Record<string, string> = {
@@ -105,7 +105,7 @@ export function UpgradeDialog({
         <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <div className="p-2 rounded-full bg-gradient-to-br from-[#ff4000] to-orange-500">
+              <div className="p-2 rounded-full bg-[#ff4000]">
                 <Crown className="w-5 h-5 text-white" />
               </div>
               <span>{t('upgradeDialog.fonctionnalitePremium')}</span>

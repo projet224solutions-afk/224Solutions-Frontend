@@ -401,7 +401,7 @@ export default function NearbyTaxiMoto() {
   const hasLastUpdated = lastUpdatedRef.current !== null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/30 pb-24">
+    <div className="min-h-screen bg-background pb-24">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/50">
         <div className="max-w-7xl mx-auto px-4 py-4">

@@ -63,7 +63,7 @@ const BugBounty = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 p-4">
+    <div className="min-h-screen bg-background p-4">
       <div className="max-w-4xl mx-auto space-y-8 py-8">
         {/* Header */}
         <div className="text-center space-y-4">
@@ -78,7 +78,7 @@ const BugBounty = () => {
 
         {/* Rewards Info */}
         <div className="grid md:grid-cols-4 gap-4">
-          <Card className="bg-gradient-to-br from-[#ff4000]/10 to-[#ff4000]/10 border-[#ff4000]/20">
+          <Card className="bg-[#ff4000]/10 border-[#ff4000]/20">
             <CardHeader className="pb-3">
               <Trophy className="w-8 h-8 text-[#ff4000] mb-2" />
               <CardTitle className="text-lg">Critique</CardTitle>
@@ -88,7 +88,7 @@ const BugBounty = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-orange-500/10 to-orange-600/10 border-orange-500/20">
+          <Card className="bg-orange-500/10 border-orange-500/20">
             <CardHeader className="pb-3">
               <Award className="w-8 h-8 text-orange-500 mb-2" />
               <CardTitle className="text-lg">Haute</CardTitle>
@@ -98,7 +98,7 @@ const BugBounty = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-[#ff4000]/10 to-[#ff4000]/10 border-[#ff4000]/20">
+          <Card className="bg-[#ff4000]/10 border-[#ff4000]/20">
             <CardHeader className="pb-3">
               <Award className="w-8 h-8 text-[#ff4000] mb-2" />
               <CardTitle className="text-lg">Moyenne</CardTitle>
@@ -108,7 +108,7 @@ const BugBounty = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-[#ff4000]/10 to-[#ff4000]/10 border-[#ff4000]/20">
+          <Card className="bg-[#ff4000]/10 border-[#ff4000]/20">
             <CardHeader className="pb-3">
               <Award className="w-8 h-8 text-[#ff4000] mb-2" />
               <CardTitle className="text-lg">Basse</CardTitle>

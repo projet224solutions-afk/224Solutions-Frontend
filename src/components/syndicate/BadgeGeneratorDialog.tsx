@@ -214,7 +214,7 @@ export default function BadgeGeneratorDialog({
 
         <div className="space-y-6">
           {/* Aperçu du badge */}
-          <div className="flex justify-center bg-gradient-to-br from-gray-100 to-gray-200 p-8 rounded-lg">
+          <div className="flex justify-center bg-gray-100 p-8 rounded-lg">
             <TaxiMotoBadge
               ref={badgeRef}
               driverName={vehicleData.member_name}

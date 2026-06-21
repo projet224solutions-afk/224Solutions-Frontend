@@ -308,7 +308,7 @@ export function SOSMediaRecorder({
             <div className="grid grid-cols-2 gap-3">
               <Button
                 onClick={() => startRecording('video')}
-                className="h-20 bg-gradient-to-br from-[#ff4000] via-[#ff4000] to-[#ff4000] hover:from-[#ff4000] hover:via-[#ff4000] hover:to-[#ff4000] text-white shadow-xl transition-all hover:scale-105 group"
+                className="h-20 bg-[#ff4000] hover:bg-[#ce3d11] text-white shadow-xl transition-all hover:scale-105 group"
               >
                 <div className="flex flex-col items-center gap-2">
                   <Video className="w-7 h-7 group-hover:scale-110 transition-transform" />
@@ -318,7 +318,7 @@ export function SOSMediaRecorder({
               </Button>
               <Button
                 onClick={() => startRecording('audio')}
-                className="h-20 bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 hover:from-orange-600 hover:via-orange-700 hover:to-orange-800 text-white shadow-xl transition-all hover:scale-105 group"
+                className="h-20 bg-orange-500 text-white shadow-xl transition-all hover:scale-105 group"
               >
                 <div className="flex flex-col items-center gap-2">
                   <Mic className="w-7 h-7 group-hover:scale-110 transition-transform" />
@@ -352,7 +352,7 @@ export function SOSMediaRecorder({
             )}
 
             {recordingType === 'audio' && (
-              <div className="bg-gradient-to-br from-orange-100 to-orange-50 rounded-xl p-8 flex flex-col items-center justify-center shadow-xl ring-4 ring-orange-500/50 animate-pulse">
+              <div className="bg-orange-100 rounded-xl p-8 flex flex-col items-center justify-center shadow-xl ring-4 ring-orange-500/50 animate-pulse">
                 <div className="relative mb-4">
                   <div className="absolute inset-0 bg-orange-500/20 rounded-full animate-ping" />
                   <Mic className="w-16 h-16 text-orange-600 relative z-10" />
@@ -440,7 +440,7 @@ export function SOSMediaRecorder({
                 <X className="w-4 h-4 mr-2" />
                 Recommencer
               </Button>
-              <Button onClick={sendRecording} className="flex-1 bg-gradient-to-r from-[#ff4000] to-[#ff4000] hover:from-[#ff4000] hover:to-[#ff4000] text-white font-bold shadow-lg">
+              <Button onClick={sendRecording} className="flex-1 bg-[#ff4000] hover:bg-[#ce3d11] text-white font-bold shadow-lg">
                 <Send className="w-4 h-4 mr-2" />
                 Envoyer au Bureau
               </Button>

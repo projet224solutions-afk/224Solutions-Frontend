@@ -206,7 +206,7 @@ export default function SurveillanceLogiqueDashboard() {
   };
 
   return (
-    <div className="space-y-6 p-6 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
+    <div className="space-y-6 p-6 bg-slate-50 min-h-screen">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

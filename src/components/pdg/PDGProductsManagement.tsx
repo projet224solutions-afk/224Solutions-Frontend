@@ -227,7 +227,7 @@ export default function PDGProductsManagement() {
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10">
+        <Card className="border-2 border-primary/20 bg-primary/10">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Valeur Totale</CardTitle>
             <DollarSign className="w-4 h-4 text-primary" />
@@ -241,7 +241,7 @@ export default function PDGProductsManagement() {
         </Card>
 
         {stats.orphanProducts > 0 && (
-          <Card className="border-2 border-[#ff4000]/20 bg-gradient-to-br from-[#ff4000]/5 to-[#ff4000]/10">
+          <Card className="border-2 border-[#ff4000]/20 bg-[#ff4000]/5">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Orphelins</CardTitle>
               <AlertCircle className="w-4 h-4 text-[#ff4000]" />

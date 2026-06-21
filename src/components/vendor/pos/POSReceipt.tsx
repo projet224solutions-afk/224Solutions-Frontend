@@ -169,7 +169,7 @@ export function POSReceipt({ open, onClose, orderData }: POSReceiptProps) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto p-0 mx-2">
         {/* Header avec actions */}
-        <div className="sticky top-0 z-10 bg-gradient-to-r from-[#ff4000] to-[#e53900] text-white p-3 rounded-t-lg">
+        <div className="sticky top-0 z-10 bg-[#ff4000] text-white p-3 rounded-t-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
@@ -200,7 +200,7 @@ export function POSReceipt({ open, onClose, orderData }: POSReceiptProps) {
           >
             {/* En-tête reçu */}
             <div className="text-center border-b border-dashed border-muted-foreground/30 pb-3 mb-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#ff4000] to-[#e53900] rounded-xl mx-auto mb-2 flex items-center justify-center overflow-hidden shadow-md">
+              <div className="w-12 h-12 bg-[#ff4000] rounded-xl mx-auto mb-2 flex items-center justify-center overflow-hidden shadow-md">
                 {orderData.logoUrl ? (
                   <img loading="lazy" src={orderData.logoUrl} alt="Logo" className="w-full h-full object-contain" />
                 ) : (
@@ -351,7 +351,7 @@ export function POSReceipt({ open, onClose, orderData }: POSReceiptProps) {
             </Button>
             <Button
               onClick={downloadReceipt}
-              className="h-10 text-sm bg-gradient-to-r from-[#ff4000] to-[#e53900] shadow-md hover:from-[#e53900] hover:to-[#cc3200]"
+              className="h-10 text-sm bg-[#ff4000] shadow-md"
             >
               <Download className="h-4 w-4 mr-1" />
               PDF

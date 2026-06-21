@@ -183,7 +183,7 @@ export default function PDGBureauMonitoring() {
 
       {/* Stats globales */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
+        <Card className="bg-blue-500/10 border-blue-500/20">
           <CardContent className="p-4 text-center">
             <Building2 className="w-6 h-6 mx-auto mb-2 text-blue-500" />
             <div className="text-2xl font-bold text-blue-600">{bureaus.length}</div>
@@ -191,7 +191,7 @@ export default function PDGBureauMonitoring() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-[#ff4000]/10 to-[#ff4000]/5 border-[#ff4000]/20">
+        <Card className="bg-[#ff4000]/10 border-[#ff4000]/20">
           <CardContent className="p-4 text-center">
             <Users className="w-6 h-6 mx-auto mb-2 text-[#ff4000]" />
             <div className="text-2xl font-bold text-[#ff4000]">{globalStats.totalDrivers}</div>
@@ -199,7 +199,7 @@ export default function PDGBureauMonitoring() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-[#ff4000]/10 to-[#ff4000]/5 border-[#ff4000]/20">
+        <Card className="bg-[#ff4000]/10 border-[#ff4000]/20">
           <CardContent className="p-4 text-center">
             <Activity className="w-6 h-6 mx-auto mb-2 text-[#ff4000]" />
             <div className="text-2xl font-bold text-[#ff4000]">{globalStats.onlineDrivers}</div>
@@ -207,7 +207,7 @@ export default function PDGBureauMonitoring() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-[#04439e]/10 to-[#04439e]/5 border-[#04439e]/20">
+        <Card className="bg-[#04439e]/10 border-[#04439e]/20">
           <CardContent className="p-4 text-center">
             <Car className="w-6 h-6 mx-auto mb-2 text-[#04439e]" />
             <div className="text-2xl font-bold text-[#04439e]">{globalStats.onTripDrivers}</div>
@@ -215,7 +215,7 @@ export default function PDGBureauMonitoring() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-[#ff4000]/10 to-[#ff4000]/5 border-[#ff4000]/20">
+        <Card className="bg-[#ff4000]/10 border-[#ff4000]/20">
           <CardContent className="p-4 text-center">
             <TrendingUp className="w-6 h-6 mx-auto mb-2 text-[#ff4000]" />
             <div className="text-2xl font-bold text-[#ff4000]">{globalStats.todayRides}</div>
@@ -235,7 +235,7 @@ export default function PDGBureauMonitoring() {
       </div>
 
       {/* Revenus du jour */}
-      <Card className="bg-gradient-to-r from-[#ff4000]/5 to-[#ff4000]/10 border-[#ff4000]/20">
+      <Card className="bg-[#ff4000]/5 border-[#ff4000]/20">
         <CardContent className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <DollarSign className="w-8 h-8 text-[#ff4000]" />

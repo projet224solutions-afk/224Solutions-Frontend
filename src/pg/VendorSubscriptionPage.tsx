@@ -705,7 +705,7 @@ export default function VendorSubscriptionPage() {
                             <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 text-xs">Actuel</Badge>
                           )}
                           {isRecommended && !isCurrentPlan && (
-                            <Badge className="bg-gradient-to-r from-[#ff4000] to-orange-500 text-white text-xs border-0">
+                            <Badge className="bg-[#ff4000] text-white text-xs border-0">
                               <Crown className="h-3 w-3 mr-1" /> Recommandé
                             </Badge>
                           )}

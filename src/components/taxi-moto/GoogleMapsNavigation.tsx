@@ -399,7 +399,7 @@ export function GoogleMapsNavigation({
 
       {/* Carte Mapbox GL */}
       <Card className="overflow-hidden shadow-lg">
-        <CardHeader className="pb-3 bg-gradient-to-r from-blue-50 to-blue-50">
+        <CardHeader className="pb-3 bg-[#04439e]/5">
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Navigation className="w-5 h-5 text-blue-600" />
@@ -450,7 +450,7 @@ export function GoogleMapsNavigation({
 
       {/* Infos de route */}
       {hasActiveRide && routeInfo && (
-        <Card className="bg-gradient-to-r from-blue-50 to-blue-50 shadow-sm">
+        <Card className="bg-[#04439e]/5 shadow-sm">
           <CardContent className="pt-4 pb-4">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-white rounded-xl p-3 text-center shadow-sm">
@@ -477,7 +477,7 @@ export function GoogleMapsNavigation({
 
       {/* Position actuelle sans course */}
       {currentLocation && !hasActiveRide && (
-        <Card className="bg-gradient-to-r from-orange-50 to-orange-50 shadow-sm">
+        <Card className="bg-[#ff4000]/5 shadow-sm">
           <CardContent className="pt-4 pb-4 space-y-3">
             <div className="flex items-center gap-3">
               <div className="bg-orange-100 rounded-full p-2.5">
@@ -490,7 +490,7 @@ export function GoogleMapsNavigation({
             </div>
             <Button
               onClick={openExternalNavigation}
-              className="w-full bg-gradient-to-r from-[#ff4000] to-[#ff4000] hover:from-[#ff4000] hover:to-[#ff4000] text-white"
+              className="w-full bg-[#ff4000] hover:bg-[#ce3d11] text-white"
             >
               <Navigation className="w-4 h-4 mr-2" />
               Ouvrir Google Maps

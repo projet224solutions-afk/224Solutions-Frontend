@@ -52,9 +52,9 @@ export default function DjomyPayment() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/30">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b">
+      <div className="sticky top-0 z-10 bg-background border-b">
         <div className="max-w-md mx-auto px-4 py-3 flex items-center gap-3">
           <Button
             variant="ghost"

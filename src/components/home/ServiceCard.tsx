@@ -28,7 +28,7 @@ export function HomeServiceCard({
   title,
   subtitle,
   count,
-  gradient = 'from-primary/10 to-primary/5',
+  gradient = 'from-primary/10',
   iconBg = 'bg-primary/10',
   trending = false,
   onClick,
@@ -90,7 +90,7 @@ export function HomeServiceCard({
       className={cn(
         'group relative w-full overflow-hidden',
         'p-5 rounded-3xl text-left',
-        'bg-gradient-to-br from-card via-card to-card/80',
+        'bg-card',
         'border border-border/50',
         'hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5',
         'transition-all duration-500 ease-out',

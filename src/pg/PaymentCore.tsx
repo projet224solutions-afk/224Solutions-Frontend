@@ -84,7 +84,7 @@ export default function PaymentCorePage() {
 
   if (showForm) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 py-8 px-4">
+      <div className="min-h-screen bg-background py-8 px-4">
         <div className="max-w-lg mx-auto">
           <div className="flex items-center justify-between mb-6">
             <Button
@@ -119,7 +119,7 @@ export default function PaymentCorePage() {
 
   // Interface de configuration
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 py-8 px-4">
+    <div className="min-h-screen bg-background py-8 px-4">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-primary/10 rounded-full">

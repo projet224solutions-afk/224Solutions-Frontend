@@ -77,7 +77,7 @@ export function QuantityKeypadPopup({
         <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-4 border-b border-border/50">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg">
+              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg">
                 <Calculator className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
@@ -92,7 +92,7 @@ export function QuantityKeypadPopup({
         <div className="p-4 space-y-4">
           {/* Info produit sélectionné */}
           {selectedProduct && (
-            <div className="bg-gradient-to-br from-primary/5 to-primary/2 rounded-xl p-3 border border-primary/20">
+            <div className="bg-primary/10 rounded-xl p-3 border border-primary/20">
               <div className="flex items-center gap-2 mb-2">
                 <Package className="h-4 w-4 text-primary" />
                 <span className="font-semibold text-sm line-clamp-1">{selectedProduct.name}</span>
@@ -182,7 +182,7 @@ export function QuantityKeypadPopup({
             <Button
               onClick={() => handleInput('enter')}
               disabled={!isValidQuantity}
-              className="h-12 font-semibold bg-gradient-to-r from-[#ff4000] to-[#e53900] hover:from-[#e53900] hover:to-[#cc3200] text-white shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+              className="h-12 font-semibold bg-[#ff4000] text-white shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
             >
               <CheckSquare className="h-4 w-4 mr-2" />
               Ajouter

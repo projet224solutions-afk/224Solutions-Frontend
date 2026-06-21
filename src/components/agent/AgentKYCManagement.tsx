@@ -173,7 +173,7 @@ export function AgentKYCManagement({ agentId, canManage = false }: AgentKYCManag
     <div className="space-y-6">
       {/* Header */}
       <Card className="border-0 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-50 border-b">
+        <CardHeader className="bg-[#04439e]/5 border-b">
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2 text-foreground">
               <Shield className="w-6 h-6 text-primary" />

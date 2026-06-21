@@ -28,7 +28,7 @@ export function SimpleMapView({
   ].filter(Boolean);
 
   return (
-    <Card className="overflow-hidden shadow-lg bg-gradient-to-br from-blue-50 to-blue-50" style={{ height }}>
+    <Card className="overflow-hidden shadow-lg bg-[#04439e]/5" style={{ height }}>
       <div className="relative w-full h-full flex items-center justify-center">
         <div className="absolute inset-0 opacity-10">
           <div className="grid grid-cols-8 grid-rows-8 h-full w-full">

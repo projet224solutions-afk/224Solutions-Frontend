@@ -99,7 +99,7 @@ export const EmergencyMapView: React.FC<EmergencyMapViewProps> = ({
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Carte interactive (Simulation) */}
-        <div className="relative w-full h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden">
+        <div className="relative w-full h-96 bg-gray-100 rounded-lg overflow-hidden">
           {/* Image de fond simulant une carte */}
           <div className="absolute inset-0 flex items-center justify-center">
             {isLoadingMap && (

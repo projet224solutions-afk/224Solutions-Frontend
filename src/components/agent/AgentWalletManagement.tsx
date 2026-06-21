@@ -139,7 +139,7 @@ export default function AgentWalletManagement({
   return (
     <div className="space-y-4">
       {/* En-tête Agent */}
-      <Card className="bg-gradient-to-r from-[#ff4000]/10 to-[#ff4000]/10 border-orange-200">
+      <Card className="bg-[#ff4000]/10 border-orange-200">
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Shield className="w-5 h-5 text-[#ff4000]" />

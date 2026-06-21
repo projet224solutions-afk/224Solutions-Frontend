@@ -148,7 +148,7 @@ export function InstallPromptBanner() {
   return (
     <>
       <div className="fixed bottom-4 left-4 right-4 z-50 md:left-auto md:right-4 md:max-w-sm">
-        <div className="bg-gradient-to-r from-primary to-secondary text-white rounded-2xl shadow-2xl p-4 backdrop-blur-lg border border-white/20">
+        <div className="bg-[#04439e] text-white rounded-2xl shadow-2xl p-4 border border-[#04439e]/20">
           <button
             onClick={handleDismiss}
             className="absolute -top-2 -right-2 bg-white text-gray-800 rounded-full p-1 shadow-lg hover:bg-gray-100 transition-colors"

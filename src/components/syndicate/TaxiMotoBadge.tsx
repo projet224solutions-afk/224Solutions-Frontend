@@ -69,14 +69,14 @@ const TaxiMotoBadge = forwardRef<HTMLDivElement, TaxiMotoBadgeProps>(({
   return (
     <div
       ref={ref}
-      className="w-[850px] h-[520px] bg-gradient-to-br from-slate-50 to-white rounded-2xl overflow-hidden shadow-2xl border border-slate-200"
+      className="w-[850px] h-[520px] bg-slate-50 rounded-2xl overflow-hidden shadow-2xl border border-slate-200"
       style={{
         fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif",
         background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%)'
       }}
     >
       {/* En-tête principal */}
-      <div className="relative h-[120px] bg-gradient-to-r from-[#0f172a] via-[#04439e] to-[#04439e] overflow-hidden">
+      <div className="relative h-[120px] bg-[#0f172a] overflow-hidden">
         {/* Motif géométrique subtil */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-80 h-80 bg-white/20 rounded-full -translate-y-1/2 translate-x-1/2" />
@@ -133,10 +133,10 @@ const TaxiMotoBadge = forwardRef<HTMLDivElement, TaxiMotoBadgeProps>(({
       {/* Corps principal */}
       <div className="flex h-[400px]">
         {/* Section photo et identité - Gauche */}
-        <div className="w-[240px] p-4 bg-gradient-to-b from-slate-50 to-white border-r border-slate-200 flex flex-col">
+        <div className="w-[240px] p-4 bg-slate-50 border-r border-slate-200 flex flex-col">
           {/* Photo du conducteur */}
           <div className="relative">
-            <div className="w-full aspect-[3/4] bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl overflow-hidden border-3 border-white shadow-lg">
+            <div className="w-full aspect-[3/4] bg-slate-100 rounded-xl overflow-hidden border-3 border-white shadow-lg">
               {driverPhoto ? (
                 <img
                   src={driverPhoto}
@@ -144,7 +144,7 @@ const TaxiMotoBadge = forwardRef<HTMLDivElement, TaxiMotoBadgeProps>(({
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+                <div className="w-full h-full flex items-center justify-center bg-blue-50">
                   <div className="text-center">
                     <User className="w-12 h-12 text-blue-300 mx-auto mb-1" />
                     <div className="text-4xl font-bold text-blue-400">
@@ -195,7 +195,7 @@ const TaxiMotoBadge = forwardRef<HTMLDivElement, TaxiMotoBadgeProps>(({
           {/* Grille d'informations */}
           <div className="grid grid-cols-2 gap-2.5 mb-2.5">
             {/* Matricule véhicule */}
-            <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-lg p-2.5 border border-blue-100">
+            <div className="bg-[#04439e]/5 rounded-lg p-2.5 border border-blue-100">
               <div className="flex items-center gap-1.5 text-blue-600 mb-0.5">
                 <CreditCard className="w-3.5 h-3.5" />
                 <span className="text-[10px] font-semibold uppercase tracking-wider">Immatriculation</span>
@@ -206,7 +206,7 @@ const TaxiMotoBadge = forwardRef<HTMLDivElement, TaxiMotoBadgeProps>(({
             </div>
 
             {/* Numéro de série */}
-            <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-lg p-2.5 border border-blue-100">
+            <div className="bg-[#04439e]/5 rounded-lg p-2.5 border border-blue-100">
               <div className="flex items-center gap-1.5 text-[#04439e] mb-0.5">
                 <Bike className="w-3.5 h-3.5" />
                 <span className="text-[10px] font-semibold uppercase tracking-wider">N° Série</span>
@@ -217,7 +217,7 @@ const TaxiMotoBadge = forwardRef<HTMLDivElement, TaxiMotoBadgeProps>(({
             </div>
 
             {/* Date de naissance */}
-            <div className="bg-gradient-to-br from-orange-50 to-orange-50 rounded-lg p-2.5 border border-orange-100">
+            <div className="bg-[#ff4000]/5 rounded-lg p-2.5 border border-orange-100">
               <div className="flex items-center gap-1.5 text-[#ff4000] mb-0.5">
                 <Calendar className="w-3.5 h-3.5" />
                 <span className="text-[10px] font-semibold uppercase tracking-wider">Naissance</span>
@@ -228,7 +228,7 @@ const TaxiMotoBadge = forwardRef<HTMLDivElement, TaxiMotoBadgeProps>(({
             </div>
 
             {/* Date d'expiration */}
-            <div className="bg-gradient-to-br from-orange-50 to-orange-50 rounded-lg p-2.5 border border-orange-100">
+            <div className="bg-[#ff4000]/5 rounded-lg p-2.5 border border-orange-100">
               <div className="flex items-center gap-1.5 text-[#ff4000] mb-0.5">
                 <Calendar className="w-3.5 h-3.5" />
                 <span className="text-[10px] font-semibold uppercase tracking-wider">Expiration</span>
@@ -240,7 +240,7 @@ const TaxiMotoBadge = forwardRef<HTMLDivElement, TaxiMotoBadgeProps>(({
           </div>
 
           {/* Bureau et localisation */}
-          <div className="bg-gradient-to-r from-slate-100 to-slate-50 rounded-lg p-2.5 mb-2.5 border border-slate-200">
+          <div className="bg-slate-100 rounded-lg p-2.5 mb-2.5 border border-slate-200">
             <div className="flex items-center gap-1.5 text-slate-600 mb-0.5">
               <MapPin className="w-3.5 h-3.5" />
               <span className="text-[10px] font-semibold uppercase tracking-wider">Bureau de Rattachement</span>

@@ -128,7 +128,7 @@ export function AgentCreatedUsersList({ agentId }: AgentCreatedUsersListProps) {
   if (loading) {
     return (
       <Card className="border-0 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-50 border-b">
+        <CardHeader className="bg-[#04439e]/5 border-b">
           <CardTitle className="flex items-center gap-2 text-slate-800">
             <Users className="w-5 h-5 text-blue-600" />
             Mes Utilisateurs
@@ -151,7 +151,7 @@ export function AgentCreatedUsersList({ agentId }: AgentCreatedUsersListProps) {
 
   return (
     <Card className="border-0 shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-50 border-b">
+      <CardHeader className="bg-[#04439e]/5 border-b">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <CardTitle className="flex items-center gap-2 text-slate-800">
             <Users className="w-5 h-5 text-blue-600" />

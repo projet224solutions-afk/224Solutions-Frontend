@@ -28,7 +28,7 @@ export default function ClientDelivery() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-500/5 via-background to-[#ff4000]/5">
+    <div className="min-h-screen bg-orange-500/5/5">
       {/* En-tête */}
       <div className="bg-card border-b sticky top-0 z-10">
         <div className="container max-w-2xl mx-auto px-4 py-4">
@@ -41,7 +41,7 @@ export default function ClientDelivery() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-[#ff4000] bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold bg-orange-600 bg-clip-text text-transparent">
                 Livraison Express
               </h1>
               <p className="text-sm text-muted-foreground">

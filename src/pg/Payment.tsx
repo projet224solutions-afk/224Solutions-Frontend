@@ -1377,7 +1377,7 @@ export default function Payment() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 p-4">
+    <div className="min-h-screen bg-background p-4">
       <div className="container max-w-6xl mx-auto py-8">
         <Button
           variant="ghost"

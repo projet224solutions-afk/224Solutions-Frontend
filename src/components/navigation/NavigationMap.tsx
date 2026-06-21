@@ -236,7 +236,7 @@ export const NavigationMap: React.FC<NavigationMapProps> = ({
 
         {/* Carte visuelle (Placeholder) */}
         {!isLoading && !error && (
-          <div className="w-full h-full bg-gradient-to-br from-blue-50 to-orange-50 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center">
+          <div className="w-full h-full bg-blue-50 flex items-center justify-center">
             <div className="text-center space-y-4 p-8">
               <Navigation className="h-16 w-16 text-primary mx-auto animate-pulse" />
               <div className="space-y-2">

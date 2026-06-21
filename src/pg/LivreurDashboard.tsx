@@ -406,7 +406,7 @@ export default function LivreurDashboard() {
       <DriverSubscriptionBanner />
 
       <DriverLayout currentPage="dashboard">
-    <div className="p-responsive bg-gradient-to-br from-orange-500/5 via-background to-[#ff4000]/5">
+    <div className="p-responsive bg-[#ff4000]/5">
       {/* Listener temps réel pour nouvelles livraisons */}
       <NearbyDeliveriesListener
         enabled={!currentDelivery && !currentRide}
@@ -460,7 +460,7 @@ export default function LivreurDashboard() {
         <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2 flex-wrap">
-              <h1 className={`font-bold bg-gradient-to-r from-orange-600 to-[#ff4000] bg-clip-text text-transparent ${isMobile ? 'text-xl' : 'text-3xl'}`}>
+              <h1 className={`font-bold text-[#ff4000] ${isMobile ? 'text-xl' : 'text-3xl'}`}>
                 🚴 {t('delivery.dashboard')}
               </h1>
             </div>
@@ -474,7 +474,7 @@ export default function LivreurDashboard() {
               <Badge
                 variant="default"
                 className="mt-2 gap-1"
-                style={{ background: 'linear-gradient(135deg, hsl(25 98% 55%), hsl(15 100% 50%))' }}
+                style={{ background: '#ff4000' }}
               >
                 ⚠ {currentDelivery ? t('delivery.inProgressDelivery') : t('taxi.dashboard')}
               </Badge>
@@ -496,7 +496,7 @@ export default function LivreurDashboard() {
             <Button
               onClick={() => navigate('/delivery-request')}
               style={{
-                background: 'linear-gradient(135deg, hsl(25 98% 55%), hsl(15 100% 50%))',
+                background: '#ff4000',
                 color: 'white'
               }}
               className="gap-2"
@@ -509,14 +509,14 @@ export default function LivreurDashboard() {
 
         {/* Onglets de navigation - Responsive */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className={`grid bg-card/80 backdrop-blur mb-6 ${isMobile ? 'grid-cols-5' : 'grid-cols-6'} border border-orange-500/20`}>
-            <TabsTrigger value="missions" className="text-xs md:text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-orange-600 data-[state=active]:text-white">
+          <TabsList className={`grid bg-card mb-6 ${isMobile ? 'grid-cols-5' : 'grid-cols-6'} border border-orange-500/20`}>
+            <TabsTrigger value="missions" className="text-xs md:text-sm data-[state=active]:bg-[#ff4000] data-[state=active]:text-white">
               📦 {isMobile ? 'Missions' : 'Missions disponibles'}
               {nearbyDeliveries.length > 0 && (
                 <Badge variant="secondary" className="ml-1 text-xs bg-white text-orange-600">{nearbyDeliveries.length}</Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger value="active" disabled={!currentDelivery && !currentRide} className="text-xs md:text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#ff4000] data-[state=active]:to-[#ff4000] data-[state=active]:text-white">
+            <TabsTrigger value="active" disabled={!currentDelivery && !currentRide} className="text-xs md:text-sm data-[state=active]:bg-[#ff4000] data-[state=active]:text-white">
               🚚 {isMobile ? 'Active' : 'En cours'}
               {(currentDelivery || currentRide) && <Badge variant="default" className="ml-1 text-xs bg-white text-[#ff4000]">1</Badge>}
             </TabsTrigger>
@@ -527,14 +527,14 @@ export default function LivreurDashboard() {
               )}
             </TabsTrigger>
             {!isMobile && (
-              <TabsTrigger value="my-purchases" className="text-xs md:text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#ff4000] data-[state=active]:to-[#ff4000] data-[state=active]:text-white">
+              <TabsTrigger value="my-purchases" className="text-xs md:text-sm data-[state=active]:bg-[#ff4000] data-[state=active]:text-white">
                 🛒 Mes Achats
               </TabsTrigger>
             )}
-            <TabsTrigger value="wallet" className="text-xs md:text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#04439e] data-[state=active]:to-[#04439e] data-[state=active]:text-white">
+            <TabsTrigger value="wallet" className="text-xs md:text-sm data-[state=active]:bg-[#04439e] data-[state=active]:text-white">
               💰 {isMobile ? 'Wallet' : 'Portefeuille'}
             </TabsTrigger>
-            <TabsTrigger value="support" className="text-xs md:text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#04439e] data-[state=active]:to-blue-700 data-[state=active]:text-white">
+            <TabsTrigger value="support" className="text-xs md:text-sm data-[state=active]:bg-[#04439e] data-[state=active]:text-white">
               <Headphones className="w-3.5 h-3.5 mr-1" />
               {isMobile ? 'Support' : 'Support'}
             </TabsTrigger>
@@ -543,11 +543,11 @@ export default function LivreurDashboard() {
           {/* 📦 Liste des livraisons disponibles */}
           <TabsContent value="missions" className="space-y-3">
             {/* 📍 Localiser un client par ID / lien (système taxi-moto) */}
-            <Card className="border-orange-500/30 bg-gradient-to-br from-orange-500/5 to-[#ff4000]/5">
+            <Card className="border-orange-500/30 bg-[#ff4000]/5">
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center gap-2">
                   <Navigation className="h-4 w-4 text-orange-600" />
-                  <p className="font-semibold text-sm bg-gradient-to-r from-orange-600 to-[#ff4000] bg-clip-text text-transparent">
+                  <p className="font-semibold text-sm text-[#ff4000]">
                     Localiser un client
                   </p>
                 </div>
@@ -558,7 +558,7 @@ export default function LivreurDashboard() {
                 <UserTrackerButton
                   prominent
                   driverName={driverName}
-                  className="w-full text-white bg-gradient-to-r from-orange-500 to-[#ff4000] hover:from-orange-600 hover:to-[#ff4000]"
+                  className="w-full text-white bg-[#ff4000]"
                 />
               </CardContent>
             </Card>
@@ -586,14 +586,14 @@ export default function LivreurDashboard() {
           {/* 🚚 Livraison en cours */}
           <TabsContent value="active">
             {currentDelivery ? (
-              <Card className="shadow-lg border-orange-500/30 bg-gradient-to-br from-orange-500/5 to-[#ff4000]/5">
+              <Card className="shadow-lg border-orange-500/30 bg-[#ff4000]/5">
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div>
                       <div className="flex items-center justify-between mb-4">
                         <Badge
                           variant="default"
-                          style={{ background: 'linear-gradient(135deg, hsl(25 98% 55%), hsl(15 100% 50%))' }}
+                          style={{ background: '#ff4000' }}
                         >
                           ⚠ Livraison en cours
                         </Badge>
@@ -628,9 +628,9 @@ export default function LivreurDashboard() {
                       </div>
                     </div>
 
-                    <div className="p-5 bg-gradient-to-r from-orange-500/20 to-[#ff4000]/20 rounded-xl border border-orange-500/30">
+                    <div className="p-5 bg-[#ff4000]/10 rounded-xl border border-orange-500/30">
                       <p className="text-sm text-muted-foreground mb-2 font-medium">{t('livreurDashboard.votreRemuneration')}</p>
-                      <p className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-[#ff4000] bg-clip-text text-transparent">
+                      <p className="text-4xl font-bold text-[#ff4000]">
                         <Money amount={currentDelivery.delivery_fee || 0} from="GNF" />
                       </p>
                     </div>
@@ -661,7 +661,7 @@ export default function LivreurDashboard() {
                           disabled={loading}
                           className="w-full text-white"
                           size="lg"
-                          style={{ background: 'linear-gradient(135deg, hsl(220 97% 27%), hsl(220 96% 32%))' }}
+                          style={{ background: '#04439e' }}
                         >
                           <Truck className="w-5 h-5 mr-2" />
                           🚀 Démarrer la livraison
@@ -681,7 +681,7 @@ export default function LivreurDashboard() {
                           onClick={() => setShowProofUpload(true)}
                           disabled={loading}
                           className="w-full text-white"
-                          style={{ background: 'linear-gradient(135deg, hsl(15 100% 50%), hsl(15 100% 50%))' }}
+                          style={{ background: '#ff4000' }}
                         >
                           <CheckCircle className="w-4 h-4 mr-2" />
                           Terminer
@@ -694,7 +694,7 @@ export default function LivreurDashboard() {
                           onClick={handleProcessPayment}
                           className="w-full text-white"
                           size="lg"
-                          style={{ background: 'linear-gradient(135deg, hsl(15 100% 50%), hsl(15 100% 50%))' }}
+                          style={{ background: '#ff4000' }}
                         >
                           <Wallet className="w-5 h-5 mr-2" />
                           💳 Traiter le paiement

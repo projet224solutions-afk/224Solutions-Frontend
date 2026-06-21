@@ -208,7 +208,7 @@ export function ProductImageCarousel({
   return (
     <div
       className={cn(
-        'relative w-full aspect-square bg-gradient-to-br from-muted/5 to-muted/20 rounded-lg overflow-hidden group',
+        'relative w-full aspect-square bg-muted/10 rounded-lg overflow-hidden group',
         'cursor-pointer select-none',
         className
       )}
@@ -273,7 +273,7 @@ export function ProductImageCarousel({
                   />
                 )
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-muted/10 to-muted/30 animate-pulse" />
+                <div className="w-full h-full bg-muted/20 animate-pulse" />
               )}
             </div>
           );

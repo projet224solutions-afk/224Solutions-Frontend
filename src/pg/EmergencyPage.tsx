@@ -53,7 +53,7 @@ export const EmergencyPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b shadow-sm">
         <div className="container mx-auto px-6 py-4">

@@ -18,7 +18,7 @@ const POSLoading = () => {
   const { t } = useTranslation();
   return (
   <Card className="border-0 shadow-xl rounded-2xl">
-    <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-50 rounded-t-2xl">
+    <CardHeader className="bg-[#04439e]/5 rounded-t-2xl">
       <CardTitle className="text-2xl font-bold bg-[#04439e] bg-clip-text text-transparent flex items-center gap-3">
         <CreditCard className="w-7 h-7 text-blue-600" />
         POS - Point de Vente
@@ -53,7 +53,7 @@ const POSError = ({ error, retry }: { error: Error, retry: () => void }) => {
   const { t } = useTranslation();
   return (
   <Card className="border-0 shadow-xl rounded-2xl border-orange-200">
-    <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-50 rounded-t-2xl">
+    <CardHeader className="bg-[#ff4000]/5 rounded-t-2xl">
       <CardTitle className="text-2xl font-bold text-[#ff4000] flex items-center gap-3">
         <AlertTriangle className="w-7 h-7" />
         Erreur POS - Point de Vente
@@ -133,7 +133,7 @@ const POSError = ({ error, retry }: { error: Error, retry: () => void }) => {
 const _POSFallback = () => {
   const { t } = useTranslation();
   return (
-  <Card className="border-0 shadow-xl rounded-2xl bg-gradient-to-br from-blue-50 to-blue-50">
+  <Card className="border-0 shadow-xl rounded-2xl bg-[#04439e]/5">
     <CardHeader>
       <CardTitle className="text-2xl font-bold bg-[#04439e] bg-clip-text text-transparent flex items-center gap-3">
         <CreditCard className="w-7 h-7 text-blue-600" />

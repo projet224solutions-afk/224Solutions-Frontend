@@ -154,7 +154,7 @@ export function ChangePasswordDialog({ open, onOpenChange, bureauId, onSuccess }
             <Button
               type="submit"
               disabled={isLoading}
-              className="bg-gradient-to-r from-[#ff4000] to-[#ff4000]"
+              className="bg-[#ff4000]"
             >
               {isLoading ? (
                 <>

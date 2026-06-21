@@ -231,7 +231,7 @@ export default function TransitaireDashboard() {
 
       {/* Features Overview */}
       <section className="px-4 py-2 mb-6">
-        <Card className="bg-gradient-to-r from-blue-50 to-blue-50 border-0">
+        <Card className="bg-[#04439e]/5 border-0">
           <CardContent className="p-6">
             <div className="text-center">
               <Globe className="w-12 h-12 mx-auto mb-4 text-blue-500" />

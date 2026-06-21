@@ -19,7 +19,7 @@ interface DriverStatsCardProps {
 export function DriverStatsCard({ stats }: DriverStatsCardProps) {
   return (
     <div className="grid grid-cols-2 gap-4">
-      <Card className="bg-gradient-to-br from-orange-50 to-orange-50 border-0 shadow-lg hover:shadow-xl transition-shadow">
+      <Card className="bg-[#ff4000]/5 border-0 shadow-lg hover:shadow-xl transition-shadow">
         <CardContent className="p-4">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-[#ff4000] rounded-lg">
@@ -36,7 +36,7 @@ export function DriverStatsCard({ stats }: DriverStatsCardProps) {
         </CardContent>
       </Card>
 
-      <Card className="bg-gradient-to-br from-blue-50 to-blue-50 border-0 shadow-lg hover:shadow-xl transition-shadow">
+      <Card className="bg-[#04439e]/5 border-0 shadow-lg hover:shadow-xl transition-shadow">
         <CardContent className="p-4">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-blue-600 rounded-lg">
@@ -51,7 +51,7 @@ export function DriverStatsCard({ stats }: DriverStatsCardProps) {
         </CardContent>
       </Card>
 
-      <Card className="bg-gradient-to-br from-orange-50 to-orange-50 border-0 shadow-lg hover:shadow-xl transition-shadow">
+      <Card className="bg-[#ff4000]/5 border-0 shadow-lg hover:shadow-xl transition-shadow">
         <CardContent className="p-4">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-[#ff4000] rounded-lg">
@@ -69,7 +69,7 @@ export function DriverStatsCard({ stats }: DriverStatsCardProps) {
         </CardContent>
       </Card>
 
-      <Card className="bg-gradient-to-br from-blue-50 to-orange-50 border-0 shadow-lg hover:shadow-xl transition-shadow">
+      <Card className="bg-blue-50 border-0 shadow-lg hover:shadow-xl transition-shadow">
         <CardContent className="p-4">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-[#04439e] rounded-lg">

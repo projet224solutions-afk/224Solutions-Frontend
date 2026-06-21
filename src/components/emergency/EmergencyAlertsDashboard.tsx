@@ -216,7 +216,7 @@ export const EmergencyAlertsDashboard: React.FC<EmergencyAlertsDashboardProps> =
     <div className="space-y-6">
       {/* En-tête avec statistiques */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-[#ff4000] to-[#ff4000] text-white">
+        <Card className="bg-[#ff4000] text-white">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Activity className="h-4 w-4" />

@@ -347,9 +347,9 @@ export function AutoInstallPrompt({
               {/* Header gradient - couleur selon contexte */}
               <div className={`p-6 text-white ${
                 displayContext === 'offline'
-                  ? 'bg-gradient-to-r from-orange-500 via-[#ff4000] to-[#ff4000]'
+                  ? 'bg-[#ff4000]'
                   : isVendor
-                    ? 'bg-gradient-to-r from-[#ff4000] via-[#ff4000] to-[#04439e]'
+                    ? 'bg-[#ff4000]'
                     : 'bg-[#04439e]'
               }`}>
                 <div className="flex items-center justify-between">
@@ -475,7 +475,7 @@ export function AutoInstallPrompt({
                     disabled={isInstalling}
                     className={`w-full h-12 text-base font-semibold ${
                       isVendor
-                        ? 'bg-gradient-to-r from-[#ff4000] to-[#ff4000] hover:from-[#ff4000] hover:to-[#ff4000]'
+                        ? 'bg-[#ff4000] hover:bg-[#ce3d11]'
                         : 'bg-[#04439e]'
                     }`}
                   >

@@ -465,7 +465,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <Card className="border-0 shadow-md bg-gradient-to-br from-blue-50 to-blue-100">
+        <Card className="border-0 shadow-md bg-blue-50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -479,7 +479,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-md bg-gradient-to-br from-orange-50 to-orange-100">
+        <Card className="border-0 shadow-md bg-orange-50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -493,7 +493,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-md bg-gradient-to-br from-blue-50 to-blue-100">
+        <Card className="border-0 shadow-md bg-blue-50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -507,7 +507,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-md bg-gradient-to-br from-orange-50 to-orange-100">
+        <Card className="border-0 shadow-md bg-orange-50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -521,7 +521,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-md bg-gradient-to-br from-blue-50 to-blue-100">
+        <Card className="border-0 shadow-md bg-blue-50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -537,7 +537,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
       </div>
 
       {/* Revenue Card */}
-      <Card className="border-0 shadow-lg bg-gradient-to-r from-[#ff4000] to-[#ff4000] text-white">
+      <Card className="border-0 shadow-lg bg-[#ff4000] text-white">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -876,7 +876,7 @@ export function AgentOrdersTracking({ agentId }: AgentOrdersTrackingProps) {
               </div>
 
               {/* Total */}
-              <div className="p-4 rounded-xl bg-gradient-to-r from-blue-50 to-blue-50 border border-blue-100">
+              <div className="p-4 rounded-xl bg-[#04439e]/5 border border-blue-100">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-medium text-slate-700">Total</span>
                   <span className="text-2xl font-bold text-blue-900">

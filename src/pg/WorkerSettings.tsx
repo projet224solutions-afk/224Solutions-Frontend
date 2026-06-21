@@ -184,7 +184,7 @@ export default function WorkerSettings() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+    <div className="min-h-screen bg-slate-50 p-4">
       <div className="max-w-3xl mx-auto py-8">
         {/* Header */}
         <div className="mb-6">

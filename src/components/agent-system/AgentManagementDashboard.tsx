@@ -531,7 +531,7 @@ export default function AgentManagementDashboard({ pdgId }: AgentManagementDashb
               {settings && settings.length > 0 ? (
                 settings.map((setting: unknown) => (
                   <div key={setting.id || Math.random()} className="space-y-4">
-                    <div className="flex items-center justify-between p-6 border rounded-lg bg-gradient-to-r from-blue-50 to-blue-50">
+                    <div className="flex items-center justify-between p-6 border rounded-lg bg-[#04439e]/5">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
                           <h4 className="font-semibold text-lg">

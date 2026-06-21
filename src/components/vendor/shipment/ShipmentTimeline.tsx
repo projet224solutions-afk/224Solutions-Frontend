@@ -80,8 +80,8 @@ export function ShipmentTimeline({ currentStatus, trackingHistory, className }: 
                 <div
                   className={cn(
                     "absolute left-5 top-11 w-0.5 h-full -ml-px transition-all duration-500",
-                    status === 'completed' ? "bg-gradient-to-b from-[#ff4000] to-[#ff4000]" :
-                    status === 'current' ? "bg-gradient-to-b from-orange-500 to-gray-200" :
+                    status === 'completed' ? "bg-[#ff4000]" :
+                    status === 'current' ? "bg-orange-500" :
                     status === 'cancelled' ? "bg-orange-200" :
                     "bg-gray-200"
                   )}

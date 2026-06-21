@@ -300,7 +300,7 @@ export function ShipmentManager() {
               shipments.map((shipment) => (
                 <div
                   key={shipment.id}
-                  className="p-4 bg-gradient-to-r from-orange-50/50 to-white rounded-lg border hover:shadow-md transition-shadow"
+                  className="p-4 bg-orange-50/50 rounded-lg border hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 space-y-2">

@@ -122,7 +122,7 @@ export default function SubscriptionsPage() {
   const endDate = calculateEndDate(billingCycle);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12 px-4">
+    <div className="min-h-screen bg-background py-12 px-4">
       <div className="container mx-auto max-w-7xl">
         <Button
           variant="ghost"

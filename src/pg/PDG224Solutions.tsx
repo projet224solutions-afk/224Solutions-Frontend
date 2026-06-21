@@ -308,7 +308,7 @@ export default function PDG224Solutions() {
 
   if (profileLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           <p className="text-muted-foreground">{t('pDG224Solutions.chargementDuProfil')}</p>
@@ -319,7 +319,7 @@ export default function PDG224Solutions() {
 
   if (!profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
           <p className="text-destructive">{t('pDG224Solutions.impossibleDeChargerLeProfil')}</p>
           <Button onClick={() => navigate('/auth')}>{t('pDG224Solutions.retourALaConnexion')}</Button>
@@ -329,7 +329,7 @@ export default function PDG224Solutions() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
+    <div className="min-h-screen bg-background">
       {/* Porte step-up 2FA : prompt automatique sur les opérations financières sensibles. */}
       <AdminMfaStepUpGate />
       {/* MFA Dialog */}
@@ -394,14 +394,14 @@ export default function PDG224Solutions() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 w-full">
               <div className="flex items-center gap-3 sm:gap-6 min-w-0 w-full">
                 <div className="relative flex-shrink-0">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/60 blur-xl opacity-50" />
-                  <div className="relative bg-gradient-to-br from-primary to-primary/80 p-2 sm:p-3 rounded-xl sm:rounded-2xl shadow-2xl">
+                  <div className="absolute inset-0 bg-primary blur-xl opacity-50" />
+                  <div className="relative bg-primary p-2 sm:p-3 rounded-xl sm:rounded-2xl shadow-2xl">
                     <Shield className="w-5 h-5 sm:w-8 sm:h-8 text-primary-foreground" />
                   </div>
                 </div>
                 <div className="flex-1 min-w-0 overflow-hidden">
                   <div className="flex items-center gap-2 sm:gap-3 mb-1 flex-wrap">
-                    <h1 className="text-base sm:text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                    <h1 className="text-base sm:text-3xl font-bold bg-foreground bg-clip-text text-transparent">
                       PDG 224SOLUTIONS
                     </h1>
                     <UserIdDisplay layout="horizontal" showBadge={true} />

@@ -276,7 +276,7 @@ export default function PDGSupportTechnique() {
   return (
     <div className="space-y-6">
       {/* En-tête */}
-      <Card className="border-orange-500/20 bg-gradient-to-r from-orange-500/5 to-[#ff4000]/5">
+      <Card className="border-orange-500/20 bg-orange-500/5/5">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-3 text-xl">

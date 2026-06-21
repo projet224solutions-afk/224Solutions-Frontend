@@ -175,7 +175,7 @@ export function SubscriptionPlans({ onSelectPlan }: SubscriptionPlansProps) {
             >
               {isPremium && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-gradient-to-r from-primary to-primary-glow">
+                  <Badge className="bg-primary-glow">
                     <Crown className="w-3 h-3 mr-1" />
                     Populaire
                   </Badge>

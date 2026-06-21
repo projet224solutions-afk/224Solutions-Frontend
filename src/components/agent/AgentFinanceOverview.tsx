@@ -173,7 +173,7 @@ export function AgentFinanceOverview({ agentId }: AgentFinanceOverviewProps) {
     <div className="space-y-6">
       {/* Header */}
       <Card className="border-0 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-50 border-b">
+        <CardHeader className="bg-[#ff4000]/5 border-b">
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2 text-foreground">
               <DollarSign className="w-6 h-6 text-[#ff4000]" />
@@ -188,7 +188,7 @@ export function AgentFinanceOverview({ agentId }: AgentFinanceOverviewProps) {
         <CardContent className="p-6">
           {/* Stats Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-gradient-to-br from-[#ff4000] to-[#ff4000] rounded-xl p-4 text-white">
+            <div className="bg-[#ff4000] rounded-xl p-4 text-white">
               <div className="flex items-center gap-2 mb-2">
                 <Wallet className="w-5 h-5" />
                 <span className="text-sm opacity-90">{t('agentFinanceOverview.soldeWallet')}</span>
@@ -206,7 +206,7 @@ export function AgentFinanceOverview({ agentId }: AgentFinanceOverviewProps) {
               <p className="text-xs opacity-75">{stats.walletCurrency}</p>
             </div>
 
-            <div className="bg-gradient-to-br from-[#ff4000] to-orange-600 rounded-xl p-4 text-white">
+            <div className="bg-[#ff4000] rounded-xl p-4 text-white">
               <div className="flex items-center gap-2 mb-2">
                 <PiggyBank className="w-5 h-5" />
                 <span className="text-sm opacity-90">En Attente</span>
@@ -215,7 +215,7 @@ export function AgentFinanceOverview({ agentId }: AgentFinanceOverviewProps) {
               <p className="text-xs opacity-75">{stats.walletCurrency}</p>
             </div>
 
-            <div className="bg-gradient-to-br from-[#ff4000] to-[#ff4000] rounded-xl p-4 text-white">
+            <div className="bg-[#ff4000] rounded-xl p-4 text-white">
               <div className="flex items-center gap-2 mb-2">
                 <CreditCard className="w-5 h-5" />
                 <span className="text-sm opacity-90">{t('agentFinanceOverview.payees')}</span>

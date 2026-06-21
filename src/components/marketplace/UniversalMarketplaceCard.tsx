@@ -59,7 +59,7 @@ export function UniversalMarketplaceCard({
       // Distinction affiliation vs vente directe
       if (item.license_type === 'Affiliation') {
         return (
-          <Badge className="absolute top-2 left-2 bg-gradient-to-r from-[#04439e] to-[#ff4000] text-white border-0">
+          <Badge className="absolute top-2 left-2 bg-[#ff4000] text-white border-0">
             <ExternalLink className="w-3 h-3 mr-1" />
             Affiliation
           </Badge>
@@ -135,7 +135,7 @@ export function UniversalMarketplaceCard({
 
         {/* Badge Sponsorisé */}
         {item.is_sponsored && (
-          <Badge className="absolute top-2 right-2 bg-gradient-to-r from-[#ff4000] to-orange-500 text-white border-0 z-20 shadow-lg">
+          <Badge className="absolute top-2 right-2 bg-[#ff4000] text-white border-0 z-20 shadow-lg">
             <Crown className="w-3 h-3 mr-1" />
             Sponsorisé
           </Badge>

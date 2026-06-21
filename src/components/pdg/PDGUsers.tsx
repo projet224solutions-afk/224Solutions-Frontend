@@ -316,7 +316,7 @@ export default function PDGUsers() {
     <div className="space-y-6">
       {/* Header Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border-border bg-card">
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -330,7 +330,7 @@ export default function PDGUsers() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border-border bg-card">
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center">
@@ -344,7 +344,7 @@ export default function PDGUsers() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border-border bg-card">
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
@@ -360,7 +360,7 @@ export default function PDGUsers() {
       </div>
 
       {/* Filters */}
-      <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+      <Card className="border-border bg-card">
         <CardHeader>
           <CardTitle>{t('pDGUsers.gestionDesUtilisateurs')}</CardTitle>
           <CardDescription>{t('pDGUsers.rechercheEtFiltrage')}</CardDescription>
@@ -402,14 +402,14 @@ export default function PDGUsers() {
         {filteredUsers.map((user, index) => (
           <Card
             key={user.id}
-            className="border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-200 animate-fade-in"
+            className="border-border bg-card hover:shadow-xl transition-all duration-200 animate-fade-in"
             style={{ animationDelay: `${index * 30}ms` }}
           >
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 flex-1">
                   <div className="relative">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-lg">
+                    <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg">
                       <Shield className="w-7 h-7 text-primary-foreground" />
                     </div>
                     {user.is_active && (
@@ -618,7 +618,7 @@ export default function PDGUsers() {
       </div>
 
       {filteredUsers.length === 0 && (
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border-border bg-card">
           <CardContent className="p-12 text-center">
             <p className="text-muted-foreground">{t('pDGUsers.aucunUtilisateurTrouve')}</p>
           </CardContent>

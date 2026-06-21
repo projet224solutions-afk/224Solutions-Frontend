@@ -195,7 +195,7 @@ export function GPSPermissionHelper({ onLocationGranted, currentError }: GPSPerm
   if (permissionState === 'granted') {
     // Afficher un loader pendant que le parent charge la position
     return (
-      <Card className="bg-gradient-to-r from-orange-50 to-orange-50 border-orange-200">
+      <Card className="bg-[#ff4000]/5 border-orange-200">
         <CardContent className="pt-6 pb-6">
           <div className="flex flex-col items-center gap-3">
             <Loader2 className="w-10 h-10 text-[#ff4000] animate-spin" />

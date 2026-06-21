@@ -128,8 +128,8 @@ export function EducationModule({ serviceId, businessName }: EducationModuleProp
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <Card className="bg-[#04439e] text-white"><CardContent className="p-4"><BookOpen className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{activeCourses}</p><p className="text-xs opacity-80">Cours actifs</p></CardContent></Card>
         <Card className="bg-[#ff4000] text-white"><CardContent className="p-4"><Users className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.active}</p><p className="text-xs opacity-80">{t('educationModule.elevesActifs')}</p></CardContent></Card>
-        <Card className="bg-gradient-to-br from-[#ff4000] to-[#04439e] text-white"><CardContent className="p-4"><Award className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.completed}</p><p className="text-xs opacity-80">{t('educationModule.diplomes')}</p></CardContent></Card>
-        <Card className="bg-gradient-to-br from-[#04439e] to-[#ff4000] text-white"><CardContent className="p-4"><p className="text-lg font-bold mt-1"><Money amount={stats.revenue} from="GNF" /></p><p className="text-xs opacity-80">Revenus</p></CardContent></Card>
+        <Card className="bg-[#04439e] text-white"><CardContent className="p-4"><Award className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.completed}</p><p className="text-xs opacity-80">{t('educationModule.diplomes')}</p></CardContent></Card>
+        <Card className="bg-[#ff4000] text-white"><CardContent className="p-4"><p className="text-lg font-bold mt-1"><Money amount={stats.revenue} from="GNF" /></p><p className="text-xs opacity-80">Revenus</p></CardContent></Card>
       </div>
 
       <Tabs defaultValue="courses">

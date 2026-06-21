@@ -146,7 +146,7 @@ export default function SyndicatDashboardUltraPro() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+        <div className="min-h-screen bg-blue-50">
             {/* Header Ultra-Professionnel - Mobile Optimized */}
             <div className="bg-white shadow-xl border-b border-gray-100 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-3 py-3 sm:px-6 sm:py-4">
@@ -219,7 +219,7 @@ export default function SyndicatDashboardUltraPro() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-0 shadow-lg bg-gradient-to-br from-[#ff4000] to-[#ff4000] text-white">
+                    <Card className="border-0 shadow-lg bg-[#ff4000] text-white">
                         <CardContent className="p-3 sm:p-6">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -232,7 +232,7 @@ export default function SyndicatDashboardUltraPro() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-0 shadow-lg bg-gradient-to-br from-[#04439e] to-[#04439e] text-white">
+                    <Card className="border-0 shadow-lg bg-[#04439e] text-white">
                         <CardContent className="p-3 sm:p-6">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -247,7 +247,7 @@ export default function SyndicatDashboardUltraPro() {
                         </CardContent>
                     </Card>
 
-                    <Card className="border-0 shadow-lg bg-gradient-to-br from-orange-500 to-orange-600 text-white">
+                    <Card className="border-0 shadow-lg bg-orange-500 text-white">
                         <CardContent className="p-3 sm:p-6">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -346,7 +346,7 @@ export default function SyndicatDashboardUltraPro() {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {/* Activite recente */}
                             <Card className="border-0 shadow-xl rounded-2xl">
-                                <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-50 rounded-t-2xl">
+                                <CardHeader className="bg-[#04439e]/5 rounded-t-2xl">
                                     <CardTitle className="text-xl font-bold text-gray-800 flex items-center gap-2">
                                         <Activity className="w-5 h-5" />
                                         Activité récente
@@ -394,7 +394,7 @@ export default function SyndicatDashboardUltraPro() {
 
                             {/* Actions rapides */}
                             <Card className="border-0 shadow-xl rounded-2xl">
-                                <CardHeader className="bg-gradient-to-r from-orange-50 to-blue-50 rounded-t-2xl">
+                                <CardHeader className="bg-orange-50 rounded-t-2xl">
                                     <CardTitle className="text-xl font-bold text-gray-800 flex items-center gap-2">
                                         <Star className="w-5 h-5" />
                                         Actions Rapides
@@ -461,7 +461,7 @@ export default function SyndicatDashboardUltraPro() {
                     {/* Onglet Taxi-Motards */}
                     <TabsContent value="taxi-motards" className="space-y-6">
                         <Card className="border-0 shadow-xl rounded-2xl">
-                            <CardHeader className="bg-gradient-to-r from-orange-50 to-blue-50 rounded-t-2xl">
+                            <CardHeader className="bg-orange-50 rounded-t-2xl">
                                 <div className="flex items-center justify-between">
                                     <CardTitle className="text-xl font-bold text-gray-800 flex items-center gap-2">
                                         <Bike className="w-5 h-5" />
@@ -483,7 +483,7 @@ export default function SyndicatDashboardUltraPro() {
                                         <Card key={taxiMotard.id} className="border border-gray-200 hover:shadow-lg transition-all duration-300">
                                             <CardContent className="p-6">
                                                 <div className="flex items-center gap-4 mb-4">
-                                                    <div className="w-12 h-12 bg-gradient-to-br from-[#ff4000] to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                                    <div className="w-12 h-12 bg-[#ff4000] rounded-full flex items-center justify-center text-white font-bold text-lg">
                                                         {taxiMotard.name.charAt(0)}
                                                     </div>
                                                     <div className="flex-1">
@@ -556,7 +556,7 @@ export default function SyndicatDashboardUltraPro() {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {/* Paramètres du Bureau */}
                             <Card className="border-0 shadow-xl rounded-2xl">
-                                <CardHeader className="bg-gradient-to-r from-blue-50 to-orange-50 rounded-t-2xl">
+                                <CardHeader className="bg-blue-50 rounded-t-2xl">
                                     <CardTitle className="text-xl font-bold text-gray-800 flex items-center gap-2">
                                         <Settings className="w-5 h-5" />
                                         Paramètres du Bureau
@@ -603,7 +603,7 @@ export default function SyndicatDashboardUltraPro() {
 
                             {/* Outils de Gestion */}
                             <Card className="border-0 shadow-xl rounded-2xl">
-                                <CardHeader className="bg-gradient-to-r from-blue-50 to-orange-50 rounded-t-2xl">
+                                <CardHeader className="bg-blue-50 rounded-t-2xl">
                                     <CardTitle className="text-xl font-bold text-gray-800 flex items-center gap-2">
                                         <Activity className="w-5 h-5" />
                                         Outils de Gestion

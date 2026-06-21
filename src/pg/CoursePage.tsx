@@ -67,7 +67,7 @@ export default function CoursePage() {
 
       {course.cover_image
         ? <img src={course.cover_image} alt="" className="h-44 w-full rounded-xl object-cover" />
-        : <div className="h-44 w-full rounded-xl bg-gradient-to-br from-[#04439e] to-[#ff4000] flex items-center justify-center"><GraduationCap className="h-16 w-16 text-white/80" /></div>}
+        : <div className="h-44 w-full rounded-xl bg-[#ff4000] flex items-center justify-center"><GraduationCap className="h-16 w-16 text-white/80" /></div>}
 
       <div>
         <div className="flex flex-wrap items-center gap-2">

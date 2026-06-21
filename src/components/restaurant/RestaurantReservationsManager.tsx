@@ -319,25 +319,25 @@ export function RestaurantReservationsManager({ serviceId }: RestaurantReservati
 
       {/* Stats rapides */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-900/20 dark:to-blue-900/10">
+        <Card className="bg-blue-50">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-blue-600">{stats.today}</div>
             <div className="text-xs text-blue-600/80">Aujourd'hui</div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-[#ff4000]/20 dark:to-[#ff4000]/10">
+        <Card className="bg-orange-50">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-[#ff4000]">{stats.pending}</div>
             <div className="text-xs text-[#ff4000]/80">En attente</div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-[#04439e]/20 dark:to-[#04439e]/10">
+        <Card className="bg-blue-50">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-[#04439e]">{stats.todayGuests}</div>
             <div className="text-xs text-[#04439e]/80">Couverts</div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-[#ff4000]/20 dark:to-[#ff4000]/10">
+        <Card className="bg-orange-50">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-[#ff4000]">{stats.confirmed}</div>
             <div className="text-xs text-[#ff4000]/80">{t('restaurantReservationsManager.confirmees')}</div>

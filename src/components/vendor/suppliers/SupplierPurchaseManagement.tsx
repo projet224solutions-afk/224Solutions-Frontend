@@ -71,7 +71,7 @@ export function SupplierPurchaseManagement({ vendorId }: SupplierPurchaseManagem
     <div className="space-y-4">
       {/* Header avec stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-        <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+        <Card className="bg-primary/10 border-primary/20">
           <CardContent className="p-5 md:p-4">
             <div className="flex items-center gap-3">
               <div className="p-3 md:p-2 rounded-lg bg-primary/20">
@@ -87,7 +87,7 @@ export function SupplierPurchaseManagement({ vendorId }: SupplierPurchaseManagem
 
         {/* Carte Achats cliquable */}
         <Card
-          className="bg-gradient-to-br from-[#ff4000]/10 to-[#ff4000]/5 border-[#ff4000]/20 cursor-pointer hover:border-[#ff4000]/40 hover:shadow-md transition-all active:scale-95"
+          className="bg-[#ff4000]/10 border-[#ff4000]/20 cursor-pointer hover:border-[#ff4000]/40 hover:shadow-md transition-all active:scale-95"
           onClick={() => setIsValidatedSheetOpen(true)}
         >
           <CardContent className="p-5 md:p-4">
@@ -105,7 +105,7 @@ export function SupplierPurchaseManagement({ vendorId }: SupplierPurchaseManagem
 
         {/* Carte Brouillons cliquable */}
         <Card
-          className="bg-gradient-to-br from-orange-500/10 to-orange-600/5 border-orange-500/20 cursor-pointer hover:border-orange-500/40 hover:shadow-md transition-all active:scale-95"
+          className="bg-orange-500/10 border-orange-500/20 cursor-pointer hover:border-orange-500/40 hover:shadow-md transition-all active:scale-95"
           onClick={() => setIsDraftSheetOpen(true)}
         >
           <CardContent className="p-5 md:p-4">
@@ -121,7 +121,7 @@ export function SupplierPurchaseManagement({ vendorId }: SupplierPurchaseManagem
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-[#04439e]/10 to-[#04439e]/5 border-[#04439e]/20">
+        <Card className="bg-[#04439e]/10 border-[#04439e]/20">
           <CardContent className="p-5 md:p-4">
             <div className="flex items-center gap-3">
               <div className="p-3 md:p-2 rounded-lg bg-[#04439e]/20">

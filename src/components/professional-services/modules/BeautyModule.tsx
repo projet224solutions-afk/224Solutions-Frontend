@@ -123,7 +123,7 @@ export function BeautyModule({ serviceId, businessName }: BeautyModuleProps) {
 
       {/* Onboarding (premier lancement) — boutons internes au module, pas de page externe */}
       {noData && (
-        <Card className="border-orange-200 bg-gradient-to-r from-orange-50 to-blue-50 dark:from-[#ff4000]/20 dark:to-[#04439e]/20">
+        <Card className="border-orange-200 bg-orange-50">
           <CardContent className="flex flex-wrap items-center gap-3 p-4">
             <Crown className="h-6 w-6 text-[#ff4000]" />
             <div className="flex-1 min-w-[180px]">
@@ -177,7 +177,7 @@ export function BeautyModule({ serviceId, businessName }: BeautyModuleProps) {
           </CardContent>
         </Card>
 
-        <Card onClick={() => goTab('analytics')} className="cursor-pointer hover:shadow-md transition-shadow bg-gradient-to-br from-primary/10 to-primary/5">
+        <Card onClick={() => goTab('analytics')} className="cursor-pointer hover:shadow-md transition-shadow bg-primary/10">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Chiffre d'affaires</CardTitle>
             <TrendingUp className="h-4 w-4 text-primary" />

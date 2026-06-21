@@ -191,7 +191,7 @@ export default function PDGEscrowManagement() {
 
         {/* Statistiques */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 border-blue-500/20">
+          <Card className="bg-blue-500/10 border-blue-500/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm text-muted-foreground">Total Transactions</p>
@@ -201,7 +201,7 @@ export default function PDGEscrowManagement() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-[#ff4000]/10 to-[#ff4000]/10 border-[#ff4000]/20">
+          <Card className="bg-[#ff4000]/10 border-[#ff4000]/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm text-muted-foreground">En attente</p>
@@ -211,7 +211,7 @@ export default function PDGEscrowManagement() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-[#ff4000]/10 to-[#ff4000]/10 border-[#ff4000]/20">
+          <Card className="bg-[#ff4000]/10 border-[#ff4000]/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm text-muted-foreground">{t('pDGEscrowManagement.liberees')}</p>
@@ -221,7 +221,7 @@ export default function PDGEscrowManagement() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-[#04439e]/10 to-[#04439e]/10 border-[#04439e]/20">
+          <Card className="bg-[#04439e]/10 border-[#04439e]/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm text-muted-foreground">Commission totale</p>

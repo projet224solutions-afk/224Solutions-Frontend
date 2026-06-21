@@ -86,7 +86,7 @@ export default function PDGSyncDashboard() {
 
   if (loading) {
     return (
-      <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+      <Card className="border-border bg-card">
         <CardContent className="flex items-center justify-center py-12">
           <div className="flex items-center gap-3">
             <Loader2 className="w-6 h-6 animate-spin text-primary" />
@@ -100,7 +100,7 @@ export default function PDGSyncDashboard() {
   return (
     <div className="space-y-6">
       {/* Header Card */}
-      <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+      <Card className="border-border bg-card">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -195,7 +195,7 @@ export default function PDGSyncDashboard() {
       </Card>
 
       {/* Detailed Checks */}
-      <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+      <Card className="border-border bg-card">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg">{t('pDGSyncDashboard.detailsDesVerifications')}</CardTitle>
@@ -238,7 +238,7 @@ export default function PDGSyncDashboard() {
 
       {/* Recommendations */}
       {recommendations.length > 0 && (
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm border-[#ff4000]/30">
+        <Card className="border-border bg-card border-[#ff4000]/30">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-[#ff4000]" />

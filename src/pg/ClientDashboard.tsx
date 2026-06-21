@@ -381,7 +381,7 @@ export default function ClientDashboard() {
               </Card>
             </ResponsiveGrid>
 
-            <Card className="shadow-elegant border-client-primary/20 bg-gradient-to-br from-client-primary/10 to-background">
+            <Card className="shadow-elegant border-client-primary/20 bg-client-primary/10 to-background">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <HandCoins className="w-5 h-5 text-client-primary" />

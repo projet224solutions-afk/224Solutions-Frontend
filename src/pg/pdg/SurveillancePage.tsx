@@ -21,7 +21,7 @@ export default function SurveillancePage() {
 
   if (!user || user.role !== 'pdg') {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
+      <div className="flex items-center justify-center min-h-screen bg-slate-900">
         <Card className="w-full max-w-md bg-[#ff4000]/20 border-[#ff4000]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-[#ff4000]">
@@ -40,7 +40,7 @@ export default function SurveillancePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
+    <div className="min-h-screen bg-slate-900 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">

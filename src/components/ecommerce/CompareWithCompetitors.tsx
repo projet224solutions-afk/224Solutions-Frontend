@@ -62,7 +62,7 @@ export const CompareWithCompetitors = () => {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
-        <Badge className="bg-gradient-to-r from-primary to-primary-glow text-white">
+        <Badge className="bg-primary-glow text-white">
           Leader Technique 2025
         </Badge>
         <h2 className="text-3xl font-bold">{t('compareWithCompetitors.t224solutionsVsGeantsDuE')}</h2>
@@ -212,7 +212,7 @@ export const CompareWithCompetitors = () => {
       </Tabs>
 
       {/* Score global */}
-      <Card className="bg-gradient-to-r from-primary/10 to-primary-glow/10 border-primary">
+      <Card className="bg-primary/10-glow/10 border-primary">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="w-5 h-5" />

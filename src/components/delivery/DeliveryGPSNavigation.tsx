@@ -207,7 +207,7 @@ export function DeliveryGPSNavigation({ activeDelivery, currentLocation, onConta
   return (
     <div className="space-y-4">
       {/* Carte de navigation active */}
-      <Card className="bg-gradient-to-r from-orange-50 to-orange-50 dark:from-orange-950/30 dark:to-[#ff4000]/30 border-orange-200 dark:border-orange-800">
+      <Card className="bg-[#ff4000]/5 border-orange-200 dark:border-orange-800">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -346,7 +346,7 @@ export function DeliveryGPSNavigation({ activeDelivery, currentLocation, onConta
             onClick={openGoogleMaps}
             className="w-full text-white gap-2"
             size="lg"
-            style={{ background: 'linear-gradient(135deg, hsl(25 98% 55%), hsl(15 100% 50%))' }}
+            style={{ background: '#ff4000' }}
           >
             <ExternalLink className="w-5 h-5" />
             🧭 Démarrer la navigation GPS

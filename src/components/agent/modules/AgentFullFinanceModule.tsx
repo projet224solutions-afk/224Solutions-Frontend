@@ -220,10 +220,10 @@ export function AgentFullFinanceModule({ agentId, canManage = false }: AgentFull
     <div className="space-y-6">
       {/* Header avec stats agent */}
       <Card className="border-0 shadow-lg overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-[#ff4000]/10 via-orange-500/10 to-[#ff4000]/10 border-b">
+        <CardHeader className="bg-[#ff4000]/10 border-b">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#ff4000] to-orange-600 shadow-lg">
+              <div className="p-3 rounded-xl bg-[#ff4000] shadow-lg">
                 <DollarSign className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -240,7 +240,7 @@ export function AgentFullFinanceModule({ agentId, canManage = false }: AgentFull
         <CardContent className="p-6">
           {/* Stats Cards Agent */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-gradient-to-br from-[#ff4000] to-[#ff4000] rounded-xl p-4 text-white shadow-lg">
+            <div className="bg-[#ff4000] rounded-xl p-4 text-white shadow-lg">
               <div className="flex items-center gap-2 mb-2">
                 <Wallet className="w-5 h-5" />
                 <span className="text-sm opacity-90">{t('agentFullFinanceModule.monSolde')}</span>
@@ -256,7 +256,7 @@ export function AgentFullFinanceModule({ agentId, canManage = false }: AgentFull
               <p className="text-2xl font-bold">{formatAmount(agentStats.totalCommissions)}</p>
               <p className="text-xs opacity-75">GNF</p>
             </div>
-            <div className="bg-gradient-to-br from-[#ff4000] to-orange-600 rounded-xl p-4 text-white shadow-lg">
+            <div className="bg-[#ff4000] rounded-xl p-4 text-white shadow-lg">
               <div className="flex items-center gap-2 mb-2">
                 <PiggyBank className="w-5 h-5" />
                 <span className="text-sm opacity-90">En Attente</span>
@@ -264,7 +264,7 @@ export function AgentFullFinanceModule({ agentId, canManage = false }: AgentFull
               <p className="text-2xl font-bold">{formatAmount(agentStats.pendingCommissions)}</p>
               <p className="text-xs opacity-75">GNF</p>
             </div>
-            <div className="bg-gradient-to-br from-[#ff4000] to-[#ff4000] rounded-xl p-4 text-white shadow-lg">
+            <div className="bg-[#ff4000] rounded-xl p-4 text-white shadow-lg">
               <div className="flex items-center gap-2 mb-2">
                 <CreditCard className="w-5 h-5" />
                 <span className="text-sm opacity-90">{t('agentFullFinanceModule.payees')}</span>
@@ -319,7 +319,7 @@ export function AgentFullFinanceModule({ agentId, canManage = false }: AgentFull
         <TabsContent value="overview" className="space-y-6">
           {chartData.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+              <Card className="border-border bg-card">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BarChart3 className="w-5 h-5 text-primary" />
@@ -345,7 +345,7 @@ export function AgentFullFinanceModule({ agentId, canManage = false }: AgentFull
                 </CardContent>
               </Card>
 
-              <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+              <Card className="border-border bg-card">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <DollarSign className="w-5 h-5 text-primary" />
@@ -432,7 +432,7 @@ export function AgentFullFinanceModule({ agentId, canManage = false }: AgentFull
 
         {/* Historique transactions agent */}
         <TabsContent value="transactions" className="space-y-6">
-          <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+          <Card className="border-border bg-card">
             <CardHeader>
               <CardTitle>{t('agentFullFinanceModule.historiqueDesTransactions')}</CardTitle>
               <CardDescription>{t('agentFullFinanceModule.toutesMesOperationsFinancieres')}</CardDescription>

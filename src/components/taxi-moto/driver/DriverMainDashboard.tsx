@@ -91,7 +91,7 @@ export function DriverMainDashboard({
   return (
     <div className="min-h-screen bg-gray-950 pb-24 overflow-x-hidden w-full max-w-full">
       {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 pointer-events-none overflow-hidden">
+      <div className="fixed inset-0 bg-gray-950 pointer-events-none overflow-hidden">
         {/* Subtle pattern overlay */}
         <div className="absolute inset-0 opacity-[0.02]"
           style={{
@@ -215,13 +215,13 @@ export function DriverMainDashboard({
               {isOnline && (
                 <div className={cn(
                   "relative overflow-hidden",
-                  "bg-gradient-to-br from-gray-800/50 to-gray-900/50",
+                  "bg-gray-800/50",
                   "backdrop-blur-sm",
                   "rounded-xl p-3",
                   "border border-gray-700/50"
                 )}>
                   {/* Subtle animated gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#ff4000]/5 via-transparent to-[#ff4000]/5 animate-pulse" />
+                  <div className="absolute inset-0 bg-[#ff4000]/5 via-transparent animate-pulse" />
 
                   <div className="relative flex items-center justify-between">
                     <div className="flex items-center gap-2.5">

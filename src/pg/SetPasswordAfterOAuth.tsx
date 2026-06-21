@@ -254,7 +254,7 @@ export default function SetPasswordAfterOAuth() {
   // Affichage pendant la vérification
   if (checkingStatus || authLoading || profileLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
           <p className="text-muted-foreground">{t('auth.setPassword.checking')}</p>
@@ -265,7 +265,7 @@ export default function SetPasswordAfterOAuth() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-slate-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-2xl border-0">
           <CardContent className="pt-8 pb-8 text-center space-y-4">
             <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto">
@@ -286,10 +286,10 @@ export default function SetPasswordAfterOAuth() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
       <div ref={topRef} className="absolute top-0" />
       <Card className="w-full max-w-md shadow-2xl border-0 overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 pb-4">
+        <CardHeader className="bg-primary/10 pb-4">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
               <Shield className="h-6 w-6 text-primary" />

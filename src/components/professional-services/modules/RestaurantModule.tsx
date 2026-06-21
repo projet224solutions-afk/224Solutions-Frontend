@@ -159,7 +159,7 @@ export function RestaurantModule({ serviceId, businessName, agentPermissions }: 
 
   // Onboarding card (shown on overview when no data)
   const OnboardingCard = () => (
-    <Card className="bg-gradient-to-r from-orange-50 to-orange-50 dark:from-orange-900/20 dark:to-[#ff4000]/20 border-orange-200">
+    <Card className="bg-[#ff4000]/5 border-orange-200">
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -261,7 +261,7 @@ export function RestaurantModule({ serviceId, businessName, agentPermissions }: 
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-primary/10 to-primary/5">
+        <Card className="bg-primary/10">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Chiffre d'affaires</CardTitle>
             <TrendingUp className="h-4 w-4 text-primary" />

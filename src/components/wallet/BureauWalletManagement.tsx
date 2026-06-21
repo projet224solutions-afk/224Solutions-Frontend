@@ -317,7 +317,7 @@ export default function BureauWalletManagement({
   return (
     <div className="space-y-6">
       {/* Carte du solde */}
-      <Card className="bg-gradient-to-br from-primary/10 to-primary/5">
+      <Card className="bg-primary/10">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">

@@ -184,7 +184,7 @@ export default function VendorCommunication() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/60 rounded-full flex items-center justify-center text-white font-semibold">
+                        <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-semibold">
                           {contact.first_name?.[0]}{contact.last_name?.[0]}
                         </div>
                         <div>
@@ -244,7 +244,7 @@ export default function VendorCommunication() {
             <div className="flex flex-col items-center justify-center min-h-[400px] gap-6">
               {!callState.isInCall ? (
                 <div className="text-center space-y-4">
-                  <div className="w-32 h-32 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full flex items-center justify-center mx-auto">
+                  <div className="w-32 h-32 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                     <MessageSquare className="w-16 h-16 text-primary" />
                   </div>
                   <div>
@@ -268,7 +268,7 @@ export default function VendorCommunication() {
                 <div className="w-full space-y-6">
                   {/* Informations de l'appel */}
                   <div className="text-center space-y-3">
-                    <div className="w-24 h-24 bg-gradient-to-br from-primary to-primary/60 rounded-full flex items-center justify-center mx-auto text-white text-3xl font-bold">
+                    <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center mx-auto text-white text-3xl font-bold">
                       {selectedContact?.first_name?.[0]}{selectedContact?.last_name?.[0]}
                     </div>
                     <div>

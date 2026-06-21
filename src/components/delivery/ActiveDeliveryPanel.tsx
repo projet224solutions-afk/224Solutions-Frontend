@@ -177,7 +177,7 @@ export function ActiveDeliveryPanel({
 
       <CardContent className="space-y-4">
         {/* Destination actuelle */}
-        <div className="p-4 bg-gradient-to-r from-orange-50 to-orange-50 dark:from-[#ff4000]/30 dark:to-[#ff4000]/30 rounded-lg border border-orange-200">
+        <div className="p-4 bg-[#ff4000]/5 rounded-lg border border-orange-200">
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-3">
               {isAtVendorPhase ? (

@@ -531,7 +531,7 @@ export default function TaxiMotoBooking({
                         {/* Suggestions de destination améliorées */}
                         {showDestinationSuggestions && destinationSuggestions.length > 0 && (
                             <div className="absolute top-full left-0 right-0 bg-white border rounded-xl shadow-2xl z-20 max-h-72 overflow-y-auto mt-1">
-                                <div className="sticky top-0 bg-gradient-to-r from-orange-50 to-orange-50 px-4 py-2.5 border-b flex items-center justify-between">
+                                <div className="sticky top-0 bg-[#ff4000]/5 px-4 py-2.5 border-b flex items-center justify-between">
                                     <span className="text-xs text-gray-600 font-medium">
                                         🎯 {destinationSuggestions.length} résultat(s) trouvé(s)
                                     </span>

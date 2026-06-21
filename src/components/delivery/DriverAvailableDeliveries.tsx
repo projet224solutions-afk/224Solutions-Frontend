@@ -261,7 +261,7 @@ export function DriverAvailableDeliveries({ onAccept, driverLocation }: DriverAv
       {deliveries.map((delivery) => (
         <Card
           key={delivery.id}
-          className="border-2 border-orange-200 hover:border-orange-400 transition-colors bg-gradient-to-br from-orange-50/50 to-orange-50/50 dark:from-orange-950/20 dark:to-[#ff4000]/20"
+          className="border-2 border-orange-200 hover:border-orange-400 transition-colors bg-orange-50/50"
         >
           <CardContent className="pt-4 space-y-4">
             {/* Vendeur */}
@@ -305,7 +305,7 @@ export function DriverAvailableDeliveries({ onAccept, driverLocation }: DriverAv
             </div>
 
             {/* Détail tarification vendeur */}
-            <div className="p-3 bg-gradient-to-r from-orange-50 to-orange-50 dark:from-[#ff4000]/20 dark:to-[#ff4000]/20 rounded-lg border border-orange-200/50">
+            <div className="p-3 bg-[#ff4000]/5 rounded-lg border border-orange-200/50">
               <div className="flex items-center gap-2 mb-2">
                 <Calculator className="h-4 w-4 text-[#ff4000]" />
                 <span className="text-xs font-medium text-[#ff4000] dark:text-[#ff4000]">{t('driverAvailableDeliveries.tarificationVendeur')}</span>
@@ -329,7 +329,7 @@ export function DriverAvailableDeliveries({ onAccept, driverLocation }: DriverAv
             </div>
 
             {/* Vos gains */}
-            <div className="flex items-center justify-between p-2 bg-gradient-to-r from-[#ff4000] to-[#ff4000] rounded-lg text-white">
+            <div className="flex items-center justify-between p-2 bg-[#ff4000] rounded-lg text-white">
               <div className="flex items-center gap-2">
                 <DollarSign className="h-5 w-5" />
                 <div>
@@ -374,7 +374,7 @@ export function DriverAvailableDeliveries({ onAccept, driverLocation }: DriverAv
               </Button>
               <Button
                 size="sm"
-                className="bg-gradient-to-r from-[#ff4000] to-[#ff4000] hover:from-[#ff4000] hover:to-[#ff4000]"
+                className="bg-[#ff4000] hover:bg-[#ce3d11]"
                 onClick={() => handleAccept(delivery)}
                 disabled={acceptingId === delivery.id}
               >

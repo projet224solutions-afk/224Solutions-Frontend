@@ -363,7 +363,7 @@ export function ServiceTypesGrid({ onBack, searchQuery, country = 'all', city = 
                         loading="lazy"
                         decoding="async"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0b1b33]/70 via-[#04439e]/20 to-transparent" />
+                      <div className="absolute inset-0 bg-[#0b1b33]/70 to-transparent" />
                     </>
                   ) : (
                     <div className="h-full w-full bg-[#04439e]" />

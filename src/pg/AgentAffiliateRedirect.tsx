@@ -107,7 +107,7 @@ export default function AgentAffiliateRedirect() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-blue-50 p-4">
       <Card className="w-full max-w-md shadow-xl border-0">
         <CardContent className="pt-8 pb-8 text-center">
           {status === 'loading' && (

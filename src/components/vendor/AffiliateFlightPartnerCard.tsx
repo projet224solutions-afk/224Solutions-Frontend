@@ -72,7 +72,7 @@ export function AffiliateFlightPartnerCard({
       className="group overflow-hidden border-orange-200/80 bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:shadow-xl hover:shadow-orange-100/80 cursor-pointer"
       onClick={onOpen}
     >
-      <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-950 via-orange-950 to-[#ff4000]">
+      <div className="relative h-48 overflow-hidden bg-slate-950">
         {coverImage ? (
           <img
             src={coverImage}

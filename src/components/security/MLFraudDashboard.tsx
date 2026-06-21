@@ -421,7 +421,7 @@ export const MLFraudDashboard: React.FC = () => {
       </Card>
 
       {/* Model Info */}
-      <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
+      <Card className="bg-primary/10 border-primary/20">
         <CardContent className="pt-6">
           <div className="flex items-center gap-4">
             <div className="p-4 bg-primary/20 rounded-full">

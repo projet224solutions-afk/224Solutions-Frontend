@@ -176,7 +176,7 @@ export function VendorShopDashboard({
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-primary/10 to-primary/5">
+        <Card className="bg-primary/10">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Chiffre d'affaires</CardTitle>
             <TrendingUp className="h-4 w-4 text-primary" />

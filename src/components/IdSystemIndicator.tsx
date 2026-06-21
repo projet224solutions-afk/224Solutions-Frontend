@@ -43,7 +43,7 @@ export function IdSystemIndicator() {
   };
 
   return (
-    <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10">
+    <Card className="border-primary/20 bg-primary/10">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">

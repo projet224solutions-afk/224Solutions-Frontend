@@ -32,7 +32,7 @@ export function OfflineStatusBar({
     return (
       <div
         className={cn(
-          'bg-gradient-to-r from-[#ff4000] to-[#ff4000] text-white',
+          'bg-[#ff4000] text-white',
           'py-2 px-4 rounded-lg shadow-lg',
           'animate-in slide-in-from-top duration-300',
           className
@@ -66,7 +66,7 @@ export function OfflineStatusBar({
     return (
       <div
         className={cn(
-          'bg-gradient-to-r from-orange-500 to-[#ff4000] text-white',
+          'bg-[#ff4000] text-white',
           'py-2.5 px-4 rounded-lg shadow-lg border-l-4 border-white/30',
           className
         )}

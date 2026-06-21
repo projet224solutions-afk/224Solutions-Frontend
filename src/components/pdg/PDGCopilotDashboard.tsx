@@ -83,7 +83,7 @@ const PDGCopilotDashboard: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4 max-w-7xl">
-      <Card className="border-blue-500/20 bg-gradient-to-br from-blue-50 to-white">
+      <Card className="border-blue-500/20 bg-blue-50">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">

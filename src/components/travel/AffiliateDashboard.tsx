@@ -127,7 +127,7 @@ export function AffiliateDashboard({ onViewServices }: AffiliateDashboardProps) 
   return (
     <div className="space-y-6">
       {/* Header avec statut */}
-      <Card className="bg-gradient-to-br from-[#04439e]/10 to-[#ff4000]/10 border-[#04439e]/20">
+      <Card className="bg-[#04439e]/10 border-[#04439e]/20">
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-4">
             <div>

@@ -71,7 +71,7 @@ export default function ServiceSelection() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-background flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-muted-foreground">{t('serviceSelection.chargementDesServices')}</p>
@@ -98,7 +98,7 @@ export default function ServiceSelection() {
           <div className="mt-4 text-center space-y-3">
             <div className="flex items-center justify-center gap-2">
               <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-primary shrink-0" />
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-primary bg-clip-text text-transparent leading-tight">
                 Choisissez votre Service Professionnel
               </h1>
             </div>

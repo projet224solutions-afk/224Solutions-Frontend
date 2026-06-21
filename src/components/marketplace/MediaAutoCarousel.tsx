@@ -217,7 +217,7 @@ export function MediaAutoCarousel({
                     }}
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-muted/10 to-muted/30 animate-pulse" />
+                  <div className="w-full h-full bg-muted/20 animate-pulse" />
                 )}
               </div>
             );

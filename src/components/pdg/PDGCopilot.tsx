@@ -132,7 +132,7 @@ export default function PDGCopilot({ mfaVerified }: PDGCopilotProps) {
             <Button
               onClick={handleAnalyzeSystem}
               disabled={isLoading}
-              className="w-full gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+              className="w-full gap-2 bg-primary"
               size="lg"
             >
               <Search className="w-4 h-4" />

@@ -121,7 +121,7 @@ export function CardPaymentDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-white/10 text-white sm:max-w-[450px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-slate-900 border-white/10 text-white sm:max-w-[450px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CreditCard className="w-5 h-5 text-[#04439e]" />

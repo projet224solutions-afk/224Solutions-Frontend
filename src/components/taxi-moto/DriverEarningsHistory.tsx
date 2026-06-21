@@ -141,7 +141,7 @@ export function DriverEarningsHistory({ rides, todayEarnings, todayRides }: Driv
                 <span className="text-xs text-gray-600 w-16">{date}</span>
                 <div className="flex-1 bg-gray-100 rounded-full h-8 relative overflow-hidden">
                   <div
-                    className="bg-gradient-to-r from-[#ff4000] to-[#ff4000] h-full rounded-full flex items-center justify-end px-2"
+                    className="bg-[#ff4000] h-full rounded-full flex items-center justify-end px-2"
                     style={{ width: `${Math.min((data.earnings / (stats.week.earnings / 7)) * 100, 100)}%` }}
                   >
                     <span className="text-xs font-bold text-white">{data.rides}</span>

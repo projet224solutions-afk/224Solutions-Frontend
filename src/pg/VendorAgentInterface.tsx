@@ -179,7 +179,7 @@ export default function VendorAgentInterface() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-vendeur-primary/10 to-vendeur-secondary/10">
+      <div className="min-h-screen flex items-center justify-center bg-vendeur-primary/10 to-vendeur-secondary/10">
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-vendeur-primary mx-auto" />
           <p className="text-muted-foreground">{t('vendorAgentInterface.chargementDeVotreEspaceAgent')}</p>
@@ -190,7 +190,7 @@ export default function VendorAgentInterface() {
 
   if (!agent) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-vendeur-primary/10 to-vendeur-secondary/10 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-vendeur-primary/10 to-vendeur-secondary/10 p-4">
         <Card className="w-full max-w-lg">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">{t('vendorAgentInterface.accesAgentVendeur')}</CardTitle>
@@ -387,7 +387,7 @@ export default function VendorAgentInterface() {
 
   return (
     <AgentProvider agent={agent}>
-      <div className="min-h-screen bg-gradient-to-br from-vendeur-primary/5 to-vendeur-secondary/5">
+      <div className="min-h-screen bg-vendeur-primary/5 to-vendeur-secondary/5">
         {/* === MOBILE LAYOUT === */}
         {isMobile ? (
           <div className="flex flex-col h-screen">
@@ -466,7 +466,7 @@ export default function VendorAgentInterface() {
             {/* Desktop Content */}
             <main className="flex-1 flex flex-col min-w-0">
               {/* Desktop Header */}
-              <header className="bg-background/80 backdrop-blur-sm border-b border-border/50 px-6 py-4">
+              <header className="bg-background border-b border-border/50 px-6 py-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <h1 className="text-xl font-bold">{activeNavItem?.label || 'Espace Agent'}</h1>

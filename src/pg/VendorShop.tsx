@@ -580,7 +580,7 @@ export default function VendorShop() {
       </header>
 
       {/* Cover Image / Header */}
-      <div className="relative h-48 bg-gradient-to-r from-primary/20 to-primary/5">
+      <div className="relative h-48 bg-primary/10">
         {vendor.cover_image_url && (
           <img
             src={vendor.cover_image_url}
@@ -832,7 +832,7 @@ export default function VendorShop() {
                   <div className="space-y-6">
                     {showAffiliateFlightPartnerExperience && (
                       <div className="space-y-4">
-                        <div className="overflow-hidden rounded-3xl border border-orange-200/80 bg-gradient-to-br from-orange-50 via-white to-orange-50">
+                        <div className="overflow-hidden rounded-3xl border border-orange-200/80 bg-orange-50">
                           <div className="grid gap-6 p-5 md:grid-cols-[1.5fr_1fr] md:p-7">
                             <div>
                               <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-orange-700">

@@ -74,8 +74,8 @@ export function FitnessModule({ serviceId, businessName }: FitnessModuleProps) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <Card className="bg-[#04439e] text-white"><CardContent className="p-4"><CalendarClock className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.todayBookings}</p><p className="text-xs opacity-80">{t('fitnessModule.seancesAujourdHui')}</p></CardContent></Card>
         <Card className="bg-[#ff4000] text-white"><CardContent className="p-4"><Users className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.pending}</p><p className="text-xs opacity-80">{t('fitnessModule.aConfirmer')}</p></CardContent></Card>
-        <Card className="bg-gradient-to-br from-[#ff4000] to-[#04439e] text-white"><CardContent className="p-4"><Check className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.completedThisWeek}</p><p className="text-xs opacity-80">{t('fitnessModule.termineesSemaine')}</p></CardContent></Card>
-        <Card className="bg-gradient-to-br from-[#04439e] to-[#ff4000] text-white"><CardContent className="p-4"><Wallet className="h-4 w-4 opacity-80" /><p className="text-base font-bold mt-1"><Money amount={stats.revenue} from="GNF" /></p><p className="text-xs opacity-80">Revenus</p></CardContent></Card>
+        <Card className="bg-[#04439e] text-white"><CardContent className="p-4"><Check className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.completedThisWeek}</p><p className="text-xs opacity-80">{t('fitnessModule.termineesSemaine')}</p></CardContent></Card>
+        <Card className="bg-[#ff4000] text-white"><CardContent className="p-4"><Wallet className="h-4 w-4 opacity-80" /><p className="text-base font-bold mt-1"><Money amount={stats.revenue} from="GNF" /></p><p className="text-xs opacity-80">Revenus</p></CardContent></Card>
       </div>
 
       <Tabs defaultValue="planning">

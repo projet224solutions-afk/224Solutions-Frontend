@@ -55,7 +55,7 @@ export function FeatureGate({
 
       {/* Overlay de blocage */}
       <div
-        className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm cursor-pointer"
+        className="absolute inset-0 flex items-center justify-center bg-background cursor-pointer"
         onClick={handleFeatureClick}
       >
         <Card className="max-w-md mx-auto shadow-xl">
@@ -77,7 +77,7 @@ export function FeatureGate({
 
             <div className="flex items-center justify-center gap-2">
               <Badge variant="outline">Plan actuel: {userPlan}</Badge>
-              <Badge className="bg-gradient-to-r from-primary to-primary-glow">
+              <Badge className="bg-primary-glow">
                 <Crown className="w-3 h-3 mr-1" />
                 Premium requis
               </Badge>

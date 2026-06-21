@@ -20,7 +20,7 @@ export function PriceEstimatorCard({ estimate, loading }: PriceEstimatorCardProp
   const { t } = useTranslation();
   if (loading) {
     return (
-      <Card className="bg-gradient-to-br from-orange-500/10 to-[#ff4000]/10 border-orange-500/20">
+      <Card className="bg-orange-500/10/10 border-orange-500/20">
         <CardContent className="p-6">
           <div className="animate-pulse space-y-3">
             <div className="h-6 bg-muted rounded w-1/2" />
@@ -34,7 +34,7 @@ export function PriceEstimatorCard({ estimate, loading }: PriceEstimatorCardProp
   if (!estimate) return null;
 
   return (
-    <Card className="bg-gradient-to-br from-orange-500/10 to-[#ff4000]/10 border-orange-500/20">
+    <Card className="bg-orange-500/10/10 border-orange-500/20">
       <CardContent className="p-6 space-y-4">
         {/* Prix total */}
         <div className="text-center">

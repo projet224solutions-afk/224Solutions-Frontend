@@ -437,7 +437,7 @@ export const UserProfileCard = ({ className = '', showWalletDetails = true }: Us
     : profile?.email?.split('@')[0] || 'Utilisateur';
 
   return (
-    <Card className={`${className} border-2 border-blue-100 bg-gradient-to-br from-blue-50 to-blue-50`}>
+    <Card className={`${className} border-2 border-blue-100 bg-[#04439e]/5`}>
       <CardHeader className="pb-4">
         <div className="flex items-center space-x-4">
           <Avatar className="w-16 h-16 border-2 border-blue-200">

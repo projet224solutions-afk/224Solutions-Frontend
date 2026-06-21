@@ -24,8 +24,8 @@ export function BeautyAnalytics({ serviceId }: { serviceId: string }) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Card className="bg-[#04439e] text-white"><CardContent className="p-4"><TrendingUp className="h-4 w-4 opacity-80" /><p className="text-lg font-bold mt-1"><Money amount={a.revenueMonth} from="GNF" /></p><p className="text-xs opacity-80">{t('beautyAnalytics.caDuMois')}</p></CardContent></Card>
         <Card className="bg-[#ff4000] text-white"><CardContent className="p-4"><CalendarCheck className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{a.countMonth}</p><p className="text-xs opacity-80">RDV ce mois</p></CardContent></Card>
-        <Card className="bg-gradient-to-br from-[#ff4000] to-[#04439e] text-white"><CardContent className="p-4"><ShoppingBag className="h-4 w-4 opacity-80" /><p className="text-lg font-bold mt-1"><Money amount={a.avgBasket} from="GNF" /></p><p className="text-xs opacity-80">Panier moyen</p></CardContent></Card>
-        <Card className="bg-gradient-to-br from-gray-700 to-gray-900 text-white"><CardContent className="p-4"><AlertTriangle className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{a.noShowCount}</p><p className="text-xs opacity-80">No-shows · <Money amount={a.noShowPenalties} from="GNF" /></p></CardContent></Card>
+        <Card className="bg-[#04439e] text-white"><CardContent className="p-4"><ShoppingBag className="h-4 w-4 opacity-80" /><p className="text-lg font-bold mt-1"><Money amount={a.avgBasket} from="GNF" /></p><p className="text-xs opacity-80">Panier moyen</p></CardContent></Card>
+        <Card className="bg-gray-700 text-white"><CardContent className="p-4"><AlertTriangle className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{a.noShowCount}</p><p className="text-xs opacity-80">No-shows · <Money amount={a.noShowPenalties} from="GNF" /></p></CardContent></Card>
       </div>
 
       <Card><CardHeader><CardTitle className="text-base">Revenus par semaine</CardTitle></CardHeader><CardContent>

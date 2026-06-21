@@ -46,7 +46,7 @@ export function RideRequestCard({
   return (
     <div className={cn(
       "relative overflow-hidden",
-      "bg-gradient-to-br from-gray-800/90 to-gray-900/90",
+      "bg-gray-800/90",
       "backdrop-blur-sm",
       "rounded-2xl",
       "border border-[#ff4000]/20",
@@ -54,17 +54,17 @@ export function RideRequestCard({
       "animate-in slide-in-from-bottom-4 fade-in duration-300"
     )}>
       {/* Top accent gradient */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ff4000] via-[#ff4000] to-[#ff4000]" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-[#ff4000]" />
 
       {/* Glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#ff4000]/5 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-[#ff4000]/5 to-transparent pointer-events-none" />
 
       {/* Content */}
       <div className="relative p-4 space-y-4">
         {/* Header: Customer & Time */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ff4000] to-[#ff4000] flex items-center justify-center shadow-lg shadow-[#ff4000]/20">
+            <div className="w-10 h-10 rounded-full bg-[#ff4000] flex items-center justify-center shadow-lg shadow-[#ff4000]/20">
               <User className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -100,7 +100,7 @@ export function RideRequestCard({
           {/* Route line */}
           <div className="flex items-center gap-3">
             <div className="w-8 flex justify-center">
-              <div className="w-0.5 h-4 bg-gradient-to-b from-[#ff4000] to-orange-500 rounded-full" />
+              <div className="w-0.5 h-4 bg-[#ff4000] rounded-full" />
             </div>
           </div>
 
@@ -146,7 +146,7 @@ export function RideRequestCard({
             disabled={isAccepting}
             className={cn(
               "flex-1 h-12 rounded-xl font-semibold",
-              "bg-gradient-to-r from-[#ff4000] to-[#ff4000]",
+              "bg-[#ff4000]",
               "",
               "text-white shadow-lg shadow-[#ff4000]/30",
               "transition-all",

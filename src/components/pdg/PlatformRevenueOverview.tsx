@@ -179,8 +179,8 @@ export default function PlatformRevenueOverview() {
       <TabsContent value="summary" className="space-y-4 sm:space-y-6">
         {/* Résumé Global - Mobile: Full width single column */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-          <Card className="relative overflow-hidden border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#ff4000]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <Card className="relative overflow-hidden border-border bg-card hover:shadow-xl transition-all duration-300 group">
+            <div className="absolute inset-0 bg-[#ff4000]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <CardHeader className="pb-2 sm:pb-3 p-4 sm:p-6">
               <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#ff4000]/10 flex items-center justify-center flex-shrink-0">
@@ -191,7 +191,7 @@ export default function PlatformRevenueOverview() {
             </CardHeader>
             <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
               <div className="space-y-1.5 sm:space-y-2">
-                <p className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                <p className="text-xl sm:text-3xl font-bold bg-foreground bg-clip-text text-transparent">
                   {formatAmount(revenues?.total_revenue || 0)}
                 </p>
                 <p className="text-[10px] sm:text-xs text-[#ff4000] flex items-center gap-1">
@@ -202,7 +202,7 @@ export default function PlatformRevenueOverview() {
             </CardContent>
           </Card>
 
-          <Card className="relative overflow-hidden border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group">
+          <Card className="relative overflow-hidden border-border bg-card hover:shadow-xl transition-all duration-300 group">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <CardHeader className="pb-2 sm:pb-3 p-4 sm:p-6">
               <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground flex items-center gap-2">
@@ -214,7 +214,7 @@ export default function PlatformRevenueOverview() {
             </CardHeader>
             <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
               <div className="space-y-1.5 sm:space-y-2">
-                <p className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                <p className="text-xl sm:text-3xl font-bold bg-foreground bg-clip-text text-transparent">
                   {formatAmount(revenues?.total_commission || 0)}
                 </p>
                 <p className="text-[10px] sm:text-xs text-muted-foreground">
@@ -224,8 +224,8 @@ export default function PlatformRevenueOverview() {
             </CardContent>
           </Card>
 
-          <Card className="relative overflow-hidden border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group sm:col-span-2 lg:col-span-1">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#04439e]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <Card className="relative overflow-hidden border-border bg-card hover:shadow-xl transition-all duration-300 group sm:col-span-2 lg:col-span-1">
+            <div className="absolute inset-0 bg-[#04439e]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <CardHeader className="pb-2 sm:pb-3 p-4 sm:p-6">
               <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#04439e]/10 flex items-center justify-center flex-shrink-0">
@@ -236,7 +236,7 @@ export default function PlatformRevenueOverview() {
             </CardHeader>
             <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
               <div className="space-y-1.5 sm:space-y-2">
-                <p className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                <p className="text-xl sm:text-3xl font-bold bg-foreground bg-clip-text text-transparent">
                   {revenues?.total_revenue && revenues?.total_commission
                     ? ((revenues.total_commission / revenues.total_revenue) * 100).toFixed(2)
                     : 0}%
@@ -250,7 +250,7 @@ export default function PlatformRevenueOverview() {
         </div>
 
         {/* Détail par Service - Mobile optimized */}
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border-border bg-card">
           <CardHeader className="p-4 sm:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
               <div className="min-w-0">

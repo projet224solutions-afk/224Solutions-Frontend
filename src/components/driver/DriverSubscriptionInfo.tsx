@@ -11,7 +11,7 @@ export function DriverSubscriptionInfo() {
 
   if (loading) {
     return (
-      <Card className="bg-gradient-to-br from-blue-50 to-blue-50 border-blue-200">
+      <Card className="bg-[#04439e]/5 border-blue-200">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Calendar className="w-5 h-5 text-[#04439e]" />
@@ -27,7 +27,7 @@ export function DriverSubscriptionInfo() {
 
   if (!subscription) {
     return (
-      <Card className="bg-gradient-to-br from-gray-50 to-gray-100 border-gray-200">
+      <Card className="bg-gray-50 border-gray-200">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Calendar className="w-5 h-5 text-gray-600" />
@@ -58,10 +58,10 @@ export function DriverSubscriptionInfo() {
   return (
     <Card className={`border-2 ${
       isActive
-        ? 'bg-gradient-to-br from-orange-50 to-orange-50 border-orange-300'
+        ? 'bg-[#ff4000]/5 border-orange-300'
         : isExpired
-        ? 'bg-gradient-to-br from-orange-50 to-orange-50 border-orange-300'
-        : 'bg-gradient-to-br from-gray-50 to-gray-100 border-gray-300'
+        ? 'bg-[#ff4000]/5 border-orange-300'
+        : 'bg-gray-50 border-gray-300'
     }`}>
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">

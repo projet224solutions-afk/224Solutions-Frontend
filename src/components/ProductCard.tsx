@@ -119,7 +119,7 @@ export default function ProductCard({
         <FavoriteButton productId={id} className="absolute top-3 right-3 z-10" />
       </div>
 
-      <CardContent className="p-3 sm:p-5 space-y-2 sm:space-y-3 bg-gradient-to-b from-white to-secondary/20 overflow-hidden">
+      <CardContent className="p-3 sm:p-5 space-y-2 sm:space-y-3 bg-white overflow-hidden">
         <h3 className="font-poppins font-bold text-foreground mb-1 sm:mb-2 line-clamp-2 text-xs sm:text-base break-words">
           {title}
         </h3>

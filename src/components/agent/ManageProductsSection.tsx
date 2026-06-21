@@ -278,7 +278,7 @@ export default function ManageProductsSection({ agentId }: ManageProductsSection
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10">
+        <Card className="border-2 border-primary/20 bg-primary/10">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Valeur Totale</CardTitle>
             <DollarSign className="w-4 h-4 text-primary" />

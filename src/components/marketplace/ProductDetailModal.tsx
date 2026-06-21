@@ -764,7 +764,7 @@ export default function ProductDetailModal({ productId, open, onClose }: Product
                   className="text-primary"
                 />
                 {isAffiliateProduct ? (
-                  <Badge className={isAffiliateFlightTicket ? 'bg-orange-500 hover:bg-orange-600 text-white border-0' : 'bg-gradient-to-r from-[#04439e] to-[#ff4000] text-white border-0'}>
+                  <Badge className={isAffiliateFlightTicket ? 'bg-orange-500 hover:bg-orange-600 text-white border-0' : 'bg-[#ff4000] text-white border-0'}>
                     <ExternalLink className="w-3 h-3 mr-1" />
                     {isAffiliateFlightTicket ? 'Partenaire' : 'Affiliation'}
                   </Badge>
@@ -863,8 +863,8 @@ export default function ProductDetailModal({ productId, open, onClose }: Product
             {isAffiliateProduct && (
               <div
                 className={isAffiliateFlightTicket
-                  ? 'bg-gradient-to-r from-orange-50 to-orange-50 dark:from-orange-950/30 dark:to-[#ff4000]/30 p-4 rounded-lg border border-orange-200 dark:border-orange-800'
-                  : 'bg-gradient-to-r from-blue-50 to-orange-50 dark:from-[#04439e]/30 dark:to-[#ff4000]/30 p-4 rounded-lg border border-blue-200 dark:border-[#04439e]'
+                  ? 'bg-[#ff4000]/5 p-4 rounded-lg border border-orange-200 dark:border-orange-800'
+                  : 'bg-blue-50 p-4 rounded-lg border border-blue-200 dark:border-[#04439e]'
                 }
               >
                 <div className="flex items-start gap-3">
@@ -888,7 +888,7 @@ export default function ProductDetailModal({ productId, open, onClose }: Product
             {/* Actions */}
             <div className="space-y-2">
               <Button
-                className={`w-full ${isAffiliateProduct ? (isAffiliateFlightTicket ? '!bg-orange-500 hover:!bg-orange-600 !text-white !shadow-lg !shadow-orange-500/30 hover:!shadow-orange-500/40' : 'bg-gradient-to-r from-[#04439e] to-[#ff4000] hover:from-[#04439e] hover:to-[#ff4000]') : ''}`}
+                className={`w-full ${isAffiliateProduct ? (isAffiliateFlightTicket ? '!bg-orange-500 hover:!bg-orange-600 !text-white !shadow-lg !shadow-orange-500/30 hover:!shadow-orange-500/40' : 'bg-[#ff4000] hover:bg-[#ce3d11]') : ''}`}
                 onClick={handleBuy}
               >
                 {isAffiliateProduct ? (

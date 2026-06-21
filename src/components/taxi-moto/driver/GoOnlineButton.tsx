@@ -28,8 +28,8 @@ export function GoOnlineButton({
         {/* Outer pulsing ring when online */}
         {isOnline && !isLoading && (
           <>
-            <div className="absolute inset-0 rounded-full bg-[#ff4000]/20 animate-ping" style={{ animationDuration: '2s' }} />
-            <div className="absolute -inset-2 rounded-full bg-[#ff4000]/10 animate-pulse" />
+            <div className="absolute inset-0 rounded-full bg-[#16a34a]/20 animate-ping" style={{ animationDuration: '2s' }} />
+            <div className="absolute -inset-2 rounded-full bg-[#16a34a]/10 animate-pulse" />
           </>
         )}
 
@@ -37,7 +37,7 @@ export function GoOnlineButton({
         <div className={cn(
           "absolute -inset-2 rounded-full blur-xl transition-all duration-500",
           isOnline
-            ? "bg-[#ff4000]/30 opacity-100"
+            ? "bg-[#16a34a]/30 opacity-100"
             : "bg-gray-500/20 opacity-50"
         )} />
 
@@ -55,7 +55,7 @@ export function GoOnlineButton({
             isLoading && "animate-pulse",
             !isLoading && !isOnline && hasSubscription && "hover:scale-105 active:scale-95",
             isOnline
-              ? "bg-[#ff4000] text-white shadow-[#ff4000]/60"
+              ? "bg-[#16a34a] text-white shadow-[#16a34a]/60"
               : "bg-gray-800 text-gray-300 shadow-black/50 border border-gray-600"
           )}
         >
@@ -90,7 +90,7 @@ export function GoOnlineButton({
         "flex items-center gap-2 px-3 py-1.5 rounded-full",
         "text-xs font-medium transition-all duration-300",
         isOnline
-          ? "bg-[#ff4000]/10 text-[#ff4000] border border-[#ff4000]/20"
+          ? "bg-[#16a34a]/10 text-[#16a34a] border border-[#16a34a]/20"
           : "bg-gray-800/50 text-gray-400 border border-gray-700/50"
       )}>
         {isOnline ? (

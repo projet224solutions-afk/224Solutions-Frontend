@@ -374,7 +374,7 @@ export function SyndicateWorkersManagement({ bureauId, bureauName }: SyndicateWo
                   }`}
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
                       <span className="text-lg font-bold text-primary">
                         {worker.nom?.charAt(0)?.toUpperCase() || '?'}
                       </span>

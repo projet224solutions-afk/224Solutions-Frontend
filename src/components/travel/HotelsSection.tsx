@@ -209,7 +209,7 @@ export function HotelsSection({ mode, isAffiliate, affiliateCode }: HotelsSectio
               <CardContent className="p-0">
                 <div className="flex">
                   {/* Image */}
-                  <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-orange-100 flex items-center justify-center shrink-0">
+                  <div className="w-24 h-24 bg-orange-100 flex items-center justify-center shrink-0">
                     {hotel.images && hotel.images[0] ? (
                       <img
                         src={hotel.images[0]}

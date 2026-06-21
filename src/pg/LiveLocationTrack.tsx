@@ -21,7 +21,7 @@ export default function LiveLocationTrack() {
   const hasPosition = !!position;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/5 to-background p-4 flex flex-col items-center">
+    <div className="min-h-screen bg-background p-4 flex flex-col items-center">
       <div className="w-full max-w-lg space-y-4">
         <Card className="border-0 shadow-lg">
           <CardHeader>

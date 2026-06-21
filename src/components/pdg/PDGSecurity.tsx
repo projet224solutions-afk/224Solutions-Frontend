@@ -53,7 +53,7 @@ export default function PDGSecurity() {
 
       {/* Security Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="relative overflow-hidden border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group">
+        <Card className="relative overflow-hidden border-border bg-card hover:shadow-xl transition-all duration-300 group">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <CardContent className="pt-6 relative">
             <div className="flex items-center gap-4">
@@ -68,7 +68,7 @@ export default function PDGSecurity() {
           </CardContent>
         </Card>
 
-        <Card className="relative overflow-hidden border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group">
+        <Card className="relative overflow-hidden border-border bg-card hover:shadow-xl transition-all duration-300 group">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <CardContent className="pt-6 relative">
             <div className="flex items-center gap-4">
@@ -83,8 +83,8 @@ export default function PDGSecurity() {
           </CardContent>
         </Card>
 
-        <Card className="relative overflow-hidden border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#ff4000]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <Card className="relative overflow-hidden border-border bg-card hover:shadow-xl transition-all duration-300 group">
+          <div className="absolute inset-0 bg-[#ff4000]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <CardContent className="pt-6 relative">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-[#ff4000]/10 flex items-center justify-center">
@@ -98,8 +98,8 @@ export default function PDGSecurity() {
           </CardContent>
         </Card>
 
-        <Card className="relative overflow-hidden border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#ff4000]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <Card className="relative overflow-hidden border-border bg-card hover:shadow-xl transition-all duration-300 group">
+          <div className="absolute inset-0 bg-[#ff4000]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <CardContent className="pt-6 relative">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-[#ff4000]/10 flex items-center justify-center">
@@ -115,7 +115,7 @@ export default function PDGSecurity() {
       </div>
 
       {/* Fraud Detection Alerts */}
-      <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+      <Card className="border-border bg-card">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -220,7 +220,7 @@ export default function PDGSecurity() {
       </Card>
 
       {/* Audit Logs */}
-      <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+      <Card className="border-border bg-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Eye className="w-5 h-5 text-primary" />

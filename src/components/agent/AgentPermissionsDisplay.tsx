@@ -110,7 +110,7 @@ export function AgentPermissionsDisplay({
   // Mode complet: affiche toutes les permissions par catégorie
   return (
     <Card className={cn("border-0 shadow-lg", className)}>
-      <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+      <CardHeader className="bg-primary/10 border-b">
         <CardTitle className="flex items-center justify-between text-foreground">
           <div className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-primary" />

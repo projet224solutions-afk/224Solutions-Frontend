@@ -173,7 +173,7 @@ export default function PaymentPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+      <div className="min-h-screen bg-blue-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
           <p className="text-gray-600">{t('paymentPage.chargementDesDetailsDuPaiement')}</p>
@@ -184,7 +184,7 @@ export default function PaymentPage() {
 
   if (!paymentDetails) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+      <div className="min-h-screen bg-blue-50 flex items-center justify-center">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center">
             <AlertCircle className="w-12 h-12 mx-auto mb-4 text-[#ff4000]" />
@@ -204,7 +204,7 @@ export default function PaymentPage() {
 
   if (paymentDetails.status === 'expired') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+      <div className="min-h-screen bg-blue-50 flex items-center justify-center">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center">
             <Clock className="w-12 h-12 mx-auto mb-4 text-gray-500" />
@@ -224,7 +224,7 @@ export default function PaymentPage() {
 
   if (paymentDetails.status === 'success') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
+      <div className="min-h-screen bg-orange-50 flex items-center justify-center">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center">
             <CheckCircle className="w-12 h-12 mx-auto mb-4 text-[#ff4000]" />
@@ -243,7 +243,7 @@ export default function PaymentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-8">
+    <div className="min-h-screen bg-blue-50 py-8">
       <div className="max-w-2xl mx-auto px-4">
         {/* En-tête */}
         <div className="mb-8">

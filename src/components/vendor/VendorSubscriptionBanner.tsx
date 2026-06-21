@@ -143,7 +143,7 @@ export function VendorSubscriptionBanner() {
           ? 'border-destructive bg-destructive/5'
           : isExpiringSoon
             ? 'border-orange-400 bg-orange-50'
-            : 'border-[#ff4000] bg-gradient-to-r from-primary/5 to-blue-50'
+            : 'border-[#ff4000] bg-primary/5'
       }`}>
         <CardContent className="py-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

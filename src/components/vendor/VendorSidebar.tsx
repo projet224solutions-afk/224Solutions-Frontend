@@ -43,7 +43,7 @@ const PLAN_BADGE_COLORS: Record<string, string> = {
   'basic': 'bg-blue-500',
   'pro': 'bg-[#04439e]',
   'business': 'bg-orange-500',
-  'premium': 'bg-gradient-to-r from-[#ff4000] to-orange-500',
+  'premium': 'bg-[#ff4000]',
 };
 
 const PLAN_DISPLAY_NAMES: Record<string, string> = {
@@ -270,7 +270,7 @@ export function VendorSidebar() {
                             {/* Icône */}
                             <div className={cn(
                               "flex items-center justify-center rounded-md transition-all flex-shrink-0",
-                              isPOS && hasAccess ? "w-6 h-6 bg-gradient-to-br from-accent to-accent/80 shadow-sm" : "w-5 h-5",
+                              isPOS && hasAccess ? "w-6 h-6 bg-accent shadow-sm" : "w-5 h-5",
                               active && !isPOS && hasAccess && "bg-white/10",
                               !hasAccess && "grayscale",
                               collapsed && isPOS && "w-5 h-5"
@@ -301,7 +301,7 @@ export function VendorSidebar() {
                                     variant={badgeValue === "HOT" ? "destructive" : "secondary"}
                                     className={cn(
                                       "text-[10px] px-2 py-0.5 h-5 min-w-[24px] flex items-center justify-center flex-shrink-0 mr-3 font-bold",
-                                      isPOS && "bg-gradient-to-r from-accent to-destructive text-white border-0 animate-pulse shadow-md"
+                                      isPOS && "bg-accent text-white border-0 animate-pulse shadow-md"
                                     )}
                                   >
                                     {badgeValue}
@@ -338,7 +338,7 @@ export function VendorSidebar() {
                               <span className={cn(
                                 "absolute -top-1 -right-1 w-4 h-4 rounded-full text-[8px] flex items-center justify-center font-bold",
                                 badgeValue === "HOT"
-                                  ? "bg-gradient-to-r from-orange-500 to-[#ff4000] text-white animate-pulse"
+                                  ? "bg-[#ff4000] text-white animate-pulse"
                                   : "bg-primary text-primary-foreground"
                               )}>
                                 {badgeValue === "HOT" ? "!" : badgeValue.length > 2 ? "+" : badgeValue}

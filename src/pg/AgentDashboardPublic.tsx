@@ -371,7 +371,7 @@ export default function AgentDashboardPublic() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
+      <div className="min-h-screen flex items-center justify-center bg-slate-100">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-slate-600">Chargement...</p>
@@ -382,7 +382,7 @@ export default function AgentDashboardPublic() {
 
   if (!agent) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-50">
+      <div className="min-h-screen flex items-center justify-center bg-[#ff4000]/5">
         <Card className="max-w-md">
           <CardContent className="pt-6 text-center">
             <AlertCircle className="w-12 h-12 text-[#ff4000] mx-auto mb-4" />
@@ -472,7 +472,7 @@ export default function AgentDashboardPublic() {
       case 'create-user':
         return (
           <Card className="border-0 shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-[#ff4000] to-[#ff4000] text-white rounded-t-lg">
+            <CardHeader className="bg-[#ff4000] text-white rounded-t-lg">
               <CardTitle>{t('agentDashboardPublic.creerUnNouvelUtilisateur')}</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
@@ -652,7 +652,7 @@ export default function AgentDashboardPublic() {
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between gap-4 flex-wrap">
                         <div className="flex items-center gap-4">
-                          <div className="p-3 bg-gradient-to-br from-blue-100 to-orange-100 rounded-xl">
+                          <div className="p-3 bg-blue-100 rounded-xl">
                             <UserCog className="w-6 h-6 text-[#04439e]" />
                           </div>
                           <div>
@@ -798,7 +798,7 @@ export default function AgentDashboardPublic() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-blue-50/30 flex">
+    <div className="min-h-screen bg-slate-50 flex">
       {/* Sidebar */}
       <AgentSidebar
         agent={agent}

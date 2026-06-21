@@ -237,7 +237,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
           return (
             <Card
               key={kpi.title}
-              className="relative overflow-hidden hover:shadow-xl transition-all duration-300 group border border-border/40 bg-card/50 backdrop-blur-sm"
+              className="relative overflow-hidden hover:shadow-xl transition-all duration-300 group border border-border bg-card"
             >
               <div className="absolute top-0 right-0 w-20 sm:w-32 h-20 sm:h-32 bg-gradient-to-br from-primary/5 to-transparent rounded-full -mr-10 sm:-mr-16 -mt-10 sm:-mt-16 group-hover:scale-110 transition-transform duration-500" />
 
@@ -273,7 +273,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Wallet PDG */}
-        <Card className="border border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border border-border bg-card">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -298,7 +298,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
         </Card>
 
         {/* Alerts */}
-        <Card className="border border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border border-border bg-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Zap className="w-5 h-5 text-primary" />
@@ -331,7 +331,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
 
       <div className="grid grid-cols-1 gap-6">
         {/* Stats Détaillées */}
-        <Card className="border border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border border-border bg-card">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -375,7 +375,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
       </div>
 
       {/* Quick Actions */}
-      <Card className="border border-border/40 bg-card/50 backdrop-blur-sm">
+      <Card className="border border-border bg-card">
         <CardHeader>
           <CardTitle>Actions Rapides</CardTitle>
           <CardDescription>{t('pDGDashboardHome.accesRapideAuxFonctionnalitesPrincipales')}</CardDescription>
@@ -457,7 +457,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Gestion des Agents */}
         <Card
-          className="border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-orange-50 dark:from-[#ff4000] dark:to-[#ff4000] hover:shadow-xl transition-all duration-300 cursor-pointer group"
+          className="border-2 border-orange-200 bg-[#ff4000]/5 hover:shadow-xl transition-all duration-300 cursor-pointer group"
           onClick={() => onNavigate?.('agents')}
         >
           <CardHeader className="pb-4">
@@ -501,7 +501,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
 
         {/* Surveillance Logique Globale */}
         <Card
-          className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-blue-50 dark:from-[#04439e] dark:to-[#04439e] hover:shadow-xl transition-all duration-300 cursor-pointer group"
+          className="border-2 border-blue-200 bg-[#04439e]/5 hover:shadow-xl transition-all duration-300 cursor-pointer group"
           onClick={() => onNavigate?.('debug')}
         >
           <CardHeader className="pb-4">
@@ -545,7 +545,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
 
         {/* Gestion des Bureaux Syndicats */}
         <Card
-          className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-blue-50 dark:from-blue-950 dark:to-[#04439e] hover:shadow-xl transition-all duration-300 cursor-pointer group"
+          className="border-2 border-blue-200 bg-[#04439e]/5 hover:shadow-xl transition-all duration-300 cursor-pointer group"
           onClick={() => onNavigate?.('syndicat')}
         >
           <CardHeader className="pb-4">
@@ -589,7 +589,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
 
         {/* Supervision Core (visible sur Home PDG) */}
         <Card
-          className="border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-orange-50 dark:from-[#ff4000] dark:to-[#ff4000] hover:shadow-xl transition-all duration-300 cursor-pointer group"
+          className="border-2 border-orange-200 bg-[#ff4000]/5 hover:shadow-xl transition-all duration-300 cursor-pointer group"
           onClick={() => onNavigate?.('api')}
         >
           <CardHeader className="pb-4">

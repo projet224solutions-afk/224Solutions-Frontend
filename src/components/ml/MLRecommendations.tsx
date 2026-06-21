@@ -109,7 +109,7 @@ const RecommendationCard = memo(({
           </Badge>
         )}
         {recommendation.confidence > 0.7 && (
-          <Badge className="absolute top-2 right-2 bg-gradient-to-r from-[#04439e] to-[#ff4000] text-white text-xs">
+          <Badge className="absolute top-2 right-2 bg-[#ff4000] text-white text-xs">
             <Crown className="w-3 h-3 mr-1" />
             Top pick
           </Badge>
@@ -228,11 +228,11 @@ export function MLRecommendations({
   }
 
   return (
-    <Card className="border-none shadow-sm bg-gradient-to-br from-background to-muted/20">
+    <Card className="border-none shadow-sm bg-background">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-[#04439e]/10 to-[#ff4000]/10">
+            <div className="p-2 rounded-lg bg-[#04439e]/10">
               <Crown className="w-5 h-5 text-[#04439e]" />
             </div>
             <div>

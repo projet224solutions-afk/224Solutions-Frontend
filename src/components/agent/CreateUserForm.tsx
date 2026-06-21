@@ -241,7 +241,7 @@ export function CreateUserForm({ agentId, agentCode, accessToken, onUserCreated 
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-4xl w-[95vw] h-[80vh] flex flex-col p-0 top-[10%] translate-y-0 max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="flex-shrink-0 bg-gradient-to-r from-[#ff4000] to-[#ff4000] text-white p-4 rounded-t-lg">
+        <DialogHeader className="flex-shrink-0 bg-[#ff4000] text-white p-4 rounded-t-lg">
           <DialogTitle className="text-lg font-bold">{t('createUserForm.creerUnNouvelUtilisateur')}</DialogTitle>
           <DialogDescription className="text-orange-100">
             Sélectionnez le type d'utilisateur et remplissez les informations

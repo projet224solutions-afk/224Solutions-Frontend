@@ -465,7 +465,7 @@ export default function PDGFinance() {
         <PlatformRevenueOverview />
 
         {/* FX Commission Management Card */}
-        <Card className="border-border/40 bg-gradient-to-br from-blue-500/5 to-[#04439e]/5 backdrop-blur-sm">
+        <Card className="border-border/40 bg-blue-500/5/5 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               <DollarSign className="w-5 h-5 text-blue-500" />
@@ -656,7 +656,7 @@ export default function PDGFinance() {
       </TabsContent>
 
       <TabsContent value="transactions" className="space-y-8">
-      <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+      <Card className="border-border bg-card">
         <CardHeader>
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-2">
@@ -899,8 +899,8 @@ export default function PDGFinance() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="relative overflow-hidden border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#ff4000]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <Card className="relative overflow-hidden border-border bg-card hover:shadow-xl transition-all duration-300 group">
+          <div className="absolute inset-0 bg-[#ff4000]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-[#ff4000]/10 flex items-center justify-center">
@@ -911,7 +911,7 @@ export default function PDGFinance() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <p className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+              <p className="text-3xl font-bold bg-foreground bg-clip-text text-transparent">
                 {fc(stats.total_revenue || 0)}
               </p>
               <p className="text-xs text-[#ff4000] flex items-center gap-1">
@@ -922,7 +922,7 @@ export default function PDGFinance() {
           </CardContent>
         </Card>
 
-        <Card className="relative overflow-hidden border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group">
+        <Card className="relative overflow-hidden border-border bg-card hover:shadow-xl transition-all duration-300 group">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
@@ -934,7 +934,7 @@ export default function PDGFinance() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <p className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+              <p className="text-3xl font-bold bg-foreground bg-clip-text text-transparent">
                 {fc(stats.total_commission || 0)}
               </p>
               <p className="text-xs text-muted-foreground">
@@ -944,7 +944,7 @@ export default function PDGFinance() {
           </CardContent>
         </Card>
 
-        <Card className="relative overflow-hidden border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group">
+        <Card className="relative overflow-hidden border-border bg-card hover:shadow-xl transition-all duration-300 group">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
@@ -956,7 +956,7 @@ export default function PDGFinance() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <p className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+              <p className="text-3xl font-bold bg-foreground bg-clip-text text-transparent">
                 {fc(stats.pending_payments || 0)}
               </p>
               <p className="text-xs text-muted-foreground">
@@ -967,10 +967,10 @@ export default function PDGFinance() {
         </Card>
 
         <Card
-          className="relative overflow-hidden border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group cursor-pointer"
+          className="relative overflow-hidden border-border bg-card hover:shadow-xl transition-all duration-300 group cursor-pointer"
           onClick={() => setShowWalletsDialog(true)}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-[#04439e]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute inset-0 bg-[#04439e]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-[#04439e]/10 flex items-center justify-center">
@@ -981,7 +981,7 @@ export default function PDGFinance() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <p className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+              <p className="text-3xl font-bold bg-foreground bg-clip-text text-transparent">
                 {stats.active_wallets || 0}
               </p>
               <p className="text-xs text-muted-foreground">
@@ -1007,7 +1007,7 @@ export default function PDGFinance() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border-border bg-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-primary" />
@@ -1034,7 +1034,7 @@ export default function PDGFinance() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border-border bg-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-primary" />
@@ -1057,7 +1057,7 @@ export default function PDGFinance() {
       </div>
 
       {/* Export Section */}
-      <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+      <Card className="border-border bg-card">
         <CardHeader>
           <CardTitle>{t('pDGFinance.exportDesDonnees')}</CardTitle>
           <CardDescription>{t('pDGFinance.telechargerLesRapportsFinanciers')}</CardDescription>
@@ -1089,7 +1089,7 @@ export default function PDGFinance() {
       </Card>
 
       {/* Recent Transactions */}
-      <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+      <Card className="border-border bg-card">
         <CardHeader>
           <CardTitle className="text-xl">{t('pDGFinance.transactionsRecentes')}</CardTitle>
           <CardDescription>{t('pDGFinance.les10DernieresOperationsFinancieres')}</CardDescription>
@@ -1467,7 +1467,7 @@ export default function PDGFinance() {
 
                       {/* Informations wallet */}
                       <div className="space-y-4">
-                        <div className="p-4 rounded-lg bg-gradient-to-br from-[#ff4000]/10 to-transparent border border-[#ff4000]/20">
+                        <div className="p-4 rounded-lg bg-[#ff4000]/10 to-transparent border border-[#ff4000]/20">
                           <p className="text-sm text-muted-foreground mb-1">{t('pDGFinance.solde')}</p>
                           <p className="text-3xl font-bold text-[#ff4000]">
                             {Number(wallet.balance).toLocaleString()} {wallet.currency}

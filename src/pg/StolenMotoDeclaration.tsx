@@ -269,7 +269,7 @@ export default function StolenMotoDeclaration() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-orange-50 pt-6 pb-32 px-4">
+    <div className="min-h-screen bg-slate-50 pt-6 pb-32 px-4">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center gap-4">
@@ -304,7 +304,7 @@ export default function StolenMotoDeclaration() {
 
         {/* Section 1: Identification de la Moto */}
         <Card className="border-2 border-slate-200 shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-slate-100 to-slate-50 border-b">
+          <CardHeader className="bg-slate-100 border-b">
             <CardTitle className="flex items-center gap-2 text-lg">
               <Search className="w-5 h-5 text-blue-600" />
               SECTION 1 - Identification de la Moto
@@ -373,7 +373,7 @@ export default function StolenMotoDeclaration() {
         {verified && vehicle && (
           <>
             <Card className="border-2 border-orange-200 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-orange-100 to-orange-50 border-b">
+              <CardHeader className="bg-orange-100 border-b">
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <CheckCircle className="w-5 h-5 text-[#ff4000]" />
@@ -507,7 +507,7 @@ export default function StolenMotoDeclaration() {
 
             {/* Section 3: Confirmation du Vol */}
             <Card className="border-2 border-orange-300 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-orange-100 to-orange-50 border-b">
+              <CardHeader className="bg-orange-100 border-b">
                 <CardTitle className="flex items-center gap-2 text-lg text-[#ff4000]">
                   <ShieldAlert className="w-5 h-5 text-[#ff4000]" />
                   SECTION FINALE - Confirmation du Vol
@@ -614,7 +614,7 @@ export default function StolenMotoDeclaration() {
                 <Button
                   onClick={handleSubmitDeclaration}
                   disabled={!confirmStolen || !stolenLocation.trim() || submitting}
-                  className="w-full bg-gradient-to-r from-[#ff4000] to-[#ff4000] hover:from-[#ff4000] hover:to-[#ff4000] text-white py-6 text-lg font-semibold shadow-lg"
+                  className="w-full bg-[#ff4000] hover:bg-[#ce3d11] text-white py-6 text-lg font-semibold shadow-lg"
                 >
                   {submitting ? (
                     <>

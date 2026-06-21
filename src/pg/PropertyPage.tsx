@@ -72,7 +72,7 @@ export default function PropertyPage() {
 
       {cover
         ? <img src={cover} alt="" className="h-52 w-full rounded-xl object-cover" />
-        : <div className="h-52 w-full rounded-xl bg-gradient-to-br from-[#04439e] to-[#ff4000] flex items-center justify-center"><Home className="h-16 w-16 text-white/80" /></div>}
+        : <div className="h-52 w-full rounded-xl bg-[#ff4000] flex items-center justify-center"><Home className="h-16 w-16 text-white/80" /></div>}
       {images.length > 1 && <div className="flex gap-2 overflow-x-auto">{images.slice(0, 6).map((i) => <img key={i.id} src={i.image_url} alt="" className="h-16 w-16 rounded object-cover shrink-0" />)}</div>}
 
       <div>

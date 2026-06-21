@@ -293,7 +293,7 @@ export function DriverDashboard({
       {/* Statistiques du jour */}
       <div className="grid grid-cols-2 gap-4">
         <Card
-          className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200 shadow-lg hover:shadow-xl transition-all cursor-pointer active:scale-95"
+          className="bg-orange-50 border-orange-200 shadow-lg hover:shadow-xl transition-all cursor-pointer active:scale-95"
           onClick={() => {
             if (stats.todayEarnings > 0) {
               onNavigate('history');
@@ -313,7 +313,7 @@ export function DriverDashboard({
         </Card>
 
         <Card
-          className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-lg hover:shadow-xl transition-all cursor-pointer active:scale-95"
+          className="bg-blue-50 border-blue-200 shadow-lg hover:shadow-xl transition-all cursor-pointer active:scale-95"
           onClick={() => {
             if (stats.todayRides > 0) {
               onNavigate('history');
@@ -335,7 +335,7 @@ export function DriverDashboard({
 
       <div className="grid grid-cols-2 gap-4">
         <Card
-          className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200 shadow-lg hover:shadow-xl transition-all cursor-pointer active:scale-95"
+          className="bg-orange-50 border-orange-200 shadow-lg hover:shadow-xl transition-all cursor-pointer active:scale-95"
           onClick={() => {
             if (stats.totalRides > 0) {
               onNavigate('history');
@@ -356,7 +356,7 @@ export function DriverDashboard({
         </Card>
 
         <Card
-          className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-lg hover:shadow-xl transition-all cursor-pointer active:scale-95"
+          className="bg-blue-50 border-blue-200 shadow-lg hover:shadow-xl transition-all cursor-pointer active:scale-95"
           onClick={() => {
             if (isOnline) {
               toast.success(`⏱️ En ligne depuis ${currentOnlineTime}`);

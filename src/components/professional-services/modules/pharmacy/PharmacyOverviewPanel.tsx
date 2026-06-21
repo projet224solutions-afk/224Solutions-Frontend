@@ -28,7 +28,7 @@ export function PharmacyOverviewPanel({ stats, recentSales }: PharmacyOverviewPa
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
       {/* Revenue card — Main */}
-      <Card className="lg:col-span-2 bg-gradient-to-br from-primary/5 via-background to-primary/3">
+      <Card className="lg:col-span-2 bg-primary/5">
         <CardHeader className="pb-2">
           <CardTitle className="text-base flex items-center gap-2">
             <Activity className="w-5 h-5 text-primary" />

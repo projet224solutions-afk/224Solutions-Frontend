@@ -97,7 +97,7 @@ export function AffiliateRegistration({ onSuccess, onCancel }: AffiliateRegistra
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <div className="w-16 h-16 mx-auto bg-gradient-to-br from-[#04439e] to-[#ff4000] rounded-2xl flex items-center justify-center mb-4">
+        <div className="w-16 h-16 mx-auto bg-[#ff4000] rounded-2xl flex items-center justify-center mb-4">
           <Users className="w-8 h-8 text-white" />
         </div>
         <h2 className="text-xl font-bold text-foreground">{t('affiliateRegistration.devenirAffilieVoyage')}</h2>

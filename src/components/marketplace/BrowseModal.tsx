@@ -264,12 +264,12 @@ export function BrowseModal({
                     {countries.length > 0 && (
                       <div className="flex gap-1.5 overflow-x-auto scrollbar-hide pb-2 -mx-1 px-1 sticky top-0 bg-background/95 backdrop-blur-sm z-10">
                         <button onClick={() => setBrowseCountry('all')}
-                          className={`shrink-0 px-2.5 h-7 rounded-full text-[11px] font-medium border transition-all ${browseCountry === 'all' ? 'bg-primary text-primary-foreground border-transparent' : 'bg-card border-border hover:border-primary/40'}`}>
+                          className={`shrink-0 px-2.5 h-7 rounded-full text-[11px] font-medium border transition-all ${browseCountry === 'all' ? 'bg-[#04439e] text-white border-transparent' : 'bg-white text-[#04439e] border border-[#04439e]/25 hover:bg-[#04439e]/5'}`}>
                           Tous
                         </button>
                         {countries.map((c) => (
                           <button key={c} onClick={() => setBrowseCountry(c)}
-                            className={`shrink-0 px-2.5 h-7 rounded-full text-[11px] font-medium border transition-all whitespace-nowrap flex items-center gap-1 ${browseCountry === c ? 'bg-primary text-primary-foreground border-transparent' : 'bg-card border-border hover:border-primary/40'}`}>
+                            className={`shrink-0 px-2.5 h-7 rounded-full text-[11px] font-medium border transition-all whitespace-nowrap flex items-center gap-1 ${browseCountry === c ? 'bg-[#04439e] text-white border-transparent' : 'bg-white text-[#04439e] border border-[#04439e]/25 hover:bg-[#04439e]/5'}`}>
                             <span aria-hidden>{getFlagEmoji(c) || '🌍'}</span> {c}
                           </button>
                         ))}
@@ -328,12 +328,12 @@ export function BrowseModal({
                     {countries.length > 0 && (
                       <div className="flex gap-1.5 overflow-x-auto scrollbar-hide pb-2 -mx-1 px-1 sticky top-0 bg-background/95 backdrop-blur-sm z-10">
                         <button onClick={() => setBrowseCountry('all')}
-                          className={`shrink-0 px-2.5 h-7 rounded-full text-[11px] font-medium border transition-all ${browseCountry === 'all' ? 'bg-[#ff4000] text-white border-transparent' : 'bg-card border-border hover:border-[#ff4000]/40'}`}>
+                          className={`shrink-0 px-2.5 h-7 rounded-full text-[11px] font-medium border transition-all ${browseCountry === 'all' ? 'bg-[#04439e] text-white border-transparent' : 'bg-white text-[#04439e] border border-[#04439e]/25 hover:bg-[#04439e]/5'}`}>
                           Tous
                         </button>
                         {countries.map((c) => (
                           <button key={c} onClick={() => setBrowseCountry(c)}
-                            className={`shrink-0 px-2.5 h-7 rounded-full text-[11px] font-medium border transition-all whitespace-nowrap flex items-center gap-1 ${browseCountry === c ? 'bg-[#ff4000] text-white border-transparent' : 'bg-card border-border hover:border-[#ff4000]/40'}`}>
+                            className={`shrink-0 px-2.5 h-7 rounded-full text-[11px] font-medium border transition-all whitespace-nowrap flex items-center gap-1 ${browseCountry === c ? 'bg-[#04439e] text-white border-transparent' : 'bg-white text-[#04439e] border border-[#04439e]/25 hover:bg-[#04439e]/5'}`}>
                             <span aria-hidden>{getFlagEmoji(c) || '🌍'}</span> {c}
                           </button>
                         ))}

@@ -210,7 +210,7 @@ export const ProfessionalVirtualCard = () => {
           variant={card ? "default" : "outline"}
           className={cn(
             "gap-2 transition-all",
-            card && "bg-gradient-to-r from-[#04439e] to-[#04439e] hover:from-[#04439e] hover:to-[#04439e]"
+            card && "bg-[#04439e]"
           )}
         >
           <CreditCard className="w-4 h-4" />
@@ -219,11 +219,11 @@ export const ProfessionalVirtualCard = () => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-lg p-0 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-lg p-0 overflow-hidden bg-slate-900 max-h-[90vh] overflow-y-auto">
         <div className="p-6 space-y-6">
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
-              <div className="p-2 bg-gradient-to-br from-[#04439e] to-[#04439e] rounded-lg">
+              <div className="p-2 bg-[#04439e] rounded-lg">
                 <CreditCard className="w-5 h-5 text-white" />
               </div>
               <span>Carte Virtuelle 224PAY</span>
@@ -252,7 +252,7 @@ export const ProfessionalVirtualCard = () => {
                     "absolute inset-0 backface-hidden",
                     isFlipped && "invisible"
                   )}>
-                    <div className="w-full h-full rounded-2xl bg-gradient-to-br from-[#04439e] via-[#04439e] to-[#04439e] p-6 flex flex-col justify-between shadow-2xl overflow-hidden">
+                    <div className="w-full h-full rounded-2xl bg-[#04439e] p-6 flex flex-col justify-between shadow-2xl overflow-hidden">
                       {/* Background Pattern */}
                       <div className="absolute inset-0 opacity-10">
                         <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-white/20" />
@@ -275,7 +275,7 @@ export const ProfessionalVirtualCard = () => {
 
                       {/* Chip */}
                       <div className="flex items-center gap-4 relative z-10">
-                        <div className="w-12 h-9 rounded-md bg-gradient-to-br from-orange-300 to-[#ff4000] flex items-center justify-center">
+                        <div className="w-12 h-9 rounded-md bg-orange-300 flex items-center justify-center">
                           <div className="w-8 h-6 border-2 border-[#ff4000]/50 rounded-sm" />
                         </div>
                       </div>
@@ -341,7 +341,7 @@ export const ProfessionalVirtualCard = () => {
                     "absolute inset-0 backface-hidden rotate-y-180",
                     !isFlipped && "invisible"
                   )}>
-                    <div className="w-full h-full rounded-2xl bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 flex flex-col shadow-2xl overflow-hidden">
+                    <div className="w-full h-full rounded-2xl bg-slate-700 flex flex-col shadow-2xl overflow-hidden">
                       {/* Magnetic Strip */}
                       <div className="w-full h-12 bg-slate-900 mt-6" />
 
@@ -453,7 +453,7 @@ export const ProfessionalVirtualCard = () => {
               <div className="grid grid-cols-2 gap-3">
                 <Button
                   onClick={() => setPaymentDialogOpen(true)}
-                  className="bg-gradient-to-r from-[#04439e] to-[#04439e] hover:from-[#04439e] hover:to-[#04439e]"
+                  className="bg-[#04439e]"
                   disabled={card.status !== 'active'}
                 >
                   <ShoppingBag className="w-4 h-4 mr-2" />
@@ -533,7 +533,7 @@ export const ProfessionalVirtualCard = () => {
             <div className="space-y-6">
               {/* Preview Card */}
               <div className="relative">
-                <div className="w-full aspect-[1.586/1] rounded-2xl bg-gradient-to-br from-slate-600/50 via-slate-500/50 to-slate-600/50 p-6 flex flex-col justify-between border border-dashed border-white/20">
+                <div className="w-full aspect-[1.586/1] rounded-2xl bg-slate-600/50 p-6 flex flex-col justify-between border border-dashed border-white/20">
                   <div className="flex items-center justify-between">
                     <div className="text-white/40 font-bold text-lg">224PAY</div>
                     <Badge variant="outline" className="text-white/40 border-white/20">PREVIEW</Badge>
@@ -593,7 +593,7 @@ export const ProfessionalVirtualCard = () => {
                 <Button
                   onClick={createCard}
                   disabled={creating}
-                  className="w-full bg-gradient-to-r from-[#04439e] to-[#04439e] hover:from-[#04439e] hover:to-[#04439e] h-12 text-base"
+                  className="w-full bg-[#04439e] h-12 text-base"
                 >
                   {creating ? (
                     <>

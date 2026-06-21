@@ -27,7 +27,7 @@ export function RealEstateRentals({ serviceId }: { serviceId: string }) {
       <div className="grid grid-cols-3 gap-3">
         <Card className="bg-[#04439e] text-white"><CardContent className="p-4"><Home className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.active}</p><p className="text-xs opacity-80">Baux actifs</p></CardContent></Card>
         <Card className="bg-[#ff4000] text-white"><CardContent className="p-4"><Wallet className="h-4 w-4 opacity-80" /><p className="text-lg font-bold mt-1"><Money amount={stats.monthlyRevenue} from="GNF" /></p><p className="text-xs opacity-80">Loyers / mois</p></CardContent></Card>
-        <Card className="bg-gradient-to-br from-[#ff4000] to-[#04439e] text-white"><CardContent className="p-4"><ShieldCheck className="h-4 w-4 opacity-80" /><p className="text-lg font-bold mt-1"><Money amount={stats.depositsHeld} from="GNF" /></p><p className="text-xs opacity-80">{t('realEstateRentals.cautionsEnSequestre')}</p></CardContent></Card>
+        <Card className="bg-[#04439e] text-white"><CardContent className="p-4"><ShieldCheck className="h-4 w-4 opacity-80" /><p className="text-lg font-bold mt-1"><Money amount={stats.depositsHeld} from="GNF" /></p><p className="text-xs opacity-80">{t('realEstateRentals.cautionsEnSequestre')}</p></CardContent></Card>
       </div>
 
       {leases.length === 0 && <p className="text-center text-sm text-muted-foreground py-8">{t('realEstateRentals.aucunBailLesLocationsDemarrees')}</p>}

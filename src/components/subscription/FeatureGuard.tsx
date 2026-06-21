@@ -33,7 +33,7 @@ const PLAN_COLORS: Record<string, string> = {
   'basic': 'bg-blue-100 text-blue-700',
   'pro': 'bg-blue-100 text-[#04439e]',
   'business': 'bg-orange-100 text-orange-700',
-  'premium': 'bg-gradient-to-r from-[#ff4000] to-orange-500 text-white',
+  'premium': 'bg-[#ff4000] text-white',
 };
 
 const _PLAN_DESCRIPTIONS: Record<string, string> = {
@@ -123,9 +123,9 @@ export function FeatureGuard({
           <div className="opacity-30 pointer-events-none blur-[2px]">
             {children}
           </div>
-          <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-lg">
+          <div className="absolute inset-0 flex items-center justify-center bg-background rounded-lg">
             <div className="text-center space-y-4 p-6 max-w-md">
-              <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-[#ff4000] to-orange-500 flex items-center justify-center">
+              <div className="mx-auto w-16 h-16 rounded-full bg-[#ff4000] flex items-center justify-center">
                 <Lock className="w-8 h-8 text-white" />
               </div>
               <div>
@@ -153,7 +153,7 @@ export function FeatureGuard({
           <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
-                <div className="p-2 rounded-full bg-gradient-to-br from-[#ff4000] to-orange-500">
+                <div className="p-2 rounded-full bg-[#ff4000]">
                   <Crown className="w-5 h-5 text-white" />
                 </div>
                 <span>{t('featureGuard.fonctionnalitePremium')}</span>

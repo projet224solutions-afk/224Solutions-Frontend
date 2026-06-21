@@ -306,7 +306,7 @@ export function InteractiveMapNavigation({
     <div className="space-y-4">
       {/* Carte interactive */}
       <Card className="overflow-hidden">
-        <CardHeader className="pb-3 bg-gradient-to-r from-blue-50 to-blue-50">
+        <CardHeader className="pb-3 bg-[#04439e]/5">
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Navigation className="w-5 h-5 text-blue-600" />
@@ -338,7 +338,7 @@ export function InteractiveMapNavigation({
 
       {/* Informations de route */}
       {routeInfo && (
-        <Card className="bg-gradient-to-r from-blue-50 to-blue-50">
+        <Card className="bg-[#04439e]/5">
           <CardContent className="pt-4">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-white rounded-lg p-3 text-center">

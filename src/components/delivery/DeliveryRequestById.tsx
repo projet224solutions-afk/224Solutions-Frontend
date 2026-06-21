@@ -289,7 +289,7 @@ export function DeliveryRequestById({ onDeliveryCreated }: DeliveryRequestByIdPr
             onClick={handleCreateDelivery}
             disabled={!vendorId || !clientId || loading || geolocating}
             style={{
-              background: 'linear-gradient(135deg, hsl(25 98% 55%), hsl(15 100% 50%))',
+              background: '#ff4000',
               color: 'white'
             }}
           >

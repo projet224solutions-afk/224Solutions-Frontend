@@ -351,7 +351,7 @@ export default function AutoDownloadDetector() {
 
             {/* Recommandation automatique */}
             {recommendedDownload && (
-                <Card className="border-0 shadow-xl rounded-2xl bg-gradient-to-r from-blue-50 to-blue-50 border-blue-200">
+                <Card className="border-0 shadow-xl rounded-2xl bg-[#04439e]/5 border-blue-200">
                     <CardHeader>
                         <CardTitle className="text-xl font-bold text-gray-800 flex items-center gap-3">
                             <Zap className="w-6 h-6 text-[#ff4000]" />

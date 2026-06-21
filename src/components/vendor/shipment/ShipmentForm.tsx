@@ -418,7 +418,7 @@ export function ShipmentForm({ vendorId, onSuccess, onCancel }: ShipmentFormProp
 
           {/* Affichage du prix calculé */}
           {priceResult && (
-            <div className="mt-4 p-4 bg-gradient-to-r from-orange-50 to-orange-50 dark:from-[#ff4000]/20 dark:to-[#ff4000]/20 rounded-lg border border-orange-200 dark:border-[#ff4000]">
+            <div className="mt-4 p-4 bg-[#ff4000]/5 rounded-lg border border-orange-200 dark:border-[#ff4000]">
               <h4 className="font-semibold text-[#ff4000] dark:text-orange-300 mb-3 flex items-center gap-2">
                 <Route className="h-4 w-4" />
                 Estimation de livraison

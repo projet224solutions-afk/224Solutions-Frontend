@@ -58,8 +58,8 @@ export default function DualSyncDashboard() {
   };
 
   return (
-    <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-blue-50">
-      <CardHeader className="bg-gradient-to-r from-[#04439e] to-[#04439e] text-white rounded-t-lg">
+    <Card className="border-blue-200 bg-[#04439e]/5">
+      <CardHeader className="bg-[#04439e] text-white rounded-t-lg">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ArrowLeftRight className="w-5 h-5" />

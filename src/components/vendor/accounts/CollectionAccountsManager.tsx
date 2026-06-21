@@ -263,7 +263,7 @@ export default function CollectionAccountsManager() {
       </div>
 
       {/* Total */}
-      <Card className="bg-gradient-to-r from-primary/10 to-primary/5">
+      <Card className="bg-primary/10">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>

@@ -208,7 +208,7 @@ export default function VendorShopImagesSettings({ vendorId }: VendorShopImagesS
           <div className="relative rounded-xl overflow-hidden border">
             {/* Couverture */}
             <div
-              className="h-32 sm:h-40 bg-gradient-to-br from-primary/20 to-primary/5 relative group cursor-pointer"
+              className="h-32 sm:h-40 bg-primary/10 relative group cursor-pointer"
               onClick={() => coverInputRef.current?.click()}
             >
               {coverPreview ? (

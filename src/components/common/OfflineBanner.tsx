@@ -55,7 +55,7 @@ export function OfflineBanner({ className, fixed = true, forceShow = false }: Of
   return (
     <div
       className={cn(
-        'bg-gradient-to-r from-orange-500 to-[#ff4000] text-white py-3 px-4',
+        'bg-[#ff4000] text-white py-3 px-4',
         'shadow-lg',
         fixed && 'fixed top-0 left-0 right-0 z-50',
         className

@@ -128,7 +128,7 @@ export default function TransferFeeSettings() {
       <CardContent className="space-y-6">
         {/* Statistiques des frais collectés */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg border border-orange-200">
+          <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
             <div className="flex items-center gap-2 mb-1">
               <TrendingUp className="w-4 h-4 text-[#ff4000]" />
               <p className="text-sm text-[#ff4000] font-medium">{t('transferFeeSettings.totalFraisCollectes')}</p>
@@ -139,7 +139,7 @@ export default function TransferFeeSettings() {
             <p className="text-xs text-[#ff4000] mt-1">{transactionsCount} transactions</p>
           </div>
 
-          <div className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border border-blue-200">
+          <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
             <div className="flex items-center gap-2 mb-1">
               <Settings className="w-4 h-4 text-blue-600" />
               <p className="text-sm text-blue-700 font-medium">Taux Actuel</p>

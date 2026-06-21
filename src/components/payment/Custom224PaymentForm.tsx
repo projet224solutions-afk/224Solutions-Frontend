@@ -142,7 +142,7 @@ export function Custom224PaymentForm({
 
   if (succeeded) {
     return (
-      <Card className="w-full max-w-lg mx-auto bg-gradient-to-br from-orange-50 to-orange-50">
+      <Card className="w-full max-w-lg mx-auto bg-[#ff4000]/5">
         <CardContent className="pt-8 pb-8">
           <div className="text-center space-y-4">
             <div className="flex justify-center">
@@ -167,7 +167,7 @@ export function Custom224PaymentForm({
 
   return (
     <Card className="w-full max-w-lg mx-auto shadow-xl border-2 border-primary/20">
-      <CardHeader className="bg-gradient-to-r from-primary to-primary/80 text-white">
+      <CardHeader className="bg-primary text-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* Logo 224Solutions */}
@@ -185,7 +185,7 @@ export function Custom224PaymentForm({
 
       <CardContent className="pt-6 space-y-6">
         {/* Montant */}
-        <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl p-5 border-2 border-primary/30">
+        <div className="bg-primary/10 rounded-xl p-5 border-2 border-primary/30">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 font-medium">{t('custom224PaymentForm.montantAPayer')}</p>

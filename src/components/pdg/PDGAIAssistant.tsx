@@ -86,8 +86,8 @@ export default function PDGAIAssistant({ mfaVerified }: PDGAIAssistantProps) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#04439e] to-[#ff4000] blur-xl opacity-50" />
-            <div className="relative bg-gradient-to-br from-[#04439e] to-[#ff4000] p-3 rounded-2xl">
+            <div className="absolute inset-0 bg-[#ff4000] blur-xl opacity-50" />
+            <div className="relative bg-[#ff4000] p-3 rounded-2xl">
               <Brain className="w-8 h-8 text-white" />
             </div>
           </div>

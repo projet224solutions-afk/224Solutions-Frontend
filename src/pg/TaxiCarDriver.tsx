@@ -98,7 +98,7 @@ function CarRideRequestCard({ request, accepting, onAccept, onDecline }: {
 }) {
   const { t } = useTranslation();
   return (
-    <div className="bg-gradient-to-br from-blue-950 to-gray-900 rounded-2xl p-4 border border-blue-500/30 shadow-lg shadow-blue-500/10">
+    <div className="bg-blue-950 rounded-2xl p-4 border border-blue-500/30 shadow-lg shadow-blue-500/10">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
@@ -215,7 +215,7 @@ function CarMainDashboard({
         {/* Status card */}
         <div className={`rounded-2xl p-5 border ${
           isOnline
-            ? 'bg-gradient-to-br from-blue-600/20 to-blue-800/10 border-blue-500/30'
+            ? 'bg-blue-600/20 border-blue-500/30'
             : 'bg-gray-900 border-gray-800'
         }`}>
           <div className="flex items-center justify-between mb-4">
@@ -731,7 +731,7 @@ export default function TaxiCarDriver() {
             <Star className="w-5 h-5 text-[#ff4000]" />
             Votre note chauffeur
           </h2>
-          <div className="bg-gradient-to-br from-[#ff4000]/20 to-[#ff4000]/10 rounded-2xl p-6 border border-[#ff4000]/30 text-center">
+          <div className="bg-[#ff4000]/20 rounded-2xl p-6 border border-[#ff4000]/30 text-center">
             <div className="text-5xl font-bold text-[#ff4000] mb-2">
               {driverStats.rating > 0 ? driverStats.rating.toFixed(1) : '--'}
             </div>

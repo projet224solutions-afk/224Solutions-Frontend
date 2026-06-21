@@ -90,7 +90,7 @@ export function ActiveRideCard({
     : ride.destination.coords;
 
   return (
-    <Card className="bg-gradient-to-br from-white to-blue-50 border-2 border-blue-200 shadow-xl">
+    <Card className="bg-white border-2 border-blue-200 shadow-xl">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -159,7 +159,7 @@ export function ActiveRideCard({
         </div>
 
         {/* Informations de gain */}
-        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-orange-50 rounded-lg border border-orange-200">
+        <div className="flex items-center justify-between p-4 bg-[#ff4000]/5 rounded-lg border border-orange-200">
           <div className="flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-[#ff4000]" />
             <span className="text-sm text-gray-600">{t('activeRideCard.gainEstime')}</span>

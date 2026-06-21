@@ -294,7 +294,7 @@ export default function VisualSearch() {
 
         {/* Analyse IA - Affichage des mots-clés détectés */}
         {analysis && (
-          <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
+          <Card className="bg-primary/10 border-primary/20">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="w-4 h-4 text-primary" />

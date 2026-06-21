@@ -22,7 +22,7 @@ export function MiniMap({ latitude, longitude, isOnline, onExpand }: MiniMapProp
       {/* Map Container - hauteur réduite pour mobile */}
       <div className={cn(
         "relative h-36 sm:h-44 rounded-xl overflow-hidden",
-        "bg-gradient-to-br from-gray-800 to-gray-900",
+        "bg-gray-800",
         "border border-gray-700/50",
         "shadow-xl shadow-black/20"
       )}>
@@ -58,8 +58,8 @@ export function MiniMap({ latitude, longitude, isOnline, onExpand }: MiniMapProp
               "relative z-10 w-10 h-10 rounded-full flex items-center justify-center",
               "shadow-xl",
               isOnline
-                ? "bg-gradient-to-br from-[#ff4000] to-[#ff4000] shadow-[#ff4000]/30"
-                : "bg-gradient-to-br from-gray-600 to-gray-700 shadow-black/30"
+                ? "bg-[#ff4000] shadow-[#ff4000]/30"
+                : "bg-gray-600 shadow-black/30"
             )}>
               <Navigation2 className={cn(
                 "w-5 h-5",

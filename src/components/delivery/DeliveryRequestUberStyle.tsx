@@ -176,7 +176,7 @@ export function DeliveryRequestUberStyle({ onDeliveryCreated }: DeliveryRequestU
                 onClick={() => setStep('confirm')}
                 disabled={!pickupAddress || !deliveryAddress || !customerName || !customerPhone}
                 style={{
-                  background: 'linear-gradient(135deg, hsl(25 98% 55%), hsl(15 100% 50%))',
+                  background: '#ff4000',
                   color: 'white'
                 }}
               >
@@ -240,7 +240,7 @@ export function DeliveryRequestUberStyle({ onDeliveryCreated }: DeliveryRequestU
               className="flex-1"
               size="lg"
               style={{
-                background: 'linear-gradient(135deg, hsl(25 98% 55%), hsl(15 100% 50%))',
+                background: '#ff4000',
                 color: 'white'
               }}
             >

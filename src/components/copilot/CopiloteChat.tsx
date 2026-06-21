@@ -1215,7 +1215,7 @@ export default function CopiloteChat({ className = '', height = 'calc(100vh - 14
 
                   <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-6 sm:mb-8`}>
                     <div className={`flex items-start gap-3 sm:gap-4 ${isUser ? 'flex-row-reverse max-w-[85%] sm:max-w-[80%]' : 'max-w-full w-full'}`}>
-                      <Avatar className={`h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 ${isUser ? 'bg-primary' : 'bg-gradient-to-br from-primary to-secondary'}`}>
+                      <Avatar className={`h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 ${isUser ? 'bg-primary' : 'bg-[#04439e]'}`}>
                         {isUser ? (
                           <AvatarFallback>
                             <User className="h-5 w-5 sm:h-6 sm:w-6 text-white" />

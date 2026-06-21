@@ -270,7 +270,7 @@ export function ActiveRideNavigationPanel({
         <div className="bg-gray-800 rounded-xl p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#ff4000] to-[#ff4000] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-[#ff4000] flex items-center justify-center">
                 <User className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -353,7 +353,7 @@ export function ActiveRideNavigationPanel({
 
       {/* Gains estimés */}
       <div className="px-4 py-2">
-        <div className="bg-gradient-to-r from-[#ff4000]/50 to-[#ff4000]/30 rounded-xl p-4 border border-[#ff4000]/50">
+        <div className="bg-[#ff4000]/50 rounded-xl p-4 border border-[#ff4000]/50">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[#ff4000] text-xs font-medium mb-1">{t('activeRideNavigationPanel.vosGains')}</p>

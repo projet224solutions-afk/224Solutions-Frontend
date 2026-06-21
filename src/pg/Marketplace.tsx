@@ -659,13 +659,8 @@ export default function Marketplace() {
           {categories.map((category) => (
             <Badge
               key={category.id}
-              variant={selectedCategory === category.id ? "default" : "secondary"}
-              className={cn(
-                'cursor-pointer whitespace-nowrap shrink-0 px-2 py-1 text-[10px] sm:text-xs',
-                selectedCategory === category.id
-                  ? "bg-primary text-primary-foreground" 
-                  : "hover:bg-accent"
-              )}
+              variant={selectedCategory === category.id ? "filter-active" : "filter"}
+              className="whitespace-nowrap shrink-0 px-2.5 py-1 text-[10px] sm:text-xs rounded-full"
               onClick={() => {
                 setActiveTab('products');
                 setSelectedCategory(category.id);
@@ -777,13 +772,12 @@ export default function Marketplace() {
                   key={cat.id}
                   onClick={() => setSelectedDigitalCategory(cat.id)}
                   className={cn(
-                    'flex items-center gap-1.5 px-2 py-1.5 rounded-lg shrink-0 transition-all duration-200',
+                    'flex items-center gap-1.5 px-2 py-1.5 rounded-lg shrink-0 transition-all duration-150',
                     'border text-xs font-medium',
                     isSelected
-                      ? 'text-white border-transparent shadow-sm scale-[1.02]'
-                      : 'bg-card border-border hover:border-secondary/30'
+                      ? 'bg-[#04439e] border-transparent text-white shadow-sm'
+                      : 'bg-white border-[#04439e]/25 text-[#04439e] hover:bg-[#04439e]/5 hover:border-[#04439e]/50'
                   )}
-                  style={isSelected ? { backgroundColor: BRAND_BLUE } : undefined}
                 >
                   <div 
                     className="w-5 h-5 rounded-md flex items-center justify-center"
@@ -812,12 +806,11 @@ export default function Marketplace() {
           <button
             onClick={() => { setActiveTab('country'); autoCountryAppliedRef.current = true; setSelectedCountry('all'); setShowCountryPicker(false); }}
             className={cn(
-              'flex items-center gap-1 px-2.5 h-8 rounded-lg shrink-0 transition-all text-[11px] sm:text-xs font-medium border',
+              'flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border shrink-0 transition-all duration-150',
               selectedCountry === 'all'
-                ? 'text-white border-transparent shadow-sm'
-                : 'bg-card border-border hover:border-primary/40'
+                ? 'bg-[#04439e] border-transparent text-white'
+                : 'bg-white border-[#04439e]/25 text-[#04439e] hover:bg-[#04439e]/5 hover:border-[#04439e]/50'
             )}
-            style={selectedCountry === 'all' ? { backgroundColor: BRAND_BLUE } : undefined}
           >
             <Globe className="w-3.5 h-3.5 shrink-0" />
             Mondial
@@ -830,12 +823,11 @@ export default function Marketplace() {
                 key={country}
                 onClick={() => { setActiveTab('country'); autoCountryAppliedRef.current = true; setSelectedCountry(country); setShowCountryPicker(false); }}
                 className={cn(
-                  'flex items-center gap-1 px-2.5 h-8 rounded-lg shrink-0 whitespace-nowrap transition-all text-[11px] sm:text-xs font-medium border',
+                  'flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border shrink-0 transition-all duration-150 whitespace-nowrap',
                   isSelected
-                    ? 'text-white border-transparent shadow-sm'
-                    : 'bg-card border-border hover:border-primary/40'
+                    ? 'bg-[#04439e] border-transparent text-white'
+                    : 'bg-white border-[#04439e]/25 text-[#04439e] hover:bg-[#04439e]/5 hover:border-[#04439e]/50'
                 )}
-                style={isSelected ? { backgroundColor: BRAND_BLUE } : undefined}
               >
                 {flag
                   ? <span className="text-sm leading-none shrink-0" aria-hidden>{flag}</span>
@@ -855,12 +847,11 @@ export default function Marketplace() {
             <button
               onClick={() => { setSelectedCity('all'); setShowCityPicker(false); }}
               className={cn(
-                'flex items-center gap-1 px-2.5 h-8 rounded-lg shrink-0 whitespace-nowrap transition-all text-[11px] sm:text-xs font-medium border',
+                'flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border shrink-0 transition-all duration-150 whitespace-nowrap',
                 selectedCity === 'all'
-                  ? 'text-white border-transparent shadow-sm'
-                  : 'bg-card border-border hover:border-primary/40'
+                  ? 'bg-[#04439e] border-transparent text-white'
+                  : 'bg-white border-[#04439e]/25 text-[#04439e] hover:bg-[#04439e]/5 hover:border-[#04439e]/50'
               )}
-              style={selectedCity === 'all' ? { backgroundColor: BRAND_BLUE } : undefined}
             >
               <MapPin className="w-3 h-3 shrink-0" />
               Toutes les villes
@@ -872,12 +863,11 @@ export default function Marketplace() {
                   key={city}
                   onClick={() => { setSelectedCity(city); setShowCityPicker(false); }}
                   className={cn(
-                    'flex items-center gap-1 px-2.5 h-8 rounded-lg shrink-0 whitespace-nowrap transition-all text-[11px] sm:text-xs font-medium border',
+                    'flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border shrink-0 transition-all duration-150 whitespace-nowrap',
                     isSel
-                      ? 'text-white border-transparent shadow-sm'
-                      : 'bg-card border-border hover:border-primary/40'
+                      ? 'bg-[#04439e] border-transparent text-white'
+                      : 'bg-white border-[#04439e]/25 text-[#04439e] hover:bg-[#04439e]/5 hover:border-[#04439e]/50'
                   )}
-                  style={isSel ? { backgroundColor: BRAND_BLUE } : undefined}
                 >
                   <MapPin className="w-3 h-3 shrink-0" />
                   {city}

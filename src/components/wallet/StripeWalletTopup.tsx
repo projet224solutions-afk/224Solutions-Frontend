@@ -109,7 +109,7 @@ export default function StripeWalletTopup({ userId, walletId, onSuccess }: Strip
                 <div className="w-10 h-6 bg-[#04439e] rounded flex items-center justify-center text-white text-[8px] font-bold">
                   VISA
                 </div>
-                <div className="w-10 h-6 bg-gradient-to-r from-[#ff4000] to-orange-500 rounded flex items-center justify-center">
+                <div className="w-10 h-6 bg-[#ff4000] rounded flex items-center justify-center">
                   <div className="flex gap-0.5">
                     <div className="w-2 h-2 rounded-full bg-white opacity-80"></div>
                     <div className="w-2 h-2 rounded-full bg-white opacity-60"></div>

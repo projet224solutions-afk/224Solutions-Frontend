@@ -295,7 +295,7 @@ export function ClientDeliveryTracking({ deliveryId }: ClientDeliveryTrackingPro
         <CardContent className="space-y-4">
           {/* Temps estimé */}
           {estimatedTime !== null && driverPosition && delivery.status === 'in_transit' && (
-            <div className="p-4 bg-gradient-to-r from-blue-50 to-blue-50 rounded-lg border border-blue-200">
+            <div className="p-4 bg-[#04439e]/5 rounded-lg border border-blue-200">
               <div className="flex items-center gap-3">
                 <Clock className="h-8 w-8 text-blue-600" />
                 <div>

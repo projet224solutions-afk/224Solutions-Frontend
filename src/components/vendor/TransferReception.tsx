@@ -176,7 +176,7 @@ export default function TransferReception({ transfer, onSuccess, onCancel }: Tra
   return (
     <div className="space-y-6">
       {/* En-tête */}
-      <Card className="bg-gradient-to-br from-blue-50 to-blue-50 dark:from-blue-950/30 dark:to-[#04439e]/30 border-blue-200">
+      <Card className="bg-[#04439e]/5 border-blue-200">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="p-3 rounded-xl bg-blue-100 dark:bg-blue-900">

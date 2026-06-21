@@ -363,7 +363,7 @@ export default function NearbyLivraison() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/30 pb-24">
+    <div className="min-h-screen bg-background pb-24">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/50">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -404,7 +404,7 @@ export default function NearbyLivraison() {
 
       <div className="max-w-7xl mx-auto px-4 py-6 space-y-4">
         {/* Quick Request Button */}
-        <Card className="bg-gradient-to-r from-orange-500 to-orange-600 border-0 shadow-lg">
+        <Card className="bg-orange-500 border-0 shadow-lg">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div className="text-white">

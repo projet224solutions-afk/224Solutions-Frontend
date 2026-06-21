@@ -29,6 +29,10 @@ const buttonVariants = cva(
           "bg-[#ff4000] text-white shadow-lg shadow-[#ff4000]/40 hover:bg-[#ff4000] hover:shadow-xl hover:shadow-[#ff4000]/50",
         dark:
           "bg-slate-900 text-white shadow-lg shadow-slate-900/50 hover:bg-primary hover:shadow-xl hover:shadow-primary/50",
+        filter:
+          "bg-white border border-[#04439e]/25 text-[#04439e] hover:bg-[#04439e]/5 hover:border-[#04439e]/50 shadow-none font-medium transition-all duration-150",
+        "filter-active":
+          "bg-[#04439e] border-transparent text-white shadow-none font-medium transition-all duration-150",
       },
       size: {
         default: "h-10 px-5 py-2",

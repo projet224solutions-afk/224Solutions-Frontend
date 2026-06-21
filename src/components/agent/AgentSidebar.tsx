@@ -219,7 +219,7 @@ export default function AgentSidebar({
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed left-0 top-0 h-full bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white shadow-2xl transition-all duration-300 z-40 flex flex-col",
+          "fixed left-0 top-0 h-full bg-slate-900 text-white shadow-2xl transition-all duration-300 z-40 flex flex-col",
           collapsed ? "w-20" : "w-72",
           "lg:relative lg:translate-x-0",
           collapsed ? "-translate-x-full lg:translate-x-0" : "translate-x-0"

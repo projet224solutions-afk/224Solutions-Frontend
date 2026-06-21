@@ -441,7 +441,7 @@ export default function ServicesProximite() {
           {SERVICE_CATEGORIES.map((category) => (
             <Button
               key={category.id}
-              variant={selectedCategory === category.id ? "default" : "outline"}
+              variant={selectedCategory === category.id ? "filter-active" : "filter"}
               size="sm"
               onClick={() => setSelectedCategory(category.id)}
               className="whitespace-nowrap flex-shrink-0 min-w-fit px-3"
@@ -477,7 +477,7 @@ export default function ServicesProximite() {
           </div>
           <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1" style={{ WebkitOverflowScrolling: 'touch' }}>
             <Button
-              variant={selectedCity === 'all' ? 'default' : 'outline'}
+              variant={selectedCity === 'all' ? 'filter-active' : 'filter'}
               size="sm"
               onClick={() => setSelectedCity('all')}
               className="whitespace-nowrap flex-shrink-0 px-3"
@@ -487,7 +487,7 @@ export default function ServicesProximite() {
             {availableCities.map((c) => (
               <Button
                 key={c}
-                variant={selectedCity.toLowerCase() === c.toLowerCase() ? 'default' : 'outline'}
+                variant={selectedCity.toLowerCase() === c.toLowerCase() ? 'filter-active' : 'filter'}
                 size="sm"
                 onClick={() => setSelectedCity(c)}
                 className="whitespace-nowrap flex-shrink-0 px-3"

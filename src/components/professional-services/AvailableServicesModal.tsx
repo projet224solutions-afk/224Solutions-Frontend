@@ -320,7 +320,7 @@ export function AvailableServicesModal({ open, onOpenChange }: AvailableServices
                 className={cn(
                   'cursor-pointer transition-all duration-200 group',
                   'hover:border-primary/50 hover:shadow-lg hover:scale-[1.02]',
-                  'border-2 border-transparent bg-gradient-to-br from-card to-muted/30 overflow-hidden'
+                  'border-2 border-transparent bg-card overflow-hidden'
                 )}
                 onClick={() => handleServiceTypeClick(serviceType)}
               >
@@ -386,7 +386,7 @@ export function AvailableServicesModal({ open, onOpenChange }: AvailableServices
       <DialogContent className="w-[95vw] max-w-4xl max-h-[90vh] overflow-hidden p-3 sm:p-6">
         <DialogHeader className="pb-2 sm:pb-4">
           <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-primary to-primary/70 rounded-lg flex items-center justify-center shadow-md">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary rounded-lg flex items-center justify-center shadow-md">
               <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
             </div>
             <span className="truncate">

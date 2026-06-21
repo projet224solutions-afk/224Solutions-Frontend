@@ -48,14 +48,14 @@ export default function PdgSecurity() {
   const openIncidents = (incidents || []).filter((i) => i.status !== 'resolved' && i.status !== 'closed');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 p-4 md:p-8">
+    <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <Shield className="w-8 h-8 text-[#ff4000]" />
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-[#ff4000] to-[#ff4000] bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-[#ff4000] bg-clip-text text-transparent">
                 Défense & Riposte - Sécurité
               </h1>
             </div>

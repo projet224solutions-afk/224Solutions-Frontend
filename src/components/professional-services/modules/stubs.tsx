@@ -18,7 +18,7 @@ export function CateringModule({ serviceId, businessName }: ModuleProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="p-3 bg-gradient-to-br from-[#ff4000] to-orange-500 rounded-xl">
+        <div className="p-3 bg-[#ff4000] rounded-xl">
           <Utensils className="w-8 h-8 text-white" />
         </div>
         <div>

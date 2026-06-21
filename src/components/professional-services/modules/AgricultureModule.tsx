@@ -46,7 +46,7 @@ export function AgricultureModule({ serviceId, businessName }: AgricultureModule
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="rounded-xl bg-gradient-to-br from-green-600 to-[#ff4000] p-3"><Sprout className="h-8 w-8 text-white" /></div>
+        <div className="rounded-xl bg-green-600 p-3"><Sprout className="h-8 w-8 text-white" /></div>
         <div>
           <h2 className="text-2xl font-bold">{businessName || 'Exploitation Agricole'}</h2>
           <p className="text-muted-foreground">{t('agricultureModule.produitsFraisLocauxTracabiliteGarantie')}</p>

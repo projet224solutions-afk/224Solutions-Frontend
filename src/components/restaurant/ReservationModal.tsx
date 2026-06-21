@@ -593,7 +593,7 @@ Contact restaurant: ${restaurantPhone || 'Non disponible'}
             </div>
 
             {/* Toggle précommande */}
-            <Card className="bg-gradient-to-r from-orange-50 to-orange-50 dark:from-orange-900/20 dark:to-[#ff4000]/20">
+            <Card className="bg-[#ff4000]/5">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <UtensilsCrossed className="w-5 h-5 text-orange-600" />
@@ -613,7 +613,7 @@ Contact restaurant: ${restaurantPhone || 'Non disponible'}
                   <ScrollArea className="w-full whitespace-nowrap">
                     <div className="flex gap-2 pb-2">
                       <Badge
-                        variant={selectedCategory === 'all' ? 'default' : 'outline'}
+                        variant={selectedCategory === 'all' ? 'filter-active' : 'filter'}
                         className="cursor-pointer"
                         onClick={() => setSelectedCategory('all')}
                       >
@@ -622,7 +622,7 @@ Contact restaurant: ${restaurantPhone || 'Non disponible'}
                       {categories.map(cat => (
                         <Badge
                           key={cat.id}
-                          variant={selectedCategory === cat.id ? 'default' : 'outline'}
+                          variant={selectedCategory === cat.id ? 'filter-active' : 'filter'}
                           className="cursor-pointer whitespace-nowrap"
                           onClick={() => setSelectedCategory(cat.id)}
                         >
@@ -872,7 +872,7 @@ Contact restaurant: ${restaurantPhone || 'Non disponible'}
 
               {/* Option paiement */}
               {cartTotal > 0 && (
-                <Card className="bg-gradient-to-r from-orange-50 to-orange-50 dark:from-[#ff4000]/20 dark:to-[#ff4000]/20">
+                <Card className="bg-[#ff4000]/5">
                   <CardContent className="p-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <CreditCard className="w-5 h-5 text-[#ff4000]" />

@@ -153,7 +153,7 @@ export function AgentOverviewProfessional({
       {/* Main Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Wallet Balance */}
-        <Card className="col-span-2 lg:col-span-1 overflow-hidden border-0 shadow-lg bg-gradient-to-br from-[#ff4000] to-[#ff4000] text-white">
+        <Card className="col-span-2 lg:col-span-1 overflow-hidden border-0 shadow-lg bg-[#ff4000] text-white">
           <CardContent className="p-5">
             <div className="flex items-start justify-between">
               <div>
@@ -163,7 +163,7 @@ export function AgentOverviewProfessional({
                 </h3>
                 <p className="text-orange-200 text-sm mt-1">{wallet?.currency || 'GNF'}</p>
               </div>
-              <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+              <div className="p-3 bg-white/20 rounded-xl">
                 <CreditCard className="w-6 h-6" />
               </div>
             </div>
@@ -286,7 +286,7 @@ export function AgentOverviewProfessional({
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-gradient-to-br from-[#ff4000] to-[#ff4000] rounded-lg">
+              <div className="p-1.5 bg-[#ff4000] rounded-lg">
                 <Target className="w-4 h-4 text-white" />
               </div>
               <div>
@@ -357,10 +357,10 @@ export function AgentOverviewProfessional({
 
       {/* Commission Rate Banner */}
       <Card className="border-0 overflow-hidden">
-        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-6">
+        <div className="bg-slate-900 p-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+              <div className="p-3 bg-white/10 rounded-xl">
                 <Award className="w-8 h-8 text-[#ff4000]" />
               </div>
               <div>

@@ -141,7 +141,7 @@ export default function OfflineBanner({
             position === 'bottom' ? 'bottom-0' : 'top-0'
           )}
         >
-          <div className="bg-gradient-to-r from-[#ff4000] to-[#ff4000] text-white px-4 py-3 shadow-lg">
+          <div className="bg-[#ff4000] text-white px-4 py-3 shadow-lg">
             <div className="max-w-screen-xl mx-auto flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="flex items-center justify-center w-10 h-10 bg-white/20 rounded-full">
@@ -191,10 +191,10 @@ export default function OfflineBanner({
           <div className={cn(
             'px-4 py-3 shadow-lg text-white',
             isOffline
-              ? 'bg-gradient-to-r from-orange-500 to-[#ff4000]'
+              ? 'bg-[#ff4000]'
               : isSyncing
-                ? 'bg-gradient-to-r from-primary to-secondary'
-                : 'bg-gradient-to-r from-[#ff4000] to-orange-500'
+                ? 'bg-[#04439e]'
+                : 'bg-[#ff4000]'
           )}>
             <div className="max-w-screen-xl mx-auto flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-3">

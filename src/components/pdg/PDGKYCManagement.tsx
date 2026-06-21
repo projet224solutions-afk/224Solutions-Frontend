@@ -145,7 +145,7 @@ export default function PDGKYCManagement() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10">
+      <Card className="border-primary/20 bg-primary/10">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">

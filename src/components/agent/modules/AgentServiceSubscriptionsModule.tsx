@@ -133,7 +133,7 @@ export function AgentServiceSubscriptionsModule({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-gradient-to-br from-[#ff4000] to-[#ff4000] rounded-xl shadow-lg">
+          <div className="p-3 bg-[#ff4000] rounded-xl shadow-lg">
             <Sparkles className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -150,7 +150,7 @@ export function AgentServiceSubscriptionsModule({
       {/* Stats Overview */}
       {stats && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="border-0 shadow-md bg-gradient-to-br from-blue-50 to-blue-50">
+          <Card className="border-0 shadow-md bg-[#04439e]/5">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -162,7 +162,7 @@ export function AgentServiceSubscriptionsModule({
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-md bg-gradient-to-br from-orange-50 to-orange-50">
+          <Card className="border-0 shadow-md bg-[#ff4000]/5">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -176,7 +176,7 @@ export function AgentServiceSubscriptionsModule({
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-md bg-gradient-to-br from-blue-50 to-blue-50">
+          <Card className="border-0 shadow-md bg-[#04439e]/5">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -188,7 +188,7 @@ export function AgentServiceSubscriptionsModule({
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-md bg-gradient-to-br from-orange-50 to-orange-50">
+          <Card className="border-0 shadow-md bg-[#ff4000]/5">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -301,7 +301,7 @@ export function AgentServiceSubscriptionsModule({
                 key={plan.id}
                 className={`border-0 shadow-md transition-all duration-200 ${
                   plan.is_active
-                    ? 'bg-gradient-to-br from-white to-slate-50'
+                    ? 'bg-white'
                     : 'opacity-60 bg-slate-100'
                 }`}
               >

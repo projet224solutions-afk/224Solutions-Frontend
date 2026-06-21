@@ -272,7 +272,7 @@ export default function AgentDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-slate-600">{t('agent.loadingInterface')}</p>
@@ -283,7 +283,7 @@ export default function AgentDashboard() {
 
   if (!agent) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <Card className="w-full max-w-md border-0 shadow-xl">
           <CardContent className="pt-6">
             <div className="text-center">
@@ -352,7 +352,7 @@ export default function AgentDashboard() {
       case 'create-user':
         return (
           <Card className="border-0 shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-50 border-b">
+            <CardHeader className="bg-[#04439e]/5 border-b">
               <CardTitle className="text-slate-800">{t('agent.createNewUser')}</CardTitle>
             </CardHeader>
             <CardContent className="p-6">
@@ -415,7 +415,7 @@ export default function AgentDashboard() {
 
             {/* Email Settings */}
             <Card className="border-0 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b">
+              <CardHeader className="bg-slate-50 border-b">
                 <CardTitle className="flex items-center gap-2 text-slate-800">
                   <Mail className="w-5 h-5 text-blue-600" />
                   Email
@@ -488,7 +488,7 @@ export default function AgentDashboard() {
 
             {/* Password Settings */}
             <Card className="border-0 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b">
+              <CardHeader className="bg-slate-50 border-b">
                 <CardTitle className="flex items-center gap-2 text-slate-800">
                   <Lock className="w-5 h-5 text-[#ff4000]" />
                   Mot de passe

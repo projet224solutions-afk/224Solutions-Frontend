@@ -57,7 +57,7 @@ export const UserCustomIdDisplay = () => {
   }
 
   return (
-    <Card className="shadow-elegant bg-gradient-to-br from-primary/5 to-primary/10">
+    <Card className="shadow-elegant bg-primary/10">
       <CardHeader>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">

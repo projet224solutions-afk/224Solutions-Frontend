@@ -72,14 +72,14 @@ const NotFound = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/30 flex items-center justify-center p-4 pb-24">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 pb-24">
       <Card className="max-w-2xl w-full shadow-2xl border-border/50">
         <CardHeader className="text-center space-y-4 pb-8">
           <div className="mx-auto w-20 h-20 rounded-full bg-destructive/10 flex items-center justify-center">
             <AlertTriangle className="w-10 h-10 text-destructive" />
           </div>
           <div className="space-y-2">
-            <CardTitle className="text-6xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            <CardTitle className="text-6xl font-bold bg-primary bg-clip-text text-transparent">
               404
             </CardTitle>
             <CardDescription className="text-xl font-medium">

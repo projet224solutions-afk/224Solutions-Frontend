@@ -42,7 +42,7 @@ export function Custom224PaymentDemo() {
 
   if (showPayment) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 py-12 px-4">
+      <div className="min-h-screen bg-blue-50 py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <Button
             variant="ghost"
@@ -72,7 +72,7 @@ export function Custom224PaymentDemo() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 py-12 px-4">
+    <div className="min-h-screen bg-blue-50 py-12 px-4">
       <div className="max-w-2xl mx-auto space-y-8">
         {/* En-tête */}
         <div className="text-center space-y-4">
@@ -192,7 +192,7 @@ export function Custom224PaymentDemo() {
         </Card>
 
         {/* Carte de test Stripe */}
-        <Card className="shadow-xl bg-gradient-to-r from-[#04439e] to-[#ff4000] text-white">
+        <Card className="shadow-xl bg-[#ff4000] text-white">
           <CardContent className="pt-6 space-y-3">
             <h3 className="text-xl font-bold">{t('custom224PaymentDemo.carteDeTestStripe')}</h3>
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 space-y-2">

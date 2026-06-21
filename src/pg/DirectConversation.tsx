@@ -388,7 +388,7 @@ export default function DirectConversation() {
         <div className="relative">
           <Avatar className="w-11 h-11 ring-2 ring-primary/20">
             <AvatarImage src={recipient.avatar_url} />
-            <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/10 text-primary font-semibold">
+            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
               {recipient.first_name?.[0]?.toUpperCase()}{recipient.last_name?.[0]?.toUpperCase()}
             </AvatarFallback>
           </Avatar>
@@ -449,7 +449,7 @@ export default function DirectConversation() {
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground py-20">
             <Avatar className="w-24 h-24 mb-6 ring-4 ring-primary/10">
               <AvatarImage src={recipient.avatar_url} />
-              <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/5 text-primary text-3xl font-bold">
+              <AvatarFallback className="bg-primary/10 text-primary text-3xl font-bold">
                 {recipient.first_name?.[0]?.toUpperCase()}{recipient.last_name?.[0]?.toUpperCase()}
               </AvatarFallback>
             </Avatar>

@@ -196,7 +196,7 @@ export function POSCartSection({
     <>
       <Card className="shadow-xl border-0 bg-card overflow-hidden flex flex-col max-w-full md:flex-1 md:max-h-full">
         {/* Header */}
-        <div className="p-1.5 sm:p-2 bg-gradient-to-r from-primary/15 via-primary/10 to-primary/5 border-b border-primary/20 flex-shrink-0">
+        <div className="p-1.5 sm:p-2 bg-primary/15 border-b border-primary/20 flex-shrink-0">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1.5">
               <div className="p-1 rounded-md bg-primary/20">
@@ -362,7 +362,7 @@ export function POSCartSection({
 
         {/* Payment section */}
         {cart.length > 0 && (
-          <div className="border-t border-primary/20 bg-gradient-to-b from-muted/20 to-background flex-shrink-0 p-2 sm:p-3 space-y-2">
+          <div className="border-t border-primary/20 bg-muted/20 flex-shrink-0 p-2 sm:p-3 space-y-2">
             {/* Global discount - Collapsible */}
             <details className="group">
               <summary className="flex items-center justify-between cursor-pointer list-none">

@@ -19,7 +19,7 @@ export function SubscriptionExpiryBanner() {
   };
 
   return (
-    <div className="sticky top-16 z-30 px-6 py-4 bg-gradient-to-r from-orange-50 to-orange-50 border-b border-orange-200">
+    <div className="sticky top-16 z-30 px-6 py-4 bg-[#ff4000]/5 border-b border-orange-200">
       <Alert variant="destructive" className="border-orange-400 bg-white/90 backdrop-blur-sm">
         <AlertTriangle className="h-5 w-5 text-orange-600" />
         <AlertTitle className="text-lg font-semibold text-orange-900 flex items-center gap-2">

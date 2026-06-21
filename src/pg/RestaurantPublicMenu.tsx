@@ -669,7 +669,7 @@ export default function RestaurantPublicMenu() {
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Header with cover image */}
-      <div className="relative h-48 sm:h-64 bg-gradient-to-br from-orange-500 to-[#ff4000]">
+      <div className="relative h-48 sm:h-64 bg-[#ff4000]">
         {restaurant.cover_image_url ? (
           <img
             src={restaurant.cover_image_url}
@@ -745,7 +745,7 @@ export default function RestaurantPublicMenu() {
         <div className="px-4 py-3 overflow-x-auto scrollbar-hide">
           <div className="flex gap-2">
             <Button
-              variant={selectedCategory === 'all' ? 'default' : 'outline'}
+              variant={selectedCategory === 'all' ? 'filter-active' : 'filter'}
               size="sm"
               onClick={() => setSelectedCategory('all')}
               className="flex-shrink-0"
@@ -755,7 +755,7 @@ export default function RestaurantPublicMenu() {
             {categories.map(cat => (
               <Button
                 key={cat.id}
-                variant={selectedCategory === cat.id ? 'default' : 'outline'}
+                variant={selectedCategory === cat.id ? 'filter-active' : 'filter'}
                 size="sm"
                 onClick={() => setSelectedCategory(cat.id)}
                 className="flex-shrink-0"

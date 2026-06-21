@@ -43,6 +43,14 @@ All colors MUST be HSL.
     --input: 220 14% 96%;
     --ring: 220 96% 27%;
 
+    /* ── Statut de présence (seule couleur verte autorisée dans l'app) ── */
+    --status-online: 142 76% 36%;          /* #16a34a — utilisateur en ligne */
+    --status-online-foreground: 0 0% 100%; /* texte blanc sur fond vert */
+    --status-online-bg: 142 76% 96%;       /* fond vert très pâle */
+    --status-online-border: 142 76% 82%;   /* bordure vert pâle */
+    --status-offline: 220 10% 46%;         /* gris hors ligne */
+    --status-offline-bg: 220 14% 96%;      /* fond gris pâle */
+
     /* Role-based - tous basés sur la charte */
     --vendeur-primary: 220 97% 27%;
     --vendeur-secondary: 15 100% 50%;
@@ -140,6 +148,14 @@ All colors MUST be HSL.
     --border: 220 15% 22%;
     --input: 220 15% 18%;
     --ring: 220 97% 40%;
+
+    /* ── Statut de présence — mode sombre ── */
+    --status-online: 142 70% 45%;
+    --status-online-foreground: 0 0% 100%;
+    --status-online-bg: 142 70% 12%;
+    --status-online-border: 142 70% 25%;
+    --status-offline: 220 10% 55%;
+    --status-offline-bg: 220 15% 18%;
 
     --sidebar-background: 220 20% 6%;
     --sidebar-foreground: 0 0% 95%;

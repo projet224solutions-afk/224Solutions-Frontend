@@ -226,7 +226,7 @@ export function HairdresserModule({ serviceId, businessName }: HairdresserModule
       bronze: 'bg-[#ff4000] text-white',
       silver: 'bg-gray-400 text-white',
       gold: 'bg-[#ff4000] text-white',
-      platinum: 'bg-gradient-to-r from-gray-300 to-gray-500 text-white'
+      platinum: 'bg-gray-300 text-white'
     };
     return <Badge className={styles[tier]}><Crown className="h-3 w-3 mr-1" />{tier}</Badge>;
   };
@@ -264,7 +264,7 @@ export function HairdresserModule({ serviceId, businessName }: HairdresserModule
       {/* En-tête */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-gradient-to-br from-[#ff4000] to-[#ff4000] rounded-xl">
+          <div className="p-3 bg-[#ff4000] rounded-xl">
             <Scissors className="w-8 h-8 text-white" />
           </div>
           <div>
@@ -339,7 +339,7 @@ export function HairdresserModule({ serviceId, businessName }: HairdresserModule
 
       {/* Statistiques */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-[#ff4000] to-[#ff4000] text-white">
+        <Card className="bg-[#ff4000] text-white">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 opacity-90">
               <Calendar className="h-4 w-4" />
@@ -348,7 +348,7 @@ export function HairdresserModule({ serviceId, businessName }: HairdresserModule
             <p className="text-3xl font-bold mt-1">{todayAppointments}</p>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-[#ff4000] to-[#ff4000] text-white">
+        <Card className="bg-[#ff4000] text-white">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 opacity-90">
               <TrendingUp className="h-4 w-4" />
@@ -357,7 +357,7 @@ export function HairdresserModule({ serviceId, businessName }: HairdresserModule
             <p className="text-xl font-bold mt-1">{formatPrice(todayRevenue)}</p>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-[#04439e] to-[#04439e] text-white">
+        <Card className="bg-[#04439e] text-white">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 opacity-90">
               <Users className="h-4 w-4" />
@@ -366,7 +366,7 @@ export function HairdresserModule({ serviceId, businessName }: HairdresserModule
             <p className="text-3xl font-bold mt-1">{availableStylists}/{stylists.length}</p>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-[#ff4000] to-orange-500 text-white">
+        <Card className="bg-[#ff4000] text-white">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 opacity-90">
               <Star className="h-4 w-4" />
@@ -399,7 +399,7 @@ export function HairdresserModule({ serviceId, businessName }: HairdresserModule
                         <p className="text-xl font-bold">{apt.time}</p>
                         <p className="text-xs text-muted-foreground">{apt.duration} min</p>
                       </div>
-                      <div className="h-12 w-0.5 bg-gradient-to-b from-[#ff4000] to-[#ff4000]" />
+                      <div className="h-12 w-0.5 bg-[#ff4000]" />
                       <div>
                         <div className="flex items-center gap-2 mb-1">
                           <h4 className="font-semibold">{apt.clientName}</h4>
@@ -441,7 +441,7 @@ export function HairdresserModule({ serviceId, businessName }: HairdresserModule
                 <CardContent className="p-4">
                   <div className="flex items-center gap-4">
                     <Avatar className="h-16 w-16">
-                      <AvatarFallback className="bg-gradient-to-br from-[#ff4000] to-[#ff4000] text-white text-xl">
+                      <AvatarFallback className="bg-[#ff4000] text-white text-xl">
                         {stylist.name.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>
                     </Avatar>
@@ -536,7 +536,7 @@ export function HairdresserModule({ serviceId, businessName }: HairdresserModule
               <Card key={service.id}>
                 <CardContent className="p-4 flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-100 to-orange-100 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center">
                       <Sparkles className="h-6 w-6 text-[#ff4000]" />
                     </div>
                     <div>
@@ -569,11 +569,11 @@ export function HairdresserModule({ serviceId, businessName }: HairdresserModule
               <Badge variant="outline" className="text-[#ff4000]">🥉 Bronze: 0-1000 pts</Badge>
               <Badge variant="outline" className="text-gray-500">🥈 Silver: 1000-2000 pts</Badge>
               <Badge variant="outline" className="text-[#ff4000]">🥇 Gold: 2000-3000 pts</Badge>
-              <Badge variant="outline" className="bg-gradient-to-r from-gray-300 to-gray-400 text-white">💎 Platinum: 3000+ pts</Badge>
+              <Badge variant="outline" className="bg-gray-300 text-white">💎 Platinum: 3000+ pts</Badge>
             </div>
           </div>
 
-          <Card className="bg-gradient-to-r from-orange-50 to-orange-50">
+          <Card className="bg-[#ff4000]/5">
             <CardContent className="p-4">
               <div className="flex items-center gap-4">
                 <Gift className="h-8 w-8 text-[#ff4000]" />
@@ -594,7 +594,7 @@ export function HairdresserModule({ serviceId, businessName }: HairdresserModule
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <Avatar className="h-12 w-12">
-                        <AvatarFallback className="bg-gradient-to-br from-[#ff4000] to-[#ff4000] text-white">
+                        <AvatarFallback className="bg-[#ff4000] text-white">
                           {client.name.split(' ').map(n => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>

@@ -759,7 +759,7 @@ export function RestaurantMenuManager({ serviceId }: RestaurantMenuManagerProps)
       {categories.length > 0 && (
         <div className="flex flex-wrap gap-2">
           <Badge
-            variant={!selectedCategory ? 'default' : 'outline'}
+            variant={!selectedCategory ? 'filter-active' : 'filter'}
             className="cursor-pointer"
             onClick={() => setSelectedCategory(null)}
           >
@@ -770,7 +770,7 @@ export function RestaurantMenuManager({ serviceId }: RestaurantMenuManagerProps)
             return (
               <Badge
                 key={cat.id}
-                variant={selectedCategory === cat.id ? 'default' : 'outline'}
+                variant={selectedCategory === cat.id ? 'filter-active' : 'filter'}
                 className="cursor-pointer group"
                 onClick={() => setSelectedCategory(cat.id)}
               >

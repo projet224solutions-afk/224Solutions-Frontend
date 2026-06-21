@@ -24,7 +24,7 @@ export function DriverSubscriptionBanner() {
       <div className="mx-2 mt-2 mb-3">
         <div className={cn(
           "relative overflow-hidden rounded-xl",
-          "bg-gradient-to-r from-[#ff4000]/20 via-[#ff4000]/10 to-[#ff4000]/20",
+          "bg-[#ff4000]/20",
           "border border-[#ff4000]/30",
           "p-3"
         )}>
@@ -56,7 +56,7 @@ export function DriverSubscriptionBanner() {
       <div className="mx-2 mt-2 mb-3">
         <div className={cn(
           "relative overflow-hidden rounded-xl",
-          "bg-gradient-to-r from-[#ff4000]/20 via-[#ff4000]/10 to-[#ff4000]/20",
+          "bg-[#ff4000]/20",
           "border border-[#ff4000]/30",
           "p-3"
         )}>

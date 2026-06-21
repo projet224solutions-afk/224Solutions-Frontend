@@ -188,7 +188,7 @@ export function AgentUsersModule({ agentId, canManage = false }: AgentUsersModul
     <div className="space-y-6">
       {/* Header */}
       <Card className="border-0 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-50 border-b">
+        <CardHeader className="bg-[#04439e]/5 border-b">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="p-3 rounded-xl bg-[#04439e] shadow-lg">
@@ -208,22 +208,22 @@ export function AgentUsersModule({ agentId, canManage = false }: AgentUsersModul
         <CardContent className="p-6">
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 text-center">
+            <div className="bg-slate-100 rounded-xl p-4 text-center">
               <Users className="w-6 h-6 text-slate-600 mx-auto mb-2" />
               <p className="text-2xl font-bold text-slate-700">{stats.total}</p>
               <p className="text-xs text-slate-500">Total</p>
             </div>
-            <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl p-4 text-center">
+            <div className="bg-orange-100 rounded-xl p-4 text-center">
               <UserCheck className="w-6 h-6 text-[#ff4000] mx-auto mb-2" />
               <p className="text-2xl font-bold text-[#ff4000]">{stats.active}</p>
               <p className="text-xs text-[#ff4000]">Actifs</p>
             </div>
-            <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl p-4 text-center">
+            <div className="bg-blue-100 rounded-xl p-4 text-center">
               <Store className="w-6 h-6 text-blue-600 mx-auto mb-2" />
               <p className="text-2xl font-bold text-blue-700">{stats.vendors}</p>
               <p className="text-xs text-blue-500">Vendeurs</p>
             </div>
-            <div className="bg-gradient-to-br from-blue-100 to-orange-200 rounded-xl p-4 text-center">
+            <div className="bg-blue-100 rounded-xl p-4 text-center">
               <Users className="w-6 h-6 text-[#04439e] mx-auto mb-2" />
               <p className="text-2xl font-bold text-[#04439e]">{stats.clients}</p>
               <p className="text-xs text-[#04439e]">Clients</p>

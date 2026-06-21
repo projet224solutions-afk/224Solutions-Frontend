@@ -201,7 +201,7 @@ export function ShipmentTracker({ shipmentId, onBack }: ShipmentTrackerProps) {
       </div>
 
       {/* Carte de suivi principale */}
-      <Card className="bg-gradient-to-br from-orange-50 to-white">
+      <Card className="bg-orange-50">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="space-y-1">

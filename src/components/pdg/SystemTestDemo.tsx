@@ -444,7 +444,7 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-slate-700 text-white">
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-slate-900 border-slate-700 text-white">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-3">
             <motion.div

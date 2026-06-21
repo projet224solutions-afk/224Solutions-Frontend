@@ -288,7 +288,7 @@ export default function BureauDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-orange-50 to-orange-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ff4000] mx-auto mb-4"></div>
           <p className="text-slate-600">{t('bureau.loadingInterface')}</p>
@@ -299,7 +299,7 @@ export default function BureauDashboard() {
 
   if (!bureau) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-orange-50 to-orange-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <Card className="max-w-md border-0 shadow-xl">
           <CardHeader>
             <CardTitle className="text-center">{t('bureau.notFound')}</CardTitle>
@@ -380,7 +380,7 @@ export default function BureauDashboard() {
       case 'workers':
         return (
           <Card className="border-0 shadow-lg">
-            <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-r from-orange-50 to-orange-50 border-b">
+            <CardHeader className="flex flex-row items-center justify-between bg-[#ff4000]/5 border-b">
               <CardTitle className="flex items-center gap-2">
                 <Users className="w-5 h-5 text-[#ff4000]" />
                 Gestion des Membres du Bureau
@@ -547,7 +547,7 @@ export default function BureauDashboard() {
       case 'sync':
         return (
           <Card className="border-0 shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b">
+            <CardHeader className="bg-slate-50 border-b">
               <CardTitle className="flex items-center gap-2">
                 <RefreshCw className="w-5 h-5 text-blue-600" />
                 Synchronisation Hors-ligne
@@ -562,7 +562,7 @@ export default function BureauDashboard() {
       case 'alerts':
         return (
           <Card className="border-0 shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-50 border-b">
+            <CardHeader className="bg-[#ff4000]/5 border-b">
               <CardTitle className="flex items-center gap-2">
                 <AlertCircle className="w-5 h-5 text-[#ff4000]" />
                 Alertes et Notifications
@@ -607,7 +607,7 @@ export default function BureauDashboard() {
       case 'communication':
         return (
           <Card className="border-0 shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-50 border-b">
+            <CardHeader className="bg-[#04439e]/5 border-b">
               <CardTitle className="flex items-center gap-2">
                 <MessageSquare className="w-5 h-5 text-blue-600" />
                 Hub de Communication
@@ -627,7 +627,7 @@ export default function BureauDashboard() {
           <div className="space-y-6">
             {/* Informations du Bureau */}
             <Card className="border-0 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b">
+              <CardHeader className="bg-slate-50 border-b">
                 <CardTitle className="flex items-center gap-2">
                   <Settings className="w-5 h-5 text-slate-600" />
                   Informations du Bureau
@@ -665,7 +665,7 @@ export default function BureauDashboard() {
 
             {/* Token d'accès */}
             <Card className="border-0 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-50 border-b">
+              <CardHeader className="bg-[#ff4000]/5 border-b">
                 <CardTitle className="flex items-center gap-2">
                   <Lock className="w-5 h-5 text-[#ff4000]" />
                   Accès & Sécurité
@@ -709,7 +709,7 @@ export default function BureauDashboard() {
             {/* Gestion du compte */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card className="border-0 shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-50 border-b">
+                <CardHeader className="bg-[#04439e]/5 border-b">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <Mail className="w-5 h-5 text-blue-600" />
                     Modifier l'email
@@ -731,7 +731,7 @@ export default function BureauDashboard() {
               </Card>
 
               <Card className="border-0 shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-50 border-b">
+                <CardHeader className="bg-[#ff4000]/5 border-b">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <Lock className="w-5 h-5 text-[#ff4000]" />
                     Modifier le mot de passe
@@ -742,7 +742,7 @@ export default function BureauDashboard() {
                     Changez votre mot de passe pour sécuriser votre compte
                   </p>
                   <Button
-                    className="w-full bg-gradient-to-r from-[#ff4000] to-[#ff4000]"
+                    className="w-full bg-[#ff4000]"
                     onClick={() => setShowPasswordDialog(true)}
                   >
                     Changer le mot de passe

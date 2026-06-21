@@ -115,7 +115,7 @@ export function GPSNavigation({ activeRide, currentLocation, onContactCustomer }
   return (
     <div className="space-y-4">
       {/* Carte de statut */}
-      <Card className="bg-gradient-to-r from-blue-50 to-blue-50 border-blue-200">
+      <Card className="bg-[#04439e]/5 border-blue-200">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">

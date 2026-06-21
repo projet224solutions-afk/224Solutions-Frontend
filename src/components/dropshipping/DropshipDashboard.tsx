@@ -161,7 +161,7 @@ export function DropshipDashboard({ stats, recentOrders }: DropshipDashboardProp
 
       {/* Indicateurs de performance */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-blue-200">
+        <Card className="bg-blue-50 border-blue-200">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
@@ -175,7 +175,7 @@ export function DropshipDashboard({ stats, recentOrders }: DropshipDashboardProp
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-[#ff4000] dark:to-[#ff4000] border-orange-200">
+        <Card className="bg-orange-50 border-orange-200">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-[#ff4000]/20 flex items-center justify-center">
@@ -189,7 +189,7 @@ export function DropshipDashboard({ stats, recentOrders }: DropshipDashboardProp
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-[#04439e] dark:to-[#04439e] border-blue-200">
+        <Card className="bg-blue-50 border-blue-200">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-[#04439e]/20 flex items-center justify-center">

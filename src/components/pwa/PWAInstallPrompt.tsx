@@ -76,7 +76,7 @@ function PWAInstallPromptInner() {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50 md:left-auto md:right-4 md:max-w-md animate-in slide-in-from-bottom-5 duration-500">
-      <Card className="border-2 border-primary shadow-2xl bg-gradient-to-br from-primary/5 to-accent/5">
+      <Card className="border-2 border-primary shadow-2xl bg-primary/5">
         <CardContent className="p-4">
           <div className="flex items-start gap-3">
             {/* Icône */}
@@ -89,7 +89,7 @@ function PWAInstallPromptInner() {
                   const img = e.target as HTMLImageElement;
                   img.style.display = 'none';
                   if (img.parentElement) {
-                    img.parentElement.className = 'w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 shadow-lg';
+                    img.parentElement.className = 'w-12 h-12 rounded-xl bg-[#04439e] flex items-center justify-center flex-shrink-0 shadow-lg';
                   }
                 }}
               />

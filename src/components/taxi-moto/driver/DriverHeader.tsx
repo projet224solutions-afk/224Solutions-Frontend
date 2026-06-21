@@ -41,9 +41,9 @@ export function DriverHeader({
   };
 
   return (
-    <header className="relative bg-gradient-to-r from-gray-900 via-gray-900 to-gray-800 text-white sticky top-0 z-40 w-full overflow-hidden">
+    <header className="relative bg-gray-900 text-white sticky top-0 z-40 w-full overflow-hidden">
       {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#ff4000]/5 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-[#ff4000]/5 to-transparent pointer-events-none" />
 
       <div className="relative px-3 py-2.5 safe-area-inset-top w-full">
         <div className="flex items-center justify-between gap-2 w-full">
@@ -64,7 +64,7 @@ export function DriverHeader({
             <div className="relative shrink-0">
               <div className={cn(
                 "w-10 h-10 rounded-full flex items-center justify-center text-base font-bold",
-                "bg-gradient-to-br from-[#ff4000] via-[#ff4000] to-[#ff4000]",
+                "bg-[#ff4000]",
                 "shadow-lg shadow-[#ff4000]/30",
                 "ring-2 ring-offset-1 ring-offset-gray-900",
                 isOnline ? "ring-[#ff4000]" : "ring-gray-600"

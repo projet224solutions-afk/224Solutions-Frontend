@@ -65,7 +65,7 @@ export function BureauOverviewContent({ bureau, stats, walletBalance = 0 }: Bure
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Bureau Profile Card */}
         <Card className="lg:col-span-2 border-0 shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-50 border-b">
+          <CardHeader className="bg-[#ff4000]/5 border-b">
             <CardTitle className="flex items-center gap-2 text-slate-800">
               <Building2 className="w-5 h-5 text-[#ff4000]" />
               Informations Bureau
@@ -125,7 +125,7 @@ export function BureauOverviewContent({ bureau, stats, walletBalance = 0 }: Bure
                 {bureau.president_name && (
                   <div>
                     <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">{t('bureauOverviewContent.president')}</p>
-                    <Badge className="bg-gradient-to-r from-[#ff4000] to-[#ff4000] text-white">
+                    <Badge className="bg-[#ff4000] text-white">
                       {bureau.president_name}
                     </Badge>
                   </div>
@@ -137,7 +137,7 @@ export function BureauOverviewContent({ bureau, stats, walletBalance = 0 }: Bure
 
         {/* Performance Card */}
         <Card className="border-0 shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-50 border-b">
+          <CardHeader className="bg-[#ff4000]/5 border-b">
             <CardTitle className="flex items-center gap-2 text-slate-800">
               <TrendingUp className="w-5 h-5 text-[#ff4000]" />
               Performance

@@ -105,7 +105,7 @@ export function HorizontalScrollRow({
           onClick={() => scroll('left')}
           className={cn(
             'absolute left-0 top-1/2 -translate-y-1/2 z-20',
-            'bg-card/95 backdrop-blur-sm border border-border shadow-lg rounded-full',
+            'bg-card border border-border shadow-lg rounded-full',
             'flex items-center justify-center',
             'opacity-0 group-hover/scroll:opacity-100 transition-all duration-300',
             'hover:bg-white hover:text-foreground hover:scale-110',
@@ -124,7 +124,7 @@ export function HorizontalScrollRow({
           onClick={() => scroll('right')}
           className={cn(
             'absolute right-0 top-1/2 -translate-y-1/2 z-20',
-            'bg-card/95 backdrop-blur-sm border border-border shadow-lg rounded-full',
+            'bg-card border border-border shadow-lg rounded-full',
             'flex items-center justify-center',
             'opacity-0 group-hover/scroll:opacity-100 transition-all duration-300',
             'hover:bg-white hover:text-foreground hover:scale-110',

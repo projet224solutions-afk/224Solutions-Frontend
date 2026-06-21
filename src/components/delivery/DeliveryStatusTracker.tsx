@@ -152,7 +152,7 @@ export function DeliveryStatusTracker({ deliveryId, userRole }: DeliveryStatusTr
   return (
     <div className="space-y-4">
       {/* Statut actuel */}
-      <Card className="border-2 border-orange-500 bg-gradient-to-br from-orange-50 to-orange-50 dark:from-orange-950/20 dark:to-[#ff4000]/20">
+      <Card className="border-2 border-orange-500 bg-[#ff4000]/5">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg">{t('deliveryStatusTracker.suiviDeLivraison')}</CardTitle>

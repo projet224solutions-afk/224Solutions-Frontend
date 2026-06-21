@@ -61,7 +61,7 @@ export default function BeautyDiscovery() {
         <div className="space-y-3">
           {list.map((p) => (
             <Card key={p.id} className="overflow-hidden cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate(`/beaute/${p.id}`)}>
-              <div className="relative h-28 bg-gradient-to-br from-[#04439e] to-[#ff4000]">
+              <div className="relative h-28 bg-[#ff4000]">
                 {p.cover_image_url && <img src={p.cover_image_url} alt="" className="h-full w-full object-cover" />}
                 <button onClick={(e) => { e.stopPropagation(); toggle(p.id); }} className="absolute right-2 top-2 rounded-full bg-white/90 p-1.5">
                   <Heart className={`h-4 w-4 ${favIds.has(p.id) ? 'fill-[#ff4000] text-[#ff4000]' : 'text-muted-foreground'}`} />

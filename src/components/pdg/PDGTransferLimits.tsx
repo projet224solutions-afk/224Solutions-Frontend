@@ -256,7 +256,7 @@ export default function PDGTransferLimits() {
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {LIMIT_CONFIG.filter(c => c.category === 'amount').map(cfg => (
-            <Card key={cfg.key} className="border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all">
+            <Card key={cfg.key} className="border-border bg-card hover:shadow-lg transition-all">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
                   <div className={`w-8 h-8 rounded-lg bg-muted flex items-center justify-center ${cfg.color}`}>
@@ -314,7 +314,7 @@ export default function PDGTransferLimits() {
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {LIMIT_CONFIG.filter(c => c.category === 'daily').map(cfg => (
-            <Card key={cfg.key} className="border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all">
+            <Card key={cfg.key} className="border-border bg-card hover:shadow-lg transition-all">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
                   <div className={`w-8 h-8 rounded-lg bg-muted flex items-center justify-center ${cfg.color}`}>

@@ -199,7 +199,7 @@ export const SecurityComparisonPanel = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center space-y-2">
-        <Badge variant="default" className="bg-gradient-to-r from-primary to-primary-glow">
+        <Badge variant="default" className="bg-primary-glow">
           Analyse Sécurité & Fiabilité 2025
         </Badge>
         <h2 className="text-3xl font-bold">{t('securityComparisonPanel.comparaisonSecuriteECommerce')}</h2>
@@ -209,7 +209,7 @@ export const SecurityComparisonPanel = () => {
       </div>
 
       {/* Scores Globaux */}
-      <Card className="bg-gradient-to-br from-primary/5 to-primary-glow/5 border-primary/20">
+      <Card className="bg-primary/5-glow/5 border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Award className="w-5 h-5 text-primary" />
@@ -324,7 +324,7 @@ export const SecurityComparisonPanel = () => {
       {/* Notes Détaillées par Plateforme */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Amazon - Leader Mondial */}
-        <Card className="border-2 border-[#ff4000]/50 bg-gradient-to-br from-[#ff4000]/5 to-orange-500/5">
+        <Card className="border-2 border-[#ff4000]/50 bg-[#ff4000]/5">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -371,7 +371,7 @@ export const SecurityComparisonPanel = () => {
         </Card>
 
         {/* 224SOLUTIONS - Leader Africain */}
-        <Card className="border-2 border-primary bg-gradient-to-br from-primary/10 to-primary-glow/10">
+        <Card className="border-2 border-primary bg-primary/10-glow/10">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -516,7 +516,7 @@ export const SecurityComparisonPanel = () => {
       </div>
 
       {/* Verdict Final */}
-      <Card className="bg-gradient-to-r from-[#ff4000]/10 via-primary/10 to-primary-glow/10 border-2 border-primary">
+      <Card className="bg-[#ff4000]/10-glow/10 border-2 border-primary">
         <CardContent className="py-8">
           <div className="space-y-6">
             <div className="flex items-center gap-3 justify-center">
@@ -529,13 +529,13 @@ export const SecurityComparisonPanel = () => {
               <div className="text-center space-y-2">
                 <h4 className="text-lg font-bold">{t('securityComparisonPanel.classementSecuriteFiabilite')}</h4>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mt-4">
-                  <div className="p-4 bg-gradient-to-br from-[#ff4000]/20 to-orange-500/20 rounded-lg border-2 border-[#ff4000]">
+                  <div className="p-4 bg-[#ff4000]/20 rounded-lg border-2 border-[#ff4000]">
                     <div className="text-3xl mb-1">🥇</div>
                     <div className="text-xl font-bold">Amazon</div>
                     <div className="text-2xl font-bold text-[#ff4000]">9.4/10</div>
                     <p className="text-xs text-muted-foreground mt-1">Leader Mondial</p>
                   </div>
-                  <div className="p-4 bg-gradient-to-br from-primary/20 to-primary-glow/20 rounded-lg border-2 border-primary">
+                  <div className="p-4 bg-primary/20-glow/20 rounded-lg border-2 border-primary">
                     <div className="text-3xl mb-1">🥈</div>
                     <div className="text-xl font-bold">224SOLUTIONS</div>
                     <div className="text-2xl font-bold text-primary">8.5/10</div>

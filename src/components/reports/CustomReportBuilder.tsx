@@ -106,7 +106,7 @@ export function CustomReportBuilder() {
           <h2 className="text-2xl font-bold">{t('customReportBuilder.generateurDeRapportsPersonnalises')}</h2>
           <p className="text-muted-foreground">{t('customReportBuilder.creezDesRapportsSurMesure')}</p>
         </div>
-        <Badge className="bg-gradient-to-r from-primary to-primary-glow">
+        <Badge className="bg-primary-glow">
           Premium Feature
         </Badge>
       </div>

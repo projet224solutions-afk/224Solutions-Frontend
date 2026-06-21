@@ -178,7 +178,7 @@ export default function BadgeVerification() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardContent className="p-8 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
@@ -191,7 +191,7 @@ export default function BadgeVerification() {
 
   if (error || !badgeData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-[#ff4000] to-slate-900 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
         <Card className="w-full max-w-md border-orange-200">
           <CardContent className="p-8 text-center">
             <XCircle className="w-16 h-16 text-[#ff4000] mx-auto mb-4" />
@@ -213,7 +213,7 @@ export default function BadgeVerification() {
   const isExpired = new Date() > expireDate;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-4">
+    <div className="min-h-screen bg-slate-900 p-4">
       <div className="max-w-lg mx-auto space-y-4">
         {/* En-tête */}
         <div className="text-center py-6">
@@ -261,7 +261,7 @@ export default function BadgeVerification() {
           <CardContent className="p-4">
             <div className="flex items-start gap-4">
               {/* Photo */}
-              <div className="w-24 h-32 bg-gradient-to-br from-slate-100 to-slate-200 rounded-lg overflow-hidden flex-shrink-0">
+              <div className="w-24 h-32 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
                 {badgeData.driver_photo_url ? (
                   <img
                     src={badgeData.driver_photo_url}

@@ -2047,7 +2047,7 @@ export default function Auth() {
                         setSelectedRole(item.role);
                         setShowSignup(true);
                       }}
-                      className="group flex flex-col items-center p-3 bg-gradient-to-br from-orange-50 to-white rounded-xl border-2 hover:border-[#ff4000] hover:shadow-lg hover:scale-[1.02] transition-all border-orange-200"
+                      className="group flex flex-col items-center p-3 bg-[#ff4000]/5 rounded-xl border-2 hover:border-[#ff4000] hover:shadow-lg hover:scale-[1.02] transition-all border-orange-200"
                     >
                       <div className="relative mb-2 h-24 w-full overflow-hidden rounded-xl">
                         <img src={item.image} alt={item.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
@@ -2084,7 +2084,7 @@ export default function Auth() {
                     <button
                       key={service.id}
                       onClick={() => handleServiceTypeSelect(service.id)}
-                      className={`group flex flex-col items-center p-3 bg-gradient-to-br from-white to-slate-50 rounded-xl border-2 hover:border-primary hover:shadow-lg hover:scale-[1.02] transition-all ${
+                      className={`group flex flex-col items-center p-3 bg-white rounded-xl border-2 hover:border-primary hover:shadow-lg hover:scale-[1.02] transition-all ${
                         selectedServiceType === service.id ? 'border-primary ring-2 ring-primary/30 bg-primary/5' : 'border-slate-200'
                       }`}
                     >
@@ -2123,7 +2123,7 @@ export default function Auth() {
                     <button
                       key={service.id}
                       onClick={() => handleServiceTypeSelect(service.id)}
-                      className={`group flex flex-col items-center p-3 bg-gradient-to-br from-blue-50 to-white rounded-xl border-2 hover:border-[#04439e] hover:shadow-lg hover:scale-[1.02] transition-all ${
+                      className={`group flex flex-col items-center p-3 bg-white rounded-xl border-2 hover:border-[#04439e] hover:shadow-lg hover:scale-[1.02] transition-all ${
                         selectedServiceType === service.id ? 'border-[#04439e] ring-2 ring-[#04439e]/30' : 'border-blue-200'
                       }`}
                     >
@@ -2167,7 +2167,7 @@ export default function Auth() {
                           key={service.id}
                           type="button"
                           onClick={() => handleHealthSubtypeSelect(service.id)}
-                          className="group flex items-center gap-3 rounded-xl border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-white p-3 text-left transition-all hover:border-[#04439e] hover:shadow-lg"
+                          className="group flex items-center gap-3 rounded-xl border-2 border-blue-200 bg-white p-3 text-left transition-all hover:border-[#04439e] hover:shadow-lg"
                         >
                           <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
                             {service.logoImage ? (
@@ -2271,7 +2271,7 @@ export default function Auth() {
                 <div className="relative flex p-1 rounded-2xl border border-border/50">
                   {/* Indicateur animé */}
                   <div
-                    className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-gradient-to-r from-primary to-primary/90 rounded-xl shadow-lg transition-all duration-300 ease-out ${
+                    className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#04439e] rounded-xl shadow-lg transition-all duration-300 ease-out ${
                       showSignup ? 'left-[calc(50%+2px)]' : 'left-1'
                     }`}
                   />
@@ -2324,7 +2324,7 @@ export default function Auth() {
 
             {!showSignup && !showResetPassword && !showVendorTypeSelection && (
               <>
-                <div className="mb-4 p-4 bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-xl shadow-sm">
+                <div className="mb-4 p-4 bg-primary/10 border border-primary/20 rounded-xl shadow-sm">
                   <div className="flex items-start gap-3">
                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                       <Zap className="h-5 w-5 text-primary" />
@@ -2337,7 +2337,7 @@ export default function Auth() {
                     </div>
                   </div>
                 </div>
-                <div className="mb-6 p-3 bg-gradient-to-r from-orange-50 to-orange-50 border border-orange-200/60 rounded-xl">
+                <div className="mb-6 p-3 bg-[#ff4000]/5 border border-orange-200/60 rounded-xl">
                   <div className="flex items-center gap-2">
                     <AlertCircle className="h-4 w-4 text-[#ff4000] flex-shrink-0" />
                     <p className="text-[#ff4000] text-xs">
@@ -2353,7 +2353,7 @@ export default function Auth() {
             {showVendorTypeSelection && !showSignup && (
               <div className="mb-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
 
-                <div className="bg-gradient-to-br from-muted/20 via-background to-muted/10 border border-border/50 rounded-2xl p-6 shadow-sm">
+                <div className="bg-muted/10 border border-border/50 rounded-2xl p-6 shadow-sm">
                   <div className="text-center mb-5">
                     <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
                       <Store className="h-7 w-7 text-primary" />
@@ -2444,7 +2444,7 @@ export default function Auth() {
 
             {/* Types de comptes - Vendeur classique & Service */}
             {showSignupLayout && !showVendorTypeSelection && !selectedRole && (
-              <div className="mb-6 bg-gradient-to-br from-muted/20 via-background to-muted/10 border border-border/50 rounded-2xl p-5 shadow-sm">
+              <div className="mb-6 bg-muted/10 border border-border/50 rounded-2xl p-5 shadow-sm">
                 <div className="text-center mb-4">
                   <h3 className="text-sm font-bold text-foreground mb-1">{t('auth.chooseYourProfile')}</h3>
                   <p className="text-xs text-muted-foreground">{t('auth.selectMatchingAccount')}</p>
@@ -2461,7 +2461,7 @@ export default function Auth() {
                     }}
                     className={`group flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200 ${
                       selectedRole === 'vendeur' && !selectedServiceType
-                        ? 'bg-gradient-to-br from-primary to-secondary border-primary text-white shadow-lg shadow-primary/25 scale-[1.02]'
+                        ? 'bg-[#04439e] border-primary text-white shadow-lg shadow-primary/25 scale-[1.02]'
                         : 'bg-background border-border/60 hover:border-primary/50 hover:bg-primary/5'
                     }`}
                   >
@@ -2484,7 +2484,7 @@ export default function Auth() {
                     onClick={() => handleRoleClick('vendeur')}
                     className={`group flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200 ${
                       selectedRole === 'prestataire'
-                        ? 'bg-gradient-to-br from-[#ff4000] to-[#ff4000] border-[#ff4000] text-white shadow-lg shadow-[#ff4000]/25 scale-[1.02]'
+                        ? 'bg-[#ff4000] border-[#ff4000] text-white shadow-lg shadow-[#ff4000]/25 scale-[1.02]'
                         : 'bg-background border-border/60 hover:border-orange-300 hover:bg-orange-50/50'
                     }`}
                   >
@@ -2774,7 +2774,7 @@ export default function Auth() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-[#04439e] to-blue-600 hover:from-[#04439e] hover:to-blue-700 text-white"
+                  className="w-full bg-[#04439e] hover:bg-[#04439e]/90 text-white"
                   disabled={loading}
                 >
                   {loading ? (
@@ -3869,7 +3869,7 @@ export default function Auth() {
           <div className="flex flex-col items-center text-center p-8">
             {/* Cercle animé avec checkmark */}
             <div className="relative mb-6">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/30 animate-[scale-in_0.4s_ease-out]">
+              <div className="w-20 h-20 rounded-full bg-[#ff4000] flex items-center justify-center shadow-lg shadow-orange-500/30 animate-[scale-in_0.4s_ease-out]">
                 <CheckCircle2 className="h-10 w-10 text-white" />
               </div>
               {/* Pulse ring */}
@@ -3886,7 +3886,7 @@ export default function Auth() {
             {/* Barre de progression */}
             <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full"
+                className="h-full bg-[#ff4000] rounded-full"
                 style={{
                   animation: 'progress-fill 2.5s ease-in-out forwards'
                 }}

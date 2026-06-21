@@ -122,8 +122,17 @@ export function DriverLayout({ children, currentPage = 'dashboard' }: DriverLayo
             </Avatar>
             <div className="hidden md:block">
               <p className="text-sm font-medium">{driver?.full_name || profile?.first_name}</p>
-              <Badge variant={driver?.is_online ? 'default' : 'secondary'} className="text-xs">
-                {driver?.is_online ? '🟢 En ligne' : '⚪ Hors ligne'}
+              <Badge
+                className={`text-xs font-medium border-0 px-2.5 py-0.5 ${
+                  driver?.is_online
+                    ? 'bg-[#16a34a] text-white'
+                    : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
+                }`}
+              >
+                <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 align-middle ${
+                  driver?.is_online ? 'bg-white animate-pulse' : 'bg-gray-400'
+                }`} />
+                {driver?.is_online ? 'En ligne' : 'Hors ligne'}
               </Badge>
             </div>
           </div>

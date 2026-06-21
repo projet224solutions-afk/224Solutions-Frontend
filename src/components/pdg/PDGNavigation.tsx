@@ -39,7 +39,7 @@ interface NavCategory {
 const categories: NavCategory[] = [
   {
     title: 'Finance',
-    color: 'from-[#ff4000] to-[#ff7a3c]',
+    color: 'from-[#ff4000]',
     bgColor: 'bg-[#ff4000]',
     items: [
       { value: 'finance', label: 'Finance & Revenus', icon: DollarSign, permission: 'view_finance' },
@@ -51,7 +51,7 @@ const categories: NavCategory[] = [
   },
   {
     title: 'Gestion',
-    color: 'from-blue-500 to-blue-600',
+    color: 'from-blue-500',
     bgColor: 'bg-blue-500',
     items: [
       { value: 'users', label: 'Utilisateurs', icon: Users, permission: 'view_users' },
@@ -65,7 +65,7 @@ const categories: NavCategory[] = [
   },
   {
     title: 'Opérations',
-    color: 'from-[#ff4000] to-[#ff7a3c]',
+    color: 'from-[#ff4000]',
     bgColor: 'bg-[#ff4000]',
     items: [
       { value: 'agents', label: 'Agents', icon: UserCheck, permission: 'view_agents' },
@@ -88,7 +88,7 @@ const categories: NavCategory[] = [
   },
   {
     title: 'Système',
-    color: 'from-[#04439e] to-[#0a5ec9]',
+    color: 'from-[#04439e]',
     bgColor: 'bg-[#04439e]',
     items: [
       { value: 'security', label: 'Sécurité', icon: Shield, permission: 'view_security' },
@@ -107,7 +107,7 @@ const categories: NavCategory[] = [
   },
   {
     title: 'Intelligence',
-    color: 'from-[#ff4000] to-[#ff7a3c]',
+    color: 'from-[#ff4000]',
     bgColor: 'bg-[#ff4000]',
     items: [
       { value: 'ai-assistant', label: 'Assistant IA', icon: Brain, badge: true, permission: 'access_ai_assistant' },
@@ -444,7 +444,7 @@ export default function PDGNavigation({ activeTab, onTabChange, aiActive }: PDGN
       </div>
 
       {/* Barre de navigation rapide (breadcrumb style) */}
-      <Card className="bg-gradient-to-r from-muted/30 to-muted/50 backdrop-blur-sm border-primary/20">
+      <Card className="bg-muted/30 backdrop-blur-sm border-primary/20">
         <CardContent className="py-3 px-4">
           <div className="flex items-center gap-2 text-sm flex-wrap">
             <Sparkles className="w-4 h-4 text-primary" />

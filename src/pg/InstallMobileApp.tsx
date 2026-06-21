@@ -77,7 +77,7 @@ export default function InstallMobileApp() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 p-4 pb-24">
+    <div className="min-h-screen bg-blue-50 p-4 pb-24">
       <div className="max-w-2xl mx-auto py-8 space-y-6">
         {/* En-tête */}
         <div className="text-center space-y-2">
@@ -113,7 +113,7 @@ export default function InstallMobileApp() {
           <>
             {/* Bouton d'installation automatique (si disponible) */}
             {isInstallable && (
-              <Card className="border-2 border-primary shadow-lg bg-gradient-to-r from-blue-50 to-blue-50">
+              <Card className="border-2 border-primary shadow-lg bg-[#04439e]/5">
                 <CardContent className="pt-6 space-y-4">
                   <div className="text-center">
                     <span className="inline-block px-3 py-1 bg-orange-100 text-[#ff4000] rounded-full text-sm font-medium mb-2">

@@ -199,7 +199,7 @@ export function VendorDeliveriesPanel() {
     return (
       <div
         key={delivery.id}
-        className="p-4 bg-gradient-to-r from-orange-50 to-white dark:from-orange-950/20 dark:to-background rounded-lg border space-y-3"
+        className="p-4 bg-orange-50 dark:to-background rounded-lg border space-y-3"
       >
         <div className="flex items-start justify-between">
           <div className="space-y-2 flex-1">
@@ -311,7 +311,7 @@ export function VendorDeliveriesPanel() {
           </Button>
           <Button
             onClick={() => setShowShipmentManager(true)}
-            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 flex-shrink-0 h-9 text-xs md:text-sm"
+            className="bg-orange-500 flex-shrink-0 h-9 text-xs md:text-sm"
           >
             <Package className="mr-1.5 h-3.5 w-3.5" />
             <span className="hidden sm:inline">{t('vendorDeliveriesPanel.nouvelle')}</span> Expédition
@@ -321,7 +321,7 @@ export function VendorDeliveriesPanel() {
 
       {/* Statistiques - Grille mobile 2x3 */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-4">
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/20 border-blue-200 dark:border-blue-800">
+        <Card className="bg-blue-50 border-blue-200 dark:border-blue-800">
           <CardContent className="p-2.5 md:p-4">
             <div className="flex items-center justify-between">
               <div className="min-w-0">
@@ -333,7 +333,7 @@ export function VendorDeliveriesPanel() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-[#ff4000]/30 dark:to-[#ff4000]/20 border-orange-200 dark:border-[#ff4000]">
+        <Card className="bg-orange-50 border-orange-200 dark:border-[#ff4000]">
           <CardContent className="p-2.5 md:p-4">
             <div className="flex items-center justify-between">
               <div className="min-w-0">
@@ -345,7 +345,7 @@ export function VendorDeliveriesPanel() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-[#04439e]/30 dark:to-[#04439e]/20 border-blue-200 dark:border-[#04439e]">
+        <Card className="bg-blue-50 border-blue-200 dark:border-[#04439e]">
           <CardContent className="p-2.5 md:p-4">
             <div className="flex items-center justify-between">
               <div className="min-w-0">
@@ -357,7 +357,7 @@ export function VendorDeliveriesPanel() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-[#ff4000]/30 dark:to-[#ff4000]/20 border-orange-200 dark:border-[#ff4000]">
+        <Card className="bg-orange-50 border-orange-200 dark:border-[#ff4000]">
           <CardContent className="p-2.5 md:p-4">
             <div className="flex items-center justify-between">
               <div className="min-w-0">
@@ -369,7 +369,7 @@ export function VendorDeliveriesPanel() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950/30 dark:to-orange-900/20 border-orange-200 dark:border-orange-800">
+        <Card className="bg-orange-50 border-orange-200 dark:border-orange-800">
           <CardContent className="p-2.5 md:p-4">
             <div className="flex items-center justify-between">
               <div className="min-w-0">
@@ -384,7 +384,7 @@ export function VendorDeliveriesPanel() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-[#ff4000]/30 dark:to-[#ff4000]/20 border-orange-200 dark:border-[#ff4000]">
+        <Card className="bg-orange-50 border-orange-200 dark:border-[#ff4000]">
           <CardContent className="p-2.5 md:p-4">
             <div className="flex items-center justify-between">
               <div className="min-w-0">

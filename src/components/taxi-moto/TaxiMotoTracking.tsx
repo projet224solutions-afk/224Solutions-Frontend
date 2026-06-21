@@ -358,7 +358,7 @@ export default function TaxiMotoTracking({
                     {/* Barre de progression */}
                     <div className="w-full bg-secondary rounded-full h-2 mb-4">
                         <div
-                            className="bg-gradient-to-r from-primary to-[#ff4000] h-2 rounded-full transition-all duration-700"
+                            className="bg-primary h-2 rounded-full transition-all duration-700"
                             style={{ width: `${rideProgress}%` }}
                         />
                     </div>
@@ -395,7 +395,7 @@ export default function TaxiMotoTracking({
                 </CardHeader>
                 <CardContent className="p-0">
                     {/* Zone de carte visuelle */}
-                    <div className="relative h-52 bg-gradient-to-br from-blue-50 to-orange-50 dark:from-blue-950/30 dark:to-[#ff4000]/30 flex items-center justify-center overflow-hidden">
+                    <div className="relative h-52 bg-blue-50 flex items-center justify-center overflow-hidden">
 
                         {/* Fond grille style carte */}
                         <div className="absolute inset-0 opacity-10"

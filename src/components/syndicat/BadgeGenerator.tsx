@@ -281,7 +281,7 @@ export default function BadgeGenerator({ moto, bureauName, onClose }: Props) {
                 style={{ fontFamily: 'Arial, sans-serif' }}
               >
                 {/* Header avec dégradé bleu */}
-                <div className="relative h-[230px] bg-gradient-to-r from-[#04439e] via-[#04439e] to-[#04439e] px-8 pt-6">
+                <div className="relative h-[230px] bg-[#04439e] px-8 pt-6">
                   <div className="absolute top-6 right-8 text-white">
                     <div className="text-3xl font-bold tracking-widest">TAXI-MOTO DE {bureauName.toUpperCase()}</div>
                     <div className="text-xs text-right mt-1 opacity-80">224solutions</div>
@@ -292,7 +292,7 @@ export default function BadgeGenerator({ moto, bureauName, onClose }: Props) {
                 <div className="relative -mt-28 px-8">
                   <div className="flex gap-6">
                     {/* Photo */}
-                    <div className="w-[280px] h-[320px] bg-gradient-to-b from-blue-200 to-blue-100 rounded-2xl border-8 border-white shadow-xl flex items-center justify-center overflow-hidden">
+                    <div className="w-[280px] h-[320px] bg-blue-200 rounded-2xl border-8 border-white shadow-xl flex items-center justify-center overflow-hidden">
                       {badgeData.photo ? (
                         <img loading="lazy" src={badgeData.photo} alt="Photo" className="w-full h-full object-cover" />
                       ) : (

@@ -527,7 +527,7 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
           </div>
           <div className="flex gap-1 overflow-x-auto pb-1">
             <Button
-              variant={selectedCategory === null ? 'default' : 'outline'}
+              variant={selectedCategory === null ? 'filter-active' : 'filter'}
               size="sm"
               onClick={() => { setSelectedCategory(null); setSelectedSection('all'); }}
               className="whitespace-nowrap text-xs"
@@ -537,7 +537,7 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
             {categories.filter(c => c.is_active).map(cat => (
               <Button
                 key={cat.id}
-                variant={selectedCategory === cat.id ? 'default' : 'outline'}
+                variant={selectedCategory === cat.id ? 'filter-active' : 'filter'}
                 size="sm"
                 onClick={() => { setSelectedCategory(cat.id); setSelectedSection('all'); }}
                 className="whitespace-nowrap text-xs"

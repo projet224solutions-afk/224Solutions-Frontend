@@ -20,7 +20,7 @@ interface SplineBackgroundProps {
 // Loading fallback with animated gradient
 function LoadingFallback() {
   return (
-    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-primary/10 animate-pulse" />
+    <div className="absolute inset-0 bg-primary/5 animate-pulse" />
   );
 }
 
@@ -69,8 +69,8 @@ export function SplineBackground({ className, height = '130vh' }: SplineBackgrou
         className={cn('absolute inset-x-0 top-0 z-0 overflow-hidden pointer-events-none', className)}
         style={{ height }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background" />
+        <div className="absolute inset-0 bg-primary/5" />
+        <div className="absolute inset-0 bg-background/90" />
       </div>
     );
   }
@@ -105,7 +105,7 @@ export function SplineBackground({ className, height = '130vh' }: SplineBackgrou
       )}
 
       {/* Overlay gradient for text readability - extends full height */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background pointer-events-none" />
+      <div className="absolute inset-0 bg-background/70 pointer-events-none" />
     </div>
   );
 }

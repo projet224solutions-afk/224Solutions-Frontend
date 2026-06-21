@@ -191,10 +191,10 @@ export function AgentOrdersModule({ agentId, canManage = false }: AgentOrdersMod
     <div className="space-y-6">
       {/* Header */}
       <Card className="border-0 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-50 border-b">
+        <CardHeader className="bg-[#ff4000]/5 border-b">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-orange-500 to-[#ff4000] shadow-lg">
+              <div className="p-3 rounded-xl bg-[#ff4000] shadow-lg">
                 <ShoppingCart className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -211,27 +211,27 @@ export function AgentOrdersModule({ agentId, canManage = false }: AgentOrdersMod
         <CardContent className="p-6">
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-            <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-4 text-center">
+            <div className="bg-slate-100 rounded-xl p-4 text-center">
               <ShoppingCart className="w-5 h-5 text-slate-600 mx-auto mb-1" />
               <p className="text-xl font-bold text-slate-700">{stats.total}</p>
               <p className="text-xs text-slate-500">Total</p>
             </div>
-            <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl p-4 text-center">
+            <div className="bg-orange-100 rounded-xl p-4 text-center">
               <Clock className="w-5 h-5 text-[#ff4000] mx-auto mb-1" />
               <p className="text-xl font-bold text-[#ff4000]">{stats.pending}</p>
               <p className="text-xs text-[#ff4000]">En attente</p>
             </div>
-            <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl p-4 text-center">
+            <div className="bg-blue-100 rounded-xl p-4 text-center">
               <Package className="w-5 h-5 text-blue-600 mx-auto mb-1" />
               <p className="text-xl font-bold text-blue-700">{stats.processing}</p>
               <p className="text-xs text-blue-500">En cours</p>
             </div>
-            <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl p-4 text-center">
+            <div className="bg-orange-100 rounded-xl p-4 text-center">
               <CheckCircle className="w-5 h-5 text-[#ff4000] mx-auto mb-1" />
               <p className="text-xl font-bold text-[#ff4000]">{stats.completed}</p>
               <p className="text-xs text-[#ff4000]">{t('agentOrdersModule.terminees')}</p>
             </div>
-            <div className="bg-gradient-to-br from-blue-100 to-orange-200 rounded-xl p-4 text-center">
+            <div className="bg-blue-100 rounded-xl p-4 text-center">
               <DollarSign className="w-5 h-5 text-[#04439e] mx-auto mb-1" />
               <p className="text-lg font-bold text-[#04439e]">{formatAmount(stats.totalAmount)}</p>
               <p className="text-xs text-[#04439e]">Volume total</p>

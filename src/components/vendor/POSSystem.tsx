@@ -1820,7 +1820,7 @@ export function POSSystem() {
       <div className="border-b border-border/50 flex-shrink-0 w-full max-w-full">
         <div className="flex items-center justify-between px-3 py-2 md:p-6 max-w-full overflow-hidden">
           <div className="flex items-center gap-2 md:gap-4">
-            <div className="w-8 h-8 md:w-14 md:h-14 bg-gradient-to-br from-primary to-primary/80 rounded-lg md:rounded-xl flex items-center justify-center shadow-lg overflow-hidden flex-shrink-0">
+            <div className="w-8 h-8 md:w-14 md:h-14 bg-primary rounded-lg md:rounded-xl flex items-center justify-center shadow-lg overflow-hidden flex-shrink-0">
               {settings?.logo_url ? (
                 <img
                   src={settings.logo_url}
@@ -2079,7 +2079,7 @@ export function POSSystem() {
                     variant="default"
                     size="icon"
                     onClick={() => setShowBarcodeScanner(true)}
-                    className="h-10 w-10 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-md"
+                    className="h-10 w-10 bg-primary shadow-md"
                     title={t('pOSSystem.scannerUnProduit')}
                   >
                     <Scan className="h-5 w-5" />
@@ -2123,7 +2123,7 @@ export function POSSystem() {
                 ) : (
                   <>
                     <Button
-                      variant={selectedCategory === 'all' ? 'default' : 'outline'}
+                      variant={selectedCategory === 'all' ? 'filter-active' : 'filter'}
                       size="sm"
                       onClick={() => setSelectedCategory('all')}
                       className="shadow-sm transition-all duration-200 hover:shadow-md flex-shrink-0 text-xs whitespace-nowrap"
@@ -2135,7 +2135,7 @@ export function POSSystem() {
                       return (
                         <Button
                           key={category.id}
-                          variant={selectedCategory === category.id ? 'default' : 'outline'}
+                          variant={selectedCategory === category.id ? 'filter-active' : 'filter'}
                           size="sm"
                           onClick={() => setSelectedCategory(category.id)}
                           className={`shadow-sm transition-all duration-200 hover:shadow-md flex-shrink-0 text-xs whitespace-nowrap ${
@@ -2249,7 +2249,7 @@ export function POSSystem() {
                         >
                         <CardContent className="p-0 flex flex-col">
                           {/* Image produit - Hauteur fixe pour éviter les débordements */}
-                          <div className="relative w-full h-24 md:h-28 bg-gradient-to-br from-muted/50 to-muted/30 overflow-hidden flex-shrink-0">
+                          <div className="relative w-full h-24 md:h-28 bg-muted/50 overflow-hidden flex-shrink-0">
                             {/* Badge stock (restant) */}
                             <div className="absolute top-1 right-1 z-10">
                               <Badge
@@ -2428,7 +2428,7 @@ export function POSSystem() {
           {/* Panier - Design optimisé mobile */}
           <Card className="shadow-xl border-0 bg-card overflow-hidden flex flex-col max-w-full flex-1">
             {/* En-tête compact */}
-            <div className="p-1.5 sm:p-2 bg-gradient-to-r from-primary/15 via-primary/10 to-primary/5 border-b border-primary/20 flex-shrink-0">
+            <div className="p-1.5 sm:p-2 bg-primary/15 border-b border-primary/20 flex-shrink-0">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5">
                   <div className="p-1 rounded-md bg-primary/20">
@@ -2552,7 +2552,7 @@ export function POSSystem() {
 
             {/* Section paiement ultra compacte mobile */}
             {cart.length > 0 && (
-              <div className="border-t border-primary/20 bg-gradient-to-b from-muted/20 to-background flex-shrink-0 p-3 space-y-2.5">
+              <div className="border-t border-primary/20 bg-muted/20 flex-shrink-0 p-3 space-y-2.5">
                 {/* Remise - Version compacte collapsible */}
                 <details className="group">
                   <summary className="flex items-center justify-between cursor-pointer list-none">
@@ -2654,7 +2654,7 @@ export function POSSystem() {
                 </div>
 
                 {paymentMethod === 'mobile_money' && (
-                  <div className="space-y-2 p-2 bg-gradient-to-r from-orange-50 to-orange-50 dark:from-orange-950/20 dark:to-[#ff4000]/20 rounded-lg border border-orange-200 dark:border-orange-800">
+                  <div className="space-y-2 p-2 bg-[#ff4000]/5 rounded-lg border border-orange-200 dark:border-orange-800">
                     <Label className="text-xs font-semibold flex items-center gap-1 text-orange-700 dark:text-orange-400">
                       <Smartphone className="h-3.5 w-3.5" />
                       Paiement Mobile Money
@@ -2703,7 +2703,7 @@ export function POSSystem() {
                 )}
 
                 {paymentMethod === 'card' && (
-                  <div className="space-y-2 p-2 bg-gradient-to-r from-blue-50 to-blue-50 dark:from-blue-950/20 dark:to-[#04439e]/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <div className="space-y-2 p-2 bg-[#04439e]/5 rounded-lg border border-blue-200 dark:border-blue-800">
                     <Label className="text-xs font-semibold flex items-center gap-1 text-blue-700 dark:text-blue-400">
                       <Shield className="h-3.5 w-3.5" />
                       Paiement par carte sécurisé

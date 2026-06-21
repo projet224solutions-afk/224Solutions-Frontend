@@ -221,7 +221,7 @@ export function AgentWalletTransactionsManagement({ agentId }: AgentWalletTransa
     <div className="space-y-6">
       {/* Header avec solde */}
       <Card className="border-0 shadow-lg overflow-hidden">
-        <div className="bg-gradient-to-r from-[#ff4000] to-[#ff4000] p-6">
+        <div className="bg-[#ff4000] p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-white/80 text-sm mb-1">{t('agentWalletTransactionsManagement.soldeDisponible')}</p>

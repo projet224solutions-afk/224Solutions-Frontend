@@ -68,7 +68,7 @@ export const TrendingProducts = ({
           >
             <Card className="hover:shadow-lg transition-all hover:scale-105 cursor-pointer relative">
               {index < 3 && (
-                <Badge className="absolute top-2 left-2 z-10 bg-gradient-to-r from-[#ff4000] to-orange-500">
+                <Badge className="absolute top-2 left-2 z-10 bg-[#ff4000]">
                   #{index + 1}
                 </Badge>
               )}

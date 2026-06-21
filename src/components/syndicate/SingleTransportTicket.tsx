@@ -33,7 +33,7 @@ export default function SingleTransportTicket({ ticketNumber, config, ticketType
         height: '100%',
         aspectRatio: '2.5 / 1', // Ratio paysage horizontal
         fontFamily: "'Arial', 'Helvetica', sans-serif",
-        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+        background: '#ffffff',
         border: '2px solid #1e3a5f',
         borderRadius: '4px',
         display: 'flex',

@@ -145,7 +145,7 @@ export function DownloadAppButton({ variant = 'default', className = '' }: Downl
   if (variant === 'banner') {
     return (
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground p-4 shadow-lg ${className}`}
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-primary text-primary-foreground p-4 shadow-lg ${className}`}
       >
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -198,7 +198,7 @@ export function DownloadAppButton({ variant = 'default', className = '' }: Downl
   // Variant Default (carte)
   return (
     <>
-      <div className={`bg-gradient-to-r from-primary to-primary/80 rounded-xl p-6 text-primary-foreground shadow-lg ${className}`}>
+      <div className={`bg-primary rounded-xl p-6 text-primary-foreground shadow-lg ${className}`}>
         <div className="flex items-center gap-4">
           <div className="p-3 bg-white/20 rounded-full">
             <Download className="w-8 h-8" />

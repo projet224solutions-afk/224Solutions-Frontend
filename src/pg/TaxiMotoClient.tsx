@@ -431,7 +431,7 @@ export default function TaxiMotoClient() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/5 to-background pb-20">
+    <div className="min-h-screen bg-background pb-20">
       {/* Header Responsive */}
       <header className="bg-card/90 backdrop-blur-sm border-b sticky top-0 z-40 shadow-sm">
         <div className={responsive.isMobile ? 'px-3 py-3' : 'px-6 py-4'}>

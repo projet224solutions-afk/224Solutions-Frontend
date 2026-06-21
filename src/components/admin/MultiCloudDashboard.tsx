@@ -256,7 +256,7 @@ export default function MultiCloudDashboard() {
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <div className="p-1.5 rounded-lg bg-background/80 backdrop-blur-sm">
+                      <div className="p-1.5 rounded-lg bg-background">
                         <ProvIcon className={cn('h-5 w-5', config.color)} />
                       </div>
                       <div>

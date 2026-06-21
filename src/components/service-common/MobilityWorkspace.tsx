@@ -45,7 +45,7 @@ export function MobilityWorkspace({ serviceId, jobType }: { serviceId: string; j
       <div className="grid grid-cols-3 gap-3">
         <Card className="bg-[#04439e] text-white"><CardContent className="p-3"><Navigation className="h-4 w-4 opacity-80" /><p className="text-xl font-bold mt-1">{stats.active}</p><p className="text-[11px] opacity-80">En cours</p></CardContent></Card>
         <Card className="bg-[#ff4000] text-white"><CardContent className="p-3"><Check className="h-4 w-4 opacity-80" /><p className="text-xl font-bold mt-1">{stats.completed}</p><p className="text-[11px] opacity-80">{t('mobilityWorkspace.terminees')}</p></CardContent></Card>
-        <Card className="bg-gradient-to-br from-[#ff4000] to-[#04439e] text-white"><CardContent className="p-3"><Wallet className="h-4 w-4 opacity-80" /><p className="text-base font-bold mt-1"><Money amount={stats.revenue} from="GNF" /></p><p className="text-[11px] opacity-80">{t('mobilityWorkspace.encaisse')}</p></CardContent></Card>
+        <Card className="bg-[#04439e] text-white"><CardContent className="p-3"><Wallet className="h-4 w-4 opacity-80" /><p className="text-base font-bold mt-1"><Money amount={stats.revenue} from="GNF" /></p><p className="text-[11px] opacity-80">{t('mobilityWorkspace.encaisse')}</p></CardContent></Card>
       </div>
 
       <Dialog open={show} onOpenChange={setShow}>

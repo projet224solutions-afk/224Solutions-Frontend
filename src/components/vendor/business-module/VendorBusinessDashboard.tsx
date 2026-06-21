@@ -136,7 +136,7 @@ export function VendorBusinessDashboard({
 
       {/* Onboarding pour nouveau service */}
       {!stats?.hasData && (
-        <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
+        <Card className="bg-primary/10 border-primary/20">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
@@ -216,7 +216,7 @@ export function VendorBusinessDashboard({
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-primary/20">
+        <Card className="bg-primary/10 border-primary/20">
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm text-muted-foreground font-medium">Chiffre d'affaires</span>

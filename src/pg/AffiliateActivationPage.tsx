@@ -76,7 +76,7 @@ export default function AffiliateActivationPage() {
         </div>
 
         {/* Hero Card */}
-        <Card className="border-primary/20 bg-gradient-to-br from-primary/10 via-primary/5 to-background overflow-hidden">
+        <Card className="border-primary/20 bg-primary/10 overflow-hidden">
           <CardHeader className="pb-2">
             <div className="flex items-center gap-2">
               <Badge variant="secondary" className="text-xs">

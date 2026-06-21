@@ -87,7 +87,7 @@ export default function UserActivationPage() {
 
   if (!invitationToken) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-50 to-orange-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-blue-50 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardContent className="p-6 text-center">
             <Shield className="w-16 h-16 text-[#ff4000] mx-auto mb-4" />
@@ -109,10 +109,10 @@ export default function UserActivationPage() {
 
   if (isActivated && activationResult) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-blue-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-orange-50 flex items-center justify-center p-4">
         <Card className="w-full max-w-lg">
           <CardHeader className="text-center">
-            <div className="w-20 h-20 bg-gradient-to-r from-[#ff4000] to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-20 h-20 bg-[#ff4000] rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-10 h-10 text-white" />
             </div>
             <CardTitle className="text-2xl text-[#ff4000]">
@@ -174,7 +174,7 @@ export default function UserActivationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-50 to-orange-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-blue-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
           <div className="w-20 h-20 bg-[#04439e] rounded-full flex items-center justify-center mx-auto mb-4">
@@ -236,7 +236,7 @@ export default function UserActivationPage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-blue-50 to-blue-50 p-6 rounded-lg">
+          <div className="bg-[#04439e]/5 p-6 rounded-lg">
             <h4 className="font-semibold mb-3 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-[#04439e]" />
               Ce que vous obtenez :

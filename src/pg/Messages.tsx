@@ -848,7 +848,7 @@ export default function Messages() {
         showChat ? "hidden md:flex" : "flex"
       )}>
         {/* Header liste */}
-        <header className="bg-gradient-to-r from-card to-card/95 border-b border-border sticky top-0 z-40 px-4 py-4 shadow-sm backdrop-blur-sm">
+        <header className="bg-card border-b border-border sticky top-0 z-40 px-4 py-4 shadow-sm backdrop-blur-sm">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-xl font-bold text-foreground">Messages</h1>
             <Button
@@ -1073,7 +1073,7 @@ export default function Messages() {
         {selectedConversation ? (
           <>
             {/* Header conversation */}
-            <header className="bg-gradient-to-r from-card to-card/95 border-b border-border px-3 py-3 flex items-center gap-3 sticky top-0 z-40 shadow-sm backdrop-blur-sm">
+            <header className="bg-card border-b border-border px-3 py-3 flex items-center gap-3 sticky top-0 z-40 shadow-sm backdrop-blur-sm">
               <Button
                 variant="ghost"
                 size="icon"

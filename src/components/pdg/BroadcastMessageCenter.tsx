@@ -529,7 +529,7 @@ const BroadcastMessageCenter: React.FC = () => {
                   </Button>
 
                   <Button
-                    className="w-full bg-gradient-to-r from-primary to-primary/80"
+                    className="w-full bg-primary"
                     onClick={() => setShowConfirm(true)}
                     disabled={sending || !title || !content}
                   >

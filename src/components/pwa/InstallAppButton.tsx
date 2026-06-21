@@ -320,7 +320,7 @@ export function InstallAppButton({ variant = 'default', className = '' }: Instal
   // Bouton par défaut (carte)
   return (
     <>
-      <div className={`bg-gradient-to-r from-primary to-primary/80 rounded-xl p-4 shadow-lg ${className}`}>
+      <div className={`bg-primary rounded-xl p-4 shadow-lg ${className}`}>
         <div className="flex items-center gap-4">
           <div className="p-3 bg-white/20 rounded-full">
             <Smartphone className="w-8 h-8 text-white" />

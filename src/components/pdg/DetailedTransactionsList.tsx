@@ -235,7 +235,7 @@ export default function DetailedTransactionsList() {
   }
 
   return (
-    <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+    <Card className="border-border bg-card">
       <CardHeader>
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
@@ -271,7 +271,7 @@ export default function DetailedTransactionsList() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-lg bg-gradient-to-br from-[#ff4000]/10 to-transparent border border-[#ff4000]/20">
+            <div className="p-4 rounded-lg bg-[#ff4000]/10 to-transparent border border-[#ff4000]/20">
               <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
                 <DollarSign className="w-4 h-4" />
                 Total Transactions
@@ -287,7 +287,7 @@ export default function DetailedTransactionsList() {
                 {formatAmount(filteredTransactions.reduce((sum, t) => sum + (t.amount > 0 ? t.amount : 0), 0))}
               </div>
             </div>
-            <div className="p-4 rounded-lg bg-gradient-to-br from-[#04439e]/10 to-transparent border border-[#04439e]/20">
+            <div className="p-4 rounded-lg bg-[#04439e]/10 to-transparent border border-[#04439e]/20">
               <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
                 <DollarSign className="w-4 h-4" />
                 Frais de Plateforme
@@ -309,7 +309,7 @@ export default function DetailedTransactionsList() {
             filteredTransactions.map((transaction) => (
               <div
                 key={transaction.id}
-                className="p-5 rounded-xl bg-gradient-to-br from-background to-background/50 border border-border/40 hover:border-primary/30 transition-all duration-300 hover:shadow-lg"
+                className="p-5 rounded-xl bg-background border border-border/40 hover:border-primary/30 transition-all duration-300 hover:shadow-lg"
               >
                 <div className="flex items-start justify-between gap-4">
                   {/* Partie gauche - Infos principales */}

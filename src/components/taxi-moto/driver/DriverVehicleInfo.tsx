@@ -43,14 +43,14 @@ export function DriverVehicleInfo({
   return (
     <div className={cn(
       "relative overflow-hidden",
-      "bg-gradient-to-br from-gray-800/50 to-gray-900/50",
+      "bg-gray-800/50",
       "backdrop-blur-sm",
       "rounded-xl p-3",
       "border border-gray-700/50",
       className
     )}>
       {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-[#04439e]/5" />
+      <div className="absolute inset-0 bg-blue-500/5/5" />
 
       <div className="relative">
         {/* Header compact */}

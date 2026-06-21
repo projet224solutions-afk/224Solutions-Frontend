@@ -59,7 +59,7 @@ export default function BeautySalon() {
   return (
     <div className="mx-auto max-w-2xl pb-24">
       {/* Couverture */}
-      <div className="relative h-44 bg-gradient-to-br from-[#04439e] to-[#ff4000]">
+      <div className="relative h-44 bg-[#ff4000]">
         {salon.cover_image_url && <img src={salon.cover_image_url} alt="" className="h-full w-full object-cover" />}
         <Button variant="ghost" size="icon" className="absolute left-2 top-2 bg-white/80" onClick={() => navigate(-1)}><ArrowLeft className="h-4 w-4" /></Button>
         {serviceId && <button onClick={() => toggle(serviceId)} className="absolute right-2 top-2 rounded-full bg-white/90 p-2"><Heart className={`h-5 w-5 ${isFav ? 'fill-[#ff4000] text-[#ff4000]' : 'text-muted-foreground'}`} /></button>}

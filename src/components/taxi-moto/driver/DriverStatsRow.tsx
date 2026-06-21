@@ -86,7 +86,7 @@ export function DriverStatsRow({
             disabled={!stat.clickable}
             className={cn(
               "relative overflow-hidden",
-              "bg-gradient-to-br from-gray-800/80 to-gray-900/80",
+              "bg-gray-800/80",
               "backdrop-blur-sm",
               "rounded-xl p-1.5",
               "border border-gray-700/50",

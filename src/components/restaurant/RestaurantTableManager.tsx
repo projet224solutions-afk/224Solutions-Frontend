@@ -208,19 +208,19 @@ export function RestaurantTableManager({ serviceId }: RestaurantTableManagerProp
     <div className="space-y-6">
       {/* Statistiques */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-[#ff4000]/20 dark:to-[#ff4000]/20 border-orange-200">
+        <Card className="bg-orange-50 border-orange-200">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-[#ff4000]">{stats.available}</div>
             <div className="text-sm text-[#ff4000]">Tables libres</div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-[#ff4000]/20 dark:to-[#ff4000]/20 border-orange-200">
+        <Card className="bg-orange-50 border-orange-200">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-[#ff4000]">{stats.occupied}</div>
             <div className="text-sm text-[#ff4000]">{t('restaurantTableManager.occupees')}</div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200">
+        <Card className="bg-blue-50 border-blue-200">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-blue-600">{stats.reserved}</div>
             <div className="text-sm text-blue-700">{t('restaurantTableManager.reservees')}</div>

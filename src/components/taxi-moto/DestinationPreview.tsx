@@ -63,7 +63,7 @@ export default function DestinationPreview({
     const pickupParsed = parseAddress(pickupAddress || 'Position actuelle');
 
     return (
-        <Card className="bg-gradient-to-br from-primary/5 to-accent/5 border-0 shadow-lg overflow-hidden">
+        <Card className="bg-primary/5 border-0 shadow-lg overflow-hidden">
             <CardContent className="p-0">
                 {/* En-tête avec trajet */}
                 <div className="bg-white/80 backdrop-blur-sm p-4 border-b border-gray-100">
@@ -106,7 +106,7 @@ export default function DestinationPreview({
 
                         {/* Ligne de connexion */}
                         <div className="flex items-center gap-3 pl-4">
-                            <div className="w-0.5 h-8 bg-gradient-to-b from-[#ff4000] to-[#ff4000] rounded-full ml-3"></div>
+                            <div className="w-0.5 h-8 bg-[#ff4000] rounded-full ml-3"></div>
                             {routeInfo && (
                                 <div className="flex items-center gap-2 text-sm text-gray-500">
                                     <ArrowRight className="w-4 h-4" />

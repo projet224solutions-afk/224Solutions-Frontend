@@ -65,7 +65,7 @@ export function RideRequestNotification({
   const timeDisplay = timeAgo < 60 ? `${timeAgo}s` : `${Math.floor(timeAgo / 60)}min`;
 
   return (
-    <Card className="bg-gradient-to-br from-orange-50 to-orange-50 border-orange-300 shadow-xl animate-in slide-in-from-top duration-300">
+    <Card className="bg-[#ff4000]/5 border-orange-300 shadow-xl animate-in slide-in-from-top duration-300">
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-3">
           <div>
@@ -137,7 +137,7 @@ export function RideRequestNotification({
             }}
             size="lg"
             disabled={isAccepting}
-            className="flex-1 bg-gradient-to-r from-[#ff4000] to-[#ff4000] hover:from-[#ff4000] hover:to-[#ff4000] text-white shadow-lg font-bold text-base animate-pulse hover:animate-none transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 bg-[#ff4000] hover:bg-[#ce3d11] text-white shadow-lg font-bold text-base animate-pulse hover:animate-none transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isAccepting ? (
               <>

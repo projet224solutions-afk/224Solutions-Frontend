@@ -64,7 +64,7 @@ export function AgentOverviewContent({ agent, stats, walletBalance = 0 }: AgentO
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Agent Profile Card */}
         <Card className="lg:col-span-2 border-0 shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b">
+          <CardHeader className="bg-slate-50 border-b">
             <CardTitle className="flex items-center gap-2 text-slate-800">
               <Shield className="w-5 h-5 text-blue-600" />
               Informations Agent
@@ -144,7 +144,7 @@ export function AgentOverviewContent({ agent, stats, walletBalance = 0 }: AgentO
 
         {/* Performance Card */}
         <Card className="border-0 shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-50 border-b">
+          <CardHeader className="bg-[#ff4000]/5 border-b">
             <CardTitle className="flex items-center gap-2 text-slate-800">
               <TrendingUp className="w-5 h-5 text-[#ff4000]" />
               Performance

@@ -282,7 +282,7 @@ export function VendorDeliveryManagement() {
                   <div className="mt-4 flex gap-2">
                     {order.status === 'pending' && !order.ready_for_pickup && (
                       <Button
-                        className="flex-1 bg-gradient-to-r from-orange-500 to-[#ff4000]"
+                        className="flex-1 bg-[#ff4000]"
                         onClick={() => markReadyForPickup(order.id)}
                         disabled={generatingCode === order.id}
                       >
