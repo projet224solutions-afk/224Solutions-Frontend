@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 ﻿import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -51,6 +52,7 @@ interface NavItem {
 }
 
 export default function VendorAgentInterface() {
+  const { t } = useTranslation();
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -64,7 +66,7 @@ export default function VendorAgentInterface() {
 
   useEffect(() => {
     if (!token) {
-      toast.error('Token d\'accès manquant');
+      toast.error(t('vendorAgentInterface.tokenDAccesManquant'));
       setLoading(false);
       return;
     }
@@ -86,12 +88,12 @@ export default function VendorAgentInterface() {
       }
 
       if (!agentData) {
-        toast.error('Agent non trouvé. Vérifiez le lien d\'accès.');
+        toast.error(t('vendorAgentInterface.agentNonTrouveVerifiezLe'));
         return;
       }
 
       if (!agentData.is_active) {
-        toast.error('Ce compte agent est désactivé. Contactez votre vendeur.');
+        toast.error(t('vendorAgentInterface.ceCompteAgentEstDesactive'));
         return;
       }
 
@@ -124,7 +126,7 @@ export default function VendorAgentInterface() {
       sessionStorage.removeItem('agent_session');
       sessionStorage.removeItem('agent_user');
       await supabase.auth.signOut();
-      toast.success('Déconnexion réussie');
+      toast.success(t('vendorAgentInterface.deconnexionReussie'));
       navigate('/auth', { replace: true });
     } catch (_error) {
       navigate('/auth', { replace: true });
@@ -180,7 +182,7 @@ export default function VendorAgentInterface() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-vendeur-primary/10 to-vendeur-secondary/10">
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-vendeur-primary mx-auto" />
-          <p className="text-muted-foreground">Chargement de votre espace agent...</p>
+          <p className="text-muted-foreground">{t('vendorAgentInterface.chargementDeVotreEspaceAgent')}</p>
         </div>
       </div>
     );
@@ -191,18 +193,18 @@ export default function VendorAgentInterface() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-vendeur-primary/10 to-vendeur-secondary/10 p-4">
         <Card className="w-full max-w-lg">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Accès Agent Vendeur</CardTitle>
+            <CardTitle className="text-2xl">{t('vendorAgentInterface.accesAgentVendeur')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-center text-muted-foreground">
               Aucun profil agent trouvé avec ce lien d'accès.
             </p>
             <div className="p-4 bg-muted/50 rounded-lg space-y-2 text-sm">
-              <p className="font-medium">Vérifiez que :</p>
+              <p className="font-medium">{t('vendorAgentInterface.verifiezQue')}</p>
               <ul className="list-disc list-inside text-left space-y-1 text-muted-foreground">
-                <li>Le lien d'accès est complet et correct</li>
-                <li>Votre compte agent est actif</li>
-                <li>Le lien n'a pas expiré</li>
+                <li>{t('vendorAgentInterface.leLienDAccesEst')}</li>
+                <li>{t('vendorAgentInterface.votreCompteAgentEstActif')}</li>
+                <li>{t('vendorAgentInterface.leLienNAPas')}</li>
               </ul>
             </div>
             <Button onClick={handleSignOut} className="w-full" variant="outline">
@@ -279,7 +281,7 @@ export default function VendorAgentInterface() {
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-destructive hover:bg-destructive/10 transition-colors"
         >
           <LogOut className="w-4 h-4" />
-          <span>Déconnexion</span>
+          <span>{t('vendorAgentInterface.deconnexion')}</span>
         </button>
       </div>
     </div>
@@ -312,7 +314,7 @@ export default function VendorAgentInterface() {
                 <CardTitle>POS non accessible</CardTitle>
                 <CardDescription>
                   Le système de caisse (POS) est désactivé pour ce vendeur.<br />
-                  <span className="text-sm text-muted-foreground">Motif&nbsp;: Boutique configurée en ligne uniquement ou permission manquante.</span>
+                  <span className="text-sm text-muted-foreground">{t('vendorAgentInterface.motifNbspBoutiqueConfigureeEn')}</span>
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -323,7 +325,7 @@ export default function VendorAgentInterface() {
                   <Button
                     variant="outline"
                     onClick={() => {
-                      toast.info('Demande d’activation POS envoyée à l’administrateur.');
+                      toast.info(t('vendorAgentInterface.demandeDActivationPosEnvoyee'));
                       // TODO: Envoyer une vraie demande d’activation (API/notification)
                     }}
                   >
@@ -377,7 +379,7 @@ export default function VendorAgentInterface() {
       case 'sub_agents':
         return <AgentModuleWrapper permission="manage_agents"><AgentManagement /></AgentModuleWrapper>;
       case 'settings':
-        return <AgentModuleWrapper permission="access_settings"><Card><CardHeader><CardTitle>Paramètres Agent</CardTitle><CardDescription>Configurez vos préférences</CardDescription></CardHeader><CardContent><p className="text-muted-foreground">Paramètres limités disponibles pour les agents</p></CardContent></Card></AgentModuleWrapper>;
+        return <AgentModuleWrapper permission="access_settings"><Card><CardHeader><CardTitle>{t('vendorAgentInterface.parametresAgent')}</CardTitle><CardDescription>{t('vendorAgentInterface.configurezVosPreferences')}</CardDescription></CardHeader><CardContent><p className="text-muted-foreground">{t('vendorAgentInterface.parametresLimitesDisponiblesPourLes')}</p></CardContent></Card></AgentModuleWrapper>;
       default:
         return null;
     }
@@ -512,6 +514,7 @@ function OverviewContent({ agent, hasPermission, canAccessPOS, onTabChange }: {
   canAccessPOS: boolean;
   onTabChange: (tab: string) => void;
 }) {
+  const { t } = useTranslation();
   const isMobile = useIsMobile();
 
   const moduleButtons: { id: string; icon: React.ElementType; label: string; permission?: string; disabled?: boolean }[] = [
@@ -542,7 +545,7 @@ function OverviewContent({ agent, hasPermission, canAccessPOS, onTabChange }: {
               <span className="text-xs text-muted-foreground">Permissions</span>
             </div>
             <p className="text-xl md:text-2xl font-bold">{Object.values(agent.permissions).filter(Boolean).length}</p>
-            <p className="text-[10px] text-muted-foreground">accès actifs</p>
+            <p className="text-[10px] text-muted-foreground">{t('vendorAgentInterface.accesActifs')}</p>
           </CardContent>
         </Card>
 
@@ -564,7 +567,7 @@ function OverviewContent({ agent, hasPermission, canAccessPOS, onTabChange }: {
               <span className="text-xs text-muted-foreground">Statut</span>
             </div>
             <p className="text-xl md:text-2xl font-bold">Actif</p>
-            <p className="text-[10px] text-muted-foreground">Compte vérifié</p>
+            <p className="text-[10px] text-muted-foreground">{t('vendorAgentInterface.compteVerifie')}</p>
           </CardContent>
         </Card>
 
@@ -583,7 +586,7 @@ function OverviewContent({ agent, hasPermission, canAccessPOS, onTabChange }: {
       {/* Agent Info */}
       <Card className="border-0 shadow-sm">
         <CardHeader className="bg-vendeur-primary/5 border-b p-3 md:p-4">
-          <CardTitle className="text-sm md:text-base">Informations du Compte</CardTitle>
+          <CardTitle className="text-sm md:text-base">{t('vendorAgentInterface.informationsDuCompte')}</CardTitle>
         </CardHeader>
         <CardContent className="p-3 md:p-6">
           <div className={cn("grid gap-4", isMobile ? "grid-cols-1" : "grid-cols-2")}>
@@ -600,7 +603,7 @@ function OverviewContent({ agent, hasPermission, canAccessPOS, onTabChange }: {
               <p className="text-sm truncate">{agent.email}</p>
             </div>
             <div>
-              <p className="text-xs text-muted-foreground mb-0.5">Téléphone</p>
+              <p className="text-xs text-muted-foreground mb-0.5">{t('vendorAgentInterface.telephone')}</p>
               <p className="text-sm">{agent.phone}</p>
             </div>
             <div className={cn(isMobile ? "" : "col-span-2")}>
@@ -640,7 +643,7 @@ function OverviewContent({ agent, hasPermission, canAccessPOS, onTabChange }: {
                 )}
                 onClick={() => {
                   if (mod.disabled) {
-                    toast.error("POS verrouillé : vendeur en ligne uniquement");
+                    toast.error(t('vendorAgentInterface.posVerrouilleVendeurEnLigne'));
                     return;
                   }
                   onTabChange(mod.id);

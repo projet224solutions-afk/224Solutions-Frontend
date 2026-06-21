@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 ﻿import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { ArrowLeft, ShoppingCart, MessageCircle, Star, Shield, Truck, ExternalLink, Play, Pause, Volume2 } from "lucide-react";
@@ -20,6 +21,7 @@ import { addRecentProduct } from "@/lib/recentProductHistory";
 
 // Mini composant pour afficher l'icône certifié à côté du nom vendeur
 function VendorCertBadge({ vendorId }: { vendorId: string }) {
+  const { t } = useTranslation();
   const { isCertified } = useVendorCertificationCached(vendorId);
   if (!isCertified) return null;
   return <CertifiedIcon status="CERTIFIE" className="w-4 h-4" />;
@@ -54,6 +56,7 @@ interface Product {
 }
 
 export default function ProductDetail() {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
@@ -236,7 +239,7 @@ export default function ProductDetail() {
 
       if (error) {
         console.error('✕ [ProductDetail] Erreur chargement customer_id:', error);
-        toast.error('Erreur de chargement du profil client');
+        toast.error(t('productDetail.erreurDeChargementDuProfil'));
         return;
       }
 
@@ -245,7 +248,7 @@ export default function ProductDetail() {
         setCustomerId(data.id);
       } else {
         console.warn('⚠️ [ProductDetail] Aucun profil customer trouvé pour user:', user.id);
-        toast.error('Profil client manquant', {
+        toast.error(t('productDetail.profilClientManquant'), {
           description: 'Veuillez compléter votre profil client'
         });
       }
@@ -270,7 +273,7 @@ export default function ProductDetail() {
       setProduct(data);
     } catch (error) {
       console.error('Erreur chargement produit:', error);
-      toast.error('Impossible de charger le produit');
+      toast.error(t('productDetail.impossibleDeChargerLeProduit'));
     } finally {
       setLoading(false);
     }
@@ -281,13 +284,13 @@ export default function ProductDetail() {
 
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
-      toast.error('Veuillez vous connecter pour acheter');
+      toast.error(t('productDetail.veuillezVousConnecterPourAcheter'));
       navigate('/auth');
       return;
     }
 
     if (!customerId) {
-      toast.error('Erreur de chargement du profil');
+      toast.error(t('productDetail.erreurDeChargementDuProfil2'));
       return;
     }
 
@@ -295,26 +298,26 @@ export default function ProductDetail() {
   };
 
   const handlePaymentSuccess = () => {
-    toast.success('Commande enregistrée avec succès.', { duration: 2000 });
+    toast.success(t('productDetail.commandeEnregistreeAvecSucces'), { duration: 2000 });
     setShowPaymentModal(false);
   };
 
   const handleContact = async () => {
     const vendorUserId = product?.vendors?.user_id;
     if (!vendorUserId) {
-      toast.error('Informations du vendeur non disponibles');
+      toast.error(t('productDetail.informationsDuVendeurNonDisponibles'));
       return;
     }
 
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
-      toast.error('Veuillez vous connecter pour contacter le vendeur');
+      toast.error(t('productDetail.veuillezVousConnecterPourContacter'));
       navigate('/auth');
       return;
     }
 
     if (user.id === vendorUserId) {
-      toast.error('Vous ne pouvez pas vous envoyer un message');
+      toast.error(t('productDetail.vousNePouvezPasVous'));
       return;
     }
 
@@ -329,11 +332,11 @@ export default function ProductDetail() {
         });
 
       if (error) throw error;
-      toast.success('Message envoyé au vendeur');
+      toast.success(t('productDetail.messageEnvoyeAuVendeur'));
       navigate(`/messages?recipientId=${vendorUserId}`);
     } catch (error) {
       console.error('Erreur envoi message:', error);
-      toast.error('Erreur lors de l\'envoi du message');
+      toast.error(t('productDetail.erreurLorsDeLEnvoi'));
     }
   };
 
@@ -352,9 +355,9 @@ export default function ProductDetail() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="p-8 text-center max-w-md">
-          <h2 className="text-xl font-bold mb-4">Produit introuvable</h2>
-          <p className="text-muted-foreground mb-6">Ce produit n'existe pas ou a été supprimé.</p>
-          <Button onClick={() => navigate('/marketplace')}>Retour au marketplace</Button>
+          <h2 className="text-xl font-bold mb-4">{t('productDetail.produitIntrouvable')}</h2>
+          <p className="text-muted-foreground mb-6">{t('productDetail.ceProduitNExistePas')}</p>
+          <Button onClick={() => navigate('/marketplace')}>{t('productDetail.retourAuMarketplace')}</Button>
         </Card>
       </div>
     );
@@ -377,7 +380,7 @@ export default function ProductDetail() {
           <Button variant="ghost" size="icon" onClick={() => navigate('/marketplace')}>
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-xl font-bold text-foreground">Détails du produit</h1>
+          <h1 className="text-xl font-bold text-foreground">{t('productDetail.detailsDuProduit')}</h1>
         </div>
       </header>
 
@@ -547,7 +550,7 @@ export default function ProductDetail() {
 
             {/* Quantity */}
             <div className="flex items-center gap-4">
-              <span className="font-medium">Quantité:</span>
+              <span className="font-medium">{t('productDetail.quantite')}</span>
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
@@ -610,7 +613,7 @@ export default function ProductDetail() {
                       </span>
                       <ExternalLink className="w-4 h-4 shrink-0 text-muted-foreground group-hover:text-primary" />
                     </Link>
-                    <p className="text-xs text-muted-foreground mt-1">Cliquez pour voir la boutique</p>
+                    <p className="text-xs text-muted-foreground mt-1">{t('productDetail.cliquezPourVoirLaBoutique')}</p>
                   </div>
 
                   <ShareButton
@@ -633,14 +636,14 @@ export default function ProductDetail() {
               <div className="flex items-center gap-3 p-3 bg-accent rounded-lg">
                 <Shield className="w-8 h-8 text-primary" />
                 <div>
-                  <p className="font-medium text-sm">Paiement sécurisé</p>
-                  <p className="text-xs text-muted-foreground">100% protégé</p>
+                  <p className="font-medium text-sm">{t('productDetail.paiementSecurise')}</p>
+                  <p className="text-xs text-muted-foreground">{t('productDetail.t100Protege')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 bg-accent rounded-lg">
                 <Truck className="w-8 h-8 text-primary" />
                 <div>
-                  <p className="font-medium text-sm">Livraison rapide</p>
+                  <p className="font-medium text-sm">{t('productDetail.livraisonRapide')}</p>
                   <p className="text-xs text-muted-foreground">Sous 48h</p>
                 </div>
               </div>

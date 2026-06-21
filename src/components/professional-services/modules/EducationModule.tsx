@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🎓 MODULE ÉDUCATION / FORMATION — réel (Udemy / Coursera).
  * Cours + curriculum (leçons/PDF/vidéo) + sessions live + étudiants (progression &
@@ -34,6 +35,7 @@ const LEVELS = [{ v: 'debutant', l: 'Débutant' }, { v: 'intermediaire', l: 'Int
 const FORMATS = [{ v: 'en_ligne', l: '🖥️ En ligne' }, { v: 'presentiel', l: '🏫 Présentiel' }, { v: 'hybride', l: '🔄 Hybride' }];
 
 export function EducationModule({ serviceId, businessName }: EducationModuleProps) {
+  const { t } = useTranslation();
   const { courses, loading, createCourse, setStatus, removeCourse } = useCourses(serviceId);
   const { enrollments, setProgress, issueCertificate, stats } = useCourseStudents(serviceId);
   const { uploadFile, isUploading } = useStorageUpload();
@@ -73,13 +75,13 @@ export function EducationModule({ serviceId, businessName }: EducationModuleProp
           </div>
         </div>
         <Dialog open={showNew} onOpenChange={setShowNew}>
-          <DialogTrigger asChild><Button><Plus className="h-4 w-4 mr-2" /> Nouveau cours</Button></DialogTrigger>
+          <DialogTrigger asChild><Button><Plus className="h-4 w-4 mr-2" /> {t('educationModule.nouveauCours')}</Button></DialogTrigger>
           <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-            <DialogHeader><DialogTitle>Créer un cours</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle>{t('educationModule.creerUnCours')}</DialogTitle></DialogHeader>
             <div className="grid gap-4 py-2">
-              <div className="space-y-2"><Label>Titre</Label><Input value={form.title || ''} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Ex: Anglais des affaires B2" /></div>
+              <div className="space-y-2"><Label>Titre</Label><Input value={form.title || ''} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder={t('educationModule.exAnglaisDesAffairesB2')} /></div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2"><Label>Catégorie</Label><Input value={form.category || ''} onChange={(e) => setForm({ ...form, category: e.target.value })} placeholder="Langues, Tech…" /></div>
+                <div className="space-y-2"><Label>{t('educationModule.categorie')}</Label><Input value={form.category || ''} onChange={(e) => setForm({ ...form, category: e.target.value })} placeholder="Langues, Tech…" /></div>
                 <div className="space-y-2"><Label>Niveau</Label>
                   <Select value={form.level} onValueChange={(v) => setForm({ ...form, level: v })}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
@@ -94,7 +96,7 @@ export function EducationModule({ serviceId, businessName }: EducationModuleProp
                     <SelectContent>{FORMATS.map((f) => <SelectItem key={f.v} value={f.v}>{f.l}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-2"><Label>Durée</Label><Input value={form.duration_label || ''} onChange={(e) => setForm({ ...form, duration_label: e.target.value })} placeholder="Ex: 3 mois" /></div>
+                <div className="space-y-2"><Label>{t('educationModule.duree')}</Label><Input value={form.duration_label || ''} onChange={(e) => setForm({ ...form, duration_label: e.target.value })} placeholder="Ex: 3 mois" /></div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2"><Label>Prix (GNF)</Label><Input type="number" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} /></div>
@@ -102,7 +104,7 @@ export function EducationModule({ serviceId, businessName }: EducationModuleProp
               </div>
               <div className="space-y-2"><Label>Description</Label><Textarea value={form.description || ''} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} /></div>
               <div className="space-y-2">
-                <Label>Image de couverture</Label>
+                <Label>{t('educationModule.imageDeCouverture')}</Label>
                 <div className="flex items-center gap-3">
                   <Input type="file" accept="image/*" onChange={(e) => onCover(e.target.files?.[0])} disabled={isUploading} />
                   {isUploading && <Loader2 className="h-4 w-4 animate-spin" />}
@@ -110,13 +112,13 @@ export function EducationModule({ serviceId, businessName }: EducationModuleProp
                 </div>
               </div>
               <div className="flex items-center justify-between rounded-lg border p-3">
-                <div className="flex items-center gap-2"><Award className="h-4 w-4 text-[#ff4000]" /><Label>Certificat à la fin</Label></div>
+                <div className="flex items-center gap-2"><Award className="h-4 w-4 text-[#ff4000]" /><Label>{t('educationModule.certificatALaFin')}</Label></div>
                 <Switch checked={!!form.certificate_enabled} onCheckedChange={(v) => setForm({ ...form, certificate_enabled: v })} />
               </div>
             </div>
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setShowNew(false)}>Annuler</Button>
-              <Button onClick={submit}>Créer</Button>
+              <Button variant="outline" onClick={() => setShowNew(false)}>{t('educationModule.annuler')}</Button>
+              <Button onClick={submit}>{t('educationModule.creer')}</Button>
             </div>
           </DialogContent>
         </Dialog>
@@ -125,21 +127,21 @@ export function EducationModule({ serviceId, businessName }: EducationModuleProp
       {/* KPI */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <Card className="bg-[#04439e] text-white"><CardContent className="p-4"><BookOpen className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{activeCourses}</p><p className="text-xs opacity-80">Cours actifs</p></CardContent></Card>
-        <Card className="bg-[#ff4000] text-white"><CardContent className="p-4"><Users className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.active}</p><p className="text-xs opacity-80">Élèves actifs</p></CardContent></Card>
-        <Card className="bg-gradient-to-br from-[#ff4000] to-[#04439e] text-white"><CardContent className="p-4"><Award className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.completed}</p><p className="text-xs opacity-80">Diplômés</p></CardContent></Card>
+        <Card className="bg-[#ff4000] text-white"><CardContent className="p-4"><Users className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.active}</p><p className="text-xs opacity-80">{t('educationModule.elevesActifs')}</p></CardContent></Card>
+        <Card className="bg-gradient-to-br from-[#ff4000] to-[#04439e] text-white"><CardContent className="p-4"><Award className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.completed}</p><p className="text-xs opacity-80">{t('educationModule.diplomes')}</p></CardContent></Card>
         <Card className="bg-gradient-to-br from-[#04439e] to-[#ff4000] text-white"><CardContent className="p-4"><p className="text-lg font-bold mt-1"><Money amount={stats.revenue} from="GNF" /></p><p className="text-xs opacity-80">Revenus</p></CardContent></Card>
       </div>
 
       <Tabs defaultValue="courses">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="courses"><BookOpen className="h-4 w-4 mr-1 hidden sm:inline" /> Cours</TabsTrigger>
-          <TabsTrigger value="students"><Users className="h-4 w-4 mr-1 hidden sm:inline" /> Étudiants</TabsTrigger>
+          <TabsTrigger value="students"><Users className="h-4 w-4 mr-1 hidden sm:inline" /> {t('educationModule.etudiants')}</TabsTrigger>
         </TabsList>
 
         {/* COURS */}
         <TabsContent value="courses" className="space-y-3">
           {loading && <div className="flex justify-center py-8"><Loader2 className="h-6 w-6 animate-spin text-[#ff4000]" /></div>}
-          {!loading && courses.length === 0 && <p className="text-center text-sm text-muted-foreground py-8">Aucun cours. Créez votre premier cours.</p>}
+          {!loading && courses.length === 0 && <p className="text-center text-sm text-muted-foreground py-8">{t('educationModule.aucunCoursCreezVotrePremier')}</p>}
           {courses.map((course) => (
             <Card key={course.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-4">
@@ -160,7 +162,7 @@ export function EducationModule({ serviceId, businessName }: EducationModuleProp
                     <Button size="sm" variant="outline" onClick={() => setManageCourse(course)}><FileText className="h-4 w-4 mr-1" />Contenu</Button>
                     <div className="flex items-center gap-2">
                       <Switch checked={course.status === 'active'} onCheckedChange={(v) => setStatus(course.id, v ? 'active' : 'draft')} />
-                      <Button size="icon" variant="ghost" onClick={() => { if (confirm('Supprimer ce cours ?')) removeCourse(course.id); }}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                      <Button size="icon" variant="ghost" onClick={() => { if (confirm(t('educationModule.supprimerCeCours'))) removeCourse(course.id); }}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                     </div>
                   </div>
                 </div>
@@ -171,7 +173,7 @@ export function EducationModule({ serviceId, businessName }: EducationModuleProp
 
         {/* ÉTUDIANTS */}
         <TabsContent value="students" className="space-y-3">
-          {enrollments.length === 0 && <p className="text-center text-sm text-muted-foreground py-8">Aucune inscription pour le moment.</p>}
+          {enrollments.length === 0 && <p className="text-center text-sm text-muted-foreground py-8">{t('educationModule.aucuneInscriptionPourLeMoment')}</p>}
           {enrollments.map((e) => (
             <Card key={e.id}><CardContent className="p-4">
               <div className="flex items-start gap-3">
@@ -189,8 +191,8 @@ export function EducationModule({ serviceId, businessName }: EducationModuleProp
                   <div className="flex flex-wrap items-center gap-2 mt-2">
                     {[25, 50, 75, 100].map((p) => <Button key={p} size="sm" variant="outline" className="h-6 px-2 text-[11px]" onClick={() => setProgress(e.id, p)}>{p}%</Button>)}
                     {e.certificate_code
-                      ? <Button size="sm" variant="outline" className="h-6 px-2 text-[11px]" onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/certificat/${e.certificate_code}`); toast.success('Lien certificat copié'); }}><Copy className="h-3 w-3 mr-1" />{e.certificate_code}</Button>
-                      : <Button size="sm" className="h-6 px-2 text-[11px]" onClick={() => issueCertificate(e.id)}><Award className="h-3 w-3 mr-1" />Délivrer le certificat</Button>}
+                      ? <Button size="sm" variant="outline" className="h-6 px-2 text-[11px]" onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/certificat/${e.certificate_code}`); toast.success(t('educationModule.lienCertificatCopie')); }}><Copy className="h-3 w-3 mr-1" />{e.certificate_code}</Button>
+                      : <Button size="sm" className="h-6 px-2 text-[11px]" onClick={() => issueCertificate(e.id)}><Award className="h-3 w-3 mr-1" />{t('educationModule.delivrerLeCertificat')}</Button>}
                   </div>
                 </div>
               </div>
@@ -206,6 +208,7 @@ export function EducationModule({ serviceId, businessName }: EducationModuleProp
 
 /** Éditeur de curriculum (leçons) + sessions live d'un cours. */
 function CourseContentDialog({ course, onClose }: { course: Course; onClose: () => void }) {
+  const { t } = useTranslation();
   const { lessons, sessions, addLesson, removeLesson, addSession, setSessionStatus } = useCourseContent(course.id);
   const { uploadFile, isUploading } = useStorageUpload();
   const [lesson, setLesson] = useState<any>({ content_type: 'video', is_preview: false });
@@ -219,7 +222,7 @@ function CourseContentDialog({ course, onClose }: { course: Course; onClose: () 
   };
 
   const submitLesson = async () => {
-    if (!lesson.title) { toast.error('Titre de la leçon requis'); return; }
+    if (!lesson.title) { toast.error(t('educationModule.titreDeLaLeconRequis')); return; }
     await addLesson({
       title: lesson.title, content_type: lesson.content_type, content_url: lesson.content_url,
       content_text: lesson.content_text, duration_minutes: Number(lesson.duration_minutes) || 0, is_preview: !!lesson.is_preview,
@@ -228,7 +231,7 @@ function CourseContentDialog({ course, onClose }: { course: Course; onClose: () 
   };
 
   const submitSession = async () => {
-    if (!sess.title || !sess.scheduled_at) { toast.error('Titre et date requis'); return; }
+    if (!sess.title || !sess.scheduled_at) { toast.error(t('educationModule.titreEtDateRequis')); return; }
     await addSession({ title: sess.title, scheduled_at: new Date(sess.scheduled_at).toISOString(), meeting_url: sess.meeting_url });
     setSess({});
   };
@@ -250,33 +253,33 @@ function CourseContentDialog({ course, onClose }: { course: Course; onClose: () 
                 <span className="text-muted-foreground">{l.position + 1}.</span>
                 {l.content_type === 'video' ? <PlayCircle className="h-4 w-4 text-[#ff4000]" /> : l.content_type === 'pdf' ? <FileText className="h-4 w-4 text-[#04439e]" /> : <BookOpen className="h-4 w-4" />}
                 <span className="flex-1 truncate">{l.title}</span>
-                {l.is_preview && <Badge variant="outline" className="gap-1 text-[10px]"><Eye className="h-3 w-3" />Aperçu</Badge>}
+                {l.is_preview && <Badge variant="outline" className="gap-1 text-[10px]"><Eye className="h-3 w-3" />{t('educationModule.apercu')}</Badge>}
                 <span className="text-xs text-muted-foreground">{l.duration_minutes}min</span>
                 <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => removeLesson(l.id)}><Trash2 className="h-3.5 w-3.5 text-destructive" /></Button>
               </div>
             ))}
             <div className="space-y-2 rounded-lg border p-3">
               <div className="grid grid-cols-2 gap-2">
-                <Input placeholder="Titre de la leçon" value={lesson.title || ''} onChange={(e) => setLesson({ ...lesson, title: e.target.value })} />
+                <Input placeholder={t('educationModule.titreDeLaLecon')} value={lesson.title || ''} onChange={(e) => setLesson({ ...lesson, title: e.target.value })} />
                 <Select value={lesson.content_type} onValueChange={(v) => setLesson({ ...lesson, content_type: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="video">Vidéo</SelectItem><SelectItem value="pdf">PDF</SelectItem>
+                    <SelectItem value="video">{t('educationModule.video')}</SelectItem><SelectItem value="pdf">PDF</SelectItem>
                     <SelectItem value="text">Texte</SelectItem><SelectItem value="live">Live</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               {lesson.content_type === 'text'
-                ? <Textarea placeholder="Contenu de la leçon" value={lesson.content_text || ''} onChange={(e) => setLesson({ ...lesson, content_text: e.target.value })} rows={3} />
+                ? <Textarea placeholder={t('educationModule.contenuDeLaLecon')} value={lesson.content_text || ''} onChange={(e) => setLesson({ ...lesson, content_text: e.target.value })} rows={3} />
                 : <div className="flex items-center gap-2">
                     <Input type="file" onChange={(e) => onLessonFile(e.target.files?.[0])} disabled={isUploading} />
                     {isUploading && <Loader2 className="h-4 w-4 animate-spin" />}
                     {lesson.content_url && <Link2 className="h-4 w-4 text-green-600" />}
                   </div>}
               <div className="flex items-center gap-3">
-                <Input type="number" className="w-28" placeholder="Durée (min)" value={lesson.duration_minutes || ''} onChange={(e) => setLesson({ ...lesson, duration_minutes: e.target.value })} />
-                <div className="flex items-center gap-2"><Switch checked={!!lesson.is_preview} onCheckedChange={(v) => setLesson({ ...lesson, is_preview: v })} /><Label className="text-xs">Aperçu gratuit</Label></div>
-                <Button size="sm" className="ml-auto" onClick={submitLesson}><Plus className="h-4 w-4 mr-1" />Ajouter</Button>
+                <Input type="number" className="w-28" placeholder={t('educationModule.dureeMin')} value={lesson.duration_minutes || ''} onChange={(e) => setLesson({ ...lesson, duration_minutes: e.target.value })} />
+                <div className="flex items-center gap-2"><Switch checked={!!lesson.is_preview} onCheckedChange={(v) => setLesson({ ...lesson, is_preview: v })} /><Label className="text-xs">{t('educationModule.apercuGratuit')}</Label></div>
+                <Button size="sm" className="ml-auto" onClick={submitLesson}><Plus className="h-4 w-4 mr-1" />{t('educationModule.ajouter')}</Button>
               </div>
             </div>
           </TabsContent>
@@ -290,19 +293,19 @@ function CourseContentDialog({ course, onClose }: { course: Course; onClose: () 
                 <Select value={s.status} onValueChange={(v) => setSessionStatus(s.id, v as any)}>
                   <SelectTrigger className="h-7 w-28 text-xs"><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="scheduled">Planifiée</SelectItem><SelectItem value="live">En direct</SelectItem>
-                    <SelectItem value="ended">Terminée</SelectItem><SelectItem value="cancelled">Annulée</SelectItem>
+                    <SelectItem value="scheduled">{t('educationModule.planifiee')}</SelectItem><SelectItem value="live">En direct</SelectItem>
+                    <SelectItem value="ended">{t('educationModule.terminee')}</SelectItem><SelectItem value="cancelled">{t('educationModule.annulee')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             ))}
             <div className="space-y-2 rounded-lg border p-3">
-              <Input placeholder="Titre de la session" value={sess.title || ''} onChange={(e) => setSess({ ...sess, title: e.target.value })} />
+              <Input placeholder={t('educationModule.titreDeLaSession')} value={sess.title || ''} onChange={(e) => setSess({ ...sess, title: e.target.value })} />
               <div className="grid grid-cols-2 gap-2">
                 <Input type="datetime-local" value={sess.scheduled_at || ''} onChange={(e) => setSess({ ...sess, scheduled_at: e.target.value })} />
                 <Input placeholder="Lien visio (Meet/Zoom)" value={sess.meeting_url || ''} onChange={(e) => setSess({ ...sess, meeting_url: e.target.value })} />
               </div>
-              <Button size="sm" className="w-full" onClick={submitSession}><Plus className="h-4 w-4 mr-1" />Planifier la session</Button>
+              <Button size="sm" className="w-full" onClick={submitSession}><Plus className="h-4 w-4 mr-1" />{t('educationModule.planifierLaSession')}</Button>
             </div>
           </TabsContent>
         </Tabs>

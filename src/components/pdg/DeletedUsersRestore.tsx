@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🔄 RESTAURATION UTILISATEURS SUPPRIMÉS
  * Workflow: Recherche par ID/Email → Affichage profil → Restauration
@@ -147,6 +148,7 @@ function DataStatusBadge({
   icon?: React.ReactNode;
   showIfZero?: boolean;
 }) {
+  const { t } = useTranslation();
   // Ne pas afficher si count est 0 et showIfZero est false
   if (!status.exists && !showIfZero && (status.count === undefined || status.count === 0)) {
     return null;
@@ -170,6 +172,7 @@ function DataStatusBadge({
 }
 
 export default function DeletedUsersRestore() {
+  const { t } = useTranslation();
   const [deletedUsers, setDeletedUsers] = useState<DeletedUser[]>([]);
   const [activeProfiles, setActiveProfiles] = useState<ActiveProfile[]>([]);
   const [loading, setLoading] = useState(false);
@@ -211,7 +214,7 @@ export default function DeletedUsersRestore() {
       setSearched(false);
     } catch (error) {
       console.error('Erreur chargement:', error);
-      toast.error('Erreur lors du chargement');
+      toast.error(t('deletedUsersRestore.erreurLorsDuChargement'));
     } finally {
       setLoading(false);
     }
@@ -248,7 +251,7 @@ export default function DeletedUsersRestore() {
       const totalFound = (data.total_active || 0) + (data.total_archived || 0);
 
       if (totalFound === 0) {
-        toast.info('Aucun utilisateur trouvé avec ces critères');
+        toast.info(t('deletedUsersRestore.aucunUtilisateurTrouveAvecCes'));
       } else {
         if (data.total_active > 0) {
           toast.success(`${data.total_active} profil(s) actif(s) trouvé(s)`);
@@ -292,7 +295,7 @@ export default function DeletedUsersRestore() {
       toast.success(`✅ Utilisateur ${selectedUser.public_id || selectedUser.email} restauré!`);
 
       if (data?.data?.new_user_created) {
-        toast.info("Un nouveau compte a été créé. L'utilisateur devra réinitialiser son mot de passe.", {
+        toast.info(t('deletedUsersRestore.unNouveauCompteAEte'), {
           duration: 6000,
         });
       }
@@ -376,7 +379,7 @@ export default function DeletedUsersRestore() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Rechercher par ID (USR0001), email ou téléphone..."
+                placeholder={t('deletedUsersRestore.rechercherParIdUsr0001Email')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -411,7 +414,7 @@ export default function DeletedUsersRestore() {
               <UserX className="h-5 w-5 text-[#ff4000]" />
               <div>
                 <p className="text-2xl font-bold">{deletedUsers.filter(u => !u.is_restored).length}</p>
-                <p className="text-xs text-muted-foreground">À restaurer</p>
+                <p className="text-xs text-muted-foreground">{t('deletedUsersRestore.aRestaurer')}</p>
               </div>
             </div>
           </CardContent>
@@ -422,7 +425,7 @@ export default function DeletedUsersRestore() {
               <CheckCircle2 className="h-5 w-5 text-[#ff4000]" />
               <div>
                 <p className="text-2xl font-bold">{deletedUsers.filter(u => u.is_restored).length}</p>
-                <p className="text-xs text-muted-foreground">Restaurés</p>
+                <p className="text-xs text-muted-foreground">{t('deletedUsersRestore.restaures')}</p>
               </div>
             </div>
           </CardContent>
@@ -438,7 +441,7 @@ export default function DeletedUsersRestore() {
                     return exp?.status === 'warning' && !u.is_restored;
                   }).length}
                 </p>
-                <p className="text-xs text-muted-foreground">Expirent bientôt</p>
+                <p className="text-xs text-muted-foreground">{t('deletedUsersRestore.expirentBientot')}</p>
               </div>
             </div>
           </CardContent>
@@ -576,13 +579,13 @@ export default function DeletedUsersRestore() {
                         {/* Profil */}
                         <DataStatusBadge
                           status={profile.data_analysis.analysis.profile}
-                          label="Profil"
+                          label={t('deletedUsersRestore.profil')}
                           icon={<User className="h-3 w-3" />}
                         />
                         {/* Wallet */}
                         <DataStatusBadge
                           status={profile.data_analysis.analysis.wallet}
-                          label="Portefeuille"
+                          label={t('deletedUsersRestore.portefeuille')}
                           icon={<Wallet className="h-3 w-3" />}
                         />
                         {/* User IDs */}
@@ -634,7 +637,7 @@ export default function DeletedUsersRestore() {
                         {profile.data_analysis.analysis.vendor.exists && (
                           <DataStatusBadge
                             status={profile.data_analysis.analysis.vendor}
-                            label="Vendeur"
+                            label={t('deletedUsersRestore.vendeur')}
                             icon={<Package className="h-3 w-3" />}
                           />
                         )}
@@ -667,7 +670,7 @@ export default function DeletedUsersRestore() {
                         {profile.data_analysis.analysis.archived.exists && (
                           <div className="flex items-center gap-2 p-2 rounded text-xs bg-orange-500/10 text-orange-700 col-span-2">
                             <AlertTriangle className="h-3 w-3" />
-                            <span>Données supprimées archivées</span>
+                            <span>{t('deletedUsersRestore.donneesSupprimeesArchivees')}</span>
                           </div>
                         )}
                       </div>
@@ -744,12 +747,12 @@ export default function DeletedUsersRestore() {
                       {profile.has_archived_data ? (
                         <div className="flex items-center gap-2 text-orange-600">
                           <AlertTriangle className="h-4 w-4" />
-                          <span className="text-sm">Données archivées disponibles pour restauration</span>
+                          <span className="text-sm">{t('deletedUsersRestore.donneesArchiveesDisponiblesPourRestaurat')}</span>
                         </div>
                       ) : (
                         <div className="flex items-center gap-2 text-[#ff4000]">
                           <CheckCircle2 className="h-4 w-4" />
-                          <span className="text-sm">Aucune donnée supprimée détectée</span>
+                          <span className="text-sm">{t('deletedUsersRestore.aucuneDonneeSupprimeeDetectee')}</span>
                         </div>
                       )}
                     </div>
@@ -802,9 +805,9 @@ export default function DeletedUsersRestore() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Utilisateur</TableHead>
-                    <TableHead>Rôle</TableHead>
+                    <TableHead>{t('deletedUsersRestore.role')}</TableHead>
                     <TableHead>ID Public</TableHead>
-                    <TableHead>Supprimé</TableHead>
+                    <TableHead>{t('deletedUsersRestore.supprime')}</TableHead>
                     <TableHead>Expiration</TableHead>
                     <TableHead>Statut</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
@@ -966,7 +969,7 @@ export default function DeletedUsersRestore() {
                         ) : (
                           <XCircle className="h-4 w-4 text-[#ff4000]" />
                         )}
-                        <span className="font-medium">Profil utilisateur</span>
+                        <span className="font-medium">{t('deletedUsersRestore.profilUtilisateur')}</span>
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
                         {selectedProfile.data_analysis.analysis.profile.exists
@@ -988,7 +991,7 @@ export default function DeletedUsersRestore() {
                           <XCircle className="h-4 w-4 text-orange-600" />
                         )}
                         <Wallet className="h-4 w-4" />
-                        <span className="font-medium">Portefeuille</span>
+                        <span className="font-medium">{t('deletedUsersRestore.portefeuille')}</span>
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
                         {selectedProfile.data_analysis.analysis.wallet.exists
@@ -1026,7 +1029,7 @@ export default function DeletedUsersRestore() {
                     }`}>
                       <div className="flex items-center gap-2">
                         <ShoppingBag className="h-4 w-4 text-blue-600" />
-                        <span className="font-medium">Commandes</span>
+                        <span className="font-medium">{t('deletedUsersRestore.commandes')}</span>
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
                         {selectedProfile.data_analysis.analysis.orders.count || 0} commande(s) trouvée(s)
@@ -1066,7 +1069,7 @@ export default function DeletedUsersRestore() {
                       <div className="p-3 rounded-lg border border-[#04439e]/30 bg-[#04439e]/5">
                         <div className="flex items-center gap-2">
                           <Package className="h-4 w-4 text-[#04439e]" />
-                          <span className="font-medium">Boutique Vendeur</span>
+                          <span className="font-medium">{t('deletedUsersRestore.boutiqueVendeur')}</span>
                         </div>
                         <p className="text-xs text-muted-foreground mt-1">
                           Boutique associée trouvée
@@ -1241,7 +1244,7 @@ export default function DeletedUsersRestore() {
                   </h4>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <span className="text-muted-foreground">Solde:</span>
+                      <span className="text-muted-foreground">{t('deletedUsersRestore.solde')}</span>
                       <span className="ml-2 font-medium">
                         {((selectedUser.wallet_data as Record<string, unknown>)?.balance as number || 0).toLocaleString()}
                         {' '}
@@ -1260,16 +1263,16 @@ export default function DeletedUsersRestore() {
 
               {/* Informations de suppression */}
               <div className="p-4 border border-destructive/30 rounded-lg bg-destructive/5">
-                <h4 className="font-medium text-destructive mb-3">Informations de suppression</h4>
+                <h4 className="font-medium text-destructive mb-3">{t('deletedUsersRestore.informationsDeSuppression')}</h4>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-muted-foreground">Supprimé le:</span>
+                    <span className="text-muted-foreground">{t('deletedUsersRestore.supprimeLe')}</span>
                     <span className="ml-2">
                       {format(new Date(selectedUser.deleted_at), 'dd/MM/yyyy à HH:mm', { locale: fr })}
                     </span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Méthode:</span>
+                    <span className="text-muted-foreground">{t('deletedUsersRestore.methode')}</span>
                     <span className="ml-2">{selectedUser.deletion_method || 'N/A'}</span>
                   </div>
                   <div className="col-span-2">
@@ -1278,7 +1281,7 @@ export default function DeletedUsersRestore() {
                   </div>
                   {selectedUser.expires_at && (
                     <div className="col-span-2">
-                      <span className="text-muted-foreground">Expire le:</span>
+                      <span className="text-muted-foreground">{t('deletedUsersRestore.expireLe')}</span>
                       <span className={`ml-2 ${getExpirationStatus(selectedUser.expires_at)?.color}`}>
                         {format(new Date(selectedUser.expires_at), 'dd MMMM yyyy', { locale: fr })}
                         {' '}({getExpirationStatus(selectedUser.expires_at)?.text})
@@ -1297,7 +1300,7 @@ export default function DeletedUsersRestore() {
                   </h4>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <span className="text-muted-foreground">Restauré le:</span>
+                      <span className="text-muted-foreground">{t('deletedUsersRestore.restaureLe')}</span>
                       <span className="ml-2">
                         {selectedUser.restored_at
                           ? format(new Date(selectedUser.restored_at), 'dd/MM/yyyy à HH:mm', { locale: fr })
@@ -1350,19 +1353,19 @@ export default function DeletedUsersRestore() {
                 </p>
 
                 <div className="p-3 bg-muted rounded-lg text-sm">
-                  <p className="font-medium mb-2">Ce qui sera restauré:</p>
+                  <p className="font-medium mb-2">{t('deletedUsersRestore.ceQuiSeraRestaure')}</p>
                   <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                    <li>Profil utilisateur (nom, email, téléphone)</li>
+                    <li>{t('deletedUsersRestore.profilUtilisateurNomEmailTelephone')}</li>
                     <li>Identifiant public ({selectedUser?.public_id})</li>
-                    {selectedUser?.wallet_data && <li>Portefeuille et solde</li>}
-                    <li>Compte d'authentification (mot de passe à réinitialiser)</li>
+                    {selectedUser?.wallet_data && <li>{t('deletedUsersRestore.portefeuilleEtSolde')}</li>}
+                    <li>{t('deletedUsersRestore.compteDAuthentificationMotDe')}</li>
                   </ul>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Notes de restauration (optionnel)</label>
+                  <label className="text-sm font-medium">{t('deletedUsersRestore.notesDeRestaurationOptionnel')}</label>
                   <Textarea
-                    placeholder="Raison de la restauration..."
+                    placeholder={t('deletedUsersRestore.raisonDeLaRestauration')}
                     value={restoreNotes}
                     onChange={(e) => setRestoreNotes(e.target.value)}
                     className="resize-none"
@@ -1373,7 +1376,7 @@ export default function DeletedUsersRestore() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={restoring}>Annuler</AlertDialogCancel>
+            <AlertDialogCancel disabled={restoring}>{t('deletedUsersRestore.annuler')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleRestore}
               disabled={restoring}
