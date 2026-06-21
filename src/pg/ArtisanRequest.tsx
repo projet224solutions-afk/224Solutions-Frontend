@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * PARCOURS CLIENT ARTISAN — publier une demande puis comparer les devis reçus.
  * 5 étapes : métier → détails+photos → localisation → urgence/date → récapitulatif.
@@ -36,6 +37,7 @@ const URGENCIES: { code: 'normal' | 'urgent' | 'immediate'; label: string; desc:
 ];
 
 export default function ArtisanRequest() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const presetType = params.get('type') as ArtisanService | null;
@@ -43,10 +45,10 @@ export default function ArtisanRequest() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-4 p-4">
-      <Button variant="ghost" size="sm" onClick={() => navigate(-1)}><ArrowLeft className="h-4 w-4 mr-1" />Retour</Button>
+      <Button variant="ghost" size="sm" onClick={() => navigate(-1)}><ArrowLeft className="h-4 w-4 mr-1" />{t('artisanRequest.retour')}</Button>
       <Tabs defaultValue="new">
         <TabsList>
-          <TabsTrigger value="new">Nouvelle demande</TabsTrigger>
+          <TabsTrigger value="new">{t('artisanRequest.nouvelleDemande')}</TabsTrigger>
           <TabsTrigger value="mine">Mes demandes</TabsTrigger>
           <TabsTrigger value="interventions">Mes interventions</TabsTrigger>
         </TabsList>
@@ -60,6 +62,7 @@ export default function ArtisanRequest() {
 
 // ── Parcours 5 étapes ─────────────────────────────────────────────────────────
 function NewRequestFlow({ presetType }: { presetType: ArtisanService | null }) {
+  const { t } = useTranslation();
   const { createRequest } = useClientArtisanRequests();
   const { uploadFile } = useStorageUpload();
   const { userPosition, usingRealLocation } = useGeoDistance();
@@ -84,7 +87,7 @@ function NewRequestFlow({ presetType }: { presetType: ArtisanService | null }) {
     const res = await uploadFile(file, { folder: 'documents' as any, subfolder: `requests/${service ?? 'misc'}` });
     setUploading(false);
     if (res.success && res.publicUrl) setPhotos((p) => [...p, res.publicUrl!]);
-    else toast.error('Upload échoué');
+    else toast.error(t('artisanRequest.uploadEchoue'));
   };
 
   const canNext = () => {
@@ -112,7 +115,7 @@ function NewRequestFlow({ presetType }: { presetType: ArtisanService | null }) {
     return (
       <Card><CardContent className="space-y-3 py-10 text-center">
         <CheckCircle2 className="mx-auto h-12 w-12 text-green-600" />
-        <h3 className="text-lg font-semibold">Demande publiée 🎉</h3>
+        <h3 className="text-lg font-semibold">{t('artisanRequest.demandePubliee')}</h3>
         <p className="text-muted-foreground">Les artisans {service} proches vont vous envoyer leurs devis. Retrouvez-les dans l'onglet « Mes demandes ».</p>
       </CardContent></Card>
     );
@@ -144,10 +147,10 @@ function NewRequestFlow({ presetType }: { presetType: ArtisanService | null }) {
 
         {step === 1 && (
           <div className="space-y-3">
-            <div><Label>Objet de la demande *</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Ex : Fuite sous l'évier de la cuisine" /></div>
-            <div><Label>Description (détails utiles)</Label><Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} placeholder="Décrivez le problème, les dimensions, le matériel concerné…" /></div>
+            <div><Label>{t('artisanRequest.objetDeLaDemande')}</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t('artisanRequest.exFuiteSousLEvier')} /></div>
+            <div><Label>{t('artisanRequest.descriptionDetailsUtiles')}</Label><Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} placeholder={t('artisanRequest.decrivezLeProblemeLesDimensions')} /></div>
             <div>
-              <Label>Photos (recommandé)</Label>
+              <Label>{t('artisanRequest.photosRecommande')}</Label>
               <div className="flex flex-wrap gap-2 pt-1">
                 {photos.map((p, i) => (
                   <div key={i} className="relative h-20 w-20 overflow-hidden rounded-lg border">
@@ -167,7 +170,7 @@ function NewRequestFlow({ presetType }: { presetType: ArtisanService | null }) {
         {step === 2 && (
           <div className="space-y-3">
             <div><Label>Ville *</Label><Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Ex : Conakry" /></div>
-            <div><Label>Adresse / quartier</Label><Input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Ex : Kaloum, près de…" /></div>
+            <div><Label>Adresse / quartier</Label><Input value={address} onChange={(e) => setAddress(e.target.value)} placeholder={t('artisanRequest.exKaloumPresDe')} /></div>
             <p className="flex items-center gap-1 text-xs text-muted-foreground">
               <MapPin className="h-3 w-3" />{usingRealLocation ? 'Votre position GPS sera jointe pour les artisans proches.' : 'Position GPS indisponible — renseignez bien la ville.'}
             </p>
@@ -186,7 +189,7 @@ function NewRequestFlow({ presetType }: { presetType: ArtisanService | null }) {
                 </button>
               ))}
             </div>
-            <div><Label>Date souhaitée (optionnel)</Label><Input type="datetime-local" value={preferredDate} onChange={(e) => setPreferredDate(e.target.value)} /></div>
+            <div><Label>{t('artisanRequest.dateSouhaiteeOptionnel')}</Label><Input type="datetime-local" value={preferredDate} onChange={(e) => setPreferredDate(e.target.value)} /></div>
           </div>
         )}
 
@@ -204,9 +207,9 @@ function NewRequestFlow({ presetType }: { presetType: ArtisanService | null }) {
         )}
 
         <div className="flex justify-between pt-2">
-          <Button variant="outline" disabled={step === 0 || submitting} onClick={() => setStep((s) => s - 1)}><ArrowLeft className="h-4 w-4 mr-1" />Précédent</Button>
+          <Button variant="outline" disabled={step === 0 || submitting} onClick={() => setStep((s) => s - 1)}><ArrowLeft className="h-4 w-4 mr-1" />{t('artisanRequest.precedent')}</Button>
           {step < 4
-            ? <Button disabled={!canNext()} onClick={() => setStep((s) => s + 1)}>Suivant<ArrowRight className="h-4 w-4 ml-1" /></Button>
+            ? <Button disabled={!canNext()} onClick={() => setStep((s) => s + 1)}>{t('artisanRequest.suivant')}<ArrowRight className="h-4 w-4 ml-1" /></Button>
             : <Button disabled={submitting} onClick={submit}>{submitting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Send className="h-4 w-4 mr-1" />}Publier la demande</Button>}
         </div>
       </CardContent>
@@ -215,24 +218,27 @@ function NewRequestFlow({ presetType }: { presetType: ArtisanService | null }) {
 }
 
 function Row({ k, v }: { k: string; v: string }) {
+  const { t } = useTranslation();
   return <div className="flex justify-between gap-4 border-b py-1"><span className="text-muted-foreground">{k}</span><span className="text-right font-medium">{v}</span></div>;
 }
 
 // ── Mes demandes + comparaison de devis ───────────────────────────────────────
 function MyRequests() {
+  const { t } = useTranslation();
   const { requests, loading } = useClientArtisanRequests();
   if (loading) return <div className="py-10 text-center text-muted-foreground"><Loader2 className="mx-auto h-6 w-6 animate-spin" /></div>;
-  if (requests.length === 0) return <Card><CardContent className="py-10 text-center text-muted-foreground">Aucune demande pour le moment.</CardContent></Card>;
+  if (requests.length === 0) return <Card><CardContent className="py-10 text-center text-muted-foreground">{t('artisanRequest.aucuneDemandePourLeMoment')}</CardContent></Card>;
   return <div className="space-y-3">{requests.map((r) => <RequestCard key={r.id} requestId={r.id} title={r.title} status={r.status} service={r.service_type} createdAt={r.created_at} />)}</div>;
 }
 
 // ── Mes interventions : paiement acompte → validation → paiement solde ────────
 function MyInterventions() {
+  const { t } = useTranslation();
   const { interventions, loading, validate, payDeposit, payBalance } = useArtisanInterventions('client');
   const [busy, setBusy] = useState<string | null>(null);
 
   if (loading) return <div className="py-10 text-center text-muted-foreground"><Loader2 className="mx-auto h-6 w-6 animate-spin" /></div>;
-  if (interventions.length === 0) return <Card><CardContent className="py-10 text-center text-muted-foreground">Aucune intervention. Acceptez un devis pour démarrer.</CardContent></Card>;
+  if (interventions.length === 0) return <Card><CardContent className="py-10 text-center text-muted-foreground">{t('artisanRequest.aucuneInterventionAcceptezUnDevis')}</CardContent></Card>;
 
   const run = async (id: string, fn: () => Promise<boolean>) => { setBusy(id); await fn(); setBusy(null); };
 
@@ -249,7 +255,7 @@ function MyInterventions() {
               <CardTitle className="flex flex-wrap items-center gap-2 text-base">
                 <span className="capitalize">{i.service_type}</span>
                 <Badge variant="outline" className="capitalize">{i.status.replace('_', ' ')}</Badge>
-                <span className="ml-auto text-sm font-normal">Payé : <b className="text-[#ff4000]"><Money amount={i.amount_paid ?? 0} /></b></span>
+                <span className="ml-auto text-sm font-normal">{t('artisanRequest.paye')} <b className="text-[#ff4000]"><Money amount={i.amount_paid ?? 0} /></b></span>
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-wrap items-center gap-2">
@@ -258,7 +264,7 @@ function MyInterventions() {
                   {busy === i.id ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Wallet className="h-4 w-4 mr-1" />}Payer l'acompte (30%)
                 </Button>
               )}
-              {depositDone && <Badge className="bg-green-600">Acompte payé</Badge>}
+              {depositDone && <Badge className="bg-green-600">{t('artisanRequest.acomptePaye')}</Badge>}
               {canValidate && (
                 <Button size="sm" variant="outline" disabled={busy === i.id} onClick={() => run(i.id, () => validate(i.id))}>
                   <CheckCircle2 className="h-4 w-4 mr-1" />Valider l'intervention
@@ -269,7 +275,7 @@ function MyInterventions() {
                   {busy === i.id ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Wallet className="h-4 w-4 mr-1" />}Payer le solde
                 </Button>
               )}
-              {balanceDone && <Badge className="bg-green-600">Soldé ✓</Badge>}
+              {balanceDone && <Badge className="bg-green-600">{t('artisanRequest.solde')}</Badge>}
             </CardContent>
             {i.status === 'en_route' && i.artisan_id && <ArtisanLiveTracker artisanId={i.artisan_id} />}
           </Card>
@@ -281,6 +287,7 @@ function MyInterventions() {
 
 // ── Suivi GPS live de l'artisan en route (réutilise le canal Realtime du taxi) ─
 function ArtisanLiveTracker({ artisanId }: { artisanId: string }) {
+  const { t } = useTranslation();
   const { position, connected } = useTrackLocation(artisanId);
   const { userPosition } = useGeoDistance();
 
@@ -313,6 +320,7 @@ function ArtisanLiveTracker({ artisanId }: { artisanId: string }) {
 }
 
 function RequestCard({ requestId, title, status, service, createdAt }: { requestId: string; title: string; status: string; service: string; createdAt: string }) {
+  const { t } = useTranslation();
   const { quotes, acceptQuote } = useQuotesForRequest(requestId);
   const [accepting, setAccepting] = useState<string | null>(null);
   const top3 = useMemo(() => quotes.slice(0, 3), [quotes]);
@@ -330,7 +338,7 @@ function RequestCard({ requestId, title, status, service, createdAt }: { request
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {quotes.length === 0 && <p className="text-sm text-muted-foreground">En attente de devis des artisans…</p>}
+        {quotes.length === 0 && <p className="text-sm text-muted-foreground">{t('artisanRequest.enAttenteDeDevisDes')}</p>}
         {quotes.length > 0 && (
           <>
             {!accepted && <p className="mb-2 text-sm font-medium">{quotes.length} devis reçu(s) — comparez et choisissez :</p>}
@@ -345,9 +353,9 @@ function RequestCard({ requestId, title, status, service, createdAt }: { request
                     <div className="mt-1 text-[11px] text-muted-foreground">{(q.items?.length ?? 0)} ligne(s) · TVA {q.tax_rate ?? 18}%</div>
                     {q.notes && <p className="mt-1 line-clamp-2 text-[11px]">{q.notes}</p>}
                     {isAccepted
-                      ? <Badge className="mt-2 bg-green-600">Accepté</Badge>
+                      ? <Badge className="mt-2 bg-green-600">{t('artisanRequest.accepte')}</Badge>
                       : q.status === 'refused'
-                        ? <Badge variant="outline" className="mt-2">Écarté</Badge>
+                        ? <Badge variant="outline" className="mt-2">{t('artisanRequest.ecarte')}</Badge>
                         : <Button size="sm" className="mt-2 w-full" disabled={disabled || accepting === q.id} onClick={() => onAccept(q.id)}>{accepting === q.id ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Choisir'}</Button>}
                   </div>
                 );
