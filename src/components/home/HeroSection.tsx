@@ -85,7 +85,7 @@ export function HeroSection({ className }: HeroSectionProps) {
       <div className="relative z-10 px-4 pt-6 pb-8 md:pt-8 md:pb-10">
         {/* Welcome Badge */}
         <div className="flex items-center gap-2 mb-4">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/8 rounded-full border border-primary/15">
+          <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-primary tracking-wide uppercase">224Solutions</span>
           </div>
         </div>
@@ -143,8 +143,8 @@ export function HeroSection({ className }: HeroSectionProps) {
           size="lg"
           className={cn(
             'w-full gap-2 h-11 rounded-xl text-base font-medium mt-3',
-            'border-primary/25 text-primary bg-primary/5',
-            'hover:bg-primary/10 hover:border-primary/50',
+            'bg-[#04439e] text-white border-0',
+            'hover:bg-[#04439e]/90',
             'active:scale-[0.98] transition-all duration-200'
           )}
         >

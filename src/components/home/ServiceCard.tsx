@@ -61,9 +61,9 @@ export function HomeServiceCard({
           {/* Icon Container */}
           <div
             className={cn(
-              'p-3 rounded-xl bg-muted/60',
+              'p-3 rounded-xl',
               'transition-all duration-300',
-              'group-hover:scale-105 group-hover:bg-white/20',
+              'group-hover:scale-105',
               '[&_svg]:transition-colors [&_svg]:duration-300 group-hover:[&_svg]:text-white group-active:[&_svg]:text-white'
             )}
           >
@@ -75,7 +75,7 @@ export function HomeServiceCard({
             <h3 className="font-semibold text-xs text-foreground group-hover:text-white group-active:text-white transition-colors line-clamp-1">
               {title}
             </h3>
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-primary/10 text-primary group-hover:bg-white/20 group-hover:text-white group-active:text-white text-[10px] font-medium tabular-nums transition-colors">
+            <span className="inline-flex items-center text-primary group-hover:text-white group-active:text-white text-[10px] font-semibold tabular-nums transition-colors">
               {count}
             </span>
           </div>
@@ -140,7 +140,7 @@ export function HomeServiceCard({
             </p>
           )}
           <div className="flex items-center gap-2 mt-2">
-            <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tabular-nums">
+            <span className="inline-flex items-center text-primary text-xs font-semibold tabular-nums">
               {count} disponible{count !== 1 ? 's' : ''}
             </span>
           </div>

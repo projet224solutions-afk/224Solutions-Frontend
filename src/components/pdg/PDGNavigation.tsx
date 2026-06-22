@@ -231,7 +231,7 @@ export default function PDGNavigation({ activeTab, onTabChange, aiActive }: PDGN
               </Button>
             </SheetTrigger>
             <SheetContent side="bottom" className="h-[85vh] p-0 max-h-[90vh] overflow-y-auto">
-              <SheetHeader className="px-4 py-3 border-b bg-muted/30">
+              <SheetHeader className="px-4 py-3 border-b">
                 <SheetTitle className="flex items-center gap-2 text-base">
                   <Sparkles className="w-4 h-4 text-primary" />
                   Navigation PDG

@@ -340,7 +340,7 @@ export function ClientStatDetailModal({ open, onClose, statType }: ClientStatDet
 
                   if (isVendor) {
                     return (
-                      <div key={fav.id} className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border group hover:border-primary/40 hover:bg-muted/50 transition-all">
+                      <div key={fav.id} className="flex items-center gap-3 p-3 rounded-lg border border-border group hover:border-primary/40 hover:bg-muted/50 transition-all">
                         <button
                           onClick={() => {
                             onClose();
@@ -351,7 +351,7 @@ export function ClientStatDetailModal({ open, onClose, statType }: ClientStatDet
                           {fav.vendor?.logo_url ? (
                             <img src={fav.vendor.logo_url} alt="" className="w-12 h-12 rounded-lg object-cover" />
                           ) : (
-                            <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-lg flex items-center justify-center">
                               <Store className="w-5 h-5 text-primary" />
                             </div>
                           )}
@@ -379,7 +379,7 @@ export function ClientStatDetailModal({ open, onClose, statType }: ClientStatDet
                     ? (Array.isArray(fav.products.images) ? fav.products.images[0] : fav.products.images)
                     : null;
                   return (
-                    <div key={fav.id} className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border group hover:border-primary/40 hover:bg-muted/50 transition-all">
+                    <div key={fav.id} className="flex items-center gap-3 p-3 rounded-lg border border-border group hover:border-primary/40 hover:bg-muted/50 transition-all">
                       <button
                         onClick={() => {
                           onClose();

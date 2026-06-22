@@ -78,7 +78,7 @@ export function NearbyServicesSection({
       {/* Section Header */}
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+          <div className="w-10 h-10 flex items-center justify-center">
             <Zap className="w-5 h-5 text-primary" />
           </div>
           <div>
@@ -91,7 +91,7 @@ export function NearbyServicesSection({
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200/60">
+        <div className="flex items-center gap-1.5">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff4000] opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#ff4000]"></span>

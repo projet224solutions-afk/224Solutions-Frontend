@@ -29,7 +29,7 @@ export function DriverSubscriptionBanner() {
           "p-3"
         )}>
           <div className="flex items-start gap-3">
-            <div className="shrink-0 w-8 h-8 rounded-lg bg-[#ff4000]/20 flex items-center justify-center">
+            <div className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center">
               <Ban className="w-4 h-4 text-[#ff4000]" />
             </div>
             <div className="flex-1 min-w-0">
@@ -61,7 +61,7 @@ export function DriverSubscriptionBanner() {
           "p-3"
         )}>
           <div className="flex items-start gap-3">
-            <div className="shrink-0 w-8 h-8 rounded-lg bg-[#ff4000]/20 flex items-center justify-center">
+            <div className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center">
               <Clock className="w-4 h-4 text-[#ff4000]" />
             </div>
             <div className="flex-1 min-w-0">

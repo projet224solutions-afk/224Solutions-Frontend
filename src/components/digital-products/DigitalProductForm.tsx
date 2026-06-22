@@ -873,7 +873,7 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
                     <Label htmlFor="description">{t('digitalProductForm.descriptionComplete')}</Label>
                     <Button
                       type="button"
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
                       onClick={handleGenerateDescription}
                       disabled={generatingDescription || !baseData.title.trim()}
@@ -998,7 +998,7 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
                               Chaque video de cours est plafonnee a 60 minutes pour garder un format premium, digestible et compatible mobile.
                             </p>
                           </div>
-                          <Button type="button" variant="outline" size="sm" onClick={addTrainingLesson}>
+                          <Button type="button" variant="ghost" size="sm" onClick={addTrainingLesson}>
                             Ajouter un cours
                           </Button>
                         </div>
@@ -1412,9 +1412,9 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
         ) : (
           <div className="flex gap-3">
             <Button
-              variant="outline"
+              variant="ghost"
               onClick={handleBack}
-              className="h-12 flex-1 rounded-2xl border-[#d7e3f9] bg-white font-semibold text-[#04439e] hover:bg-[#f7fbff]"
+              className="h-12 flex-1 rounded-2xl bg-[#04439e]/10 font-semibold text-[#04439e] hover:bg-[#04439e]/15"
             >
               Retour
             </Button>

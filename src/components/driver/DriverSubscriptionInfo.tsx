@@ -11,7 +11,7 @@ export function DriverSubscriptionInfo() {
 
   if (loading) {
     return (
-      <Card className="bg-[#04439e]/5 border-blue-200">
+      <Card className="border-blue-200">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Calendar className="w-5 h-5 text-[#04439e]" />

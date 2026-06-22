@@ -31,10 +31,10 @@ const DigitalVendorHeader = memo(function DigitalVendorHeader({
     <header className="sticky top-0 z-40 w-full bg-transparent shadow-none">
       <div className="flex w-full min-w-0 flex-col gap-2 px-2.5 py-2 sm:gap-3 sm:px-5 sm:py-3 md:px-8">
         {/* Brand */}
-        <div className="flex items-center justify-between gap-3 min-w-0 rounded-[28px] border border-blue-200/80 bg-[linear-gradient(135deg,#ffffff_0%,#f8fbff_52%,#eef4ff_100%)] px-3 py-2 shadow-[0_14px_30px_rgba(15,23,42,0.07)] sm:px-4 sm:py-3">
+        <div className="flex items-center justify-between gap-3 min-w-0 rounded-[28px] border border-blue-200/80 bg-white px-3 py-2 shadow-[0_14px_30px_rgba(15,23,42,0.07)] sm:px-4 sm:py-3">
           <div className="flex items-center gap-3 min-w-0">
           <SidebarTrigger
-            className="h-10 w-10 rounded-2xl border border-blue-200/80 bg-white text-slate-700 shadow-[0_8px_18px_rgba(148,163,184,0.16)] hover:bg-blue-50 [&_svg]:h-4 [&_svg]:w-4 sm:h-11 sm:w-11 sm:[&_svg]:h-5 sm:[&_svg]:w-5"
+            className="h-10 w-10 rounded-2xl border border-blue-200/80 text-slate-700 hover:bg-blue-50 [&_svg]:h-4 [&_svg]:w-4 sm:h-11 sm:w-11 sm:[&_svg]:h-5 sm:[&_svg]:w-5"
             aria-label="Ouvrir/Fermer le menu"
           />
             <div className="flex h-8 w-8 items-center justify-center rounded-2xl border border-blue-100 bg-white shadow-[0_10px_24px_rgba(59,130,246,0.12)] sm:h-12 sm:w-12">
@@ -43,7 +43,7 @@ const DigitalVendorHeader = memo(function DigitalVendorHeader({
             <div className="min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="whitespace-nowrap text-xs font-semibold tracking-[0.01em] text-slate-950 sm:text-base md:text-xl">
-                  Cockpit vendeur digital
+                  Vendeur digital
                 </h1>
                 <span className="hidden rounded-full border border-[#ffb08a] bg-[#fff1e9] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#ff5a1f] sm:inline-flex">
                   Business
@@ -64,11 +64,11 @@ const DigitalVendorHeader = memo(function DigitalVendorHeader({
             </div>
           </div>
 
-          <div className="flex flex-shrink-0 items-center gap-1.5 rounded-[24px] border border-blue-200/80 bg-white/88 p-1.5 shadow-[0_10px_20px_rgba(15,23,42,0.05)] sm:gap-2">
+          <div className="flex flex-shrink-0 items-center gap-1.5 rounded-[24px] border border-blue-200/80 p-1.5 sm:gap-2">
             <Button
               variant="ghost"
               size="icon"
-              className="h-9 w-9 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 sm:h-10 sm:w-10 md:h-11 md:w-11"
+              className="h-9 w-9 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-100 sm:h-10 sm:w-10 md:h-11 md:w-11"
               onClick={() => navigate('/vendeur-digital/settings')}
               aria-label={t('digitalVendorHeader.parametres')}
             >

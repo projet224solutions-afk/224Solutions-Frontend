@@ -132,11 +132,11 @@ export function SalesModeSelector({ value, onChange, disabled, hideDirectSale }:
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
               className={cn(
-                'relative text-left rounded-2xl border-2 p-4 transition-all duration-300 h-full',
+                'relative text-left rounded-2xl p-4 transition-all duration-300 h-full shadow-sm',
                 'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#04439e]',
                 isSelected
-                  ? 'border-[rgba(4,67,158,0.22)] shadow-[0_20px_42px_rgba(4,67,158,0.12)] bg-[linear-gradient(180deg,rgba(4,67,158,0.08),#ffffff)]'
-                  : 'border-[#e8eef8] bg-white hover:border-[rgba(4,67,158,0.22)] hover:shadow-[0_16px_34px_rgba(4,67,158,0.10)]',
+                  ? 'bg-[#04439e]/5 shadow-[0_12px_30px_rgba(4,67,158,0.12)]'
+                  : 'bg-white hover:bg-[#04439e]/5 hover:shadow-md',
                 disabled && 'opacity-50 cursor-not-allowed'
               )}
             >

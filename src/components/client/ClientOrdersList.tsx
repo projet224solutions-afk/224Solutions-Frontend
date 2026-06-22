@@ -749,7 +749,7 @@ export default function ClientOrdersList() {
             <AlertDialogDescription>
               {t('orders.confirmReceptionDesc')}
               {!selectedOrderIsCashOnDelivery && (
-                <div className="mt-3 rounded-lg border border-primary/15 bg-primary/5 p-3">
+                <div className="mt-3 rounded-lg border border-primary/15 p-3">
                   <div className="text-sm text-muted-foreground">{t('orders.amountReleasedToSeller')}</div>
                   <div className="mt-1 text-lg font-semibold text-foreground">
                     {formatCurrency(sellerReceivableAmount, sellerReceivableCurrency)}

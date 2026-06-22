@@ -95,7 +95,7 @@ const DigitalVendorSidebar = memo(function DigitalVendorSidebar() {
               collapsed ? "px-2 py-3" : "px-4 py-4"
             )}>
               <div className={cn("flex items-center", collapsed ? "justify-center" : "gap-3")}>
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 shadow-[0_8px_20px_rgba(0,0,0,0.18)]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl">
                   <Laptop className="w-5 h-5 text-white" />
                 </div>
                 {!collapsed && (
@@ -106,7 +106,7 @@ const DigitalVendorSidebar = memo(function DigitalVendorSidebar() {
                 )}
               </div>
               {!collapsed && (
-                <div className="mt-4 flex items-center justify-between gap-2 rounded-2xl bg-white/10 px-3 py-2.5">
+                <div className="mt-4 flex items-center justify-between gap-2 rounded-2xl px-3 py-2.5">
                   <div>
                     <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/45">{t('digitalVendorSidebar.activiteBoutique')}</p>
                     <p className="text-sm font-semibold text-white">{products.length} références digitales</p>
@@ -195,7 +195,7 @@ const DigitalVendorSidebar = memo(function DigitalVendorSidebar() {
                 role="button"
                 tabIndex={0}
                 onClick={() => navigate('/home')}
-                className="group relative flex items-center gap-2 rounded-2xl border border-white/18 bg-white/8 px-3 py-3 text-sm font-medium text-white/60 transition-all cursor-pointer hover:bg-white/15 hover:text-white overflow-hidden"
+                className="group relative flex items-center gap-2 rounded-2xl border border-white/18 px-3 py-3 text-sm font-medium text-white/60 transition-all cursor-pointer hover:bg-white/15 hover:text-white overflow-hidden"
               >
                 <div className="absolute inset-y-0 left-0 w-[3px] rounded-r-full bg-[#ff4000] -translate-x-full transition-transform duration-200 group-hover:translate-x-0" />
                 <Home className="w-4 h-4 flex-shrink-0" />

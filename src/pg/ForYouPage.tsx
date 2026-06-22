@@ -55,6 +55,7 @@ export default function ForYouPage() {
         <AIRecommendationSection
           title={t('marketplace.selectedForYou') || 'Sélection pour vous'}
           subtitle={t('marketplace.basedOnBehavior') || 'Basé sur votre activité récente'}
+          hideIcon
           products={personalized}
           isLoading={loadingPersonalized}
           icon="sparkles"
@@ -66,6 +67,7 @@ export default function ForYouPage() {
         <AIRecommendationSection
           title={t('marketplace.trendingNow') || 'Tendances du moment'}
           subtitle={t('marketplace.trendingSubtitle') || 'Les plus populaires cette semaine'}
+          hideIcon
           products={trending}
           isLoading={loadingTrending}
           icon="trending"

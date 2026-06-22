@@ -406,7 +406,7 @@ export default function LivreurDashboard() {
       <DriverSubscriptionBanner />
 
       <DriverLayout currentPage="dashboard">
-    <div className="p-responsive bg-[#ff4000]/5">
+    <div className="p-responsive">
       {/* Listener temps réel pour nouvelles livraisons */}
       <NearbyDeliveriesListener
         enabled={!currentDelivery && !currentRide}
@@ -543,7 +543,7 @@ export default function LivreurDashboard() {
           {/* 📦 Liste des livraisons disponibles */}
           <TabsContent value="missions" className="space-y-3">
             {/* 📍 Localiser un client par ID / lien (système taxi-moto) */}
-            <Card className="border-orange-500/30 bg-[#ff4000]/5">
+            <Card className="border-orange-500/30">
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center gap-2">
                   <Navigation className="h-4 w-4 text-orange-600" />
@@ -568,7 +568,7 @@ export default function LivreurDashboard() {
 
             {/* Alerte GPS si non activé */}
             {!location && (
-              <Card className="p-4 bg-[#ff4000]/10 border-[#ff4000]/30">
+              <Card className="p-4 border-[#ff4000]/30">
                 <div className="flex items-center gap-3">
                   <AlertTriangle className="h-5 w-5 text-[#ff4000]" />
                   <div>
@@ -586,7 +586,7 @@ export default function LivreurDashboard() {
           {/* 🚚 Livraison en cours */}
           <TabsContent value="active">
             {currentDelivery ? (
-              <Card className="shadow-lg border-orange-500/30 bg-[#ff4000]/5">
+              <Card className="shadow-lg border-orange-500/30">
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div>
@@ -603,7 +603,7 @@ export default function LivreurDashboard() {
                         Livraison #{currentDelivery.id.slice(0, 8)}
                       </h3>
                       <div className="space-y-3">
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
+                        <div className="flex items-start gap-3 p-3 rounded-lg">
                           <MapPin className="h-5 w-5 flex-shrink-0 text-primary mt-0.5" />
                           <div className="flex-1">
                             <p className="font-medium">{t('livreurDashboard.pointDeCollecte')}</p>
@@ -614,7 +614,7 @@ export default function LivreurDashboard() {
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
+                        <div className="flex items-start gap-3 p-3 rounded-lg">
                           <MapPin className="h-5 w-5 flex-shrink-0 text-[#ff4000] mt-0.5" />
                           <div className="flex-1">
                             <p className="font-medium">Destination</p>
@@ -628,7 +628,7 @@ export default function LivreurDashboard() {
                       </div>
                     </div>
 
-                    <div className="p-5 bg-[#ff4000]/10 rounded-xl border border-orange-500/30">
+                    <div className="p-5 rounded-xl border border-orange-500/30">
                       <p className="text-sm text-muted-foreground mb-2 font-medium">{t('livreurDashboard.votreRemuneration')}</p>
                       <p className="text-4xl font-bold text-[#ff4000]">
                         <Money amount={currentDelivery.delivery_fee || 0} from="GNF" />
@@ -636,7 +636,7 @@ export default function LivreurDashboard() {
                     </div>
 
                     {trackingPoints.length > 0 && (
-                      <div className="p-3 bg-muted/30 rounded-lg">
+                      <div className="p-3 rounded-lg">
                         <p className="text-sm font-medium mb-1 flex items-center gap-2">
                           <Navigation className="h-4 w-4" />
                           Tracking GPS
@@ -728,7 +728,7 @@ export default function LivreurDashboard() {
                         Course #{currentRide.id.slice(0, 8)}
                       </h3>
                       <div className="space-y-3">
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
+                        <div className="flex items-start gap-3 p-3 rounded-lg">
                           <MapPin className="h-5 w-5 flex-shrink-0 text-primary mt-0.5" />
                           <div className="flex-1">
                             <p className="font-medium">{t('livreurDashboard.pointDeDepart')}</p>
@@ -739,7 +739,7 @@ export default function LivreurDashboard() {
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
+                        <div className="flex items-start gap-3 p-3 rounded-lg">
                           <MapPin className="h-5 w-5 flex-shrink-0 text-[#ff4000] mt-0.5" />
                           <div className="flex-1">
                             <p className="font-medium">Destination</p>
@@ -753,7 +753,7 @@ export default function LivreurDashboard() {
                       </div>
                     </div>
 
-                    <div className="p-4 bg-[#ff4000]/10 rounded-lg">
+                    <div className="p-4 rounded-lg">
                       <p className="text-sm text-muted-foreground mb-1">{t('livreurDashboard.prixDeLaCourse')}</p>
                       <p className="text-3xl font-bold text-[#ff4000]">
                         <Money amount={currentRide.price_total || 0} from="GNF" />
@@ -947,23 +947,23 @@ export default function LivreurDashboard() {
                     Statistiques de livraison
                   </h3>
                   <div className="space-y-3">
-                    <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                    <div className="flex justify-between items-center p-3 rounded-lg">
                       <span className="text-sm font-medium">Livraisons disponibles</span>
                       <Badge variant="secondary">{nearbyDeliveries.length}</Badge>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                    <div className="flex justify-between items-center p-3 rounded-lg">
                       <span className="text-sm font-medium">{t('livreurDashboard.livraisonEnCours')}</span>
                       <Badge variant={currentDelivery ? 'default' : 'secondary'}>
                         {currentDelivery ? '1' : '0'}
                       </Badge>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                    <div className="flex justify-between items-center p-3 rounded-lg">
                       <span className="text-sm font-medium">{t('livreurDashboard.livraisonsTerminees')}</span>
                       <Badge variant="outline">
                         {deliveryHistory.filter(d => d.status === 'delivered').length}
                       </Badge>
                     </div>
-                    <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                    <div className="flex justify-between items-center p-3 rounded-lg">
                       <span className="text-sm font-medium">Statut GPS</span>
                       <Badge variant={location ? 'default' : 'secondary'}>
                         {location ? '✓ Actif' : 'Inactif'}
@@ -1025,7 +1025,7 @@ export default function LivreurDashboard() {
               <DialogTitle>{t('livreurDashboard.traitementDuPaiement')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              <div className="p-4 bg-muted/50 rounded-lg text-center">
+              <div className="p-4 rounded-lg text-center">
                 <p className="text-sm text-muted-foreground mb-1">{t('livreurDashboard.montantAEncaisser')}</p>
                 <p className="text-3xl font-bold text-primary">
                   <Money amount={currentDelivery ? (currentDelivery.delivery_fee || 0) : (currentRide?.price_total || 0)} from="GNF" />

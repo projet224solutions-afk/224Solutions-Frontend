@@ -349,22 +349,22 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
           </CardHeader>
           <CardContent className="space-y-3 sm:space-y-4">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-              <div className="space-y-1 sm:space-y-2 p-2 sm:p-0 bg-muted/30 sm:bg-transparent rounded-lg">
+              <div className="space-y-1 sm:space-y-2 p-2 sm:p-0 sm:bg-transparent rounded-lg">
                 <p className="text-xs sm:text-sm text-muted-foreground">{t('pDGDashboardHome.produits')}</p>
                 <p className="text-xl sm:text-2xl font-bold">{stats.totalProducts || 0}</p>
                 <p className="text-[10px] sm:text-xs text-muted-foreground">{stats.activeProducts || 0} actifs</p>
               </div>
-              <div className="space-y-1 sm:space-y-2 p-2 sm:p-0 bg-muted/30 sm:bg-transparent rounded-lg">
+              <div className="space-y-1 sm:space-y-2 p-2 sm:p-0 sm:bg-transparent rounded-lg">
                 <p className="text-xs sm:text-sm text-muted-foreground">Vendeurs</p>
                 <p className="text-xl sm:text-2xl font-bold">{stats.totalVendors || 0}</p>
                 <p className="text-[10px] sm:text-xs text-muted-foreground">{stats.activeVendors || 0} actifs</p>
               </div>
-              <div className="space-y-1 sm:space-y-2 p-2 sm:p-0 bg-muted/30 sm:bg-transparent rounded-lg">
+              <div className="space-y-1 sm:space-y-2 p-2 sm:p-0 sm:bg-transparent rounded-lg">
                 <p className="text-xs sm:text-sm text-muted-foreground">Agents</p>
                 <p className="text-xl sm:text-2xl font-bold text-primary">{stats.totalAgents || 0}</p>
                 <p className="text-[10px] sm:text-xs text-muted-foreground">{stats.activeAgents || 0} actifs</p>
               </div>
-              <div className="space-y-1 sm:space-y-2 p-2 sm:p-0 bg-muted/30 sm:bg-transparent rounded-lg">
+              <div className="space-y-1 sm:space-y-2 p-2 sm:p-0 sm:bg-transparent rounded-lg">
                 <p className="text-xs sm:text-sm text-muted-foreground">Livreurs</p>
                 <p className="text-xl sm:text-2xl font-bold">{stats.totalDrivers || 0}</p>
                 <p className="text-[10px] sm:text-xs text-muted-foreground">{stats.onlineDrivers || 0} en ligne</p>
@@ -457,7 +457,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Gestion des Agents */}
         <Card
-          className="border-2 border-orange-200 bg-[#ff4000]/5 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+          className="border-2 border-orange-200 hover:shadow-xl transition-all duration-300 cursor-pointer group"
           onClick={() => onNavigate?.('agents')}
         >
           <CardHeader className="pb-4">
@@ -501,7 +501,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
 
         {/* Surveillance Logique Globale */}
         <Card
-          className="border-2 border-blue-200 bg-[#04439e]/5 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+          className="border-2 border-blue-200 hover:shadow-xl transition-all duration-300 cursor-pointer group"
           onClick={() => onNavigate?.('debug')}
         >
           <CardHeader className="pb-4">
@@ -545,7 +545,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
 
         {/* Gestion des Bureaux Syndicats */}
         <Card
-          className="border-2 border-blue-200 bg-[#04439e]/5 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+          className="border-2 border-blue-200 hover:shadow-xl transition-all duration-300 cursor-pointer group"
           onClick={() => onNavigate?.('syndicat')}
         >
           <CardHeader className="pb-4">
@@ -589,7 +589,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
 
         {/* Supervision Core (visible sur Home PDG) */}
         <Card
-          className="border-2 border-orange-200 bg-[#ff4000]/5 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+          className="border-2 border-orange-200 hover:shadow-xl transition-all duration-300 cursor-pointer group"
           onClick={() => onNavigate?.('api')}
         >
           <CardHeader className="pb-4">

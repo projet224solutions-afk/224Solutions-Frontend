@@ -37,6 +37,7 @@ interface AIRecommendationSectionProps {
   products: AIProduct[] | undefined;
   isLoading: boolean;
   icon?: 'sparkles' | 'trending' | 'clock' | 'gift';
+  hideIcon?: boolean;
   showReason?: boolean;
   seeAllLink?: string;
   maxItems?: number;
@@ -55,6 +56,7 @@ export function AIRecommendationSection({
   subtitle,
   products,
   icon = 'sparkles',
+  hideIcon = false,
   seeAllLink,
   maxItems = 12,
   className,
@@ -90,7 +92,7 @@ export function AIRecommendationSection({
       {/* Header */}
       <div className="flex items-center justify-between mb-3 px-1">
         <div className="flex items-center gap-2">
-          <Icon className="w-8 h-8 text-[#ff4000] fill-[#ff4000] shrink-0" strokeWidth={1.5} />
+          {!hideIcon && <Icon className="w-8 h-8 text-[#ff4000] fill-[#ff4000] shrink-0" strokeWidth={1.5} />}
           <div>
             <h3 className="font-semibold text-sm text-foreground">{title}</h3>
             {subtitle && (

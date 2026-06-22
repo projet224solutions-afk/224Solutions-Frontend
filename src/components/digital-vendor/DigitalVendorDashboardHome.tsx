@@ -239,14 +239,14 @@ const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
               const Icon = metric.icon;
 
               return (
-                <div key={metric.label} className="min-w-0 rounded-[18px] border border-[#04439e]/10 bg-[#04439e]/5 p-3 sm:rounded-[22px] sm:p-4">
+                <div key={metric.label} className="min-w-0 rounded-[18px] border border-[#04439e]/10 p-3 sm:rounded-[22px] sm:p-4">
                   <div className="flex items-start justify-between gap-2 sm:gap-3">
                     <div className="min-w-0 flex-1">
                       <p className="text-[9px] font-semibold uppercase tracking-[0.08em] text-[#5f78a5] min-[400px]:text-[8px] sm:text-[11px] sm:tracking-[0.18em]">{metric.label}</p>
                       <p className="mt-1.5 text-lg font-semibold text-[#0b1b33] sm:text-2xl">{metric.value}</p>
                       <p className="mt-1 text-[10px] leading-tight text-[#5f78a5] sm:text-sm">{metric.note}</p>
                     </div>
-                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl bg-[#04439e]/10 sm:h-11 sm:w-11 sm:rounded-2xl">
+                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center sm:h-11 sm:w-11">
                       <Icon className="h-4 w-4 text-[#04439e] sm:h-5 sm:w-5" />
                     </div>
                   </div>
@@ -307,9 +307,9 @@ const DigitalVendorDashboardHome = memo(function DigitalVendorDashboardHome() {
                   <div
                     key={product.id}
                     onClick={() => navigate(`/digital-product/${product.id}`)}
-                    className="flex cursor-pointer items-center gap-3 rounded-[18px] sm:rounded-[22px] border border-gray-100 bg-gray-50/50 p-3 sm:p-4 transition-all hover:-translate-y-0.5 hover:bg-gray-50 hover:border-gray-200 hover:shadow-[0_16px_36px_rgba(0,0,0,0.06)]"
+                    className="flex cursor-pointer items-center gap-3 rounded-[18px] sm:rounded-[22px] border border-gray-100 p-3 sm:p-4 transition-all hover:-translate-y-0.5 hover:bg-gray-50 hover:border-gray-200 hover:shadow-[0_16px_36px_rgba(0,0,0,0.06)]"
                   >
-                    <div className="flex h-11 w-11 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-[14px] sm:rounded-[18px] bg-[#04439e]/10">
+                    <div className="flex h-11 w-11 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-[14px] sm:rounded-[18px]">
                       <CategoryIcon className="h-6 w-6 text-[#04439e]" />
                     </div>
 

@@ -180,7 +180,7 @@ export function AffiliateForm({
               {onValidateUrl && (
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
                   onClick={onValidateUrl}
                   disabled={!data.affiliateUrl || urlValidationStatus === 'validating'}

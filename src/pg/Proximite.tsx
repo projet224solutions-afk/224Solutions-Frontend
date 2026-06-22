@@ -508,7 +508,7 @@ export default function Proximite() {
                   />
                   {/* Content */}
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 160 }}>
-                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-white/90 shadow-md">
+                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
                       {service.logoImage ? (
                         <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
                       ) : (
@@ -544,7 +544,7 @@ export default function Proximite() {
                     }}
                   />
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 160 }}>
-                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-white/90 shadow-md">
+                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
                       {service.logoImage ? (
                         <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
                       ) : (
@@ -596,7 +596,7 @@ export default function Proximite() {
                     </div>
                   )}
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 160 }}>
-                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-white/90 shadow-md">
+                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
                       {service.logoImage ? (
                         <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
                       ) : (
@@ -708,7 +708,7 @@ export default function Proximite() {
                     }}
                   />
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 150 }}>
-                    <div className="mb-1.5 flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl bg-white/90 shadow-md">
+                    <div className="mb-1.5 flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl">
                       {service.logoImage ? (
                         <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
                       ) : (

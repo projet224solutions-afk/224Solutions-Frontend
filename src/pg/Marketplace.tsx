@@ -1000,6 +1000,7 @@ export default function Marketplace() {
           <AIRecommendationSection
             title={t('marketplace.selectedForYou') || 'Sélection pour vous'}
             subtitle={t('marketplace.basedOnBehavior') || 'Basé sur votre activité récente'}
+            hideIcon
             products={aiPersonalizedF}
             isLoading={loadingAIPersonalized}
             icon="sparkles"
@@ -1011,6 +1012,7 @@ export default function Marketplace() {
           <AIRecommendationSection
             title={t('marketplace.trendingNow') || 'Tendances du moment'}
             subtitle={t('marketplace.trendingSubtitle') || 'Les plus populaires cette semaine'}
+            hideIcon
             products={aiTrendingF}
             isLoading={loadingAITrending}
             icon="trending"
@@ -1022,6 +1024,7 @@ export default function Marketplace() {
           <AIRecommendationSection
             title={t('marketplace.discoverTitle')}
             subtitle={t('marketplace.discoverSubtitle')}
+            hideIcon
             products={discoveryProductsF}
             isLoading={loadingDiscovery}
             icon="gift"

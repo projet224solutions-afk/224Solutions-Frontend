@@ -8,7 +8,7 @@ const DigitalVendorCopilot = memo(function DigitalVendorCopilot() {
     <section className="space-y-5 animate-fade-in">
       <header className="overflow-hidden rounded-[28px] border-0 bg-[#04439e] p-5 shadow-[0_22px_55px_rgba(4,67,158,0.30)] sm:p-6">
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-white shadow-[0_8px_20px_rgba(0,0,0,0.18)]">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl text-white">
             <Bot className="h-6 w-6" />
           </div>
           <div className="min-w-0 flex-1">

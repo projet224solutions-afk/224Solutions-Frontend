@@ -29,7 +29,7 @@ export function EarningsDisplay({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* Total Gains */}
-      <Card className="bg-[#ff4000]/10 border-[#ff4000]/20">
+      <Card className="border-[#ff4000]/20">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
             <DollarSign className="h-4 w-4 text-[#ff4000]" />
