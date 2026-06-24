@@ -199,13 +199,22 @@ export default function Messages() {
         },
         (payload) => {
           const newMsg = payload.new as any;
-          // Vérifier si le message concerne cette conversation
-          if (newMsg.sender_id === selectedConversation || newMsg.sender_id === currentUser.id) {
-            // Recharger les messages pour cette conversation
+          const me = currentUser.id;
+          const other = selectedConversation;
+
+          // ✅ Le message concerne cette conversation UNIQUEMENT si les deux
+          // participants sont exactement sender+recipient (dans un sens ou l'autre).
+          // Avant : sender_id === me rechargeait CETTE conversation même quand
+          // j'écrivais à quelqu'un d'autre → données erronées.
+          const isThisConversation =
+            (newMsg.sender_id === me && newMsg.recipient_id === other) ||
+            (newMsg.sender_id === other && newMsg.recipient_id === me);
+
+          if (isThisConversation) {
             loadMessages(selectedConversation);
 
-            // Jouer le son si c'est un message reçu (pas notre propre message)
-            if (newMsg.sender_id !== currentUser.id) {
+            // Son uniquement pour les messages reçus (pas les nôtres)
+            if (newMsg.sender_id !== me) {
               playNotificationSound();
             }
           }
@@ -589,24 +598,26 @@ export default function Messages() {
         return;
       }
 
-      // Charger les messages de réponse séparément si reply_to_id existe
-      const messagesWithReplies = await Promise.all((data || []).map(async (msg) => {
-        let replyTo = null;
-        if (msg.reply_to_id) {
-          const { data: replyData } = await supabase
-            .from('messages')
-            .select('id, content, sender_id')
-            .eq('id', msg.reply_to_id)
-            .single();
-          replyTo = replyData;
-        }
+      // ✅ Anti-N+1 : charger TOUS les messages de réponse en UNE requête batch
+      // (avant : 1 requête Supabase par message ayant un reply_to_id).
+      const allReplyIds = Array.from(
+        new Set((data || []).map((m: any) => m.reply_to_id).filter(Boolean))
+      ) as string[];
 
-        return {
-          ...msg,
-          status: msg.status as 'sending' | 'sent' | 'delivered' | 'read' | 'failed' | undefined,
-          type: msg.type as 'text' | 'image' | 'video' | 'audio' | 'file' | 'location' | 'call' | undefined,
-          reply_to: replyTo as Message | null,
-        };
+      let replyMap: Record<string, { id: string; content: string; sender_id: string }> = {};
+      if (allReplyIds.length > 0) {
+        const { data: replyData } = await supabase
+          .from('messages')
+          .select('id, content, sender_id')
+          .in('id', allReplyIds);
+        replyMap = Object.fromEntries((replyData || []).map((r: any) => [r.id, r]));
+      }
+
+      const messagesWithReplies = (data || []).map((msg: any) => ({
+        ...msg,
+        status: msg.status as 'sending' | 'sent' | 'delivered' | 'read' | 'failed' | undefined,
+        type: msg.type as 'text' | 'image' | 'video' | 'audio' | 'file' | 'location' | 'call' | undefined,
+        reply_to: msg.reply_to_id ? ((replyMap[msg.reply_to_id] as Message) || null) : null,
       }));
 
       // 🔐 Signer les pièces jointes (bucket privé) avant affichage

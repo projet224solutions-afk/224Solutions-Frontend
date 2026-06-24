@@ -77,6 +77,54 @@ function readProfileCache(key: string, opts?: { ignoreTtl?: boolean }): Profile 
   }
 }
 
+/**
+ * Récupère les credentials TURN depuis le backend et les injecte dans
+ * sessionStorage pour que WebRTC les utilise. Fire-and-forget : les appels
+ * fonctionnent sans TURN (STUN seul), mais échouent sur NAT symétrique (4G).
+ */
+async function injectTurnCredentials(accessToken: string): Promise<void> {
+  try {
+    const res = await supabase.functions.invoke('get-turn-credentials', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (res.error) {
+      console.warn('[TURN] Impossible de charger les credentials:', res.error);
+      return;
+    }
+
+    const data = res.data as {
+      success: boolean;
+      iceServers: Array<{ urls: string | string[]; username?: string; credential?: string }>;
+      provider?: string;
+      warning?: string;
+    };
+
+    if (!data?.success || !Array.isArray(data.iceServers)) return;
+    if (data.warning) console.warn('[TURN]', data.warning);
+
+    const turnServer = data.iceServers.find(s =>
+      typeof s.urls === 'string'
+        ? s.urls.startsWith('turn:')
+        : (s.urls as string[])?.some(u => u.startsWith('turn:'))
+    );
+
+    if (turnServer && turnServer.username && turnServer.credential) {
+      const url = typeof turnServer.urls === 'string'
+        ? turnServer.urls
+        : (turnServer.urls as string[])[0];
+      sessionStorage.setItem('vf_turn_url', url);
+      sessionStorage.setItem('vf_turn_username', String(turnServer.username));
+      sessionStorage.setItem('vf_turn_credential', String(turnServer.credential));
+      // Notifier les hooks WebRTC (même onglet) que les ICE servers ont changé.
+      try { window.dispatchEvent(new Event('storage')); } catch { /* noop */ }
+      console.log(`🔒 TURN configuré (${data.provider || 'ok'}) → appels OK sur 4G`);
+    }
+  } catch (err) {
+    console.warn('[TURN] Exception (non bloquant):', err);
+  }
+}
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
@@ -820,6 +868,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         stopSessionMonitor();
       } else {
         startSessionMonitor();
+        // ✅ Charger les credentials TURN pour les appels WebRTC (4G Guinée)
+        if (event === 'SIGNED_IN' && nextSession?.access_token) {
+          injectTurnCredentials(nextSession.access_token);
+        }
       }
 
       setLoading(false);
