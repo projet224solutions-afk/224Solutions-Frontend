@@ -135,7 +135,7 @@ export function WithdrawalForm({ onSuccess, onCancel }: WithdrawalFormProps) {
       }
 
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erreur lors de la demande de retrait';
+      const message = err instanceof Error ? err.message: t('withdrawalForm.erreurLorsDeLaDemande');
       console.error('❌ Withdrawal request error:', err);
       setError(message);
       toast.error(message);

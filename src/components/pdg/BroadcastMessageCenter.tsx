@@ -92,7 +92,7 @@ interface DashboardData {
 }
 
 const SEGMENTS = [
-  { value: 'all', label: 'Tous les utilisateurs', icon: Users, color: 'bg-blue-500' },
+  { value: 'all', label: "Tous les utilisateurs", icon: Users, color: 'bg-blue-500' },
   { value: 'agents', label: 'Agents uniquement', icon: Target, color: 'bg-[#04439e]' },
   { value: 'vendors', label: 'Vendeurs uniquement', icon: Megaphone, color: 'bg-[#ff4000]' },
   { value: 'clients', label: 'Clients uniquement', icon: Users, color: 'bg-orange-500' },
@@ -110,8 +110,8 @@ const MESSAGE_TYPES = [
   { value: 'promotion', label: 'Promotion' },
   { value: 'alert', label: 'Alerte' },
   { value: 'maintenance', label: 'Maintenance' },
-  { value: 'update', label: 'Mise à jour' },
-  { value: 'news', label: 'Actualité' },
+  { value: 'update', label: "Mise à jour" },
+  { value: 'news', label: "Actualité" },
 ];
 
 const BroadcastMessageCenter: React.FC = () => {

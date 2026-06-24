@@ -167,7 +167,7 @@ export default function WorkerSettings() {
       toast.success(t('workerSettings.profilMisAJourAvec'));
       navigate('/worker');
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erreur de sauvegarde';
+      const errorMessage = err instanceof Error ? err.message: t('workerSettings.erreurDeSauvegarde');
       toast.error(errorMessage);
       console.error('Erreur:', err);
     } finally {

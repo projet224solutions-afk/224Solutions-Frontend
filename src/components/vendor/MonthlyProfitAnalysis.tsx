@@ -85,7 +85,7 @@ const COST_TYPE_LABELS: Record<string, { label: string; icon: React.ReactNode; c
   loyer: { label: 'Loyer', icon: <Home className="w-4 h-4" />, color: '#ff4000' },
   abonnement: { label: 'Abonnement', icon: <CreditCard className="w-4 h-4" />, color: '#04439e' },
   salaires: { label: 'Salaires', icon: <Users className="w-4 h-4" />, color: '#04439e' },
-  electricite: { label: 'Électricité', icon: <Zap className="w-4 h-4" />, color: '#ff4000' },
+  electricite: { label: "Électricité", icon: <Zap className="w-4 h-4" />, color: '#ff4000' },
   internet: { label: 'Internet', icon: <Wifi className="w-4 h-4" />, color: '#04439e' },
   assurance: { label: 'Assurance', icon: <Shield className="w-4 h-4" />, color: '#ff4000' },
   autre: { label: 'Autre', icon: <HelpCircle className="w-4 h-4" />, color: '#6B7280' }
@@ -206,12 +206,12 @@ export function MonthlyProfitAnalysis({ vendorId, userId }: MonthlyProfitAnalysi
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['vendor-fixed-costs', userId] });
-      toast({ title: 'Coût fixe ajouté avec succès' });
+      toast({ title: t('monthlyProfitAnalysis.coutFixeAjouteAvecSucces') });
       setIsAddDialogOpen(false);
       resetForm();
     },
     onError: () => {
-      toast({ title: 'Erreur', description: 'Impossible d\'ajouter le coût fixe', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('monthlyProfitAnalysis.impossibleDAjouterLeCout'), variant: 'destructive' });
     }
   });
 
@@ -230,12 +230,12 @@ export function MonthlyProfitAnalysis({ vendorId, userId }: MonthlyProfitAnalysi
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['vendor-fixed-costs', userId] });
-      toast({ title: 'Coût fixe mis à jour' });
+      toast({ title: t('monthlyProfitAnalysis.coutFixeMisAJour') });
       setEditingCost(null);
       resetForm();
     },
     onError: () => {
-      toast({ title: 'Erreur', description: 'Impossible de mettre à jour', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('monthlyProfitAnalysis.impossibleDeMettreAJour'), variant: 'destructive' });
     }
   });
 
@@ -250,10 +250,10 @@ export function MonthlyProfitAnalysis({ vendorId, userId }: MonthlyProfitAnalysi
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['vendor-fixed-costs', userId] });
-      toast({ title: 'Coût fixe supprimé' });
+      toast({ title: t('monthlyProfitAnalysis.coutFixeSupprime') });
     },
     onError: () => {
-      toast({ title: 'Erreur', description: 'Impossible de supprimer', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('monthlyProfitAnalysis.impossibleDeSupprimer'), variant: 'destructive' });
     }
   });
 
@@ -263,13 +263,13 @@ export function MonthlyProfitAnalysis({ vendorId, userId }: MonthlyProfitAnalysi
 
   const handleSubmit = () => {
     if (!formData.label || !formData.amount) {
-      toast({ title: 'Champs requis', description: 'Veuillez remplir tous les champs', variant: 'destructive' });
+      toast({ title: 'Champs requis', description: t('monthlyProfitAnalysis.veuillezRemplirTousLesChamps'), variant: 'destructive' });
       return;
     }
 
     const amount = parseFloat(formData.amount);
     if (isNaN(amount) || amount < 0) {
-      toast({ title: 'Montant invalide', variant: 'destructive' });
+      toast({ title: t('monthlyProfitAnalysis.montantInvalide'), variant: 'destructive' });
       return;
     }
 

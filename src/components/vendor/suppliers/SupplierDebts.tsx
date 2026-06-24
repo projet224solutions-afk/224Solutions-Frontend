@@ -94,9 +94,9 @@ export function SupplierDebts({ vendorId }: SupplierDebtsProps) {
   const getStatusBadge = (status: string) => {
     const variants: Record<string, { label: string; variant: any }> = {
       in_progress: { label: 'En cours', variant: 'default' },
-      paid: { label: 'Payée', variant: 'secondary' },
+      paid: { label: t('supplierDebts.payee'), variant: 'secondary' },
       overdue: { label: 'En retard', variant: 'destructive' },
-      cancelled: { label: 'Annulée', variant: 'outline' },
+      cancelled: { label: t('supplierDebts.annulee'), variant: 'outline' },
     };
     const c = variants[status] || variants.in_progress;
     return <Badge variant={c.variant}>{c.label}</Badge>;

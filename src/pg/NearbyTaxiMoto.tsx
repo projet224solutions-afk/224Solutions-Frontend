@@ -226,7 +226,7 @@ export default function NearbyTaxiMoto() {
       // ✓ Ne pas écraser les données existantes en cas d'erreur d'auto-refresh
       // Utiliser driversRef au lieu de drivers.length pour éviter la dépendance
       if (!isAutoRefresh || driversRef.current.length === 0) {
-        setError(err instanceof Error ? err.message : 'Erreur lors du chargement');
+        setError(err instanceof Error ? err.message: t('nearbyTaxiMoto.erreurLorsDuChargement'));
       }
     } finally {
       if (isMountedRef.current) {

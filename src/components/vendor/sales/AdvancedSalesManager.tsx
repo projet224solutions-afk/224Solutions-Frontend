@@ -283,7 +283,7 @@ export default function AdvancedSalesManager() {
     }
 
     if (creditSelectedProducts.length === 0) {
-      toast({ title: 'Veuillez sélectionner au moins un produit', variant: 'destructive' });
+      toast({ title: t('advancedSalesManager.veuillezSelectionnerAuMoinsUn'), variant: 'destructive' });
       return;
     }
 
@@ -318,7 +318,7 @@ export default function AdvancedSalesManager() {
 
       if (error) throw error;
 
-      toast({ title: '✅ Vente à crédit créée' });
+      toast({ title: t('advancedSalesManager.venteACreditCreee') });
       setIsNewCreditOpen(false);
       setNewCredit({ customer_name: '', total: '', due_date: '', notes: '', selected_category: '' });
       setCreditSelectedProducts([]);
@@ -349,7 +349,7 @@ export default function AdvancedSalesManager() {
 
       if (error) throw error;
 
-      toast({ title: '✅ Retour enregistré' });
+      toast({ title: t('advancedSalesManager.retourEnregistre') });
       setIsNewReturnOpen(false);
       setNewReturn({ order_id: '', return_reason: '', refund_amount: '', quantity_returned: '1', unit_price: '', selected_category: '', selected_product: '' });
       loadData();
@@ -382,7 +382,7 @@ export default function AdvancedSalesManager() {
 
       if (error) throw error;
 
-      toast({ title: '✅ Promotion créée' });
+      toast({ title: t('advancedSalesManager.promotionCreee') });
       setIsNewPromoOpen(false);
       setNewPromo({
         name: '',
@@ -403,18 +403,18 @@ export default function AdvancedSalesManager() {
   // Encaisser un paiement sur une vente à crédit
   const collectCreditPayment = async () => {
     if (!selectedCreditForPayment || !paymentAmount) {
-      toast({ title: 'Montant requis', variant: 'destructive' });
+      toast({ title: t('advancedSalesManager.montantRequis'), variant: 'destructive' });
       return;
     }
 
     const amount = parseFloat(paymentAmount);
     if (isNaN(amount) || amount <= 0) {
-      toast({ title: 'Montant invalide', variant: 'destructive' });
+      toast({ title: t('advancedSalesManager.montantInvalide'), variant: 'destructive' });
       return;
     }
 
     if (amount > selectedCreditForPayment.remaining_amount) {
-      toast({ title: 'Le montant dépasse le reste à payer', variant: 'destructive' });
+      toast({ title: t('advancedSalesManager.leMontantDepasseLeReste'), variant: 'destructive' });
       return;
     }
 

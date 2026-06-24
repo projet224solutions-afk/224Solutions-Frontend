@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent } from '@/components/ui/card';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
 import { Users, DollarSign, TrendingUp, UserPlus, Wallet, Target, ArrowUpRight } from 'lucide-react';
@@ -30,11 +31,12 @@ interface StatCard {
 }
 
 export function AgentStatsCards({ stats, commissionRate, walletBalance = 0, currency = 'GNF' }: AgentStatsCardsProps) {
+  const { t } = useTranslation();
   const formatAmount = useFormatCurrency();
 
   const statCards: StatCard[] = [
     {
-      title: 'Utilisateurs Créés',
+      title: t('agentStatsCards.utilisateursCrees'),
       value: stats.totalUsersCreated,
       subtitle: `+${stats.usersThisMonth} ce mois`,
       icon: <Users className="w-5 h-5" />,
@@ -44,7 +46,7 @@ export function AgentStatsCards({ stats, commissionRate, walletBalance = 0, curr
       textColor: 'text-blue-600'
     },
     {
-      title: 'Solde Wallet',
+      title: t('agentStatsCards.soldeWallet'),
       value: formatAmount(walletBalance, currency),
       subtitle: currency,
       icon: <Wallet className="w-5 h-5" />,
@@ -82,7 +84,7 @@ export function AgentStatsCards({ stats, commissionRate, walletBalance = 0, curr
     {
       title: 'Objectif Mensuel',
       value: stats.usersThisMonth,
-      subtitle: 'Utilisateurs créés',
+      subtitle: t('agentStatsCards.utilisateursCrees2'),
       icon: <Target className="w-5 h-5" />,
       gradient: '',
       iconBg: 'bg-slate-500/10',

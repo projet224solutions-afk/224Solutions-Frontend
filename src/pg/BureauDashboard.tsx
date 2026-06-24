@@ -88,7 +88,7 @@ export default function BureauDashboard() {
         try {
           const session = JSON.parse(sessionStr);
           if (session?.expiresAt && new Date(session.expiresAt) < new Date()) {
-            toast.error('Session expirée — veuillez vous reconnecter');
+            toast.error(t('bureauDashboard.sessionExpireeVeuillezVousReconnecter'));
             navigate('/');
             return;
           }
@@ -134,9 +134,9 @@ export default function BureauDashboard() {
       const errorMessage = error.message || 'Impossible de charger les données du bureau';
       captureError('member_error', errorMessage, error);
       toast.error(errorMessage, {
-        description: 'Vérifiez votre connexion internet et réessayez',
+        description: t('bureauDashboard.verifiezVotreConnexionInternetEt'),
         action: {
-          label: 'Réessayer',
+          label: t('bureauDashboard.reessayer'),
           onClick: () => loadBureauData()
         }
       });
@@ -701,7 +701,7 @@ export default function BureauDashboard() {
               </CardHeader>
               <CardContent className="p-6 space-y-4">
                 <div>
-                  <Label className="text-sm text-slate-500">Accès & Identification</Label>
+                  <Label className="text-sm text-slate-500">{t('bureauDashboard.accesIdentification')}</Label>
                   <div className="mt-3 space-y-3">
                     {/* Code bureau (non sensible, partageable) */}
                     <div className="flex items-center gap-3 p-3 rounded-xl border border-slate-200">
@@ -715,7 +715,7 @@ export default function BureauDashboard() {
                         className="border-slate-300"
                         onClick={() => {
                           navigator.clipboard.writeText(bureau?.bureau_code || '');
-                          toast.success('Code bureau copié');
+                          toast.success(t('bureauDashboard.codeBureauCopie'));
                         }}
                       >
                         <Copy className="w-3.5 h-3.5 mr-1.5" />
@@ -727,7 +727,7 @@ export default function BureauDashboard() {
                     <div className="flex items-start gap-3 p-3 rounded-xl border border-[#ff4000]/20">
                       <Lock className="w-4 h-4 text-[#ff4000] mt-0.5 flex-shrink-0" />
                       <div>
-                        <p className="text-xs font-medium text-[#ff4000] mb-1">Token d'accès sécurisé</p>
+                        <p className="text-xs font-medium text-[#ff4000] mb-1">{t('bureauDashboard.tokenDAccesSecurise')}</p>
                         <p className="text-xs text-slate-600 leading-relaxed">
                           Le token d'accès est géré de manière sécurisée par l'administration PDG.
                           En cas de compromission suspectée, contactez le support pour une régénération immédiate.

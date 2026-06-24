@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🎨 NAVIGATION PDG - INTERFACE ORGANISÉE
  * Navigation par catégories avec version mobile optimisée
@@ -43,28 +44,28 @@ const categories: NavCategory[] = [
     bgColor: 'bg-[#ff4000]',
     items: [
       { value: 'finance', label: 'Finance & Revenus', icon: DollarSign, permission: 'view_finance' },
-      { value: 'pdg-wallet', label: 'Mon Portefeuille', icon: Wallet, permission: 'access_pdg_wallet' },
+      { value: 'pdg-wallet', label: "Mon Portefeuille", icon: Wallet, permission: 'access_pdg_wallet' },
       { value: 'escrow-monitor', label: 'Surveillance Plateforme', icon: Activity, badge: true, permission: 'view_platform_surveillance' },
       { value: 'aml-wallet', label: 'Provenance & Plafonds', icon: Shield, badge: true, permission: 'view_finance' },
-      { value: 'banking', label: 'Système Bancaire', icon: Landmark, badge: true, permission: 'view_banking' },
+      { value: 'banking', label: "Système Bancaire", icon: Landmark, badge: true, permission: 'view_banking' },
     ]
   },
   {
-    title: 'Gestion',
+    title: "Gestion",
     color: 'bg-blue-500',
     bgColor: 'bg-blue-500',
     items: [
       { value: 'users', label: 'Utilisateurs', icon: Users, permission: 'view_users' },
       { value: 'shareholders', label: 'Actionnaires', icon: Percent, permission: 'view_shareholders' },
-      { value: 'products', label: 'Produits', icon: Package, permission: 'view_products' },
-      { value: 'transfer-fees', label: 'Frais de Transfert', icon: Percent, permission: 'view_transfer_fees' },
-      { value: 'kyc', label: 'Gestion KYC', icon: Shield, permission: 'view_kyc' },
-      { value: 'service-subscriptions', label: 'Abonnements Services', icon: Sparkles, badge: true, permission: 'view_service_subscriptions' },
+      { value: 'products', label: "Produits", icon: Package, permission: 'view_products' },
+      { value: 'transfer-fees', label: "Frais de Transfert", icon: Percent, permission: 'view_transfer_fees' },
+      { value: 'kyc', label: "Gestion KYC", icon: Shield, permission: 'view_kyc' },
+      { value: 'service-subscriptions', label: "Abonnements Services", icon: Sparkles, badge: true, permission: 'view_service_subscriptions' },
       { value: 'wallet-api', label: 'API 224Wallet', icon: Key, badge: true, permission: 'view_api' },
     ]
   },
   {
-    title: 'Opérations',
+    title: "Opérations",
     color: 'bg-[#ff4000]',
     bgColor: 'bg-[#ff4000]',
     items: [
@@ -72,10 +73,10 @@ const categories: NavCategory[] = [
       { value: 'syndicat', label: 'Bureaux Syndicaux', icon: Building2, permission: 'view_syndicat' },
       { value: 'bureau-monitoring', label: 'Monitoring Bureaux', icon: Car, badge: true, permission: 'view_bureau_monitoring' },
       { value: 'driver-subscriptions', label: 'Abonnements Chauffeurs', icon: Bike, permission: 'view_driver_subscriptions' },
-      { value: 'stolen-vehicles', label: 'Motos Volées', icon: Shield, badge: true, permission: 'view_stolen_vehicles' },
-      { value: 'orders', label: 'Commandes', icon: Package, permission: 'view_orders' },
+      { value: 'stolen-vehicles', label: "Motos Volées", icon: Shield, badge: true, permission: 'view_stolen_vehicles' },
+      { value: 'orders', label: "Commandes", icon: Package, permission: 'view_orders' },
       { value: 'vendors', label: 'Vendeurs', icon: Store, permission: 'view_vendors' },
-      { value: 'vendor-kyc-review', label: 'Vérification KYC', icon: Shield, badge: true, permission: 'view_vendor_kyc' },
+      { value: 'vendor-kyc-review', label: "Vérification KYC", icon: Shield, badge: true, permission: 'view_vendor_kyc' },
       { value: 'vendor-certification', label: 'Certification Vendeurs', icon: Shield, badge: true, permission: 'view_vendor_certification' },
       { value: 'drivers', label: 'Livreurs', icon: Bike, permission: 'view_drivers' },
       { value: 'quotes-invoices', label: 'Devis & Factures', icon: FileText, permission: 'view_quotes_invoices' },
@@ -87,11 +88,11 @@ const categories: NavCategory[] = [
     ]
   },
   {
-    title: 'Système',
+    title: "Système",
     color: 'bg-[#04439e]',
     bgColor: 'bg-[#04439e]',
     items: [
-      { value: 'security', label: 'Sécurité', icon: Shield, permission: 'view_security' },
+      { value: 'security', label: "Sécurité", icon: Shield, permission: 'view_security' },
       { value: 'logic-surveillance', label: 'Surveillance Logique', icon: Zap, badge: true, permission: 'view_debug' },
       { value: 'sync-dashboard', label: 'Synchronisation', icon: RefreshCw, badge: true, permission: 'view_debug' },
       { value: 'id-normalization', label: 'Audit ID', icon: Shield, badge: true, permission: 'view_id_normalization' },
@@ -136,6 +137,7 @@ interface PDGNavigationProps {
 }
 
 export default function PDGNavigation({ activeTab, onTabChange, aiActive }: PDGNavigationProps) {
+  const { t } = useTranslation();
   const isMobile = useIsMobile();
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

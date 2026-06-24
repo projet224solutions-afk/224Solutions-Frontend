@@ -18,7 +18,7 @@ import { useMobilityJobs, type JobStatus } from '@/hooks/useMobilityJobs';
 
 const NEXT: Record<string, { to: JobStatus; label: string } | undefined> = {
   pending: { to: 'accepted', label: 'Accepter' },
-  accepted: { to: 'in_progress', label: 'Démarrer' },
+  accepted: { to: 'in_progress', label: "Démarrer" },
   in_progress: { to: 'completed', label: 'Terminer' },
 };
 
@@ -33,9 +33,9 @@ export function MobilityWorkspace({ serviceId, jobType }: { serviceId: string; j
   const submit = async () => {
     // Validation prix > 0 (avant : un prix 0 / négatif / NaN passait)
     const parsedPrice = parseFloat(form.price);
-    if (!form.pickup) { toast.error('Adresse de départ requise'); return; }
+    if (!form.pickup) { toast.error(t('mobilityWorkspace.adresseDeDepartRequise')); return; }
     if (!form.price || isNaN(parsedPrice) || parsedPrice <= 0) {
-      toast.error('Le prix doit être supérieur à 0 GNF');
+      toast.error(t('mobilityWorkspace.lePrixDoitEtreSuperieur'));
       return;
     }
     // Surge pricing (style Uber) : le multiplicateur est replié dans le prix final
@@ -58,7 +58,7 @@ export function MobilityWorkspace({ serviceId, jobType }: { serviceId: string; j
         <Card className="border-2 border-[#04439e]/20"><CardContent className="p-3">
           <TrendingUp className="h-4 w-4 text-[#04439e]" />
           <p className="text-xl font-bold mt-1 text-[#04439e]">{Math.min(100, Math.round((stats.revenue / 500000) * 100))}%</p>
-          <p className="text-[11px] text-muted-foreground">Objectif du jour</p>
+          <p className="text-[11px] text-muted-foreground">{t('mobilityWorkspace.objectifDuJour')}</p>
           <div className="mt-1.5 h-1 bg-slate-100 rounded-full overflow-hidden"><div className="h-full bg-[#04439e] rounded-full" style={{ width: `${Math.min(100, Math.round((stats.revenue / 500000) * 100))}%` }} /></div>
         </CardContent></Card>
       </div>
@@ -79,11 +79,11 @@ export function MobilityWorkspace({ serviceId, jobType }: { serviceId: string; j
               : <div className="space-y-1"><Label>Colis</Label><Input value={form.package_label || ''} onChange={(e) => setForm({ ...form, package_label: e.target.value })} placeholder={t('mobilityWorkspace.descriptionDuColis')} /></div>}
             {!isCourse && (
               <div className="space-y-1">
-                <Label>Distance estimée (km)</Label>
+                <Label>{t('mobilityWorkspace.distanceEstimeeKm')}</Label>
                 <Input type="number" min={0} step={0.1} value={form.distance_km || ''}
                   onChange={(e) => { const km = parseFloat(e.target.value) || 0; const calc = km <= 3 ? 10000 : km <= 7 ? 20000 : 35000; setForm({ ...form, distance_km: km, price: String(calc) }); }}
                   placeholder="Ex : 4.5" />
-                <p className="text-[10px] text-muted-foreground">Prix calculé automatiquement selon le barème</p>
+                <p className="text-[10px] text-muted-foreground">{t('mobilityWorkspace.prixCalculeAutomatiquementSelonLe')}</p>
               </div>
             )}
             <div className="space-y-1"><Label>Prix (GNF)</Label><Input type="number" value={form.price || ''} onChange={(e) => setForm({ ...form, price: e.target.value })} /></div>

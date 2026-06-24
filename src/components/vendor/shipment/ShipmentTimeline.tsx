@@ -28,7 +28,7 @@ interface ShipmentTimelineProps {
 const SHIPMENT_STEPS: TimelineStep[] = [
   {
     status: 'created',
-    label: 'Commande créée',
+    label: "Commande créée",
     icon: <Package className="h-5 w-5" />,
   },
   {
@@ -43,7 +43,7 @@ const SHIPMENT_STEPS: TimelineStep[] = [
   },
   {
     status: 'delivered',
-    label: 'Livré',
+    label: "Livré",
     icon: <CheckCheck className="h-5 w-5" />,
   },
 ];

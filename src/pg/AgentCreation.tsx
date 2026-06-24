@@ -207,7 +207,7 @@ export default function AgentCreation() {
       }, 1500);
 
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la création';
+      const errorMessage = err instanceof Error ? err.message: t('agentCreation.erreurLorsDeLaCreation');
       setError(errorMessage);
       toast.error(errorMessage);
       console.error('✕ Erreur création agent:', err);

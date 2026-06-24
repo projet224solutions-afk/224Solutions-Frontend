@@ -94,9 +94,9 @@ export default function QuotesList({ refresh }: { refresh?: number }) {
   const getStatusBadge = (status: string) => {
     const config = {
       pending: { label: 'En attente', variant: 'secondary' as const, icon: Clock },
-      accepted: { label: 'Accepté', variant: 'default' as const, icon: CheckCircle },
-      rejected: { label: 'Refusé', variant: 'destructive' as const, icon: XCircle },
-      expired: { label: 'Expiré', variant: 'outline' as const, icon: Clock }
+      accepted: { label: t('quotesList.accepte'), variant: 'default' as const, icon: CheckCircle },
+      rejected: { label: t('quotesList.refuse'), variant: 'destructive' as const, icon: XCircle },
+      expired: { label: t('quotesList.expire'), variant: 'outline' as const, icon: Clock }
     };
 
     const { label, variant, icon: Icon } = config[status as keyof typeof config];

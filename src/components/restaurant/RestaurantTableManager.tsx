@@ -49,15 +49,15 @@ interface RestaurantTableManagerProps {
 
 const STATUS_CONFIG = {
   available: { label: 'Libre', color: 'bg-[#ff4000]', icon: Check },
-  occupied: { label: 'Occupée', color: 'bg-[#ff4000]', icon: Users },
-  reserved: { label: 'Réservée', color: 'bg-blue-500', icon: Clock },
+  occupied: { label: "Occupée", color: 'bg-[#ff4000]', icon: Users },
+  reserved: { label: "Réservée", color: 'bg-blue-500', icon: Clock },
   cleaning: { label: 'Nettoyage', color: 'bg-[#ff4000]', icon: Sparkles },
 };
 
 const LOCATIONS = [
-  { value: 'interieur', label: '🏠 Intérieur' },
+  { value: 'interieur', label: "🏠 Intérieur" },
   { value: 'terrasse', label: '☀️ Terrasse' },
-  { value: 'salon_prive', label: '🚪 Salon privé' },
+  { value: 'salon_prive', label: "🚪 Salon privé" },
   { value: 'bar', label: '🍸 Bar' },
 ];
 

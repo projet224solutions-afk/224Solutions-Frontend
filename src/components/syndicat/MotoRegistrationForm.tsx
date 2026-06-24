@@ -265,14 +265,14 @@ export default function MotoRegistrationForm({ bureauId, onSuccess }: Props) {
         // syndicate_workers est géré séparément via l'interface de gestion des membres
 
         toast.success(t('motoRegistrationForm.vehiculeEnregistreAvecSucces'), {
-          description: 'En attente de validation'
+          description: t('motoRegistrationForm.enAttenteDeValidation')
         });
       } else {
         // Stockage hors ligne - sera synchronisé vers vehicles
         await storeOfflineEvent('moto_registration', { ...motoData, target_table: 'vehicles' });
 
         toast.success(t('motoRegistrationForm.vehiculeEnregistreLocalement'), {
-          description: 'Il sera synchronisé à la reconnexion'
+          description: t('motoRegistrationForm.ilSeraSynchroniseALa')
         });
       }
 

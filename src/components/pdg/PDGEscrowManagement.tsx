@@ -38,19 +38,19 @@ const statusConfig = {
     color: 'text-[#ff4000]'
   },
   held: {
-    label: 'Bloqué',
+    label: "Bloqué",
     className: 'bg-orange-500/10 text-orange-600 border-orange-500/20',
     icon: AlertCircle,
     color: 'text-orange-600'
   },
   released: {
-    label: 'Libéré',
+    label: "Libéré",
     className: 'bg-[#ff4000]/10 text-[#ff4000] border-[#ff4000]/20',
     icon: CheckCircle,
     color: 'text-[#ff4000]'
   },
   refunded: {
-    label: 'Remboursé',
+    label: "Remboursé",
     className: 'bg-blue-500/10 text-blue-600 border-blue-500/20',
     icon: XCircle,
     color: 'text-blue-600'
@@ -109,22 +109,22 @@ export default function PDGEscrowManagement() {
         case 'release':
           await releaseEscrow(selectedTransaction);
           toast({
-            title: "✅ Fonds libérés",
-            description: "Les fonds ont été transférés au vendeur avec commission."
+            title: t('pDGEscrowManagement.fondsLiberes'),
+            description: t('pDGEscrowManagement.lesFondsOntEteTransferes')
           });
           break;
         case 'refund':
           await refundEscrow(selectedTransaction);
           toast({
-            title: "✅ Remboursement effectué",
-            description: "Les fonds ont été retournés au payeur."
+            title: t('pDGEscrowManagement.remboursementEffectue'),
+            description: t('pDGEscrowManagement.lesFondsOntEteRetournes')
           });
           break;
         case 'dispute':
           await disputeEscrow(selectedTransaction);
           toast({
             title: "⚠️ Litige ouvert",
-            description: "La transaction a été marquée en litige."
+            description: t('pDGEscrowManagement.laTransactionAEteMarquee')
           });
           break;
       }
@@ -134,7 +134,7 @@ export default function PDGEscrowManagement() {
       console.error('Erreur lors de l\'action escrow:', error);
       toast({
         title: "❌ Erreur",
-        description: error instanceof Error ? error.message : "Échec de l'action",
+        description: error instanceof Error ? error.message: t('pDGEscrowManagement.echecDeLAction'),
         variant: "destructive"
       });
     }
@@ -151,7 +151,7 @@ export default function PDGEscrowManagement() {
     await new Promise(resolve => setTimeout(resolve, 1000));
     setIsRefreshing(false);
     toast({
-      title: "🔄 Données actualisées",
+      title: t('pDGEscrowManagement.donneesActualisees'),
       description: `${transactions.length} transactions chargées`
     });
   };

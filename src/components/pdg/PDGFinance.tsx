@@ -342,7 +342,7 @@ export default function PDGFinance() {
   };
 
   const chartConfig = {
-    amount: { label: "Montant", color: "hsl(var(--primary))" },
+    amount: { label: t('pDGFinance.montant'), color: "hsl(var(--primary))" },
     commission: { label: "Commission", color: "hsl(var(--chart-2))" }
   };
 

@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { ReactNode } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,7 @@ export function FeatureGate({
   fallbackMessage,
   showUpgradeButton = true
 }: FeatureGateProps) {
+  const { t } = useTranslation();
   const { hasAccess, checkAndLogAccess, restrictions, userPlan } = useFeatureAccess();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -34,7 +36,7 @@ export function FeatureGate({
 
     if (!access) {
       toast({
-        title: 'Fonctionnalité non disponible',
+        title: t('featureGate.fonctionnaliteNonDisponible'),
         description: `Cette fonctionnalité nécessite un plan supérieur. Vous êtes actuellement sur le plan ${userPlan}.`,
         variant: 'destructive'
       });

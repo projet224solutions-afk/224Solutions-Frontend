@@ -42,22 +42,22 @@ export default function AffiliateActivationPage() {
     {
       icon: <Gift className="h-5 w-5 text-primary" />,
       title: "Activez gratuitement",
-      description: "Cliquez sur le bouton d'activation pour ouvrir votre espace affilié. Aucun frais, aucun engagement."
+      description: t('affiliateActivationPage.cliquezSurLeBoutonD')
     },
     {
       icon: <Link2 className="h-5 w-5 text-primary" />,
-      title: "Partagez vos liens",
-      description: "Recevez un code affilié unique et des liens de parrainage à partager avec votre réseau."
+      title: t('affiliateActivationPage.partagezVosLiens'),
+      description: t('affiliateActivationPage.recevezUnCodeAffilieUnique')
     },
     {
       icon: <Users className="h-5 w-5 text-primary" />,
-      title: "Parrainez des utilisateurs",
-      description: "Chaque personne qui s'inscrit ou achète via votre lien vous rapporte une commission."
+      title: t('affiliateActivationPage.parrainezDesUtilisateurs'),
+      description: t('affiliateActivationPage.chaquePersonneQuiSInscrit')
     },
     {
       icon: <Wallet className="h-5 w-5 text-primary" />,
-      title: "Gagnez des commissions",
-      description: "Vos gains sont crédités directement sur votre wallet. Retirez quand vous voulez."
+      title: t('affiliateActivationPage.gagnezDesCommissions'),
+      description: t('affiliateActivationPage.vosGainsSontCreditesDirectement')
     },
   ];
 

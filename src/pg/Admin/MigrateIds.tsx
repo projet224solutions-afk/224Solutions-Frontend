@@ -59,7 +59,7 @@ export default function MigrateIds() {
 
     try {
       toast.info('Migration en cours...', {
-        description: 'Réorganisation des IDs vers le format standardisé'
+        description: t('migrateIds.reorganisationDesIdsVersLe')
       });
 
       const { data, error } = await supabase

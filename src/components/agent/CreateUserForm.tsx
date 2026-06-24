@@ -53,28 +53,28 @@ const COUNTRY_OPTIONS = [
 ];
 
 const USER_ROLES = [
-  { value: 'client', label: 'Client', icon: Users, description: 'Utilisateur acheteur', color: 'text-[#ff4000]' },
-  { value: 'vendeur', label: 'Vendeur', icon: ShoppingBag, description: 'Boutique/Commerce', color: 'text-blue-600' },
-  { value: 'livreur', label: 'Livreur', icon: Truck, description: 'Livraison de colis', color: 'text-[#ff4000]' },
-  { value: 'taxi', label: 'Taxi', icon: Car, description: 'Transport de personnes', color: 'text-[#04439e]' },
+  { value: 'client', label: "Client", icon: Users, description: 'Utilisateur acheteur', color: 'text-[#ff4000]' },
+  { value: 'vendeur', label: "Vendeur", icon: ShoppingBag, description: 'Boutique/Commerce', color: 'text-blue-600' },
+  { value: 'livreur', label: 'Livreur', icon: Truck, description: "Livraison de colis", color: 'text-[#ff4000]' },
+  { value: 'taxi', label: 'Taxi', icon: Car, description: "Transport de personnes", color: 'text-[#04439e]' },
   { value: 'transitaire', label: 'Transitaire', icon: Ship, description: 'Logistique internationale', color: 'text-orange-600' },
   { value: 'syndicat', label: 'Syndicat', icon: Building2, description: 'Organisation syndicale', color: 'text-[#ff4000]' },
-  { value: 'prestataire', label: 'Prestataire', icon: Building2, description: 'Service de proximité', color: 'text-[#ff4000]' },
+  { value: 'prestataire', label: 'Prestataire', icon: Building2, description: "Service de proximité", color: 'text-[#ff4000]' },
 ];
 
 // Codes synchronisés avec service_types en BDD
 const VENDOR_SERVICE_TYPES = [
   { value: 'ecommerce', label: 'Boutique / E-commerce' },
   { value: 'restaurant', label: 'Restaurant / Alimentation' },
-  { value: 'beaute', label: 'Beauté & Bien-être' },
+  { value: 'beaute', label: "Beauté & Bien-être" },
   { value: 'reparation', label: 'Réparation / Mécanique' },
-  { value: 'location', label: 'Location Immobilière' },
-  { value: 'freelance', label: 'Services Professionnels' },
+  { value: 'location', label: "Location Immobilière" },
+  { value: 'freelance', label: "Services Professionnels" },
   { value: 'media', label: 'Photographe / Vidéaste' },
   { value: 'education', label: 'Éducation / Formation' },
-  { value: 'sante', label: 'Santé & Bien-être' },
+  { value: 'sante', label: "Santé & Bien-être" },
   { value: 'voyage', label: 'Voyage / Tourisme' },
-  { value: 'menage', label: 'Ménage & Entretien' },
+  { value: 'menage', label: "Ménage & Entretien" },
   { value: 'informatique', label: 'Informatique / Tech' },
   { value: 'construction', label: 'Construction / BTP' },
   { value: 'agriculture', label: 'Agriculture' },

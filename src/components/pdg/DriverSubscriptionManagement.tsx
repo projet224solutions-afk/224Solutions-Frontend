@@ -356,7 +356,7 @@ export default function DriverSubscriptionManagement() {
       }
 
       toast.error(errorMessage, {
-        description: 'Vérifiez les informations et réessayez'
+        description: t('driverSubscriptionManagement.verifiezLesInformationsEtReessayez')
       });
     } finally {
       setSubmitting(false);

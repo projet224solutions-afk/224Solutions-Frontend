@@ -507,9 +507,9 @@ export default function SystemLiveMonitor({ open, onOpenChange }: SystemLiveMoni
 
               {/* Other Stats */}
               {[
-                { label: 'REQUÊTES API', value: stats.requests.toLocaleString(), icon: Network },
+                { label: t('systemLiveMonitor.requetesApi'), value: stats.requests.toLocaleString(), icon: Network },
                 { label: 'UTILISATEURS', value: stats.users.toLocaleString(), icon: Users },
-                { label: 'CHECKS SYSTÈME', value: stats.checks.toLocaleString(), icon: CheckCircle2 },
+                { label: t('systemLiveMonitor.checksSysteme'), value: stats.checks.toLocaleString(), icon: CheckCircle2 },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}

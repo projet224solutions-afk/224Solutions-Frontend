@@ -35,14 +35,14 @@ interface EnrichedRestaurant extends DiscoveryRestaurant {
 type FilterId = 'all' | 'favorites' | 'fast' | 'top' | 'promo' | 'takeaway' | 'dinein' | 'halal' | 'veg' | 'cheap';
 
 const FILTERS: { id: FilterId; label: string; test: (r: EnrichedRestaurant) => boolean }[] = [
-  { id: 'all', label: 'Tous', test: () => true },
-  { id: 'fast', label: '⚡ Livraison -30min', test: (r) => r.etaMinutes <= 30 },
+  { id: 'all', label: "Tous", test: () => true },
+  { id: 'fast', label: "⚡ Livraison -30min", test: (r) => r.etaMinutes <= 30 },
   { id: 'top', label: '⭐ Note 4+', test: (r) => r.rating >= 4 },
   { id: 'promo', label: '🔥 Promos en cours', test: (r) => r.hasPromo },
-  { id: 'takeaway', label: '🏃 À emporter', test: (r) => r.menuCount > 0 },
-  { id: 'dinein', label: '🪑 Sur table', test: (r) => r.menuCount > 0 },
+  { id: 'takeaway', label: "🏃 À emporter", test: (r) => r.menuCount > 0 },
+  { id: 'dinein', label: "🪑 Sur table", test: (r) => r.menuCount > 0 },
   { id: 'halal', label: 'Halal', test: (r) => r.dietaryTags.includes('halal') },
-  { id: 'veg', label: '🌱 Végétarien', test: (r) => r.dietaryTags.some((t) => t.startsWith('veg')) },
+  { id: 'veg', label: "🌱 Végétarien", test: (r) => r.dietaryTags.some((t) => t.startsWith('veg')) },
   { id: 'cheap', label: 'Livraison < 5 000', test: (r) => r.freeDelivery || r.deliveryFee < 5000 },
 ];
 

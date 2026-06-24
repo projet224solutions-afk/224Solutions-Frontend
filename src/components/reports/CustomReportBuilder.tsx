@@ -27,7 +27,7 @@ const reportTypes = [
   { value: 'finance', label: 'Finance', icon: DollarSign, color: 'text-[#ff4000]' },
   { value: 'customers', label: 'Clients', icon: Users, color: 'text-[#04439e]' },
   { value: 'performance', label: 'Performance', icon: TrendingUp, color: 'text-orange-500' },
-  { value: 'custom', label: 'Personnalisé', icon: BarChart3, color: 'text-gray-500' }
+  { value: 'custom', label: "Personnalisé", icon: BarChart3, color: 'text-gray-500' }
 ];
 
 const exportFormats = [
@@ -76,7 +76,7 @@ export function CustomReportBuilder() {
         .insert({
           template_id: (templateData as any).id,
           user_id: user.id,
-          report_data: { message: 'Rapport généré avec succès' },
+          report_data: { message: t('customReportBuilder.rapportGenereAvecSucces') },
           format,
           generated_at: new Date().toISOString()
         });
@@ -84,14 +84,14 @@ export function CustomReportBuilder() {
       if (reportError) throw reportError;
 
       toast({
-        title: 'Rapport généré',
+        title: t('customReportBuilder.rapportGenere'),
         description: `Votre rapport ${format.toUpperCase()} est prêt`,
       });
     } catch (error) {
       console.error('Erreur génération rapport:', error);
       toast({
         title: 'Erreur',
-        description: 'Impossible de générer le rapport',
+        description: t('customReportBuilder.impossibleDeGenererLeRapport'),
         variant: 'destructive'
       });
     } finally {

@@ -200,13 +200,13 @@ export default function ResetPassword() {
       setState("success");
 
       toast({
-        title: "Mot de passe mis à jour",
-        description: "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+        title: t('resetPassword.motDePasseMisA'),
+        description: t('resetPassword.vousPouvezMaintenantVousConnecter'),
       });
 
       setTimeout(() => navigate("/auth"), 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Une erreur est survenue");
+      setError(err instanceof Error ? err.message: t('resetPassword.uneErreurEstSurvenue'));
     } finally {
       setLoading(false);
     }
@@ -225,11 +225,11 @@ export default function ResetPassword() {
       });
       if (error) throw error;
       toast({
-        title: "Lien envoyé",
-        description: "Un nouveau lien de réinitialisation a été envoyé à votre adresse email.",
+        title: t('resetPassword.lienEnvoye'),
+        description: t('resetPassword.unNouveauLienDeReinitialisation'),
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de l'envoi");
+      setError(err instanceof Error ? err.message: t('resetPassword.erreurLorsDeLEnvoi'));
     } finally {
       setResending(false);
     }

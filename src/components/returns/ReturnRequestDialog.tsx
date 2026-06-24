@@ -12,9 +12,9 @@ import { Label } from '@/components/ui/label';
 import { Undo2 } from 'lucide-react';
 
 const REASONS = [
-  { value: 'defective', label: 'Produit défectueux' },
-  { value: 'not_as_described', label: 'Non conforme à la description' },
-  { value: 'wrong_item', label: 'Mauvais article reçu' },
+  { value: 'defective', label: "Produit défectueux" },
+  { value: 'not_as_described', label: "Non conforme à la description" },
+  { value: 'wrong_item', label: "Mauvais article reçu" },
   { value: 'no_longer_needed', label: 'Plus besoin' },
   { value: 'other', label: 'Autre' },
 ];

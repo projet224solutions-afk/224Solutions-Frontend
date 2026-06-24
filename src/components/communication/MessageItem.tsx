@@ -183,8 +183,8 @@ export default function MessageItem({
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content);
     toast({
-      title: "Copié",
-      description: "Message copié dans le presse-papiers"
+      title: t('messageItem.copie'),
+      description: t('messageItem.messageCopieDansLePresse')
     });
   };
 
@@ -193,7 +193,7 @@ export default function MessageItem({
     setShowDeleteDialog(false);
     setDeleteForEveryone(false);
     toast({
-      title: "Message supprimé",
+      title: t('messageItem.messageSupprime'),
       description: deleteForEveryone ? "Le message a été supprimé pour tous" : "Le message a été supprimé pour vous"
     });
   };
@@ -202,8 +202,8 @@ export default function MessageItem({
     if (editContent.trim() !== message.content) {
       onEdit?.(message.id, editContent.trim());
       toast({
-        title: "Message modifié",
-        description: "Le message a été modifié avec succès"
+        title: t('messageItem.messageModifie'),
+        description: t('messageItem.leMessageAEteModifie')
       });
     }
     setIsEditing(false);
@@ -216,8 +216,8 @@ export default function MessageItem({
     // Si erreur, proposer le téléchargement
     if (audioErrors[audioId]) {
       toast({
-        title: "Format non supporté",
-        description: "Téléchargez le fichier pour l'écouter avec une autre application"
+        title: t('messageItem.formatNonSupporte'),
+        description: t('messageItem.telechargezLeFichierPourL')
       });
       return;
     }
@@ -243,13 +243,13 @@ export default function MessageItem({
         if (error.name === 'NotSupportedError' || error.name === 'NotAllowedError') {
           setAudioErrors(prev => ({ ...prev, [audioId]: true }));
           toast({
-            title: "Format audio non supporté",
-            description: "Ce format n'est pas compatible avec votre appareil. Téléchargez le fichier."
+            title: t('messageItem.formatAudioNonSupporte'),
+            description: t('messageItem.ceFormatNEstPas')
           });
         } else {
           toast({
-            title: "Erreur de lecture",
-            description: "Impossible de lire ce fichier audio"
+            title: t('messageItem.erreurDeLecture'),
+            description: t('messageItem.impossibleDeLireCeFichier')
           });
         }
       }

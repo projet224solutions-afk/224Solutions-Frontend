@@ -147,7 +147,7 @@ export function NearbyDeliveriesPanel() {
       setDeliveries(prev => prev.filter(d => d.id !== deliveryId));
 
       toast.success(t('nearbyDeliveriesPanel.livraisonAccepteeAvecSucces'), {
-        description: 'Rendez-vous chez le vendeur pour récupérer le colis'
+        description: t('nearbyDeliveriesPanel.rendezVousChezLeVendeur')
       });
 
       // Rafraîchir la liste complète après un court délai
@@ -157,7 +157,7 @@ export function NearbyDeliveriesPanel() {
     } catch (error: any) {
       console.error('[NearbyDeliveriesPanel] Accept error:', error);
       toast.error(error.message || 'Erreur lors de l\'acceptation', {
-        description: 'La livraison est peut-être déjà prise par un autre livreur'
+        description: t('nearbyDeliveriesPanel.laLivraisonEstPeutEtre')
       });
       // Rafraîchir pour avoir l'état actuel
       loadNearbyDeliveries();

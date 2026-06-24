@@ -100,8 +100,8 @@ const SUPPLIER_CATEGORIES = [
 
 const STEPS = [
   { id: 1, title: 'Informations', icon: User },
-  { id: 2, title: 'Coordonnées', icon: Phone },
-  { id: 3, title: 'Produits', icon: Package },
+  { id: 2, title: "Coordonnées", icon: Phone },
+  { id: 3, title: "Produits", icon: Package },
 ];
 
 export function SupplierFormDialog({

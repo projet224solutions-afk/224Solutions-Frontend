@@ -170,7 +170,7 @@ export function AffiliateRegistration({ onSuccess, onCancel }: AffiliateRegistra
             <div className="grid grid-cols-2 gap-2">
               {[
                 { id: 'flights', label: 'Vols', icon: '✈️' },
-                { id: 'hotels', label: 'Hôtels', icon: '🏨' }
+                { id: 'hotels', label: t('affiliateRegistration.hotels'), icon: '🏨' }
               ].map((spec) => (
                 <div
                   key={spec.id}

@@ -32,7 +32,7 @@ const merchantCategories = [
   { value: 'shopping', label: 'Shopping' },
   { value: 'food', label: 'Alimentation' },
   { value: 'transport', label: 'Transport' },
-  { value: 'services', label: 'Services' },
+  { value: 'services', label: "Services" },
   { value: 'fuel', label: 'Carburant' },
   { value: 'other', label: 'Autre' }
 ];
@@ -62,12 +62,12 @@ export function CardPaymentDialog({
     const paymentAmount = parseFloat(amount);
 
     if (!paymentAmount || paymentAmount <= 0) {
-      setResult({ success: false, message: 'Montant invalide' });
+      setResult({ success: false, message: t('cardPaymentDialog.montantInvalide') });
       return;
     }
 
     if (!merchantName.trim()) {
-      setResult({ success: false, message: 'Nom du marchand requis' });
+      setResult({ success: false, message: t('cardPaymentDialog.nomDuMarchandRequis') });
       return;
     }
 

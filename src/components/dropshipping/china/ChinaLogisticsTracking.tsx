@@ -82,14 +82,14 @@ const TRACKING_STEPS: TrackingStep[] = [
     key: 'pending_supplier_confirm',
     label: 'En attente fournisseur',
     icon: <Clock className="w-4 h-4" />,
-    description: 'Commande envoyée au fournisseur',
+    description: "Commande envoyée au fournisseur",
     segment: 'supplier'
   },
   {
     key: 'supplier_confirmed',
-    label: 'Confirmé par fournisseur',
+    label: "Confirmé par fournisseur",
     icon: <CheckCircle className="w-4 h-4" />,
-    description: 'Le fournisseur a accepté la commande',
+    description: "Le fournisseur a accepté la commande",
     segment: 'supplier'
   },
   {
@@ -101,56 +101,56 @@ const TRACKING_STEPS: TrackingStep[] = [
   },
   {
     key: 'quality_check',
-    label: 'Contrôle qualité',
+    label: "Contrôle qualité",
     icon: <ShieldAlert className="w-4 h-4" />,
-    description: 'Vérification avant expédition',
+    description: "Vérification avant expédition",
     segment: 'supplier'
   },
   {
     key: 'ready_to_ship',
-    label: 'Prêt à expédier',
+    label: "Prêt à expédier",
     icon: <Package className="w-4 h-4" />,
-    description: 'Produit emballé et prêt',
+    description: "Produit emballé et prêt",
     segment: 'supplier'
   },
   {
     key: 'shipped_domestic_china',
-    label: 'Expédié en Chine',
+    label: "Expédié en Chine",
     icon: <Truck className="w-4 h-4" />,
-    description: 'En route vers entrepôt de consolidation',
+    description: "En route vers entrepôt de consolidation",
     segment: 'china'
   },
   {
     key: 'at_consolidation_warehouse',
-    label: 'Entrepôt de transit',
+    label: "Entrepôt de transit",
     icon: <Building2 className="w-4 h-4" />,
-    description: 'Arrivé à l\'entrepôt de consolidation',
+    description: "Arrivé à l'entrepôt de consolidation",
     segment: 'china'
   },
   {
     key: 'shipped_international',
-    label: 'Expédition internationale',
+    label: "Expédition internationale",
     icon: <Plane className="w-4 h-4" />,
-    description: 'En route vers le pays de destination',
+    description: "En route vers le pays de destination",
     segment: 'international'
   },
   {
     key: 'customs_clearance',
-    label: 'Dédouanement',
+    label: "Dédouanement",
     icon: <Globe className="w-4 h-4" />,
-    description: 'En cours de dédouanement',
+    description: "En cours de dédouanement",
     segment: 'customs'
   },
   {
     key: 'last_mile_delivery',
-    label: 'Livraison locale',
+    label: "Livraison locale",
     icon: <Truck className="w-4 h-4" />,
-    description: 'En cours de livraison',
+    description: "En cours de livraison",
     segment: 'lastmile'
   },
   {
     key: 'delivered',
-    label: 'Livré',
+    label: "Livré",
     icon: <Home className="w-4 h-4" />,
     description: 'Colis remis au destinataire',
     segment: 'lastmile'

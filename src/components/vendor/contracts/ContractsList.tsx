@@ -94,8 +94,8 @@ export default function ContractsList({ refresh }: ContractsListProps) {
       if (error) throw error;
 
       toast({
-        title: 'PDF généré',
-        description: 'Le PDF du contrat a été généré avec succès',
+        title: t('contractsList.pdfGenere'),
+        description: t('contractsList.lePdfDuContratA'),
       });
 
       // Open PDF in new tab

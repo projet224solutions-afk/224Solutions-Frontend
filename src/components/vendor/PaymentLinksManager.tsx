@@ -36,26 +36,26 @@ import {
 } from 'lucide-react';
 
 const LINK_TYPES: { value: LinkType; label: string; icon: React.ReactNode; desc: string }[] = [
-  { value: 'payment', label: 'Paiement simple', icon: <CreditCard className="w-4 h-4" />, desc: 'Montant + objet pour paiement rapide' },
+  { value: 'payment', label: "Paiement simple", icon: <CreditCard className="w-4 h-4" />, desc: 'Montant + objet pour paiement rapide' },
   { value: 'invoice', label: 'Facture', icon: <FileText className="w-4 h-4" />, desc: 'Référence, description, montant, statut' },
-  { value: 'checkout', label: 'Checkout produit', icon: <ShoppingCart className="w-4 h-4" />, desc: 'Produit digital ou physique' },
+  { value: 'checkout', label: "Checkout produit", icon: <ShoppingCart className="w-4 h-4" />, desc: 'Produit digital ou physique' },
   { value: 'service', label: 'Service / Prestation', icon: <Wrench className="w-4 h-4" />, desc: 'Restaurant, livraison, transport, prestation' },
 ];
 
 const STATUS_CONFIG: Record<string, { icon: React.ReactNode; color: string; label: string }> = {
   pending: { icon: <Clock className="w-3.5 h-3.5" />, color: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-orange-300', label: 'En attente' },
-  success: { icon: <CheckCircle className="w-3.5 h-3.5" />, color: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-orange-300', label: 'Payé' },
-  paid: { icon: <CheckCircle className="w-3.5 h-3.5" />, color: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-orange-300', label: 'Payé' },
-  failed: { icon: <XCircle className="w-3.5 h-3.5" />, color: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-orange-300', label: 'Échoué' },
-  expired: { icon: <AlertCircle className="w-3.5 h-3.5" />, color: 'bg-muted text-muted-foreground', label: 'Expiré' },
-  cancelled: { icon: <Ban className="w-3.5 h-3.5" />, color: 'bg-muted text-muted-foreground', label: 'Annulé' },
+  success: { icon: <CheckCircle className="w-3.5 h-3.5" />, color: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-orange-300', label: "Payé" },
+  paid: { icon: <CheckCircle className="w-3.5 h-3.5" />, color: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-orange-300', label: "Payé" },
+  failed: { icon: <XCircle className="w-3.5 h-3.5" />, color: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-orange-300', label: "Échoué" },
+  expired: { icon: <AlertCircle className="w-3.5 h-3.5" />, color: 'bg-muted text-muted-foreground', label: "Expiré" },
+  cancelled: { icon: <Ban className="w-3.5 h-3.5" />, color: 'bg-muted text-muted-foreground', label: "Annulé" },
 };
 
 const TYPE_CONFIG: Record<string, { icon: React.ReactNode; color: string; label: string }> = {
-  payment: { icon: <CreditCard className="w-3.5 h-3.5" />, color: 'bg-primary/10 text-primary', label: 'Paiement' },
+  payment: { icon: <CreditCard className="w-3.5 h-3.5" />, color: 'bg-primary/10 text-primary', label: "Paiement" },
   invoice: { icon: <FileText className="w-3.5 h-3.5" />, color: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-orange-300', label: 'Facture' },
   checkout: { icon: <ShoppingCart className="w-3.5 h-3.5" />, color: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-orange-300', label: 'Checkout' },
-  service: { icon: <Wrench className="w-3.5 h-3.5" />, color: 'bg-blue-100 text-[#04439e] dark:bg-[#04439e]/30 dark:text-blue-300', label: 'Service' },
+  service: { icon: <Wrench className="w-3.5 h-3.5" />, color: 'bg-blue-100 text-[#04439e] dark:bg-[#04439e]/30 dark:text-blue-300', label: "Service" },
 };
 
 interface Product { id: string; name: string; price: number; description?: string; images?: string[]; stock_quantity?: number }
@@ -159,7 +159,7 @@ export default function PaymentLinksManager() {
   // Pré-remplit le formulaire à partir d'un lien existant (édition). Liens « pending » uniquement.
   const openEdit = (link: any) => {
     if (link.status !== 'pending') {
-      toast({ title: "Non modifiable", description: "Seuls les liens en attente peuvent être modifiés.", variant: "destructive" });
+      toast({ title: "Non modifiable", description: t('paymentLinksManager.seulsLesLiensEnAttente'), variant: "destructive" });
       return;
     }
     setEditingPaymentId(link.payment_id);
@@ -232,7 +232,7 @@ export default function PaymentLinksManager() {
       if (token) {
         const url = `${getPublicBaseUrl()}/pay/${encodeURIComponent(token)}`;
         navigator.clipboard.writeText(url);
-        toast({ title: "✅ Lien créé et copié !", description: url });
+        toast({ title: t('paymentLinksManager.lienCreeEtCopie'), description: url });
         resetForm();
       }
     } finally {
@@ -243,7 +243,7 @@ export default function PaymentLinksManager() {
   const copyLink = (link: any) => {
     const url = getPaymentUrl(link);
     navigator.clipboard.writeText(url);
-    toast({ title: "Lien copié !" });
+    toast({ title: t('paymentLinksManager.lienCopie') });
   };
 
   const shareLink = async (link: any) => {
@@ -279,9 +279,9 @@ export default function PaymentLinksManager() {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 shrink-0">
         {[
           { icon: <Link className="w-5 h-5 text-primary" />, label: 'Total', value: stats?.total_links || 0 },
-          { icon: <CheckCircle className="w-5 h-5 text-[#ff4000]" />, label: 'Payés', value: stats?.successful_payments || 0, color: 'text-[#ff4000]' },
+          { icon: <CheckCircle className="w-5 h-5 text-[#ff4000]" />, label: t('paymentLinksManager.payes'), value: stats?.successful_payments || 0, color: 'text-[#ff4000]' },
           { icon: <Clock className="w-5 h-5 text-[#ff4000]" />, label: 'En attente', value: stats?.pending_payments || 0, color: 'text-[#ff4000]' },
-          { icon: <XCircle className="w-5 h-5 text-[#ff4000]" />, label: 'Échoués', value: stats?.failed_payments || 0, color: 'text-[#ff4000]' },
+          { icon: <XCircle className="w-5 h-5 text-[#ff4000]" />, label: t('paymentLinksManager.echoues'), value: stats?.failed_payments || 0, color: 'text-[#ff4000]' },
           { icon: <DollarSign className="w-5 h-5 text-primary" />, label: 'Revenus', value: formatCurrency(stats?.total_revenue || 0, 'GNF'), isRevenue: true },
         ].map((s, i) => (
           <Card key={i}>
@@ -758,7 +758,7 @@ export default function PaymentLinksManager() {
           <div className="flex justify-center p-4">
             {showQrModal && <QRCodeSVG value={showQrModal} size={200} />}
           </div>
-          <Button onClick={() => { navigator.clipboard.writeText(showQrModal || ''); toast({ title: "Lien copié !" }); }}>
+          <Button onClick={() => { navigator.clipboard.writeText(showQrModal || ''); toast({ title: t('paymentLinksManager.lienCopie') }); }}>
             <Copy className="w-4 h-4 mr-2" />Copier le lien
           </Button>
         </DialogContent>

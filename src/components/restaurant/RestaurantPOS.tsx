@@ -44,13 +44,13 @@ type OrderType = 'sur_place' | 'emporter' | 'livraison';
 type PaymentMethod = 'cash' | 'mobile_money' | 'card';
 
 const ORDER_TYPES: { value: OrderType; label: string; icon: React.ReactNode }[] = [
-  { value: 'sur_place', label: 'Sur place', icon: <MapPin className="w-4 h-4" /> },
-  { value: 'emporter', label: 'À emporter', icon: <ShoppingBag className="w-4 h-4" /> },
-  { value: 'livraison', label: 'Livraison', icon: <Truck className="w-4 h-4" /> },
+  { value: 'sur_place', label: "Sur place", icon: <MapPin className="w-4 h-4" /> },
+  { value: 'emporter', label: "À emporter", icon: <ShoppingBag className="w-4 h-4" /> },
+  { value: 'livraison', label: "Livraison", icon: <Truck className="w-4 h-4" /> },
 ];
 
 const PAYMENT_METHODS: { value: PaymentMethod; label: string; icon: React.ReactNode }[] = [
-  { value: 'cash', label: 'Espèces', icon: <Banknote className="w-4 h-4" /> },
+  { value: 'cash', label: "Espèces", icon: <Banknote className="w-4 h-4" /> },
   { value: 'mobile_money', label: 'Mobile Money', icon: <Smartphone className="w-4 h-4" /> },
   { value: 'card', label: 'Carte', icon: <CreditCard className="w-4 h-4" /> },
 ];

@@ -92,7 +92,7 @@ export default function BureauWalletManagement({
               bureau_id: bureauId,
               type: 'credit',
               amount: 10000,
-              description: 'Crédit de bienvenue',
+              description: t('bureauWalletManagement.creditDeBienvenue'),
               status: 'completed',
               date: new Date().toISOString().split('T')[0]
             });
@@ -193,7 +193,7 @@ export default function BureauWalletManagement({
           bureau_id: bureauId,
           type: 'credit',
           amount: amount,
-          description: 'Dépôt manuel',
+          description: t('bureauWalletManagement.depotManuel'),
           status: 'completed',
           date: new Date().toISOString().split('T')[0]
         });

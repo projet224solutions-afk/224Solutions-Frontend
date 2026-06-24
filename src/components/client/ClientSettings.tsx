@@ -73,7 +73,7 @@ interface ProfileData {
 const addressLabels = [
   { value: 'domicile', label: 'Domicile', icon: Home },
   { value: 'bureau', label: 'Bureau', icon: Building2 },
-  { value: 'travail', label: 'Lieu de travail', icon: Briefcase },
+  { value: 'travail', label: "Lieu de travail", icon: Briefcase },
   { value: 'autre', label: 'Autre', icon: MapPin }
 ];
 

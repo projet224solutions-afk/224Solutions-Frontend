@@ -51,7 +51,7 @@ export function ActiveRideCard({
     switch (ride.status) {
       case 'accepted':
         return {
-          label: 'En route vers le client',
+          label: t('activeRideCard.enRouteVersLeClient'),
           color: 'bg-orange-100 text-[#ff4000] border-orange-300',
           nextAction: 'arriving',
           nextLabel: 'Je suis arrivé',
@@ -59,7 +59,7 @@ export function ActiveRideCard({
         };
       case 'arriving':
         return {
-          label: 'Arrivé au point de rendez-vous',
+          label: t('activeRideCard.arriveAuPointDeRendez'),
           color: 'bg-blue-100 text-blue-800 border-blue-300',
           nextAction: 'picked_up',
           nextLabel: 'Client à bord',
@@ -67,7 +67,7 @@ export function ActiveRideCard({
         };
       case 'picked_up':
         return {
-          label: 'Client à bord',
+          label: t('activeRideCard.clientABord'),
           color: 'bg-orange-100 text-[#ff4000] border-orange-300',
           nextAction: 'in_progress',
           nextLabel: 'Arrivé à destination',

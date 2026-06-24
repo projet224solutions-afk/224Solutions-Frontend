@@ -137,7 +137,7 @@ export default function TaxiMotoClient() {
   const handleTabChange = (tab: string) => {
     if (currentRide && tab !== 'tracking') {
       toast.warning('Course en cours', {
-        description: 'Terminez ou annulez votre course pour changer d\'onglet.',
+        description: t('taxiMotoClient.terminezOuAnnulezVotreCourse'),
         duration: 3000,
       });
       return;

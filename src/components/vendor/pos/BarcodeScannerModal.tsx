@@ -159,7 +159,7 @@ export function BarcodeScannerModal({
   const reportVisualMismatch = () => {
     setVerificationState('mismatch');
     toast.warning(t('barcodeScannerModal.discordanceVisuelleDetectee'), {
-      description: 'Veuillez vérifier le produit manuellement.'
+      description: t('barcodeScannerModal.veuillezVerifierLeProduitManuellement')
     });
   };
 
@@ -280,7 +280,7 @@ export function BarcodeScannerModal({
       if (!cameraToastShown) {
         setCameraToastShown(true);
         toast.info(t('barcodeScannerModal.cameraActivee'), {
-          description: 'Pointez vers le code-barres du produit',
+          description: t('barcodeScannerModal.pointezVersLeCodeBarres'),
           id: 'camera-activated' // ID unique pour éviter les doublons
         });
       }

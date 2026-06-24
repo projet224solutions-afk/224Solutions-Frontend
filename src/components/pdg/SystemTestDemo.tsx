@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * COMPOSANT TEST SYSTÈME - SURVEILLANCE LOGIQUE
  * Test RÉEL connecté aux vraies données Supabase
@@ -49,6 +50,7 @@ interface SystemTestDemoProps {
 }
 
 export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoProps) {
+  const { t } = useTranslation();
   const [isRunning, setIsRunning] = useState(false);
   const [_currentStep, setCurrentStep] = useState(-1);
   const [steps, setSteps] = useState<TestStep[]>([]);
@@ -62,7 +64,7 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
     {
       id: 'connection',
       name: 'Connexion Base de Données',
-      description: 'Vérification de la connexion Supabase',
+      description: t('systemTestDemo.verificationDeLaConnexionSupabase'),
       icon: <Database className="w-5 h-5" />,
       duration: 500,
       status: 'pending',
@@ -74,16 +76,16 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
             .limit(1);
 
           if (error) throw error;
-          return { success: true, message: 'Connexion établie' };
+          return { success: true, message: t('systemTestDemo.connexionEtablie') };
         } catch (_err) {
-          return { success: false, message: 'Échec de connexion' };
+          return { success: false, message: t('systemTestDemo.echecDeConnexion') };
         }
       },
     },
     {
       id: 'rules',
       name: 'Chargement des Règles',
-      description: 'Récupération des règles métier actives',
+      description: t('systemTestDemo.recuperationDesReglesMetierActives'),
       icon: <Server className="w-5 h-5" />,
       duration: 600,
       status: 'pending',
@@ -103,14 +105,14 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
           }
           return { success: true, value: rulesCount, message: `${rulesCount} règles actives` };
         } catch (_err) {
-          return { success: false, message: 'Erreur chargement règles' };
+          return { success: false, message: t('systemTestDemo.erreurChargementRegles') };
         }
       },
     },
     {
       id: 'detection',
       name: 'Moteur de Détection',
-      description: 'Analyse des anomalies en temps réel',
+      description: t('systemTestDemo.analyseDesAnomaliesEnTemps'),
       icon: <Eye className="w-5 h-5" />,
       duration: 700,
       status: 'pending',
@@ -128,16 +130,16 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
           if (anomaliesCount > 0) {
             return { success: true, value: anomaliesCount, message: `${anomaliesCount} anomalie(s) détectée(s)` };
           }
-          return { success: true, value: 0, message: 'Aucune anomalie' };
+          return { success: true, value: 0, message: t('systemTestDemo.aucuneAnomalie') };
         } catch (_err) {
-          return { success: false, message: 'Erreur moteur détection' };
+          return { success: false, message: t('systemTestDemo.erreurMoteurDetection') };
         }
       },
     },
     {
       id: 'ai',
       name: 'Intelligence Artificielle',
-      description: 'Détection de patterns suspects',
+      description: t('systemTestDemo.detectionDePatternsSuspects'),
       icon: <Cpu className="w-5 h-5" />,
       duration: 600,
       status: 'pending',
@@ -164,7 +166,7 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
     {
       id: 'network',
       name: 'Surveillance Réseau',
-      description: 'Monitoring des flux en temps réel',
+      description: t('systemTestDemo.monitoringDesFluxEnTemps'),
       icon: <Network className="w-5 h-5" />,
       duration: 500,
       status: 'pending',
@@ -180,18 +182,18 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
           const activeApis = count || 0;
           // Warning si aucune API active
           if (activeApis === 0) {
-            return { success: true, value: 0, message: 'Aucune API active' };
+            return { success: true, value: 0, message: t('systemTestDemo.aucuneApiActive') };
           }
           return { success: true, value: activeApis, message: `${activeApis} API(s) active(s)` };
         } catch (_err) {
-          return { success: false, message: 'Erreur surveillance réseau' };
+          return { success: false, message: t('systemTestDemo.erreurSurveillanceReseau') };
         }
       },
     },
     {
       id: 'security',
       name: 'Validation Sécurité',
-      description: 'Contrôle des accès et permissions',
+      description: t('systemTestDemo.controleDesAccesEtPermissions'),
       icon: <Lock className="w-5 h-5" />,
       duration: 600,
       status: 'pending',
@@ -220,16 +222,16 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
           if (totalIssues > 5) {
             return { success: true, value: totalIssues, message: `${totalIssues} alerte(s) sécurité` };
           }
-          return { success: true, value: totalIssues, message: 'Sécurité validée' };
+          return { success: true, value: totalIssues, message: t('systemTestDemo.securiteValidee') };
         } catch (_err) {
-          return { success: false, message: 'Erreur validation sécurité' };
+          return { success: false, message: t('systemTestDemo.erreurValidationSecurite') };
         }
       },
     },
     {
       id: 'analytics',
       name: 'Module Analytics',
-      description: 'Génération des métriques',
+      description: t('systemTestDemo.generationDesMetriques'),
       icon: <BarChart3 className="w-5 h-5" />,
       duration: 500,
       status: 'pending',
@@ -255,7 +257,7 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
     {
       id: 'shield',
       name: 'Protection Active',
-      description: 'Activation du bouclier de surveillance',
+      description: t('systemTestDemo.activationDuBouclierDeSurveillance'),
       icon: <Shield className="w-5 h-5" />,
       duration: 400,
       status: 'pending',
@@ -411,7 +413,7 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
         border: 'border-[#ff4000]/30',
         text: 'text-[#ff4000]',
         textLight: 'text-orange-300',
-        message: 'Système Opérationnel',
+        message: t('systemTestDemo.systemeOperationnel'),
         submessage: 'Tous les modules fonctionnent correctement',
       };
     } else if (systemScore >= 60) {
@@ -420,7 +422,7 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
         border: 'border-[#ff4000]/30',
         text: 'text-[#ff4000]',
         textLight: 'text-orange-300',
-        message: 'Système Fonctionnel',
+        message: t('systemTestDemo.systemeFonctionnel'),
         submessage: 'Certains modules nécessitent une attention',
       };
     } else {
@@ -588,8 +590,8 @@ export default function SystemTestDemo({ open, onOpenChange }: SystemTestDemoPro
                   className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6"
                 >
                   {[
-                    { label: 'Règles vérifiées', value: rulesValue.toString(), icon: <Server className="w-4 h-4" /> },
-                    { label: 'Tests réussis', value: `${successSteps}/${steps.length}`, icon: <CheckCircle2 className="w-4 h-4" /> },
+                    { label: t('systemTestDemo.reglesVerifiees'), value: rulesValue.toString(), icon: <Server className="w-4 h-4" /> },
+                    { label: t('systemTestDemo.testsReussis'), value: `${successSteps}/${steps.length}`, icon: <CheckCircle2 className="w-4 h-4" /> },
                     { label: 'Avertissements', value: warningSteps.toString(), icon: <AlertTriangle className="w-4 h-4" /> },
                     { label: 'Protection', value: systemScore >= 80 ? 'Active' : 'Partielle', icon: <Shield className="w-4 h-4" /> },
                   ].map((stat) => (

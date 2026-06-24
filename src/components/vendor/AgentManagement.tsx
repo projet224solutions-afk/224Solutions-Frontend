@@ -298,7 +298,7 @@ export default function AgentManagement() {
     if (!formData.name || !formData.email || !formData.phone) {
       toast({
         title: "❌ Champs manquants",
-        description: "Veuillez remplir tous les champs obligatoires",
+        description: t('agentManagement.veuillezRemplirTousLesChamps'),
         variant: "destructive"
       });
       return;
@@ -308,8 +308,8 @@ export default function AgentManagement() {
     const newAgentPassword = !editingAgent ? agentPasswordRef.current.trim() : '';
     if (!editingAgent && newAgentPassword.length > 0 && newAgentPassword.length < 8) {
       toast({
-        title: "❌ Mot de passe trop court",
-        description: "Le mot de passe doit contenir au moins 8 caractères",
+        title: t('agentManagement.motDePasseTropCourt'),
+        description: t('agentManagement.leMotDePasseDoit'),
         variant: "destructive"
       });
       return;
@@ -410,8 +410,8 @@ export default function AgentManagement() {
     const agentLink = `${window.location.origin}/vendor-agent/${accessToken}`;
     navigator.clipboard.writeText(agentLink);
     toast({
-      title: "✅ Lien copié",
-      description: "Le lien d'accès de l'agent a été copié dans le presse-papiers"
+      title: t('agentManagement.lienCopie'),
+      description: t('agentManagement.leLienDAccesDe')
     });
   };
 
@@ -551,7 +551,7 @@ export default function AgentManagement() {
                           permissions: newPermissions
                         });
                         toast({
-                          title: "✅ Permissions mises à jour",
+                          title: t('agentManagement.permissionsMisesAJour'),
                           description: `Les permissions par défaut pour un agent ${value} ont été appliquées. Vous pouvez les personnaliser.`
                         });
                       }}

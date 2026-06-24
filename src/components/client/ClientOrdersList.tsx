@@ -411,13 +411,13 @@ export default function ClientOrdersList() {
   const getStatusBadge = (status: string) => {
     const statusConfig: Record<string, { label: string; color: string; icon: any }> = {
       pending: { label: 'En attente', color: 'bg-orange-100 text-[#ff4000]', icon: Clock },
-      confirmed: { label: 'Confirmée', color: 'bg-blue-100 text-blue-800', icon: CheckCircle },
-      preparing: { label: 'En préparation', color: 'bg-blue-100 text-[#04439e]', icon: Package },
-      ready: { label: 'Prête', color: 'bg-blue-100 text-blue-800', icon: Package },
+      confirmed: { label: t('clientOrdersList.confirmee'), color: 'bg-blue-100 text-blue-800', icon: CheckCircle },
+      preparing: { label: t('clientOrdersList.enPreparation'), color: 'bg-blue-100 text-[#04439e]', icon: Package },
+      ready: { label: t('clientOrdersList.prete'), color: 'bg-blue-100 text-blue-800', icon: Package },
       in_transit: { label: 'En transit', color: 'bg-orange-100 text-orange-800', icon: Truck },
-      delivered: { label: 'Livrée', color: 'bg-orange-100 text-[#ff4000]', icon: CheckCircle },
-      completed: { label: 'Terminée', color: 'bg-orange-100 text-[#ff4000]', icon: CheckCircle },
-      cancelled: { label: 'Annulée', color: 'bg-orange-100 text-[#ff4000]', icon: XCircle }
+      delivered: { label: t('clientOrdersList.livree'), color: 'bg-orange-100 text-[#ff4000]', icon: CheckCircle },
+      completed: { label: t('clientOrdersList.terminee'), color: 'bg-orange-100 text-[#ff4000]', icon: CheckCircle },
+      cancelled: { label: t('clientOrdersList.annulee'), color: 'bg-orange-100 text-[#ff4000]', icon: XCircle }
     };
 
     const config = statusConfig[status] || statusConfig.pending;
@@ -435,9 +435,9 @@ export default function ClientOrdersList() {
     if (!escrowStatus) return null;
 
     const escrowConfig: Record<string, { label: string; color: string }> = {
-      pending: { label: 'Fonds bloqués (Escrow)', color: 'bg-orange-100 text-orange-800' },
-      released: { label: 'Fonds libérés', color: 'bg-orange-100 text-[#ff4000]' },
-      refunded: { label: 'Remboursé', color: 'bg-gray-100 text-gray-800' },
+      pending: { label: t('clientOrdersList.fondsBloquesEscrow'), color: 'bg-orange-100 text-orange-800' },
+      released: { label: t('clientOrdersList.fondsLiberes'), color: 'bg-orange-100 text-[#ff4000]' },
+      refunded: { label: t('clientOrdersList.rembourse'), color: 'bg-gray-100 text-gray-800' },
       dispute: { label: 'Litige', color: 'bg-orange-100 text-[#ff4000]' }
     };
 

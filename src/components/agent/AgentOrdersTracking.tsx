@@ -55,10 +55,10 @@ interface Order {
 
 const orderSteps = [
   { key: 'pending', label: 'En attente', icon: Clock },
-  { key: 'confirmed', label: 'Confirmée', icon: CheckCircle },
-  { key: 'preparing', label: 'En préparation', icon: Package },
-  { key: 'shipped', label: 'Expédiée', icon: Truck },
-  { key: 'delivered', label: 'Livrée', icon: CheckCircle },
+  { key: 'confirmed', label: "Confirmée", icon: CheckCircle },
+  { key: 'preparing', label: "En préparation", icon: Package },
+  { key: 'shipped', label: "Expédiée", icon: Truck },
+  { key: 'delivered', label: "Livrée", icon: CheckCircle },
 ];
 
 const statusColors: Record<string, string> = {

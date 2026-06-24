@@ -29,10 +29,10 @@ interface CoachModuleProps {
 
 const STATUS_META: Record<string, { label: string; color: string }> = {
   pending: { label: 'En attente', color: 'bg-amber-100 text-amber-700' },
-  confirmed: { label: t('coachModule.confirmee'), color: 'bg-[#04439e]/10 text-[#04439e]' },
+  confirmed: { label: "Confirmée", color: 'bg-[#04439e]/10 text-[#04439e]' },
   in_progress: { label: 'En cours', color: 'bg-blue-100 text-blue-700' },
-  completed: { label: t('coachModule.terminee'), color: 'bg-[#16a34a]/10 text-[#16a34a]' },
-  cancelled: { label: t('coachModule.annulee'), color: 'bg-red-100 text-red-600' },
+  completed: { label: "Terminée", color: 'bg-[#16a34a]/10 text-[#16a34a]' },
+  cancelled: { label: "Annulée", color: 'bg-red-100 text-red-600' },
 };
 
 export function CoachModule({ serviceId, businessName }: CoachModuleProps) {

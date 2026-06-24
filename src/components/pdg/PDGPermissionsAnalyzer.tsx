@@ -97,7 +97,7 @@ export function PDGPermissionsAnalyzer() {
       if (error) {
         results.push({
           status: 'error',
-          message: 'Erreur accès table agents',
+          message: t('pDGPermissionsAnalyzer.erreurAccesTableAgents'),
           severity: 'high'
         });
       } else {
@@ -119,7 +119,7 @@ export function PDGPermissionsAnalyzer() {
     } catch (_err) {
       results.push({
         status: 'error',
-        message: 'Erreur vérification agents',
+        message: t('pDGPermissionsAnalyzer.erreurVerificationAgents'),
         severity: 'high'
       });
     }
@@ -138,7 +138,7 @@ export function PDGPermissionsAnalyzer() {
       if (error) {
         results.push({
           status: 'error',
-          message: 'Erreur accès permissions agents',
+          message: t('pDGPermissionsAnalyzer.erreurAccesPermissionsAgents'),
           severity: 'high'
         });
       } else {
@@ -165,7 +165,7 @@ export function PDGPermissionsAnalyzer() {
     } catch (_err) {
       results.push({
         status: 'error',
-        message: 'Erreur vérification permissions',
+        message: t('pDGPermissionsAnalyzer.erreurVerificationPermissions'),
         severity: 'high'
       });
     }

@@ -929,7 +929,7 @@ export default function CopiloteChat({ className = '', height = 'calc(100vh - 14
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: error instanceof Error ? error.message : 'Désolé, je rencontre une difficulté technique. Veuillez réessayer.',
+        content: error instanceof Error ? error.message: t('copiloteChat.desoleJeRencontreUneDifficulte'),
         timestamp: new Date().toISOString()
       };
 
@@ -940,7 +940,7 @@ export default function CopiloteChat({ className = '', height = 'calc(100vh - 14
         }
         return [...prev, errorMessage];
       });
-      toast.error(error instanceof Error ? error.message : 'Erreur de communication avec le Copilote');
+      toast.error(error instanceof Error ? error.message: t('copiloteChat.erreurDeCommunicationAvecLe'));
     } finally {
       console.log('🔄 Copilote: Fin du traitement');
       setIsLoading(false);

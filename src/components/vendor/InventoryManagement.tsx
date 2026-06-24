@@ -122,7 +122,7 @@ export default function InventoryManagement() {
       if (cached) {
         setProducts(cached);
       } else {
-        toast({ title: 'Erreur', description: 'Impossible de charger les produits', variant: 'destructive' });
+        toast({ title: 'Erreur', description: t('inventoryManagement.impossibleDeChargerLesProduits'), variant: 'destructive' });
       }
     }
   }, [vendorId, toast]);
@@ -142,7 +142,7 @@ export default function InventoryManagement() {
       setIsOnline(online);
 
       if (online) {
-        toast({ title: 'Connexion rétablie', description: 'Inventaire en ligne' });
+        toast({ title: t('inventoryManagement.connexionRetablie'), description: 'Inventaire en ligne' });
         // Recharger l'inventaire
         refresh();
       } else {
@@ -238,12 +238,12 @@ export default function InventoryManagement() {
 
   const addStock = async () => {
     if (!selectedProductId) {
-      toast({ title: 'Sélectionnez un produit', variant: 'destructive' });
+      toast({ title: t('inventoryManagement.selectionnezUnProduit'), variant: 'destructive' });
       return;
     }
     const qty = parseInt(addQty || '0', 10);
     if (qty <= 0) {
-      toast({ title: 'Quantité invalide', variant: 'destructive' });
+      toast({ title: t('inventoryManagement.quantiteInvalide'), variant: 'destructive' });
       return;
     }
     try {
@@ -271,7 +271,7 @@ export default function InventoryManagement() {
       setAddOpen(false);
       setAddQty('');
       setSelectedProductId('');
-      toast({ title: '✅ Stock ajouté avec succès' });
+      toast({ title: t('inventoryManagement.stockAjouteAvecSucces') });
     } catch (e: any) {
       toast({ title: 'Erreur ajout stock', description: e?.message, variant: 'destructive' });
     }
@@ -280,15 +280,15 @@ export default function InventoryManagement() {
   const addWarehouse = async () => {
     // Validation des champs requis
     if (!newWarehouse.country.trim()) {
-      toast({ title: 'Erreur', description: 'Le pays est requis', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('inventoryManagement.lePaysEstRequis'), variant: 'destructive' });
       return;
     }
     if (!newWarehouse.city.trim()) {
-      toast({ title: 'Erreur', description: 'La ville est requise', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('inventoryManagement.laVilleEstRequise'), variant: 'destructive' });
       return;
     }
     if (!newWarehouse.name.trim()) {
-      toast({ title: 'Erreur', description: 'Le nom de l\'entrepôt est requis', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('inventoryManagement.leNomDeLEntrepot'), variant: 'destructive' });
       return;
     }
 
@@ -311,7 +311,7 @@ export default function InventoryManagement() {
 
       if (error) throw error;
 
-      toast({ title: '✅ Entrepôt créé avec succès' });
+      toast({ title: t('inventoryManagement.entrepotCreeAvecSucces') });
       setWarehouseOpen(false);
       setNewWarehouse({ country: '', city: '', name: '', address: '', manager_name: '', manager_phone: '', manager_email: '' });
       await fetchWarehouses();
@@ -332,7 +332,7 @@ export default function InventoryManagement() {
 
       if (error) throw error;
 
-      toast({ title: '✅ Statut mis à jour' });
+      toast({ title: t('inventoryManagement.statutMisAJour') });
       await fetchWarehouses();
 
       // Déclencher un événement pour synchroniser avec l'onglet Entrepôts
@@ -347,7 +347,7 @@ export default function InventoryManagement() {
 
     const qty = parseInt(restockQty || '0', 10);
     if (qty <= 0) {
-      toast({ title: 'Quantité invalide', variant: 'destructive' });
+      toast({ title: t('inventoryManagement.quantiteInvalide'), variant: 'destructive' });
       return;
     }
 
@@ -357,9 +357,9 @@ export default function InventoryManagement() {
       setRestockOpen(false);
       setRestockItem(null);
       setRestockQty('');
-      toast({ title: '✅ Stock réapprovisionné avec succès' });
+      toast({ title: t('inventoryManagement.stockReapprovisionneAvecSucces') });
     } catch (e: any) {
-      toast({ title: 'Erreur réapprovisionnement', description: e?.message, variant: 'destructive' });
+      toast({ title: t('inventoryManagement.erreurReapprovisionnement'), description: e?.message, variant: 'destructive' });
     }
   };
 
@@ -384,7 +384,7 @@ export default function InventoryManagement() {
 
       setEditingWarehouse(null);
       await fetchWarehouses();
-      toast({ title: '✅ Entrepôt modifié avec succès' });
+      toast({ title: t('inventoryManagement.entrepotModifieAvecSucces') });
 
       // Déclencher un événement pour synchroniser avec l'onglet Entrepôts
       window.dispatchEvent(new CustomEvent('warehouseUpdated'));
@@ -406,7 +406,7 @@ export default function InventoryManagement() {
 
       setDeletingWarehouse(null);
       await fetchWarehouses();
-      toast({ title: '✅ Entrepôt supprimé avec succès' });
+      toast({ title: t('inventoryManagement.entrepotSupprimeAvecSucces') });
 
       // Déclencher un événement pour synchroniser avec l'onglet Entrepôts
       window.dispatchEvent(new CustomEvent('warehouseUpdated'));

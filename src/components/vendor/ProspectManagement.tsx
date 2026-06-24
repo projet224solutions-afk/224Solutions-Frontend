@@ -71,14 +71,14 @@ export default function ProspectManagement() {
       if (editingProspect) {
         await updateProspect(editingProspect.id, formData);
         toast({
-          title: "Prospect mis à jour",
-          description: "Les informations du prospect ont été mises à jour avec succès."
+          title: t('prospectManagement.prospectMisAJour'),
+          description: t('prospectManagement.lesInformationsDuProspectOnt')
         });
       } else {
         await createProspect(formData);
         toast({
-          title: "Prospect créé",
-          description: "Le nouveau prospect a été ajouté avec succès."
+          title: t('prospectManagement.prospectCree'),
+          description: t('prospectManagement.leNouveauProspectAEte')
         });
       }
       setIsDialogOpen(false);
@@ -86,7 +86,7 @@ export default function ProspectManagement() {
     } catch (_err) {
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'enregistrement.",
+        description: t('prospectManagement.uneErreurEstSurvenueLors'),
         variant: "destructive"
       });
     } finally {
@@ -113,13 +113,13 @@ export default function ProspectManagement() {
     try {
       await updateProspect(prospect.id, { status: newStatus });
       toast({
-        title: "Statut mis à jour",
+        title: t('prospectManagement.statutMisAJour'),
         description: `Le statut du prospect a été changé vers "${statusLabels[newStatus]}".`
       });
     } catch (_err) {
       toast({
         title: "Erreur",
-        description: "Impossible de mettre à jour le statut.",
+        description: t('prospectManagement.impossibleDeMettreAJour'),
         variant: "destructive"
       });
     }

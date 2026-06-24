@@ -250,8 +250,8 @@ export default function Auth() {
 
     if (!isRetry && now - lastAttempt < 20000 && oauthAttempts.google >= 3) {
       toast({
-        title: "Trop de tentatives",
-        description: "Veuillez patienter 20 secondes avant de réessayer.",
+        title: t('auth.tropDeTentatives'),
+        description: t('auth.veuillezPatienter20SecondesAvant'),
         variant: "destructive",
       });
       return;
@@ -298,7 +298,7 @@ export default function Auth() {
 
       // ✨ Toast de démarrage
       toast({
-        title: "Connexion Google",
+        title: t('auth.connexionGoogle'),
         description: "Redirection vers Google en cours...",
       });
 
@@ -319,7 +319,7 @@ export default function Auth() {
       trackOAuthEvent('google', 'success');
 
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erreur de connexion Google';
+      const message = err instanceof Error ? err.message: t('auth.erreurDeConnexionGoogle');
       setError(message);
       console.error('✕ Erreur Google OAuth:', err);
 
@@ -328,7 +328,7 @@ export default function Auth() {
 
       // 🔄 Toast d'erreur avec option retry
       toast({
-        title: "Erreur de connexion",
+        title: t('auth.erreurDeConnexion'),
         description: message + " • Cliquez sur le bouton Google pour réessayer.",
         variant: "destructive",
       });
@@ -346,8 +346,8 @@ export default function Auth() {
 
     if (!isRetry && now - lastAttempt < 20000 && oauthAttempts.facebook >= 3) {
       toast({
-        title: "Trop de tentatives",
-        description: "Veuillez patienter 20 secondes avant de réessayer.",
+        title: t('auth.tropDeTentatives'),
+        description: t('auth.veuillezPatienter20SecondesAvant'),
         variant: "destructive",
       });
       return;
@@ -390,7 +390,7 @@ export default function Auth() {
 
       // ✨ Toast de démarrage
       toast({
-        title: "Connexion Facebook",
+        title: t('auth.connexionFacebook'),
         description: "Redirection vers Facebook en cours...",
       });
 
@@ -407,7 +407,7 @@ export default function Auth() {
       trackOAuthEvent('facebook', 'success');
 
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erreur de connexion Facebook';
+      const message = err instanceof Error ? err.message: t('auth.erreurDeConnexionFacebook');
       setError(message);
       console.error('✕ Erreur Facebook OAuth:', err);
 
@@ -416,7 +416,7 @@ export default function Auth() {
 
       // 🔄 Toast d'erreur avec option retry
       toast({
-        title: "Erreur de connexion",
+        title: t('auth.erreurDeConnexion'),
         description: message + " • Cliquez sur le bouton Facebook pour réessayer.",
         variant: "destructive",
       });
@@ -539,7 +539,7 @@ export default function Auth() {
             console.log(`🚀 [Auth] Redirection vers ${targetRoute} (rôle effectif: ${effectiveRole}, DB: ${profile?.role})`);
 
             toast({
-              title: "Connexion réussie",
+              title: t('auth.connexionReussie'),
               description: `Bienvenue ! Redirection vers votre espace ${effectiveRole}...`,
             });
 
@@ -912,7 +912,7 @@ export default function Auth() {
           setPhoneSignupPhone(sendData.phone || normalizedSignupPhone);
           setPhoneSignupOtpSent(true);
           setPhoneSignupResendCooldown(60);
-          toast({ title: 'Code envoyé', description: `SMS envoyé au ${sendData.phone || normalizedSignupPhone}` });
+          toast({ title: t('auth.codeEnvoye'), description: `SMS envoyé au ${sendData.phone || normalizedSignupPhone}` });
           return;
         }
 
@@ -980,7 +980,7 @@ export default function Auth() {
             });
             if (fo.success) {
               setSuccess('Compte créé en mode secours (service momentanément indisponible). Vous pourrez vous connecter dans quelques instants.');
-              toast({ title: 'Compte créé (mode secours)', description: 'Connexion disponible dès le rétablissement du service.' });
+              toast({ title: t('auth.compteCreeModeSecours'), description: t('auth.connexionDisponibleDesLeRetablissement') });
               setLoading(false);
               return;
             }
@@ -1072,7 +1072,7 @@ export default function Auth() {
             if (vendorError) {
               console.error('✕ Erreur création profil vendeur:', vendorError);
               toast({
-                title: "Erreur de création du profil vendeur",
+                title: t('auth.erreurDeCreationDuProfil'),
                 description: vendorError.message || "Impossible de créer le profil vendeur. Contactez le support.",
                 variant: "destructive"
               });
@@ -1135,7 +1135,7 @@ export default function Auth() {
                 } else {
                   console.error('✕ Erreur création professional_service:', professionalServiceError);
                   toast({
-                    title: "Erreur de création du service professionnel",
+                    title: t('auth.erreurDeCreationDuService'),
                     description: professionalServiceError.message || "Le service n'a pas pu être créé.",
                     variant: "destructive"
                   });
@@ -1189,7 +1189,7 @@ export default function Auth() {
             } else {
               console.log('✓ [Affiliation] Parrainage enregistré avec succès');
               toast({
-                title: "Parrainage enregistré !",
+                title: t('auth.parrainageEnregistre'),
                 description: `Vous avez été parrainé par ${affiliateData.agentName || 'un agent'}.`,
               });
             }
@@ -1294,7 +1294,7 @@ export default function Auth() {
           setLoginFormattedPhone(sendData.phone);
           setLoginPhoneOtpSent(true);
           setLoginResendCooldown(60);
-          toast({ title: 'Code envoyé', description: `SMS envoyé au ${sendData.phone}` });
+          toast({ title: t('auth.codeEnvoye'), description: `SMS envoyé au ${sendData.phone}` });
           return;
         }
 
@@ -1593,7 +1593,7 @@ export default function Auth() {
         setResetFormattedPhone(storedPhone);
         setResetOtpSent(true);
         setResetResendCooldown(60);
-        toast({ title: "Code envoyé", description: `Code SMS envoyé au ${storedPhone}` });
+        toast({ title: t('auth.codeEnvoye'), description: `Code SMS envoyé au ${storedPhone}` });
       } else {
         const emailSchema = z.string().email("Adresse email invalide");
         emailSchema.parse(identifier);
@@ -1656,9 +1656,9 @@ export default function Auth() {
       });
       if (error || !data?.success) throw new Error('Impossible de renvoyer le code');
       setLoginResendCooldown(60);
-      toast({ title: 'Code renvoyé', description: `Nouveau SMS envoyé au ${loginFormattedPhone}` });
+      toast({ title: t('auth.codeRenvoye'), description: `Nouveau SMS envoyé au ${loginFormattedPhone}` });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors du renvoi');
+      setError(err instanceof Error ? err.message: t('auth.erreurLorsDuRenvoi'));
     } finally {
       setLoading(false);
     }
@@ -1674,9 +1674,9 @@ export default function Auth() {
       });
       if (error || !data?.success) throw new Error('Impossible de renvoyer le code');
       setResetResendCooldown(60);
-      toast({ title: 'Code renvoyé', description: `Nouveau SMS envoyé au ${resetFormattedPhone}` });
+      toast({ title: t('auth.codeRenvoye'), description: `Nouveau SMS envoyé au ${resetFormattedPhone}` });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors du renvoi');
+      setError(err instanceof Error ? err.message: t('auth.erreurLorsDuRenvoi'));
     } finally {
       setLoading(false);
     }
@@ -1692,9 +1692,9 @@ export default function Auth() {
       });
       if (error || !data?.success) throw new Error('Impossible de renvoyer le code');
       setPhoneSignupResendCooldown(60);
-      toast({ title: 'Code renvoyé', description: `Nouveau SMS envoyé au ${phoneSignupPhone}` });
+      toast({ title: t('auth.codeRenvoye'), description: `Nouveau SMS envoyé au ${phoneSignupPhone}` });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors du renvoi');
+      setError(err instanceof Error ? err.message: t('auth.erreurLorsDuRenvoi'));
     } finally {
       setLoading(false);
     }
@@ -1851,7 +1851,7 @@ export default function Auth() {
       }, 2500);
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Code invalide ou erreur serveur');
+      setError(err instanceof Error ? err.message: t('auth.codeInvalideOuErreurServeur'));
     } finally {
       setLoading(false);
       setIsAuthenticating(false);
@@ -1886,7 +1886,7 @@ export default function Auth() {
       });
       if (sessionError) throw sessionError;
 
-      toast({ title: 'Connexion réussie', description: 'Bienvenue !' });
+      toast({ title: t('auth.connexionReussie'), description: 'Bienvenue !' });
 
       if (data.user) {
         let profileData = null;
@@ -2887,9 +2887,9 @@ export default function Auth() {
                         handleInputChange('country', data.countryName || 'Guinée');
                         handleInputChange('city', data.city || 'Conakry');
                         handleInputChange('address', [data.region, data.city, data.countryName].filter(Boolean).join(', '));
-                        toast({ title: "Position détectée", description: `${data.city || 'Conakry'}, ${data.countryName || 'Guinée'}` });
+                        toast({ title: t('auth.positionDetectee'), description: `${data.city || 'Conakry'}, ${data.countryName || 'Guinée'}` });
                       } catch {
-                        toast({ title: "Erreur", description: "Impossible de détecter la position", variant: "destructive" });
+                        toast({ title: "Erreur", description: t('auth.impossibleDeDetecterLaPosition'), variant: "destructive" });
                       } finally {
                         setLoading(false);
                       }

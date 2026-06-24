@@ -37,17 +37,17 @@ const statusConfig = {
     icon: Clock
   },
   held: {
-    label: 'Bloqué',
+    label: "Bloqué",
     className: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
     icon: AlertCircle
   },
   released: {
-    label: 'Libéré',
+    label: "Libéré",
     className: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-orange-300',
     icon: CheckCircle
   },
   refunded: {
-    label: 'Remboursé',
+    label: "Remboursé",
     className: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
     icon: XCircle
   },

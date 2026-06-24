@@ -41,9 +41,9 @@ interface Product {
 const adjustmentTypes = [
   { value: 'breakage', label: 'Casse', icon: Trash2, color: 'bg-orange-100 text-[#ff4000]' },
   { value: 'theft', label: 'Vol', icon: AlertTriangle, color: 'bg-orange-100 text-orange-800' },
-  { value: 'expiration', label: 'Péremption', icon: Package, color: 'bg-orange-100 text-[#ff4000]' },
+  { value: 'expiration', label: "Péremption", icon: Package, color: 'bg-orange-100 text-[#ff4000]' },
   { value: 'correction', label: 'Correction inventaire', icon: RefreshCw, color: 'bg-blue-100 text-blue-800' },
-  { value: 'return', label: 'Retour fournisseur', icon: RotateCcw, color: 'bg-blue-100 text-[#04439e]' },
+  { value: 'return', label: "Retour fournisseur", icon: RotateCcw, color: 'bg-blue-100 text-[#04439e]' },
   { value: 'other', label: 'Autre', icon: ClipboardList, color: 'bg-gray-100 text-gray-800' }
 ];
 
@@ -128,13 +128,13 @@ export default function StockAdjustmentForm() {
 
   const handleSubmit = async () => {
     if (!vendorId || !formData.product_id || !formData.quantity_adjusted || !formData.reason) {
-      toast({ title: 'Veuillez remplir tous les champs obligatoires', variant: 'destructive' });
+      toast({ title: t('stockAdjustmentForm.veuillezRemplirTousLesChamps'), variant: 'destructive' });
       return;
     }
 
     const qty = parseInt(formData.quantity_adjusted);
     if (isNaN(qty) || qty <= 0) {
-      toast({ title: 'Quantité invalide', variant: 'destructive' });
+      toast({ title: t('stockAdjustmentForm.quantiteInvalide'), variant: 'destructive' });
       return;
     }
 
@@ -173,7 +173,7 @@ export default function StockAdjustmentForm() {
 
       if (updateError) throw updateError;
 
-      toast({ title: '✅ Ajustement enregistré' });
+      toast({ title: t('stockAdjustmentForm.ajustementEnregistre') });
       setIsOpen(false);
       setFormData({
         product_id: '',

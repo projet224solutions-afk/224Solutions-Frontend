@@ -45,13 +45,13 @@ const BRAND_ORANGE = '#ff4000';
 
 // Options de tri (bouton + chips défilables, comme le sélecteur de pays/ville)
 const SORT_OPTIONS: { value: string; label: string }[] = [
-  { value: 'position', label: 'Équitable' },
-  { value: 'visibility', label: 'Visibilité business' },
-  { value: 'newest', label: 'Plus récents' },
-  { value: 'popular', label: 'Popularité' },
+  { value: 'position', label: "Équitable" },
+  { value: 'visibility', label: "Visibilité business" },
+  { value: 'newest', label: "Plus récents" },
+  { value: 'popular', label: "Popularité" },
   { value: 'price_asc', label: 'Prix croissant' },
-  { value: 'price_desc', label: 'Prix décroissant' },
-  { value: 'rating', label: 'Mieux notés' },
+  { value: 'price_desc', label: "Prix décroissant" },
+  { value: 'rating', label: "Mieux notés" },
 ];
 
 // Le seuil de bascule auto + le comptage produits sont décidés CÔTÉ BACKEND

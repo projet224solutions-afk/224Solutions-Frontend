@@ -124,7 +124,7 @@ export default function PayPalCheckoutButton({
         currency: captureData.paypalCurrency || currency,
       });
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Erreur de paiement';
+      const msg = err instanceof Error ? err.message: t('payPalCheckoutButton.erreurDePaiement');
       console.error('[PayPal Checkout] capture error:', err);
       toast.error(msg);
       onError?.(msg);

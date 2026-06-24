@@ -48,12 +48,12 @@ export function DriverLayout({ children, currentPage = 'dashboard' }: DriverLayo
   const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
 
   const menuItems = [
-    { id: 'dashboard', icon: Home, label: 'Tableau de bord', path: '/livreur' },
+    { id: 'dashboard', icon: Home, label: t('driverLayout.tableauDeBord'), path: '/livreur' },
     { id: 'missions', icon: Package, label: 'Missions', path: '/livreur?tab=missions' },
     { id: 'history', icon: History, label: 'Historique', path: '/livreur?tab=history' },
-    { id: 'wallet', icon: Wallet, label: 'Portefeuille', path: '/wallet' },
-    { id: 'profile', icon: User, label: 'Profil', path: '/profil' },
-    { id: 'settings', icon: Settings, label: 'Paramètres', path: '/livreur/settings' },
+    { id: 'wallet', icon: Wallet, label: t('driverLayout.portefeuille'), path: '/wallet' },
+    { id: 'profile', icon: User, label: t('driverLayout.profil'), path: '/profil' },
+    { id: 'settings', icon: Settings, label: t('driverLayout.parametres'), path: '/livreur/settings' },
     { id: 'help', icon: HelpCircle, label: 'Aide', path: '/livreur/help' },
   ];
 

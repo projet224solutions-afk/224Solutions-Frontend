@@ -98,7 +98,7 @@ export function DropshipProducts({
       low_stock: { label: 'Stock faible', variant: 'secondary' },
       out_of_stock: { label: 'Rupture', variant: 'destructive' },
       temporarily_unavailable: { label: 'Indisponible', variant: 'outline' },
-      discontinued: { label: 'Arrêté', variant: 'destructive' }
+      discontinued: { label: t('dropshipProducts.arrete'), variant: 'destructive' }
     };
     const c = config[status] || { label: status, variant: 'secondary' as const };
     return <Badge variant={c.variant}>{c.label}</Badge>;

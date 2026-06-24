@@ -219,7 +219,7 @@ export default function VendorReportsManager() {
     a.click();
     URL.revokeObjectURL(url);
 
-    toast({ title: '✅ Rapport Excel (CSV) téléchargé' });
+    toast({ title: t('vendorReportsManager.rapportExcelCsvTelecharge') });
   };
 
   const periodLabels = {

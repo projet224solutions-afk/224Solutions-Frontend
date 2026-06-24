@@ -114,7 +114,7 @@ export function StripePaymentWrapper({
 
       } catch (err) {
         console.error('❌ Payment initialization error:', err);
-        const message = err instanceof Error ? err.message : 'Erreur lors de l\'initialisation du paiement';
+        const message = err instanceof Error ? err.message: t('stripePaymentWrapper.erreurLorsDeLInitialisation');
         setError(message);
         toast.error(message);
         onError(message);

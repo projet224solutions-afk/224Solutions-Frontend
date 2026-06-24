@@ -152,19 +152,19 @@ export default function VendorAgentInterface() {
     if (hasPermission('view_dashboard')) items.push({ id: 'dashboard', label: 'Dashboard', icon: BarChart3 });
     if (hasPermission('view_analytics')) items.push({ id: 'analytics', label: 'Analytics', icon: TrendingUp });
     if (hasPermission('access_pos')) items.push({ id: 'pos', label: 'POS', icon: CreditCard, disabled: !canAccessPOS, disabledReason: 'Boutiques physiques uniquement' });
-    if (hasPermission('manage_products')) items.push({ id: 'products', label: 'Produits', icon: Package });
-    if (hasPermission('manage_orders')) items.push({ id: 'orders', label: 'Commandes', icon: ShoppingCart });
+    if (hasPermission('manage_products')) items.push({ id: 'products', label: t('vendorAgentInterface.produits'), icon: Package });
+    if (hasPermission('manage_orders')) items.push({ id: 'orders', label: t('vendorAgentInterface.commandes'), icon: ShoppingCart });
     if (hasPermission('manage_inventory')) items.push({ id: 'inventory', label: 'Inventaire', icon: Package });
-    if (hasPermission('manage_warehouse')) items.push({ id: 'warehouse', label: 'Entrepôt', icon: Warehouse });
+    if (hasPermission('manage_warehouse')) items.push({ id: 'warehouse', label: t('vendorAgentInterface.entrepot'), icon: Warehouse });
     if (hasPermission('manage_suppliers')) items.push({ id: 'suppliers', label: 'Fournisseurs', icon: Truck });
     if (hasPermission('manage_clients')) items.push({ id: 'clients', label: 'Clients', icon: Users });
     if (hasPermission('manage_prospects')) items.push({ id: 'prospects', label: 'Prospects', icon: UserPlus });
     if (hasPermission('manage_marketing')) items.push({ id: 'marketing', label: 'Marketing', icon: TrendingUp });
     if (hasPermission('manage_delivery')) items.push({ id: 'delivery', label: 'Livraisons', icon: Truck });
     if (hasPermission('access_wallet')) items.push({ id: 'wallet', label: 'Wallet', icon: Wallet });
-    if (hasPermission('manage_payments')) items.push({ id: 'payments', label: 'Paiements', icon: CreditCard });
-    if (hasPermission('manage_payment_links')) items.push({ id: 'payment_links', label: 'Liens Paiement', icon: DollarSign });
-    if (hasPermission('manage_expenses')) items.push({ id: 'expenses', label: 'Dépenses', icon: FileText });
+    if (hasPermission('manage_payments')) items.push({ id: 'payments', label: t('vendorAgentInterface.paiements'), icon: CreditCard });
+    if (hasPermission('manage_payment_links')) items.push({ id: 'payment_links', label: t('vendorAgentInterface.liensPaiement'), icon: DollarSign });
+    if (hasPermission('manage_expenses')) items.push({ id: 'expenses', label: t('vendorAgentInterface.depenses'), icon: FileText });
     if (hasPermission('manage_debts')) items.push({ id: 'debts', label: 'Dettes', icon: FileText });
     if (hasPermission('access_affiliate')) items.push({ id: 'affiliate', label: 'Affiliation', icon: Users });
     if (hasPermission('access_support')) items.push({ id: 'support', label: 'Support', icon: MessageSquare });
@@ -172,7 +172,7 @@ export default function VendorAgentInterface() {
     if (hasPermission('view_reports')) items.push({ id: 'reports', label: 'Rapports', icon: FileText });
     if (hasPermission('view_reports')) items.push({ id: 'commissions', label: 'Commissions', icon: DollarSign });
     if (hasPermission('manage_agents') && agent.can_create_sub_agent) items.push({ id: 'sub_agents', label: 'Sous-Agents', icon: UserPlus });
-    if (hasPermission('access_settings')) items.push({ id: 'settings', label: 'Paramètres', icon: Settings });
+    if (hasPermission('access_settings')) items.push({ id: 'settings', label: t('vendorAgentInterface.parametres'), icon: Settings });
 
     return items;
   };
@@ -520,10 +520,10 @@ function OverviewContent({ agent, hasPermission, canAccessPOS, onTabChange }: {
   const moduleButtons: { id: string; icon: React.ElementType; label: string; permission?: string; disabled?: boolean }[] = [
     hasPermission('view_dashboard') ? { id: 'dashboard', icon: BarChart3, label: 'Dashboard' } : null,
     hasPermission('access_pos') ? { id: 'pos', icon: CreditCard, label: canAccessPOS ? 'POS' : 'POS 🔒', disabled: !canAccessPOS } : null,
-    hasPermission('manage_products') ? { id: 'products', icon: Package, label: 'Produits' } : null,
-    hasPermission('manage_orders') ? { id: 'orders', icon: ShoppingCart, label: 'Commandes' } : null,
+    hasPermission('manage_products') ? { id: 'products', icon: Package, label: t('vendorAgentInterface.produits') } : null,
+    hasPermission('manage_orders') ? { id: 'orders', icon: ShoppingCart, label: t('vendorAgentInterface.commandes') } : null,
     hasPermission('manage_inventory') ? { id: 'inventory', icon: Package, label: 'Inventaire' } : null,
-    hasPermission('manage_warehouse') ? { id: 'warehouse', icon: Warehouse, label: 'Entrepôt' } : null,
+    hasPermission('manage_warehouse') ? { id: 'warehouse', icon: Warehouse, label: t('vendorAgentInterface.entrepot') } : null,
     hasPermission('manage_clients') ? { id: 'clients', icon: Users, label: 'Clients' } : null,
     hasPermission('manage_delivery') ? { id: 'delivery', icon: Truck, label: 'Livraisons' } : null,
     hasPermission('access_wallet') ? { id: 'wallet', icon: Wallet, label: 'Wallet' } : null,
@@ -531,7 +531,7 @@ function OverviewContent({ agent, hasPermission, canAccessPOS, onTabChange }: {
     hasPermission('access_communication') ? { id: 'communication', icon: MessageSquare, label: 'Messages' } : null,
     hasPermission('manage_agents') ? { id: 'sub_agents', icon: UserPlus, label: 'Sous-Agents' } : null,
     hasPermission('view_reports') ? { id: 'commissions', icon: DollarSign, label: 'Commissions' } : null,
-    hasPermission('access_settings') ? { id: 'settings', icon: Settings, label: 'Paramètres' } : null,
+    hasPermission('access_settings') ? { id: 'settings', icon: Settings, label: t('vendorAgentInterface.parametres') } : null,
   ].filter(Boolean) as typeof moduleButtons;
 
   return (

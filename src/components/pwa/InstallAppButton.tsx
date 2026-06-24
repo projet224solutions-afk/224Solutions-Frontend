@@ -100,7 +100,7 @@ export function InstallAppButton({ variant = 'default', className = '' }: Instal
       // 0) Déjà installé
       if (isStandalone) {
         toast.success(t('installAppButton.applicationDejaInstallee'), {
-          description: "224Solutions est déjà sur votre écran d'accueil.",
+          description: t('installAppButton.t224solutionsEstDejaSurVotre'),
         });
         setConfirmOpen(false);
         return;
@@ -112,7 +112,7 @@ export function InstallAppButton({ variant = 'default', className = '' }: Instal
 
         if (isIOS && !isSafari && !isInAppBrowser) {
           toast.info(t('installAppButton.ouvrirDansSafari'), {
-            description: "L'installation PWA sur iOS fonctionne uniquement avec Safari.",
+            description: t('installAppButton.lInstallationPwaSurIos'),
             duration: 6000,
           });
         }
@@ -143,7 +143,7 @@ export function InstallAppButton({ variant = 'default', className = '' }: Instal
         const url = new URL(window.location.href);
         url.searchParams.set('pwa', '1');
         toast.info(t('installAppButton.activationDeLInstallation'), {
-          description: "On recharge la page pour activer le mode PWA (une seule fois).",
+          description: t('installAppButton.onRechargeLaPagePour'),
           duration: 4000,
         });
         window.location.replace(url.toString());
@@ -155,7 +155,7 @@ export function InstallAppButton({ variant = 'default', className = '' }: Instal
         const success = await promptInstall();
         if (success) {
           toast.success(t('installAppButton.applicationInstallee'), {
-            description: "224Solutions est maintenant sur votre écran d'accueil.",
+            description: t('installAppButton.t224solutionsEstMaintenantSurVotre'),
           });
           setConfirmOpen(false);
           return;
@@ -167,12 +167,12 @@ export function InstallAppButton({ variant = 'default', className = '' }: Instal
 
       if (isMobile) {
         toast.info(t('installAppButton.installationSurAndroid'), {
-          description: "Ouvrez le menu (⋮) puis 'Installer l'application' ou 'Ajouter à l'écran d'accueil'.",
+          description: t('installAppButton.ouvrezLeMenuPuisInstaller'),
           duration: 8000,
         });
       } else {
         toast.info(t('installAppButton.installationSurOrdinateur'), {
-          description: "Cliquez sur l'icône d'installation dans la barre d'adresse ou le menu du navigateur.",
+          description: t('installAppButton.cliquezSurLIconeD'),
           duration: 8000,
         });
       }

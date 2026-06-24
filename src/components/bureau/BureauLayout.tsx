@@ -72,7 +72,7 @@ export function BureauLayout({
   const navItems: NavItem[] = [
     {
       id: 'overview',
-      label: 'Tableau de bord',
+      label: t('bureauLayout.tableauDeBord'),
       icon: <LayoutDashboard className="w-5 h-5" />
     },
     {
@@ -82,12 +82,12 @@ export function BureauLayout({
     },
     {
       id: 'motos',
-      label: 'Véhicules',
+      label: t('bureauLayout.vehicules'),
       icon: <Bike className="w-5 h-5" />
     },
     {
       id: 'security',
-      label: 'Sécurité Vol',
+      label: t('bureauLayout.securiteVol'),
       icon: <ShieldAlert className="w-5 h-5 text-[#ff4000]" />
     },
     {
@@ -133,7 +133,7 @@ export function BureauLayout({
     },
     {
       id: 'settings',
-      label: 'Paramètres',
+      label: t('bureauLayout.parametres'),
       icon: <Settings className="w-5 h-5" />
     }
   ];

@@ -87,7 +87,7 @@ const statusConfig: Record<string, { label: string; icon: any; className: string
   active: { label: 'Actif', icon: CheckCircle, className: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-[#ff4000]' },
   pending: { label: 'En attente', icon: Clock, className: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-[#ff4000]' },
   suspended: { label: 'Suspendu', icon: AlertTriangle, className: 'bg-orange-100 text-[#ff4000] dark:bg-[#ff4000]/30 dark:text-[#ff4000]' },
-  rejected: { label: 'Rejeté', icon: XCircle, className: 'bg-destructive/10 text-destructive' },
+  rejected: { label: "Rejeté", icon: XCircle, className: 'bg-destructive/10 text-destructive' },
 };
 
 export function PDGServiceProvidersList({ activeServiceTab, serviceTypes }: PDGServiceProvidersListProps) {

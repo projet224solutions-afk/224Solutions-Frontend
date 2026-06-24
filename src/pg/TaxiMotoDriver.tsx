@@ -224,7 +224,7 @@ export default function TaxiMotoDriver() {
         if (!driverId) { toast.error(t('taxiMotoDriver.profilConducteurNonTrouve')); return; }
         if (next && !hasAccess) {
             toast.error('⚠️ Abonnement requis', {
-                description: 'Vous devez avoir un abonnement actif pour recevoir des courses'
+                description: t('taxiMotoDriver.vousDevezAvoirUnAbonnement')
             });
             return;
         }
@@ -254,7 +254,7 @@ export default function TaxiMotoDriver() {
                 });
             } catch (onlineError: unknown) {
                 toast.dismiss('gps-loading');
-                const errMsg = onlineError instanceof Error ? onlineError.message : 'Veuillez réessayer';
+                const errMsg = onlineError instanceof Error ? onlineError.message: t('taxiMotoDriver.veuillezReessayer');
                 capture('network', 'Erreur lors de la mise en ligne', onlineError);
                 toast.error(t('taxiMotoDriver.impossibleDePasserEnLigne'), { description: errMsg });
             } finally {
@@ -269,7 +269,7 @@ export default function TaxiMotoDriver() {
                 clearRideRequests();
                 toast.info(t('taxiMotoDriver.vousEtesMaintenantHorsLigne'));
             } catch (offlineError: unknown) {
-                const errMsg = offlineError instanceof Error ? offlineError.message : 'Veuillez réessayer';
+                const errMsg = offlineError instanceof Error ? offlineError.message: t('taxiMotoDriver.veuillezReessayer');
                 capture('network', 'Erreur lors du changement de statut', offlineError);
                 toast.error(t('taxiMotoDriver.erreurLorsDuChangementDe'), { description: errMsg });
             } finally {

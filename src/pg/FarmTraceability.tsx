@@ -14,7 +14,7 @@ import { Leaf, Sprout, MapPin, Calendar, ShieldCheck, Loader2, Tractor } from 'l
 
 const METHOD: Record<string, { label: string; Icon: any; color: string }> = {
   bio: { label: 'Agriculture biologique', Icon: Leaf, color: 'bg-green-100 text-green-700' },
-  traitement: { label: 'Avec traitement raisonné', Icon: Sprout, color: 'bg-amber-100 text-amber-700' },
+  traitement: { label: "Avec traitement raisonné", Icon: Sprout, color: 'bg-amber-100 text-amber-700' },
   conventionnel: { label: 'Culture conventionnelle', Icon: Tractor, color: 'bg-slate-100 text-slate-700' },
 };
 

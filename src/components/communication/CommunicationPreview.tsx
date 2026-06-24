@@ -38,7 +38,7 @@ export default function CommunicationPreview({ className }: CommunicationPreview
       id: '1',
       sender: 'Jean Dupont',
       role: 'Vendeur',
-      message: 'Bonjour, avez-vous reçu ma commande ?',
+      message: t('communicationPreview.bonjourAvezVousRecuMa'),
       time: '10:30',
       unread: true
     },
@@ -46,7 +46,7 @@ export default function CommunicationPreview({ className }: CommunicationPreview
       id: '2',
       sender: 'Marie Martin',
       role: 'Cliente',
-      message: 'Merci pour la livraison rapide !',
+      message: t('communicationPreview.merciPourLaLivraisonRapide'),
       time: '09:15',
       unread: false
     },
@@ -54,7 +54,7 @@ export default function CommunicationPreview({ className }: CommunicationPreview
       id: '3',
       sender: 'Pierre Durand',
       role: 'Transitaire',
-      message: 'Le colis est en route vers Conakry',
+      message: t('communicationPreview.leColisEstEnRoute'),
       time: '08:45',
       unread: true
     }

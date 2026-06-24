@@ -170,7 +170,7 @@ export function AgentAffiliateLinksSection({ agentId, agentToken }: AgentAffilia
       if (response.error) throw response.error;
 
       toast.success(t('agentAffiliateLinksSection.lienCreeAvecSucces'), {
-        description: 'Copiez le lien et partagez-le avec vos prospects'
+        description: t('agentAffiliateLinksSection.copiezLeLienEtPartagez')
       });
 
       setShowCreateDialog(false);

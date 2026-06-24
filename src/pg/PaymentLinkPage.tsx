@@ -57,10 +57,10 @@ interface OwnerInfo {
 }
 
 const linkTypeConfig: Record<string, { icon: React.ReactNode; label: string; color: string }> = {
-  payment: { icon: <CreditCard className="w-5 h-5" />, label: 'Paiement', color: 'bg-primary/10 text-primary' },
+  payment: { icon: <CreditCard className="w-5 h-5" />, label: "Paiement", color: 'bg-primary/10 text-primary' },
   invoice: { icon: <FileText className="w-5 h-5" />, label: 'Facture', color: 'bg-orange-100 text-[#ff4000]' },
   checkout: { icon: <ShoppingCart className="w-5 h-5" />, label: 'Checkout', color: 'bg-orange-100 text-[#ff4000]' },
-  service: { icon: <Wrench className="w-5 h-5" />, label: 'Service', color: 'bg-blue-100 text-[#04439e]' },
+  service: { icon: <Wrench className="w-5 h-5" />, label: "Service", color: 'bg-blue-100 text-[#04439e]' },
 };
 
 
@@ -109,7 +109,7 @@ function CardPaymentElementForm({ amountLabel, disabled = false, onSuccess, onEr
 
       await onSuccess(paymentIntent.id);
     } catch (err) {
-      onError(err instanceof Error ? err.message : 'Erreur de confirmation carte');
+      onError(err instanceof Error ? err.message: t('paymentLinkPage.erreurDeConfirmationCarte'));
     } finally {
       setSubmitting(false);
     }
@@ -204,7 +204,7 @@ export default function PaymentLinkPage() {
       setServiceInfo(data.service);
     } catch (err) {
       console.error('Resolve error:', err);
-      toast({ title: "Erreur", description: "Impossible de charger le lien", variant: "destructive" });
+      toast({ title: "Erreur", description: t('paymentLinkPage.impossibleDeChargerLeLien'), variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -276,8 +276,8 @@ export default function PaymentLinkPage() {
       setCardClientSecret(data.clientSecret);
 
       toast({
-        title: 'Formulaire carte prêt',
-        description: 'Entrez vos informations bancaires puis confirmez le paiement.',
+        title: t('paymentLinkPage.formulaireCartePret'),
+        description: t('paymentLinkPage.entrezVosInformationsBancairesPuis'),
       });
     } catch (err: any) {
       const message = err?.message || 'Erreur de préparation carte';
@@ -311,7 +311,7 @@ export default function PaymentLinkPage() {
 
       await resolveLink();
       setPaymentSuccess(true);
-      toast({ title: 'Paiement carte réussi !', description: `Transaction ${paymentIntentId}` });
+      toast({ title: t('paymentLinkPage.paiementCarteReussi'), description: `Transaction ${paymentIntentId}` });
     } catch (err: any) {
       const message = err?.message || 'Erreur de finalisation carte';
       setCardError(message);
@@ -323,12 +323,12 @@ export default function PaymentLinkPage() {
 
   const handlePayment = async () => {
     if (!paymentMethod) {
-      toast({ title: "Erreur", description: "Choisissez un mode de paiement", variant: "destructive" });
+      toast({ title: "Erreur", description: t('paymentLinkPage.choisissezUnModeDePaiement'), variant: "destructive" });
       return;
     }
 
     if (paymentMethod !== 'wallet' && !user && (!customerInfo.name || !customerInfo.phone)) {
-      toast({ title: "Erreur", description: "Nom et téléphone requis", variant: "destructive" });
+      toast({ title: "Erreur", description: t('paymentLinkPage.nomEtTelephoneRequis'), variant: "destructive" });
       return;
     }
 
@@ -356,9 +356,9 @@ export default function PaymentLinkPage() {
 
       if (paymentMethod === 'wallet') {
         setPaymentSuccess(true);
-        toast({ title: "Paiement réussi !", description: `Transaction ${data.transactionId}` });
+        toast({ title: t('paymentLinkPage.paiementReussi'), description: `Transaction ${data.transactionId}` });
       } else {
-        toast({ title: "Paiement initié", description: data.message || "Vérifiez votre téléphone" });
+        toast({ title: t('paymentLinkPage.paiementInitie'), description: data.message || "Vérifiez votre téléphone" });
         setPaymentSuccess(true);
       }
     } catch (err: any) {
@@ -677,7 +677,7 @@ export default function PaymentLinkPage() {
               onClick={() => {
                 if (!user) {
                   try { sessionStorage.setItem('post_auth_redirect', window.location.pathname + window.location.search); } catch { /* ignore */ }
-                  toast({ title: 'Connexion requise', description: 'Connectez-vous pour payer avec votre Wallet 224SOLUTIONS.' });
+                  toast({ title: t('paymentLinkPage.connexionRequise'), description: t('paymentLinkPage.connectezVousPourPayerAvec') });
                   navigate('/auth');
                   return;
                 }

@@ -130,10 +130,10 @@ function OrderProgressTracker({ status }: { status: string }) {
   const { t } = useTranslation();
   const steps = [
     { key: 'pending', label: 'En attente', icon: Clock },
-    { key: 'confirmed', label: 'Confirmée', icon: CheckCircle },
-    { key: 'preparing', label: 'Préparation', icon: Package },
-    { key: 'in_transit', label: 'Expédiée', icon: Truck },
-    { key: 'delivered', label: 'Livrée', icon: CheckCircle },
+    { key: 'confirmed', label: t('myPurchasesOrdersList.confirmee'), icon: CheckCircle },
+    { key: 'preparing', label: t('myPurchasesOrdersList.preparation'), icon: Package },
+    { key: 'in_transit', label: t('myPurchasesOrdersList.expediee'), icon: Truck },
+    { key: 'delivered', label: t('myPurchasesOrdersList.livree'), icon: CheckCircle },
   ];
 
   const normalizedStatus = status === 'completed' ? 'delivered' : status;
@@ -387,7 +387,7 @@ export default function MyPurchasesOrdersList({
     } catch (error) {
       console.error('Error cancelling order:', error);
       toast.error(t('myPurchasesOrdersList.erreurLorsDeLAnnulation'), {
-        description: error instanceof Error ? error.message : 'Veuillez réessayer'
+        description: error instanceof Error ? error.message: t('myPurchasesOrdersList.veuillezReessayer')
       });
     } finally {
       setCancellingOrderId(null);
@@ -422,7 +422,7 @@ export default function MyPurchasesOrdersList({
     } catch (error) {
       console.error('Error requesting refund:', error);
       toast.error(t('myPurchasesOrdersList.erreurLorsDeLaDemande'), {
-        description: error instanceof Error ? error.message : 'Veuillez réessayer'
+        description: error instanceof Error ? error.message: t('myPurchasesOrdersList.veuillezReessayer')
       });
     } finally {
       setRefundingOrderId(null);
@@ -435,13 +435,13 @@ export default function MyPurchasesOrdersList({
   const getStatusBadge = (status: string) => {
     const statusConfig: Record<string, { label: string; color: string; icon: any }> = {
       pending: { label: 'En attente', color: 'bg-orange-100 text-[#ff4000]', icon: Clock },
-      confirmed: { label: 'Confirmée', color: 'bg-blue-100 text-blue-800', icon: CheckCircle },
-      preparing: { label: 'En préparation', color: 'bg-blue-100 text-[#04439e]', icon: Package },
-      ready: { label: 'Prête', color: 'bg-blue-100 text-blue-800', icon: Package },
+      confirmed: { label: t('myPurchasesOrdersList.confirmee'), color: 'bg-blue-100 text-blue-800', icon: CheckCircle },
+      preparing: { label: t('myPurchasesOrdersList.enPreparation'), color: 'bg-blue-100 text-[#04439e]', icon: Package },
+      ready: { label: t('myPurchasesOrdersList.prete'), color: 'bg-blue-100 text-blue-800', icon: Package },
       in_transit: { label: 'En transit', color: 'bg-orange-100 text-orange-800', icon: Truck },
-      delivered: { label: 'Livrée', color: 'bg-orange-100 text-[#ff4000]', icon: CheckCircle },
-      completed: { label: 'Terminée', color: 'bg-orange-100 text-[#ff4000]', icon: CheckCircle },
-      cancelled: { label: 'Annulée', color: 'bg-orange-100 text-[#ff4000]', icon: XCircle }
+      delivered: { label: t('myPurchasesOrdersList.livree'), color: 'bg-orange-100 text-[#ff4000]', icon: CheckCircle },
+      completed: { label: t('myPurchasesOrdersList.terminee'), color: 'bg-orange-100 text-[#ff4000]', icon: CheckCircle },
+      cancelled: { label: t('myPurchasesOrdersList.annulee'), color: 'bg-orange-100 text-[#ff4000]', icon: XCircle }
     };
 
     const config = statusConfig[status] || statusConfig.pending;
@@ -459,10 +459,10 @@ export default function MyPurchasesOrdersList({
     if (!escrowStatus) return null;
 
     const escrowConfig: Record<string, { label: string; color: string }> = {
-      pending: { label: 'Fonds bloqués', color: 'bg-orange-100 text-orange-800' },
-      held: { label: 'Fonds sécurisés', color: 'bg-blue-100 text-blue-800' },
-      released: { label: 'Fonds libérés', color: 'bg-orange-100 text-[#ff4000]' },
-      refunded: { label: 'Remboursé', color: 'bg-gray-100 text-gray-800' },
+      pending: { label: t('myPurchasesOrdersList.fondsBloques'), color: 'bg-orange-100 text-orange-800' },
+      held: { label: t('myPurchasesOrdersList.fondsSecurises'), color: 'bg-blue-100 text-blue-800' },
+      released: { label: t('myPurchasesOrdersList.fondsLiberes'), color: 'bg-orange-100 text-[#ff4000]' },
+      refunded: { label: t('myPurchasesOrdersList.rembourse'), color: 'bg-gray-100 text-gray-800' },
       dispute: { label: 'Litige', color: 'bg-orange-100 text-[#ff4000]' }
     };
 

@@ -654,7 +654,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             `Cet email est déjà enregistré ! Vous avez été connecté à votre compte ${current.role} existant.`,
             {
               duration: 6000,
-              description: 'Votre compte existant a été utilisé pour la connexion.',
+              description: t('useAuth.votreCompteExistantAEte'),
             }
           );
         } else {

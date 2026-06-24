@@ -80,14 +80,14 @@ export default function TaxiMotoPaymentModal({
     {
       id: 'wallet' as PaymentMethod,
       name: 'Wallet 224Solutions',
-      description: 'Paiement instantané depuis votre wallet',
+      description: t('taxiMotoPaymentModal.paiementInstantaneDepuisVotreWallet'),
       icon: Wallet,
       color: 'text-primary'
     },
     {
       id: 'card' as PaymentMethod,
       name: 'Carte bancaire (Stripe)',
-      description: 'Visa, Mastercard - Paiement sécurisé',
+      description: t('taxiMotoPaymentModal.visaMastercardPaiementSecurise'),
       icon: CreditCard,
       color: 'text-blue-600'
     },
@@ -101,7 +101,7 @@ export default function TaxiMotoPaymentModal({
     {
       id: 'cash' as PaymentMethod,
       name: 'Espèces',
-      description: 'Paiement en liquide au conducteur',
+      description: t('taxiMotoPaymentModal.paiementEnLiquideAuConducteur'),
       icon: Banknote,
       color: 'text-[#ff4000]'
     }
@@ -129,7 +129,7 @@ export default function TaxiMotoPaymentModal({
       if (paymentMethod === 'wallet') {
         if (walletBalance !== null && walletBalance < amount) {
           toast.error(t('taxiMotoPaymentModal.soldeInsuffisant'), {
-            description: 'Veuillez recharger votre wallet'
+            description: t('taxiMotoPaymentModal.veuillezRechargerVotreWallet')
           });
           setProcessing(false);
           return;
@@ -139,7 +139,7 @@ export default function TaxiMotoPaymentModal({
       // Validation des champs requis
       if (paymentMethod === 'orange_money' && (!phoneNumber || phoneNumber.length < 8)) {
         toast.error(t('taxiMotoPaymentModal.numeroDeTelephoneRequis'), {
-          description: 'Veuillez entrer votre numéro Mobile Money'
+          description: t('taxiMotoPaymentModal.veuillezEntrerVotreNumeroMobile')
         });
         setProcessing(false);
         return;
@@ -158,7 +158,7 @@ export default function TaxiMotoPaymentModal({
                          paymentMethod === 'cash' ? 'cash' : 'wallet',
         metadata: {
           ride_id: rideId,
-          description: 'Paiement course taxi-moto',
+          description: t('taxiMotoPaymentModal.paiementCourseTaxiMoto'),
           phone_number: phoneNumber,
         },
         escrow_options: {
@@ -180,7 +180,7 @@ export default function TaxiMotoPaymentModal({
         });
       } else if (paymentMethod === 'cash') {
         toast.success(t('taxiMotoPaymentModal.courseConfirmee'), {
-          description: 'Vous paierez en espèces au chauffeur'
+          description: t('taxiMotoPaymentModal.vousPaierezEnEspecesAu')
         });
       } else if (paymentMethod === 'orange_money') {
         toast.success(t('taxiMotoPaymentModal.paiementMobileMoneyInitie'), {
@@ -194,7 +194,7 @@ export default function TaxiMotoPaymentModal({
     } catch (error) {
       console.error('[TaxiPayment] Error:', error);
       toast.error(t('taxiMotoPaymentModal.erreurDePaiement'), {
-        description: error instanceof Error ? error.message : 'Veuillez réessayer'
+        description: error instanceof Error ? error.message: t('taxiMotoPaymentModal.veuillezReessayer')
       });
     } finally {
       setProcessing(false);
@@ -216,7 +216,7 @@ export default function TaxiMotoPaymentModal({
         payment_provider: 'stripe',
         metadata: {
           ride_id: rideId,
-          description: 'Paiement course taxi-moto par carte',
+          description: t('taxiMotoPaymentModal.paiementCourseTaxiMotoPar'),
           stripe_payment_intent_id: paymentIntentId
         },
         escrow_options: {

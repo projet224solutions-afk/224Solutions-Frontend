@@ -272,7 +272,7 @@ export default function OrderManagement() {
           // Notification quand l'escrow est libéré (client a confirmé la livraison)
           if (newStatus === 'released' && oldStatus !== 'released') {
             toast({
-              title: "💰 Paiement libéré !",
+              title: t('orderManagement.paiementLibere'),
               description: `Le client a confirmé la réception. ${fmtAmount((payload.new as any).amount || 0)} transférés sur votre compte.`,
               duration: 10000
             });
@@ -477,7 +477,7 @@ export default function OrderManagement() {
       } else {
         toast({
           title: "Erreur",
-          description: "Impossible de charger les commandes.",
+          description: t('orderManagement.impossibleDeChargerLesCommandes'),
           variant: "destructive"
         });
       }
@@ -543,7 +543,7 @@ export default function OrderManagement() {
       console.error('❌ No vendorId available');
       toast({
         title: "❌ Erreur",
-        description: "Profil vendeur non trouvé. Veuillez rafraîchir la page.",
+        description: t('orderManagement.profilVendeurNonTrouveVeuillez'),
         variant: "destructive"
       });
       return;
@@ -553,7 +553,7 @@ export default function OrderManagement() {
       console.error('❌ No user authenticated');
       toast({
         title: "❌ Erreur",
-        description: "Vous devez être connecté pour effectuer cette action.",
+        description: t('orderManagement.vousDevezEtreConnectePour'),
         variant: "destructive"
       });
       return;
@@ -588,7 +588,7 @@ export default function OrderManagement() {
       console.log('✅ Order status updated via backend:', response.data);
 
       toast({
-        title: "✅ Statut mis à jour",
+        title: t('orderManagement.statutMisAJour'),
         description: `${t('orders.markedAsPrefix')} ${t(statusLabelKeys[newStatus] || '')}.`,
       });
 
@@ -602,7 +602,7 @@ export default function OrderManagement() {
 
       toast({
         title: "❌ Erreur",
-        description: error instanceof Error ? error.message : "Impossible de mettre à jour le statut de la commande.",
+        description: error instanceof Error ? error.message: t('orderManagement.impossibleDeMettreAJour'),
         variant: "destructive"
       });
     } finally {
@@ -626,8 +626,8 @@ export default function OrderManagement() {
     const days = Number(estimatedDeliveryDays);
     if (!Number.isInteger(days) || days < 1 || days > 60) {
       toast({
-        title: "Délai invalide",
-        description: "Indiquez un nombre de jours entre 1 et 60.",
+        title: t('orderManagement.delaiInvalide'),
+        description: t('orderManagement.indiquezUnNombreDeJours'),
         variant: "destructive",
       });
       return;
@@ -790,7 +790,7 @@ export default function OrderManagement() {
               console.error('Erreur remboursement:', err);
               toast({
                 title: "❌ Erreur",
-                description: "Impossible de traiter le remboursement.",
+                description: t('orderManagement.impossibleDeTraiterLeRemboursement'),
                 variant: "destructive"
               });
             }
@@ -882,7 +882,7 @@ export default function OrderManagement() {
           <Button variant="outline" className="flex-shrink-0 h-9 px-3 text-xs md:text-sm" onClick={() => {
             toast({
               title: "Export en cours",
-              description: "L'export des commandes sera bientôt disponible."
+              description: t('orderManagement.lExportDesCommandesSera')
             });
           }}>
             <Download className="w-3.5 h-3.5 mr-1.5" />
@@ -890,8 +890,8 @@ export default function OrderManagement() {
           </Button>
           <Button variant="outline" className="flex-shrink-0 h-9 px-3 text-xs md:text-sm" onClick={() => {
             toast({
-              title: "Rapport généré",
-              description: "Le rapport des commandes sera bientôt disponible."
+              title: t('orderManagement.rapportGenere'),
+              description: t('orderManagement.leRapportDesCommandesSera')
             });
           }}>
             <FileText className="w-3.5 h-3.5 mr-1.5" />
@@ -912,8 +912,8 @@ export default function OrderManagement() {
           onClick={() => {
             if (!canAccessPOS) {
               toast({
-                title: "Accès restreint",
-                description: "Le module POS n'est pas disponible pour les boutiques en ligne uniquement.",
+                title: t('orderManagement.accesRestreint'),
+                description: t('orderManagement.leModulePosNEst'),
                 variant: "destructive"
               });
               return;

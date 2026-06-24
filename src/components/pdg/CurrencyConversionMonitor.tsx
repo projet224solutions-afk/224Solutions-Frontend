@@ -85,7 +85,7 @@ export default function CurrencyConversionMonitor() {
         // Table absente → migration non appliquée
         if (error.message?.includes('schema cache') || error.message?.includes('does not exist') || error.code === 'PGRST204' || error.code === '42P01') {
           toast.error('Migration manquante', {
-            description: 'La table currency_conversion_logs n\'existe pas encore. Appliquer la migration SQL dans Supabase.',
+            description: t('currencyConversionMonitor.laTableCurrencyConversionLogs'),
             duration: 10000,
           });
           setLoading(false);

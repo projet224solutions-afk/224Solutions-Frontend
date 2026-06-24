@@ -97,12 +97,12 @@ export function SupplierOrders({ vendorId }: SupplierOrdersProps) {
     if (type === 'order') {
       const variants: Record<string, { label: string; variant: any }> = {
         pending: { label: 'En attente', variant: 'secondary' },
-        confirmed: { label: 'Confirmée', variant: 'default' },
-        preparing: { label: 'Préparation', variant: 'default' },
-        ready: { label: 'Prête', variant: 'default' },
-        shipped: { label: 'Expédiée', variant: 'default' },
-        delivered: { label: 'Livrée', variant: 'secondary' },
-        cancelled: { label: 'Annulée', variant: 'destructive' }
+        confirmed: { label: t('supplierOrders.confirmee'), variant: 'default' },
+        preparing: { label: t('supplierOrders.preparation'), variant: 'default' },
+        ready: { label: t('supplierOrders.prete'), variant: 'default' },
+        shipped: { label: t('supplierOrders.expediee'), variant: 'default' },
+        delivered: { label: t('supplierOrders.livree'), variant: 'secondary' },
+        cancelled: { label: t('supplierOrders.annulee'), variant: 'destructive' }
       };
       const config = variants[status] || variants.pending;
       return <Badge variant={config.variant}>{config.label}</Badge>;
@@ -110,7 +110,7 @@ export function SupplierOrders({ vendorId }: SupplierOrdersProps) {
       const variants: Record<string, { label: string; variant: any }> = {
         pending: { label: 'En attente', variant: 'secondary' },
         partial: { label: 'Partiel', variant: 'default' },
-        paid: { label: 'Payée', variant: 'secondary' }
+        paid: { label: t('supplierOrders.payee'), variant: 'secondary' }
       };
       const config = variants[status] || variants.pending;
       return <Badge variant={config.variant}>{config.label}</Badge>;

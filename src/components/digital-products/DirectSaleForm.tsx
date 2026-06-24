@@ -60,26 +60,26 @@ interface DirectSaleFormProps {
 const pricingTypes = [
   {
     id: 'one_time',
-    label: 'Paiement unique',
+    label: "Paiement unique",
     icon: DollarSign,
-    description: 'Un seul paiement pour un accès complet'
+    description: "Un seul paiement pour un accès complet"
   },
   {
     id: 'subscription',
     label: 'Abonnement',
     icon: RefreshCw,
-    description: 'Paiement récurrent mensuel ou annuel'
+    description: "Paiement récurrent mensuel ou annuel"
   },
   {
     id: 'pay_what_you_want',
     label: 'Prix libre',
     icon: Users,
-    description: 'Le client choisit son prix'
+    description: "Le client choisit son prix"
   }
 ];
 
 const accessDurations = [
-  { id: 'lifetime', label: 'Accès à vie' },
+  { id: 'lifetime', label: "Accès à vie" },
   { id: '1_year', label: '1 an' },
   { id: '6_months', label: '6 mois' },
   { id: '3_months', label: '3 mois' },

@@ -25,14 +25,14 @@ export function ChinaDashboard() {
 
   const statCards = [
     {
-      title: 'Produits Chine',
+      title: t('chinaDashboard.produitsChine'),
       value: stats?.totalChinaProducts || 0,
       icon: Package,
       color: 'text-blue-500',
       bgColor: 'bg-blue-50 dark:bg-blue-950'
     },
     {
-      title: 'Commandes Chine',
+      title: t('chinaDashboard.commandesChine'),
       value: stats?.totalChinaOrders || 0,
       icon: Ship,
       color: 'text-[#ff4000]',
@@ -46,7 +46,7 @@ export function ChinaDashboard() {
       bgColor: 'bg-orange-50 dark:bg-[#ff4000]'
     },
     {
-      title: 'Délai moyen',
+      title: t('chinaDashboard.delaiMoyen'),
       value: `${stats?.averageDeliveryDays || 0}j`,
       icon: Clock,
       color: 'text-orange-500',

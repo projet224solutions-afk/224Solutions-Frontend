@@ -46,18 +46,18 @@ interface RestaurantOrder {
 
 const statusConfig: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
   pending: { label: 'En attente', color: 'bg-orange-100 text-[#ff4000] border-orange-300', icon: <Clock className="w-4 h-4" /> },
-  confirmed: { label: 'Confirmée', color: 'bg-blue-100 text-blue-800 border-blue-300', icon: <Check className="w-4 h-4" /> },
-  preparing: { label: 'En préparation', color: 'bg-blue-100 text-[#04439e] border-blue-300', icon: <ChefHat className="w-4 h-4" /> },
-  ready: { label: 'Prête', color: 'bg-orange-100 text-[#ff4000] border-orange-300', icon: <Package className="w-4 h-4" /> },
-  delivered: { label: 'Livrée', color: 'bg-orange-100 text-[#ff4000] border-orange-300', icon: <Truck className="w-4 h-4" /> },
-  completed: { label: 'Terminée', color: 'bg-gray-100 text-gray-800 border-gray-300', icon: <Check className="w-4 h-4" /> },
-  cancelled: { label: 'Annulée', color: 'bg-orange-100 text-[#ff4000] border-orange-300', icon: <XCircle className="w-4 h-4" /> },
+  confirmed: { label: "Confirmée", color: 'bg-blue-100 text-blue-800 border-blue-300', icon: <Check className="w-4 h-4" /> },
+  preparing: { label: "En préparation", color: 'bg-blue-100 text-[#04439e] border-blue-300', icon: <ChefHat className="w-4 h-4" /> },
+  ready: { label: "Prête", color: 'bg-orange-100 text-[#ff4000] border-orange-300', icon: <Package className="w-4 h-4" /> },
+  delivered: { label: "Livrée", color: 'bg-orange-100 text-[#ff4000] border-orange-300', icon: <Truck className="w-4 h-4" /> },
+  completed: { label: "Terminée", color: 'bg-gray-100 text-gray-800 border-gray-300', icon: <Check className="w-4 h-4" /> },
+  cancelled: { label: "Annulée", color: 'bg-orange-100 text-[#ff4000] border-orange-300', icon: <XCircle className="w-4 h-4" /> },
 };
 
 const orderTypeLabels: Record<string, { label: string; icon: React.ReactNode }> = {
-  dine_in: { label: 'Sur place', icon: <Utensils className="w-4 h-4" /> },
-  takeaway: { label: 'À emporter', icon: <Package className="w-4 h-4" /> },
-  delivery: { label: 'Livraison', icon: <Truck className="w-4 h-4" /> },
+  dine_in: { label: "Sur place", icon: <Utensils className="w-4 h-4" /> },
+  takeaway: { label: "À emporter", icon: <Package className="w-4 h-4" /> },
+  delivery: { label: "Livraison", icon: <Truck className="w-4 h-4" /> },
 };
 
 const paymentMethodIcons: Record<string, React.ReactNode> = {

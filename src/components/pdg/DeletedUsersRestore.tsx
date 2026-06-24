@@ -262,7 +262,7 @@ export default function DeletedUsersRestore() {
       }
     } catch (error: unknown) {
       console.error('Erreur recherche:', error);
-      const msg = error instanceof Error ? error.message : 'Erreur de recherche';
+      const msg = error instanceof Error ? error.message: t('deletedUsersRestore.erreurDeRecherche');
       toast.error(msg);
     } finally {
       setLoading(false);

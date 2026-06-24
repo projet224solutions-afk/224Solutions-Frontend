@@ -124,10 +124,10 @@ export default function PDGRevenueAnalytics() {
     );
 
     if (success) {
-      toast({ title: '✅ Paramètre mis à jour', description: 'Les nouveaux taux ont été enregistrés.' });
+      toast({ title: t('pDGRevenueAnalytics.parametreMisAJour'), description: t('pDGRevenueAnalytics.lesNouveauxTauxOntEte') });
       loadData();
     } else {
-      toast({ title: '❌ Erreur', description: 'Impossible de mettre à jour le paramètre.', variant: 'destructive' });
+      toast({ title: '❌ Erreur', description: t('pDGRevenueAnalytics.impossibleDeMettreAJour'), variant: 'destructive' });
     }
   };
 
@@ -486,21 +486,21 @@ export default function PDGRevenueAnalytics() {
                         example: 500000
                       },
                       service_commissions: {
-                        title: '⚙️ Commission Services',
+                        title: t('pDGRevenueAnalytics.commissionServices'),
                         desc: 'Appliqué sur les services professionnels',
                         min: 0,
                         max: 20,
                         example: 200000
                       },
                       deposit_fee_percentage: {
-                        title: '⬇️ Frais de Dépôt',
+                        title: t('pDGRevenueAnalytics.fraisDeDepot'),
                         desc: 'Prélevé lors des rechargements (PayPal, carte, etc.)',
                         min: 0,
                         max: 10,
                         example: 100000
                       },
                       withdrawal_fee_percentage: {
-                        title: '⬆️ Frais de Retrait',
+                        title: t('pDGRevenueAnalytics.fraisDeRetrait'),
                         desc: 'Prélevé lors des demandes de retrait',
                         min: 0,
                         max: 10,

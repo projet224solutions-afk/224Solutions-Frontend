@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * NAVIGATION INFÉRIEURE - ULTRA PROFESSIONNEL
  * Design glassmorphism avec animations fluides
@@ -18,6 +19,7 @@ export function BottomNavigation({
   onTabChange,
   hasActiveRide,
 }: BottomNavigationProps) {
+  const { t } = useTranslation();
   const navItems = [
     { id: 'dashboard', label: 'Accueil', icon: Home },
     {
@@ -29,7 +31,7 @@ export function BottomNavigation({
     },
     { id: 'my-purchases', label: 'Mes achats', icon: ShoppingBag },
     { id: 'earnings', label: 'Gains', icon: Wallet },
-    { id: 'settings', label: 'Réglages', icon: Settings },
+    { id: 'settings', label: t('bottomNavigation.reglages'), icon: Settings },
   ];
 
   return (

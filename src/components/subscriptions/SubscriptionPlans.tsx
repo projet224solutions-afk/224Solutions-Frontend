@@ -128,7 +128,7 @@ export function SubscriptionPlans({ onSelectPlan }: SubscriptionPlansProps) {
       console.error('Error fetching data:', error);
       toast({
         title: 'Erreur',
-        description: 'Impossible de charger les plans',
+        description: t('subscriptionPlans.impossibleDeChargerLesPlans'),
         variant: 'destructive',
       });
     } finally {

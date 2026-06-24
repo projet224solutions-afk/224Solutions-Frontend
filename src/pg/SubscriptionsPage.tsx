@@ -64,7 +64,7 @@ export default function SubscriptionsPage() {
       if (!user) {
         toast({
           title: 'Erreur',
-          description: 'Vous devez etre connecte pour souscrire',
+          description: t('subscriptionsPage.vousDevezEtreConnectePour'),
           variant: 'destructive',
         });
         return;
@@ -80,7 +80,7 @@ export default function SubscriptionsPage() {
 
       if (!walletData || walletData.balance < price) {
         toast({
-          title: 'Solde insuffisant',
+          title: t('subscriptionsPage.soldeInsuffisant'),
           description: `Votre wallet doit avoir au moins ${SubscriptionService.formatAmount(price)}`,
           variant: 'destructive',
         });

@@ -190,8 +190,8 @@ export default function Payment() {
 
     if (hasProductIntent && !user) {
       toast({
-        title: "Connexion requise",
-        description: "Veuillez vous connecter pour effectuer un achat",
+        title: t('payment.connexionRequise'),
+        description: t('payment.veuillezVousConnecterPourEffectuer'),
         variant: "destructive"
       });
       navigate('/auth', { state: { returnTo: location.pathname + location.search } });
@@ -449,7 +449,7 @@ export default function Payment() {
           toast({
             variant: "destructive",
             title: "Erreur",
-            description: "Impossible de charger les informations du vendeur"
+            description: t('payment.impossibleDeChargerLesInformations')
           });
           return;
         }
@@ -502,7 +502,7 @@ export default function Payment() {
         toast({
           variant: "destructive",
           title: "Erreur",
-          description: "Impossible de charger les informations du panier"
+          description: t('payment.impossibleDeChargerLesInformations2')
         });
       }
       return;
@@ -752,7 +752,7 @@ export default function Payment() {
     if (!user?.id || !paymentAmount || !recipientId) {
       toast({
         title: "Erreur",
-        description: "Veuillez remplir tous les champs obligatoires",
+        description: t('payment.veuillezRemplirTousLesChamps'),
         variant: "destructive"
       });
       return;
@@ -762,7 +762,7 @@ export default function Payment() {
     if (isNaN(amount) || amount <= 0) {
       toast({
         title: "Erreur",
-        description: "Montant invalide",
+        description: t('payment.montantInvalide'),
         variant: "destructive"
       });
       return;
@@ -826,7 +826,7 @@ export default function Payment() {
       if (!receiverId) {
         toast({
           title: "Erreur",
-          description: "Destinataire introuvable. Utilisez un ID public, un email ou un téléphone valide.",
+          description: t('payment.destinataireIntrouvableUtilisezUnId'),
           variant: "destructive"
         });
         setProcessing(false);
@@ -871,8 +871,8 @@ export default function Payment() {
 
       if (isInsufficientBalance) {
         toast({
-          title: "💳 Solde insuffisant",
-          description: "Votre solde est insuffisant pour effectuer cette transaction. Veuillez recharger votre wallet.",
+          title: t('payment.soldeInsuffisant'),
+          description: t('payment.votreSoldeEstInsuffisantPour'),
           variant: "destructive"
         });
       } else {
@@ -906,8 +906,8 @@ export default function Payment() {
         });
 
         toast({
-          title: "Commande créée !",
-          description: "Votre commande digitale sera confirmée après le paiement à la livraison"
+          title: t('payment.commandeCreee'),
+          description: t('payment.votreCommandeDigitaleSeraConfirmee')
         });
 
         setPaymentOpen(false);
@@ -1021,8 +1021,8 @@ export default function Payment() {
         }
 
         toast({
-          title: "✓ Commande créée !",
-          description: "Votre commande sera payée à la livraison"
+          title: t('payment.commandeCreee2'),
+          description: t('payment.votreCommandeSeraPayeeA')
         });
 
         setPaymentOpen(false);
@@ -1034,7 +1034,7 @@ export default function Payment() {
       } else {
         toast({
           title: "Information",
-          description: "Le paiement à la livraison n'est disponible que pour les achats de produits",
+          description: t('payment.lePaiementALaLivraison'),
           variant: "destructive"
         });
       }
@@ -1059,7 +1059,7 @@ export default function Payment() {
       const provider = method === 'orange_money' ? 'orange' : 'mtn';
 
       toast({
-        title: "📱 Paiement ChapChapPay",
+        title: t('payment.paiementChapchappay'),
         description: `Initialisation du paiement ${provider.toUpperCase()}...`
       });
 
@@ -1102,7 +1102,7 @@ export default function Payment() {
         const orders = await createOrdersForCartAfterPayment({ paymentMethod: 'wallet' });
 
         toast({
-          title: "✓ Commande créée !",
+          title: t('payment.commandeCreee2'),
           description: `${orders.length} commande(s) créée(s) pour votre panier`
         });
 
@@ -1213,8 +1213,8 @@ export default function Payment() {
           }
           if (!digitalVendorOrderOk) {
             toast({
-              title: '⚠️ Commande à synchroniser',
-              description: "Paiement et accès confirmés. L'enregistrement côté vendeur a échoué et devra être resynchronisé.",
+              title: t('payment.commandeASynchroniser'),
+              description: t('payment.paiementEtAccesConfirmesL'),
               variant: 'destructive',
             });
           }
@@ -1281,7 +1281,7 @@ export default function Payment() {
         });
 
         toast({
-          title: "✓ Commande créée !",
+          title: t('payment.commandeCreee2'),
           description: `Commande ${orderNumber} - Paiement sécurisé par Escrow`
         });
 
@@ -1320,7 +1320,7 @@ export default function Payment() {
 
           const senderCurrency = paymentPreview.currency_sent || 'GNF';
           toast({
-            title: "Transfert sécurisé effectué",
+            title: t('payment.transfertSecuriseEffectue'),
             description: `✓ Transfert réussi via Escrow\n💸 Frais appliqués : ${paymentPreview.fee_amount.toLocaleString()} ${senderCurrency}\n💰 Montant transféré : ${paymentPreview.amount.toLocaleString()} ${senderCurrency}`
           });
         } else {
@@ -1337,7 +1337,7 @@ export default function Payment() {
 
           const senderCurrency = paymentPreview.currency_sent || 'GNF';
           toast({
-            title: "Paiement effectué",
+            title: t('payment.paiementEffectue'),
             description: `✓ Paiement réussi\n💸 Frais appliqués : ${paymentPreview.fee_amount.toLocaleString()} ${senderCurrency}\n💰 Montant payé : ${paymentPreview.amount.toLocaleString()} ${senderCurrency}`
           });
         }
@@ -1360,8 +1360,8 @@ export default function Payment() {
 
       if (isInsufficientBalance) {
         toast({
-          title: "💳 Solde insuffisant",
-          description: "Votre solde est insuffisant pour effectuer cette transaction. Veuillez recharger votre wallet.",
+          title: t('payment.soldeInsuffisant'),
+          description: t('payment.votreSoldeEstInsuffisantPour'),
           variant: "destructive"
         });
       } else {
@@ -1568,7 +1568,7 @@ export default function Payment() {
                               console.error('[Payment] Error creating cart orders after payment:', err);
                               orderErrors.push(err?.message || 'Commande panier non créée');
                               toast({
-                                title: 'Paiement reçu mais commande incomplète',
+                                title: t('payment.paiementRecuMaisCommandeIncomplete'),
                                 description: err?.message || 'Contactez le support avec votre référence de paiement',
                                 variant: 'destructive',
                                 duration: 10000,
@@ -1658,7 +1658,7 @@ export default function Payment() {
                                   });
                                 } catch (digitalOrderError) {
                                   console.error('[Payment] Error creating digital vendor order after provider success:', digitalOrderError);
-                                  orderErrors.push(digitalOrderError instanceof Error ? digitalOrderError.message : 'Commande digitale non créée');
+                                  orderErrors.push(digitalOrderError instanceof Error ? digitalOrderError.message: t('payment.commandeDigitaleNonCreee'));
                                 }
                               }
 
@@ -1691,7 +1691,7 @@ export default function Payment() {
 
                           if (orderErrors.length > 0) {
                             toast({
-                              title: 'Paiement reçu mais commande non créée',
+                              title: t('payment.paiementRecuMaisCommandeNon'),
                               description: orderErrors[0],
                               variant: 'destructive',
                               duration: 10000,
@@ -1700,8 +1700,8 @@ export default function Payment() {
                           }
 
                           toast({
-                            title: "Paiement réussi",
-                            description: "Votre paiement a été effectué avec succès",
+                            title: t('payment.paiementReussi'),
+                            description: t('payment.votrePaiementAEteEffectue'),
                           });
                           setPaymentOpen(false);
                           setPaymentStep('form');
@@ -1723,7 +1723,7 @@ export default function Payment() {
                         onPaymentFailed={(error) => {
                           console.error('[Payment] Failed:', error);
                           toast({
-                            title: "Erreur de paiement",
+                            title: t('payment.erreurDePaiement'),
                             description: error,
                             variant: "destructive",
                           });

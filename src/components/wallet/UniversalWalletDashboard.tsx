@@ -228,7 +228,7 @@ export default function UniversalWalletDashboard({
           fee: 0,
           currency: wallet.currency || 'GNF',
           status: 'completed',
-          description: 'Dépôt sur le wallet',
+          description: t('universalWalletDashboard.depotSurLeWallet'),
           receiver_wallet_id: wallet.id,
           receiver_user_id: userId
         });
@@ -293,7 +293,7 @@ export default function UniversalWalletDashboard({
           fee: 0,
           currency: wallet.currency || 'GNF',
           status: 'completed',
-          description: 'Retrait du wallet',
+          description: t('universalWalletDashboard.retraitDuWallet'),
           sender_wallet_id: wallet.id,
           sender_user_id: userId
         });

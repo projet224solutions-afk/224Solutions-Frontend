@@ -66,7 +66,7 @@ const paymentMethodOptions: PaymentMethodOption[] = [
   {
     id: 'orange_money',
     name: 'Orange Money',
-    description: 'Paiement instantané via Orange Money',
+    description: "Paiement instantané via Orange Money",
     icon: <Smartphone className="h-5 w-5 text-orange-500" />,
     iconBg: 'bg-orange-100',
     phonePrefix: '620',
@@ -75,7 +75,7 @@ const paymentMethodOptions: PaymentMethodOption[] = [
   {
     id: 'mtn_momo',
     name: 'MTN Mobile Money',
-    description: 'Paiement via MTN MoMo',
+    description: "Paiement via MTN MoMo",
     icon: <Smartphone className="h-5 w-5 text-[#ff4000]" />,
     iconBg: 'bg-orange-100',
     phonePrefix: '660',
@@ -84,7 +84,7 @@ const paymentMethodOptions: PaymentMethodOption[] = [
   {
     id: 'paycard',
     name: 'PayCard',
-    description: 'Carte de paiement locale',
+    description: "Carte de paiement locale",
     icon: <CreditCard className="h-5 w-5 text-blue-600" />,
     iconBg: 'bg-blue-100'
   },

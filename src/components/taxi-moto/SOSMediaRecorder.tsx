@@ -157,7 +157,7 @@ export function SOSMediaRecorder({
 
       setRecordingState('sent');
       toast.success(t('sOSMediaRecorder.enregistrementEnvoyeAuBureauSyndicat'), {
-        description: 'Le bureau peut maintenant visualiser votre preuve'
+        description: t('sOSMediaRecorder.leBureauPeutMaintenantVisualiser')
       });
 
       onMediaSent?.();

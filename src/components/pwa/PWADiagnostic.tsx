@@ -57,7 +57,7 @@ export default function PWADiagnostic() {
     // 1. Vérifier HTTPS
     const isSecure = window.location.protocol === 'https:' || window.location.hostname === 'localhost';
     results.push({
-      label: 'Connexion sécurisée (HTTPS)',
+      label: t('pWADiagnostic.connexionSecuriseeHttps'),
       status: isSecure ? 'success' : 'error',
       message: isSecure ? 'HTTPS actif' : 'HTTPS requis pour PWA',
       icon: <Shield className="w-4 h-4" />
@@ -72,7 +72,7 @@ export default function PWADiagnostic() {
         setSwStatus(registration ? 'active' : 'not-registered');
 
         results.push({
-          label: 'Service Worker',
+          label: t('pWADiagnostic.serviceWorker'),
           status: swRegistered ? 'success' : 'error',
           message: swRegistered
             ? `Actif (${registration?.active?.state || 'installed'})`
@@ -103,17 +103,17 @@ export default function PWADiagnostic() {
         }
       } catch (_error) {
         results.push({
-          label: 'Service Worker',
+          label: t('pWADiagnostic.serviceWorker'),
           status: 'error',
-          message: 'Erreur lors de la vérification',
+          message: t('pWADiagnostic.erreurLorsDeLaVerification'),
           icon: <Database className="w-4 h-4" />
         });
       }
     } else {
       results.push({
-        label: 'Service Worker',
+        label: t('pWADiagnostic.serviceWorker'),
         status: 'error',
-        message: 'Non supporté par ce navigateur',
+        message: t('pWADiagnostic.nonSupporteParCeNavigateur'),
         icon: <Database className="w-4 h-4" />
       });
     }
@@ -140,7 +140,7 @@ export default function PWADiagnostic() {
         results.push({
           label: 'Manifest PWA',
           status: 'error',
-          message: 'Manifest non trouvé',
+          message: t('pWADiagnostic.manifestNonTrouve'),
           icon: <Globe className="w-4 h-4" />
         });
       }
@@ -156,7 +156,7 @@ export default function PWADiagnostic() {
     // 4. Vérifier la connectivité
     const isOnline = navigator.onLine;
     results.push({
-      label: 'Connexion Internet',
+      label: t('pWADiagnostic.connexionInternet'),
       status: isOnline ? 'success' : 'warning',
       message: isOnline ? 'En ligne' : 'Hors ligne',
       icon: isOnline ? <Wifi className="w-4 h-4" /> : <WifiOff className="w-4 h-4" />
@@ -170,14 +170,14 @@ export default function PWADiagnostic() {
       results.push({
         label: 'Mode d\'affichage',
         status: 'success',
-        message: 'Application installée (standalone)',
+        message: t('pWADiagnostic.applicationInstalleeStandalone'),
         icon: <Smartphone className="w-4 h-4" />
       });
     } else if (isInFrame) {
       results.push({
         label: 'Mode d\'affichage',
         status: 'warning',
-        message: 'Dans un iframe - ouvrez dans le navigateur',
+        message: t('pWADiagnostic.dansUnIframeOuvrezDans'),
         icon: <Monitor className="w-4 h-4" />
       });
     } else {
@@ -204,7 +204,7 @@ export default function PWADiagnostic() {
       results.push({
         label: 'Stockage IndexedDB',
         status: 'success',
-        message: 'Disponible pour données offline',
+        message: t('pWADiagnostic.disponiblePourDonneesOffline'),
         icon: <Database className="w-4 h-4" />
       });
     } catch (_error) {
@@ -245,7 +245,7 @@ export default function PWADiagnostic() {
   const handleInstall = async () => {
     if (!deferredPrompt) {
       toast.error("L'installation n'est pas disponible", {
-        description: "Essayez d'ouvrir l'app dans Chrome ou Edge"
+        description: t('pWADiagnostic.essayezDOuvrirLApp')
       });
       return;
     }
@@ -304,7 +304,7 @@ export default function PWADiagnostic() {
       }
 
       toast.success(`✅ ${cached} ressources mises en cache`, {
-        description: "Le mode offline est maintenant disponible"
+        description: t('pWADiagnostic.leModeOfflineEstMaintenant')
       });
 
       // Relancer le diagnostic
@@ -329,7 +329,7 @@ export default function PWADiagnostic() {
       await Promise.all(registrations.map(reg => reg.unregister()));
 
       toast.success(t('pWADiagnostic.serviceWorkerReinitialise'), {
-        description: "Rechargez la page pour réactiver le mode offline"
+        description: t('pWADiagnostic.rechargezLaPagePourReactiver')
       });
 
       setTimeout(() => window.location.reload(), 1500);

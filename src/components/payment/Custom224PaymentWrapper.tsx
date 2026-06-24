@@ -134,7 +134,7 @@ export function Custom224PaymentWrapper({
       return data.paypal_order_id as string;
     } catch (err) {
       console.error('Error creating PayPal order:', err);
-      const message = err instanceof Error ? err.message : 'Erreur lors du paiement';
+      const message = err instanceof Error ? err.message: t('custom224PaymentWrapper.erreurLorsDuPaiement');
       setError(message);
       onError(message);
       throw err;
@@ -154,7 +154,7 @@ export function Custom224PaymentWrapper({
       onSuccess(data.orderID);
     } catch (err) {
       console.error('Error capturing PayPal order:', err);
-      const message = err instanceof Error ? err.message : 'Erreur lors de la validation du paiement';
+      const message = err instanceof Error ? err.message: t('custom224PaymentWrapper.erreurLorsDeLaValidation');
       setError(message);
       onError(message);
       toast.error(message);

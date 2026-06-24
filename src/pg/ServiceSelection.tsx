@@ -31,15 +31,15 @@ export default function ServiceSelection() {
 
   // Grouper les services par catégorie
   const categories = [
-    { value: 'all', label: 'Tous les services', count: serviceTypes.length },
-    { value: 'services', label: 'Services', count: serviceTypes.filter(s => s.category === 'services').length },
+    { value: 'all', label: t('serviceSelection.tousLesServices'), count: serviceTypes.length },
+    { value: 'services', label: t('serviceSelection.services'), count: serviceTypes.filter(s => s.category === 'services').length },
     { value: 'commerce', label: 'Commerce', count: serviceTypes.filter(s => s.category === 'commerce').length },
     { value: 'transport', label: 'Transport', count: serviceTypes.filter(s => s.category === 'transport').length },
     { value: 'food', label: 'Restauration', count: serviceTypes.filter(s => s.category === 'food').length },
-    { value: 'health', label: 'Santé', count: serviceTypes.filter(s => s.category === 'health').length },
-    { value: 'education', label: 'Éducation', count: serviceTypes.filter(s => s.category === 'education').length },
+    { value: 'health', label: t('serviceSelection.sante'), count: serviceTypes.filter(s => s.category === 'health').length },
+    { value: 'education', label: t('serviceSelection.education'), count: serviceTypes.filter(s => s.category === 'education').length },
     { value: 'tech', label: 'Technologie', count: serviceTypes.filter(s => s.category === 'tech').length },
-    { value: 'creative', label: 'Créatif', count: serviceTypes.filter(s => s.category === 'creative').length },
+    { value: 'creative', label: t('serviceSelection.creatif'), count: serviceTypes.filter(s => s.category === 'creative').length },
   ].filter(cat => cat.count > 0 || cat.value === 'all');
 
   // Filtrer les services

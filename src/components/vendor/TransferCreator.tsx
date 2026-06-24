@@ -272,7 +272,7 @@ export default function TransferCreator({ onSuccess, onCancel }: TransferCreator
     if (!fromLocationId || transferItems.length === 0 || clientTargetMissing || (destinationType !== 'client' && !toLocationId)) {
       toast({
         title: 'Erreur',
-        description: 'Veuillez renseigner la source, la destination et au moins un produit.',
+        description: t('transferCreator.veuillezRenseignerLaSourceLa'),
         variant: 'destructive'
       });
       return;
@@ -280,8 +280,8 @@ export default function TransferCreator({ onSuccess, onCancel }: TransferCreator
 
     if (hasMissingShopMapping) {
       toast({
-        title: 'Liaison boutique manquante',
-        description: 'Chaque produit doit être lié à un produit boutique avant confirmation.',
+        title: t('transferCreator.liaisonBoutiqueManquante'),
+        description: t('transferCreator.chaqueProduitDoitEtreLie'),
         variant: 'destructive'
       });
       return;

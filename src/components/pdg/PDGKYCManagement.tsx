@@ -25,13 +25,13 @@ interface KYCSettings {
 }
 
 const userTypes = [
-  { key: 'vendeur', label: 'Vendeurs', icon: Store, description: 'Vérification des marchands' },
-  { key: 'client', label: 'Clients', icon: Users, description: 'Vérification des acheteurs' },
-  { key: 'livreur', label: 'Livreurs', icon: Truck, description: 'Vérification des chauffeurs livreurs' },
-  { key: 'taxi_moto', label: 'Taxi-Moto', icon: Car, description: 'Vérification des chauffeurs taxi-moto' },
-  { key: 'bureau_syndicat', label: 'Bureaux Syndicaux', icon: Building2, description: 'Vérification des bureaux' },
-  { key: 'transitaire', label: 'Transitaires', icon: Globe, description: 'Vérification des transitaires' },
-  { key: 'agent', label: 'Agents', icon: Users, description: 'Vérification des agents' },
+  { key: 'vendeur', label: 'Vendeurs', icon: Store, description: "Vérification des marchands" },
+  { key: 'client', label: 'Clients', icon: Users, description: "Vérification des acheteurs" },
+  { key: 'livreur', label: 'Livreurs', icon: Truck, description: "Vérification des chauffeurs livreurs" },
+  { key: 'taxi_moto', label: 'Taxi-Moto', icon: Car, description: "Vérification des chauffeurs taxi-moto" },
+  { key: 'bureau_syndicat', label: 'Bureaux Syndicaux', icon: Building2, description: "Vérification des bureaux" },
+  { key: 'transitaire', label: 'Transitaires', icon: Globe, description: "Vérification des transitaires" },
+  { key: 'agent', label: 'Agents', icon: Users, description: "Vérification des agents" },
 ] as const;
 
 export default function PDGKYCManagement() {
@@ -117,7 +117,7 @@ export default function PDGKYCManagement() {
           .insert({
             setting_key: 'kyc_settings',
             setting_value: settingsJson,
-            description: 'Paramètres KYC par type utilisateur'
+            description: t('pDGKYCManagement.parametresKycParTypeUtilisateur')
           });
 
         if (error) throw error;

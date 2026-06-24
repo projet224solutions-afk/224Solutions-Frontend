@@ -81,7 +81,7 @@ export default function AgentSidebar({
   const navItems: NavItem[] = [
     {
       id: 'overview',
-      label: 'Tableau de bord',
+      label: t('agentSidebar.tableauDeBord'),
       icon: Home,
       gradient: ''
     },
@@ -93,7 +93,7 @@ export default function AgentSidebar({
     },
     {
       id: 'create-user',
-      label: 'Créer Utilisateur',
+      label: t('agentSidebar.creerUtilisateur'),
       icon: UserPlus,
       permission: 'create_users',
       gradient: ''
@@ -114,7 +114,7 @@ export default function AgentSidebar({
     },
     {
       id: 'products',
-      label: 'Produits',
+      label: t('agentSidebar.produits'),
       icon: Package,
       permission: 'manage_products',
       gradient: ''
@@ -142,7 +142,7 @@ export default function AgentSidebar({
     },
     {
       id: 'banking',
-      label: 'Système Bancaire',
+      label: t('agentSidebar.systemeBancaire'),
       icon: Shield,
       permission: 'view_banking',
       gradient: ''
@@ -156,7 +156,7 @@ export default function AgentSidebar({
     },
     {
       id: 'kyc-management',
-      label: 'Gestion KYC',
+      label: t('agentSidebar.gestionKyc'),
       icon: FileCheck,
       permission: 'view_kyc',
       gradient: ''
@@ -170,14 +170,14 @@ export default function AgentSidebar({
     },
     {
       id: 'orders-management',
-      label: 'Commandes',
+      label: t('agentSidebar.commandes'),
       icon: ShoppingCart,
       permission: 'view_orders',
       gradient: ''
     },
     {
       id: 'service-subscriptions',
-      label: 'Abonnements Services',
+      label: t('agentSidebar.abonnementsServices'),
       icon: Sparkles,
       permission: 'view_service_subscriptions',
       gradient: ''

@@ -118,7 +118,7 @@ export default function PayPalInlineDeposit({ onSuccess, onClose }: PayPalInline
       onSuccess();
     } catch (err) {
       console.error('[PayPal] capture error:', err);
-      toast.error(err instanceof Error ? err.message : 'Erreur de capture');
+      toast.error(err instanceof Error ? err.message: t('payPalInlineDeposit.erreurDeCapture'));
     } finally {
       if (mountedRef.current) setProcessing(false);
     }

@@ -28,9 +28,9 @@ export default function Devis() {
   const serviceTypes = [
     { value: "transport", label: "Transport / Livraison" },
     { value: "taxi", label: "Course Taxi-Moto" },
-    { value: "commerce", label: "Vente de produits" },
-    { value: "transitaire", label: "Services de transitaire" },
-    { value: "autre", label: "Autre service" }
+    { value: "commerce", label: t('devis.venteDeProduits') },
+    { value: "transitaire", label: t('devis.servicesDeTransitaire') },
+    { value: "autre", label: t('devis.autreService') }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {

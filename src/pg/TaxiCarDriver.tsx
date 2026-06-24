@@ -59,7 +59,7 @@ function CarBottomNav({ activeTab, onTabChange, hasActiveRide }: {
     { id: 'navigation' as TabId, label: 'Course', icon: <Navigation className="w-5 h-5" />, badge: hasActiveRide },
     { id: 'earnings' as TabId, label: 'Revenus', icon: <DollarSign className="w-5 h-5" /> },
     { id: 'my-purchases' as TabId, label: 'Achats', icon: <ShoppingBag className="w-5 h-5" /> },
-    { id: 'settings' as TabId, label: 'Réglages', icon: <Settings className="w-5 h-5" /> },
+    { id: 'settings' as TabId, label: t('taxiCarDriver.reglages'), icon: <Settings className="w-5 h-5" /> },
   ];
 
   return (
@@ -465,7 +465,7 @@ export default function TaxiCarDriver() {
     const next = !isOnline;
     if (!driverId) { toast.error(t('taxiCarDriver.profilConducteurNonTrouve')); return; }
     if (next && !hasAccess) {
-      toast.error('⚠️ Abonnement requis', { description: 'Vous devez avoir un abonnement actif' });
+      toast.error('⚠️ Abonnement requis', { description: t('taxiCarDriver.vousDevezAvoirUnAbonnement') });
       return;
     }
     if (next) {

@@ -61,12 +61,12 @@ export default function TransportTicketGenerator({ bureauId, bureauName }: { bur
   });
 
   const ticketTypes = [
-    { value: 'stationnement', label: 'Ticket de stationnement' },
+    { value: 'stationnement', label: t('transportTicketGenerator.ticketDeStationnement') },
     { value: 'journalier', label: 'Ticket journalier' },
     { value: 'hebdomadaire', label: 'Ticket hebdomadaire' },
     { value: 'mensuel', label: 'Ticket mensuel' },
-    { value: 'cotisation', label: 'Ticket de cotisation' },
-    { value: 'special', label: 'Ticket spécial' },
+    { value: 'cotisation', label: t('transportTicketGenerator.ticketDeCotisation') },
+    { value: 'special', label: t('transportTicketGenerator.ticketSpecial') },
   ];
 
   const generateBatchNumber = () => {

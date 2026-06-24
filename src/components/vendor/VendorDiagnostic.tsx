@@ -57,7 +57,7 @@ export default function VendorDiagnostic({ onComplete }: VendorDiagnosticProps) 
                 if (!user) {
                     throw new Error('Utilisateur non authentifié');
                 }
-                return { status: 'success', message: 'Utilisateur authentifié' };
+                return { status: 'success', message: t('vendorDiagnostic.utilisateurAuthentifie') };
             }
         },
         {
@@ -74,7 +74,7 @@ export default function VendorDiagnostic({ onComplete }: VendorDiagnosticProps) 
                 if (error || !vendor) {
                     throw new Error('Profil vendeur non trouvé');
                 }
-                return { status: 'success', message: 'Profil vendeur trouvé' };
+                return { status: 'success', message: t('vendorDiagnostic.profilVendeurTrouve') };
             }
         },
         {
@@ -91,7 +91,7 @@ export default function VendorDiagnostic({ onComplete }: VendorDiagnosticProps) 
                 if (error || !wallet) {
                     throw new Error('Wallet non trouvé');
                 }
-                return { status: 'success', message: 'Wallet trouvé' };
+                return { status: 'success', message: t('vendorDiagnostic.walletTrouve') };
             }
         },
         {
@@ -114,7 +114,7 @@ export default function VendorDiagnostic({ onComplete }: VendorDiagnosticProps) 
                 if (results.length > 0) {
                     throw new Error(`Tables manquantes: ${results.map(r => r.table).join(', ')}`);
                 }
-                return { status: 'success', message: 'Toutes les tables sont accessibles' };
+                return { status: 'success', message: t('vendorDiagnostic.toutesLesTablesSontAccessibles') };
             }
         },
         {
@@ -250,7 +250,7 @@ export default function VendorDiagnostic({ onComplete }: VendorDiagnosticProps) 
 
             if (fixes.length > 0) {
                 toast({
-                    title: "Réparation réussie",
+                    title: t('vendorDiagnostic.reparationReussie'),
                     description: `Corrections appliquées: ${fixes.join(', ')}`,
                 });
 
@@ -260,13 +260,13 @@ export default function VendorDiagnostic({ onComplete }: VendorDiagnosticProps) 
                 }, 1000);
             } else {
                 toast({
-                    title: "Aucune réparation nécessaire",
-                    description: "Tous les tests sont déjà passés",
+                    title: t('vendorDiagnostic.aucuneReparationNecessaire'),
+                    description: t('vendorDiagnostic.tousLesTestsSontDeja'),
                 });
             }
         } catch (error) {
             toast({
-                title: "Erreur lors de la réparation",
+                title: t('vendorDiagnostic.erreurLorsDeLaReparation'),
                 description: error.message,
                 variant: "destructive",
             });

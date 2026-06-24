@@ -49,23 +49,23 @@ interface AffiliateFormProps {
 }
 
 const affiliateNetworks = [
-  { id: 'direct', name: 'Programme Direct', description: 'Affiliation directe avec le vendeur' },
+  { id: 'direct', name: 'Programme Direct', description: "Affiliation directe avec le vendeur" },
   { id: 'amazon', name: 'Amazon Associates', description: 'Programme d\'affiliation Amazon' },
-  { id: 'clickbank', name: 'ClickBank', description: 'Produits numériques, commissions élevées' },
+  { id: 'clickbank', name: 'ClickBank', description: "Produits numériques, commissions élevées" },
   { id: 'cj', name: 'CJ Affiliate', description: 'Grandes marques internationales' },
-  { id: 'shareasale', name: 'ShareASale', description: 'Réseau diversifié de marchands' },
-  { id: 'impact', name: 'Impact', description: 'Partenariats de marques premium' },
-  { id: 'systeme', name: 'Systeme.io', description: 'Formations et produits numériques' },
-  { id: 'booking', name: 'Booking.com', description: 'Réservations hôtelières' },
-  { id: 'awin', name: 'Awin', description: 'Réseau européen majeur' },
-  { id: 'rakuten', name: 'Rakuten', description: 'Grands détaillants en ligne' },
+  { id: 'shareasale', name: 'ShareASale', description: "Réseau diversifié de marchands" },
+  { id: 'impact', name: 'Impact', description: "Partenariats de marques premium" },
+  { id: 'systeme', name: 'Systeme.io', description: "Formations et produits numériques" },
+  { id: 'booking', name: 'Booking.com', description: "Réservations hôtelières" },
+  { id: 'awin', name: 'Awin', description: "Réseau européen majeur" },
+  { id: 'rakuten', name: 'Rakuten', description: "Grands détaillants en ligne" },
   { id: 'other', name: 'Autre réseau', description: 'Autre plateforme d\'affiliation' }
 ];
 
 const commissionTypes = [
-  { id: 'percentage', label: 'Pourcentage', description: 'Commission en % de la vente' },
-  { id: 'fixed', label: 'Montant fixe', description: 'Commission fixe par vente' },
-  { id: 'recurring', label: 'Récurrent', description: 'Commission sur abonnements' }
+  { id: 'percentage', label: 'Pourcentage', description: "Commission en % de la vente" },
+  { id: 'fixed', label: "Montant fixe", description: 'Commission fixe par vente' },
+  { id: 'recurring', label: "Récurrent", description: "Commission sur abonnements" }
 ];
 
 export function AffiliateForm({

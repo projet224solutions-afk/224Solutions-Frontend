@@ -100,7 +100,7 @@ export function ChapChapPayForm({
       return;
     }
 
-    setStatus({ status: 'processing', message: 'Initialisation du paiement...' });
+    setStatus({ status: 'processing', message: t('chapChapPayForm.initialisationDuPaiement') });
 
     try {
       // Formater le numéro de téléphone pour ChapChapPay (format 224XXXXXXXXX)
@@ -124,7 +124,7 @@ export function ChapChapPayForm({
       if (data?.success) {
         setStatus({
           status: 'success',
-          message: 'Paiement initié ! Validez sur votre téléphone.',
+          message: t('chapChapPayForm.paiementInitieValidezSurVotre'),
           transactionId: data.transactionId,
         });
 

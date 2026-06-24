@@ -24,14 +24,14 @@ import type {
 
 // Liste des pays (simplifiée — principaux pays d'opération)
 const COUNTRIES = [
-  { code: 'GN',  label: 'Guinée' },
-  { code: 'SN',  label: 'Sénégal' },
+  { code: 'GN',  label: "Guinée" },
+  { code: 'SN',  label: "Sénégal" },
   { code: 'ML',  label: 'Mali' },
   { code: 'CI',  label: "Côte d'Ivoire" },
   { code: 'BF',  label: 'Burkina Faso' },
   { code: 'NE',  label: 'Niger' },
   { code: 'TG',  label: 'Togo' },
-  { code: 'BJ',  label: 'Bénin' },
+  { code: 'BJ',  label: "Bénin" },
   { code: 'CM',  label: 'Cameroun' },
   { code: 'CD',  label: 'Congo (RDC)' },
   { code: 'CG',  label: 'Congo (Brazzaville)' },

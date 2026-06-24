@@ -35,8 +35,8 @@ interface EscrowDisputeThreadProps {
 }
 
 const PARTY_META: Record<string, { label: string; Icon: any; color: string }> = {
-  client: { label: 'Client', Icon: UserIcon, color: 'text-blue-600' },
-  vendor: { label: 'Vendeur', Icon: Store, color: 'text-[#ff4000]' },
+  client: { label: "Client", Icon: UserIcon, color: 'text-blue-600' },
+  vendor: { label: "Vendeur", Icon: Store, color: 'text-[#ff4000]' },
   admin: { label: 'PDG / Arbitrage', Icon: ShieldCheck, color: 'text-emerald-600' },
   ai: { label: 'Assistant', Icon: ShieldCheck, color: 'text-muted-foreground' },
 };

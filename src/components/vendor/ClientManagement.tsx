@@ -163,7 +163,7 @@ export default function ClientManagement() {
     } catch (_error) {
       toast({
         title: "Erreur",
-        description: "Impossible de charger les données clients.",
+        description: t('clientManagement.impossibleDeChargerLesDonnees'),
         variant: "destructive"
       });
     } finally {
@@ -250,8 +250,8 @@ export default function ClientManagement() {
           <Button variant="outline" size="sm" className="flex-1 sm:flex-none text-xs sm:text-sm" onClick={() => {
             if (clientsWithContacts.length === 0) {
               toast({
-                title: "Aucun contact disponible",
-                description: "Aucun email ou numéro n'a encore été collecté pour vos clients.",
+                title: t('clientManagement.aucunContactDisponible'),
+                description: t('clientManagement.aucunEmailOuNumeroN'),
               });
               return;
             }
@@ -264,8 +264,8 @@ export default function ClientManagement() {
           <Button size="sm" className="flex-1 sm:flex-none text-xs sm:text-sm" onClick={() => {
             if (clientsWithContacts.length === 0) {
               toast({
-                title: "Aucun contact disponible",
-                description: "Aucun email ou numéro n'a encore été collecté.",
+                title: t('clientManagement.aucunContactDisponible'),
+                description: t('clientManagement.aucunEmailOuNumeroN2'),
               });
               return;
             }
@@ -470,7 +470,7 @@ export default function ClientManagement() {
 
                     toast({
                       title: "Email non disponible",
-                      description: "L'adresse email de ce client n'est pas renseignée."
+                      description: t('clientManagement.lAdresseEmailDeCe')
                     });
                   }}>
                     <Mail className="w-4 h-4 mr-1" />
@@ -486,8 +486,8 @@ export default function ClientManagement() {
                     }
 
                     toast({
-                      title: "Numéro non disponible",
-                      description: "Le numéro de téléphone de ce client n'est pas renseigné."
+                      title: t('clientManagement.numeroNonDisponible'),
+                      description: t('clientManagement.leNumeroDeTelephoneDe')
                     });
                   }}>
                     <Phone className="w-4 h-4 mr-1" />
@@ -495,8 +495,8 @@ export default function ClientManagement() {
                   </Button>
                   <Button size="sm" variant="outline" onClick={() => {
                     toast({
-                      title: "Commandes du client",
-                      description: "Affichage des commandes de ce client."
+                      title: t('clientManagement.commandesDuClient'),
+                      description: t('clientManagement.affichageDesCommandesDeCe')
                     });
                   }}>
                     <ShoppingCart className="w-4 h-4 mr-1" />
@@ -752,19 +752,19 @@ export default function ClientManagement() {
             <Button className="w-full gap-2" size="lg" disabled={bcSending || !bcMessage.trim()}
               onClick={async () => {
                 const target = bcChannel === 'email' ? clientsWithEmails.length : bcChannel === 'sms' ? clientsWithPhones.length : Math.max(clientsWithEmails.length, clientsWithPhones.length);
-                if (!bcMessage.trim()) { toast({ title: 'Message vide', description: 'Écrivez un message.' }); return; }
-                if (target === 0) { toast({ title: 'Aucun contact', description: 'Aucun contact pour ce canal.' }); return; }
+                if (!bcMessage.trim()) { toast({ title: 'Message vide', description: t('clientManagement.ecrivezUnMessage') }); return; }
+                if (target === 0) { toast({ title: t('clientManagement.aucunContact'), description: t('clientManagement.aucunContactPourCeCanal') }); return; }
                 setBcSending(true); setBcResult(null);
                 try {
                   const r = await broadcastToClients({ channel: bcChannel, subject: bcSubject.trim() || undefined, message: bcMessage.trim() }, bcIdemKey);
                   setBcResult(r);
                   if (r.already_sent) {
-                    toast({ title: 'Déjà envoyé', description: 'Cette diffusion a déjà été envoyée (doublon ignoré).' });
+                    toast({ title: t('clientManagement.dejaEnvoye'), description: t('clientManagement.cetteDiffusionADejaEte') });
                   } else {
-                    toast({ title: 'Diffusion envoyée', description: `${r.email_sent} email(s), ${r.sms_sent} SMS` });
+                    toast({ title: t('clientManagement.diffusionEnvoyee'), description: `${r.email_sent} email(s), ${r.sms_sent} SMS` });
                   }
                 } catch (e: any) {
-                  toast({ title: 'Échec', description: e?.message || 'Diffusion impossible', variant: 'destructive' });
+                  toast({ title: t('clientManagement.echec'), description: e?.message || 'Diffusion impossible', variant: 'destructive' });
                 } finally {
                   setBcSending(false);
                 }

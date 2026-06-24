@@ -95,7 +95,7 @@ export function TaxiMotoClientInterface() {
       if (!availableDrivers || availableDrivers.length === 0) {
         toast.error(t('taxiMotoClientInterface.aucunConducteurDisponibleActuellementVeu'), {
           duration: 5000,
-          description: 'Les conducteurs ne sont pas en ligne dans votre zone.'
+          description: t('taxiMotoClientInterface.lesConducteursNeSontPas')
         });
         return;
       }

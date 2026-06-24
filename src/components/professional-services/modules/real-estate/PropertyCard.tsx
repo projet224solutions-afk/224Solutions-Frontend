@@ -26,7 +26,7 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'second
   disponible: { label: 'Disponible', variant: 'default' },
   sous_option: { label: 'Sous option', variant: 'secondary' },
   vendu: { label: 'Vendu', variant: 'destructive' },
-  loue: { label: t('propertyCard.loue'), variant: 'outline' },
+  loue: { label: "Loué", variant: 'outline' },
   brouillon: { label: 'Brouillon', variant: 'secondary' },
 };
 

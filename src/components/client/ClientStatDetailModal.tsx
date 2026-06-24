@@ -205,13 +205,13 @@ export function ClientStatDetailModal({ open, onClose, statType }: ClientStatDet
     const map: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
       pending: { label: 'En attente', variant: 'outline' },
       processing: { label: 'Traitement', variant: 'secondary' },
-      confirmed: { label: 'Confirmée', variant: 'secondary' },
-      preparing: { label: 'Préparation', variant: 'secondary' },
-      ready: { label: 'Prête', variant: 'secondary' },
+      confirmed: { label: t('clientStatDetailModal.confirmee'), variant: 'secondary' },
+      preparing: { label: t('clientStatDetailModal.preparation'), variant: 'secondary' },
+      ready: { label: t('clientStatDetailModal.prete'), variant: 'secondary' },
       in_transit: { label: 'En transit', variant: 'default' },
-      delivered: { label: 'Livrée', variant: 'default' },
-      completed: { label: 'Terminée', variant: 'default' },
-      cancelled: { label: 'Annulée', variant: 'destructive' },
+      delivered: { label: t('clientStatDetailModal.livree'), variant: 'default' },
+      completed: { label: t('clientStatDetailModal.terminee'), variant: 'default' },
+      cancelled: { label: t('clientStatDetailModal.annulee'), variant: 'destructive' },
     };
     const info = map[status] || { label: status, variant: 'outline' as const };
     return <Badge variant={info.variant} className="text-[10px]">{info.label}</Badge>;
@@ -221,10 +221,10 @@ export function ClientStatDetailModal({ open, onClose, statType }: ClientStatDet
     new Date(d).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
 
   const titles: Record<string, { title: string; icon: any; color: string }> = {
-    orders: { title: 'Toutes vos commandes', icon: Package, color: 'text-client-primary' },
-    active: { title: 'Commandes en cours', icon: TrendingUp, color: 'text-orange-600' },
-    favorites: { title: 'Vos favoris', icon: Heart, color: 'text-[#04439e]' },
-    spent: { title: 'Détail des dépenses', icon: CreditCard, color: 'text-[#ff4000]' },
+    orders: { title: t('clientStatDetailModal.toutesVosCommandes'), icon: Package, color: 'text-client-primary' },
+    active: { title: t('clientStatDetailModal.commandesEnCours'), icon: TrendingUp, color: 'text-orange-600' },
+    favorites: { title: t('clientStatDetailModal.vosFavoris'), icon: Heart, color: 'text-[#04439e]' },
+    spent: { title: t('clientStatDetailModal.detailDesDepenses'), icon: CreditCard, color: 'text-[#ff4000]' },
   };
 
   const config = statType ? titles[statType] : null;

@@ -33,11 +33,11 @@ interface RestaurantMenuManagerProps {
 }
 
 const DIETARY_TAGS = [
-  { value: 'vegetarien', label: 'Végétarien', icon: '🥬' },
-  { value: 'vegan', label: 'Végan', icon: '🌱' },
+  { value: 'vegetarien', label: "Végétarien", icon: '🥬' },
+  { value: 'vegan', label: "Végan", icon: '🌱' },
   { value: 'halal', label: 'Halal', icon: '🕌' },
   { value: 'casher', label: 'Casher', icon: '✡️' },
-  { value: 'sans_gluten', label: 'Sans gluten', icon: '🌾' },
+  { value: 'sans_gluten', label: "Sans gluten", icon: '🌾' },
   { value: 'bio', label: 'Bio', icon: '🌿' },
 ];
 

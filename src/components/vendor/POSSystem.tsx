@@ -417,7 +417,7 @@ export function POSSystem() {
 
         // Pas de cache disponible
         toast.error(t('pOSSystem.modeHorsLigneAucunProduit'), {
-          description: 'Visitez le POS une fois avec internet pour charger les produits.',
+          description: t('pOSSystem.visitezLePosUneFois'),
           duration: 5000
         });
         setProductsLoading(false);
@@ -467,7 +467,7 @@ export function POSSystem() {
       if (error) {
         // Ne plus avaler silencieusement : remonter le vrai message (RLS, relation, colonne…)
         console.error('[POS] Erreur requête produits:', error.message, error);
-        toast.error('Chargement produits : ' + error.message);
+        toast.error(t('pOSSystem.chargementProduits') + error.message);
         throw error;
       }
 
@@ -640,7 +640,7 @@ export function POSSystem() {
     if (savedState.cart.length > 0) {
       setCart(savedState.cart as CartItem[]);
       toast.success(`🔄 Panier restauré (${savedState.cart.length} article${savedState.cart.length > 1 ? 's' : ''})`, {
-        description: 'Votre session précédente a été récupérée.',
+        description: t('pOSSystem.votreSessionPrecedenteAEte'),
         duration: 3000
       });
     }
@@ -1341,7 +1341,7 @@ export function POSSystem() {
     // En mode offline, seuls les paiements en espèces sont autorisés
     if (isOffline && paymentMethod !== 'cash') {
       toast.error(t('pOSSystem.modeHorsLigneSeulsLes'), {
-        description: 'Mobile Money et carte bancaire nécessitent une connexion internet.',
+        description: t('pOSSystem.mobileMoneyEtCarteBancaire'),
         duration: 5000
       });
       setIsProcessingPayment(false);
@@ -1362,7 +1362,7 @@ export function POSSystem() {
         const ok = starts.startsWith('610') || starts.startsWith('611') || starts.startsWith('62');
         if (!ok) {
           toast.error(t('pOSSystem.numeroNonCompatibleOrangeMoney'), {
-            description: 'Orange Money (GN) commence généralement par 610, 611 ou 62.',
+            description: t('pOSSystem.orangeMoneyGnCommenceGeneralement'),
           });
           setIsProcessingPayment(false);
           return;
@@ -1371,7 +1371,7 @@ export function POSSystem() {
       if (mobileMoneyProvider === 'mtn') {
         if (!starts.startsWith('66')) {
           toast.error(t('pOSSystem.numeroNonCompatibleMtnMomo'), {
-            description: 'MTN MoMo (GN) commence généralement par 66.',
+            description: t('pOSSystem.mtnMomoGnCommenceGeneralement'),
           });
           setIsProcessingPayment(false);
           return;
@@ -1498,7 +1498,7 @@ export function POSSystem() {
           } else {
             // Paiement en attente
             toast.warning(t('pOSSystem.paiementEnAttente'), {
-              description: 'Le statut du paiement sera mis à jour via webhook.'
+              description: t('pOSSystem.leStatutDuPaiementSera')
             });
           }
         }
@@ -1759,7 +1759,7 @@ export function POSSystem() {
         }
 
         toast.error(t('pOSSystem.connexionPerdue'), {
-          description: 'Passez en mode hors-ligne pour continuer les ventes en espèces.',
+          description: t('pOSSystem.passezEnModeHorsLigne'),
           duration: 5000
         });
       } else {
@@ -2680,7 +2680,7 @@ export function POSSystem() {
                 {/* Mode de paiement - Espèces, Mobile Money, Carte */}
                 <div className="flex gap-1">
                   {[
-                    { id: 'cash', icon: Euro, label: 'Espèces' },
+                    { id: 'cash', icon: Euro, label: t('pOSSystem.especes') },
                     { id: 'mobile_money', icon: Smartphone, label: 'Mobile' },
                     { id: 'card', icon: Shield, label: 'Carte' },
                   ].map((method) => (

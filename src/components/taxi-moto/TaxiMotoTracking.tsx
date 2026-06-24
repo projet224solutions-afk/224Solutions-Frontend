@@ -219,7 +219,7 @@ export default function TaxiMotoTracking({
         if (!currentRide) return;
         const shareText = `🚗 Je suis en course avec 224Solutions Taxi-Moto\nCourse: ${currentRide.id}\nDe: ${currentRide.pickupAddress}\nVers: ${currentRide.destinationAddress}\nConducteur: ${currentRide.driver?.name || 'En attente'}\nSuivi en temps réel: https://224solution.net/track/${currentRide.id}`;
         void (async () => {
-            const result = await tryNativeShare({ title: 'Suivi de ma course Taxi-Moto', text: shareText });
+            const result = await tryNativeShare({ title: t('taxiMotoTracking.suiviDeMaCourseTaxi'), text: shareText });
             if (result === 'fallback') {
                 await navigator.clipboard.writeText(shareText);
                 toast.success(t('taxiMotoTracking.lienDeSuiviCopieDans'));
@@ -255,52 +255,52 @@ export default function TaxiMotoTracking({
     const getStatusInfo = (status: string) => {
         const statusMap: Record<string, { label: string; color: string; icon: any; description: string }> = {
             requested: {
-                label: 'Recherche de conducteur',
+                label: t('taxiMotoTracking.rechercheDeConducteur'),
                 color: 'bg-orange-100 text-[#ff4000]',
                 icon: Clock,
-                description: 'Nous recherchons un conducteur proche de vous'
+                description: t('taxiMotoTracking.nousRecherchonsUnConducteurProche')
             },
             pending: {
                 label: 'En attente',
                 color: 'bg-orange-100 text-[#ff4000]',
                 icon: Clock,
-                description: 'Nous recherchons un conducteur proche de vous'
+                description: t('taxiMotoTracking.nousRecherchonsUnConducteurProche')
             },
             accepted: {
-                label: 'Conducteur assigné',
+                label: t('taxiMotoTracking.conducteurAssigne'),
                 color: 'bg-blue-100 text-blue-800',
                 icon: CheckCircle,
-                description: 'Un conducteur a accepté votre course et arrive'
+                description: t('taxiMotoTracking.unConducteurAAccepteVotre')
             },
             driver_arriving: {
                 label: 'Conducteur en route',
                 color: 'bg-orange-100 text-orange-800',
                 icon: Bike,
-                description: 'Le conducteur se dirige vers vous'
+                description: t('taxiMotoTracking.leConducteurSeDirigeVers')
             },
             picked_up: {
-                label: 'À bord',
+                label: t('taxiMotoTracking.aBord'),
                 color: 'bg-blue-100 text-[#04439e]',
                 icon: Car,
-                description: 'Vous êtes à bord, en route vers la destination'
+                description: t('taxiMotoTracking.vousEtesABordEn')
             },
             in_progress: {
                 label: 'Course en cours',
                 color: 'bg-orange-100 text-[#ff4000]',
                 icon: Car,
-                description: 'Vous êtes en route vers votre destination'
+                description: t('taxiMotoTracking.vousEtesEnRouteVers')
             },
             completed: {
-                label: 'Course terminée',
+                label: t('taxiMotoTracking.courseTerminee'),
                 color: 'bg-gray-100 text-gray-800',
                 icon: CheckCircle,
-                description: 'Vous êtes arrivé à destination'
+                description: t('taxiMotoTracking.vousEtesArriveADestination')
             },
             cancelled: {
-                label: 'Course annulée',
+                label: t('taxiMotoTracking.courseAnnulee'),
                 color: 'bg-orange-100 text-[#ff4000]',
                 icon: AlertTriangle,
-                description: 'Cette course a été annulée'
+                description: t('taxiMotoTracking.cetteCourseAEteAnnulee')
             }
         };
         return statusMap[status] ?? statusMap.pending;

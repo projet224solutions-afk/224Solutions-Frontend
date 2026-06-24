@@ -28,7 +28,7 @@ import {
 
 type PaymentMethod = 'cash' | 'mobile_money' | 'card';
 const PAYMENT_METHODS: { value: PaymentMethod; label: string; icon: React.ReactNode }[] = [
-  { value: 'cash', label: 'Espèces', icon: <Banknote className="w-4 h-4" /> },
+  { value: 'cash', label: "Espèces", icon: <Banknote className="w-4 h-4" /> },
   { value: 'mobile_money', label: 'Mobile Money', icon: <Smartphone className="w-4 h-4" /> },
   { value: 'card', label: 'Carte', icon: <CreditCard className="w-4 h-4" /> },
 ];

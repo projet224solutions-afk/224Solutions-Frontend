@@ -114,7 +114,7 @@ export default function CollectionAccountsManager() {
 
   const createAccount = async () => {
     if (!vendorId || !newAccount.account_name) {
-      toast({ title: 'Nom du compte requis', variant: 'destructive' });
+      toast({ title: t('collectionAccountsManager.nomDuCompteRequis'), variant: 'destructive' });
       return;
     }
 
@@ -128,7 +128,7 @@ export default function CollectionAccountsManager() {
 
       if (error) throw error;
 
-      toast({ title: '✅ Compte créé avec succès' });
+      toast({ title: t('collectionAccountsManager.compteCreeAvecSucces') });
       setIsCreateOpen(false);
       setNewAccount({ account_name: '', account_type: 'cash', account_number: '', is_default: false });
       loadAccounts();
@@ -139,13 +139,13 @@ export default function CollectionAccountsManager() {
 
   const recordTransaction = async () => {
     if (!selectedAccount || !newTransaction.amount) {
-      toast({ title: 'Montant requis', variant: 'destructive' });
+      toast({ title: t('collectionAccountsManager.montantRequis'), variant: 'destructive' });
       return;
     }
 
     const amount = parseFloat(newTransaction.amount);
     if (isNaN(amount) || amount <= 0) {
-      toast({ title: 'Montant invalide', variant: 'destructive' });
+      toast({ title: t('collectionAccountsManager.montantInvalide'), variant: 'destructive' });
       return;
     }
 
@@ -155,7 +155,7 @@ export default function CollectionAccountsManager() {
       : balanceBefore - amount;
 
     if (balanceAfter < 0 && newTransaction.type === 'withdrawal') {
-      toast({ title: 'Solde insuffisant', variant: 'destructive' });
+      toast({ title: t('collectionAccountsManager.soldeInsuffisant'), variant: 'destructive' });
       return;
     }
 
@@ -182,7 +182,7 @@ export default function CollectionAccountsManager() {
 
       if (updateError) throw updateError;
 
-      toast({ title: '✅ Transaction enregistrée' });
+      toast({ title: t('collectionAccountsManager.transactionEnregistree') });
       setIsTransactionOpen(false);
       setNewTransaction({ type: 'deposit', amount: '', description: '' });
       loadAccounts();

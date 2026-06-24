@@ -56,7 +56,7 @@ export function AIProductCreator() {
       setAnalyzing(true);
 
       toast.info("🤖 Analyse IA en cours...", {
-        description: "L'IA analyse votre produit"
+        description: t('aIProductCreator.lIaAnalyseVotreProduit')
       });
 
       const result = await ProductAIService.analyzeProduct({
@@ -146,7 +146,7 @@ export function AIProductCreator() {
       }
 
       toast.success(t('aIProductCreator.produitCreeAvecSucces'), {
-        description: "Votre produit est maintenant en ligne"
+        description: t('aIProductCreator.votreProduitEstMaintenantEn')
       });
 
       // Réinitialiser

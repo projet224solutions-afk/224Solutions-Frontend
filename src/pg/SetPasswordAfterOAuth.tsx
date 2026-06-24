@@ -243,7 +243,7 @@ export default function SetPasswordAfterOAuth() {
         redirectToProperDashboard();
       }, 1200);
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erreur lors de la définition du mot de passe';
+      const message = err instanceof Error ? err.message: t('setPasswordAfterOAuth.erreurLorsDeLaDefinition');
       setError(message);
       toast.error(message);
     } finally {

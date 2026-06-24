@@ -148,7 +148,7 @@ const LogicSurveillanceDashboard: React.FC = () => {
       }
 
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : 'Erreur de chargement';
+      const message = error instanceof Error ? error.message: t('logicSurveillanceDashboard.erreurDeChargement');
       console.error('Error loading dashboard:', error);
       toast.error(message);
     } finally {
@@ -180,7 +180,7 @@ const LogicSurveillanceDashboard: React.FC = () => {
       toast.success(`Validation terminée: ${data?.length || 0} domaines vérifiés`);
       loadDashboard();
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : 'Erreur de validation';
+      const message = error instanceof Error ? error.message: t('logicSurveillanceDashboard.erreurDeValidation');
       console.error('Validation error:', error);
       toast.error(message);
     } finally {
@@ -227,7 +227,7 @@ const LogicSurveillanceDashboard: React.FC = () => {
       setCorrectionReason('');
       loadDashboard();
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : 'Erreur de correction';
+      const message = error instanceof Error ? error.message: t('logicSurveillanceDashboard.erreurDeCorrection');
       toast.error(message);
     }
   };

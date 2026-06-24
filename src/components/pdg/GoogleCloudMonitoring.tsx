@@ -70,7 +70,7 @@ export default function GoogleCloudMonitoring() {
         error: error.message
       });
       toast.error(t('googleCloudMonitoring.erreurDeGeocodage'), {
-        description: 'Vérifiez que la clé API Google Cloud est configurée et que les APIs sont activées'
+        description: t('googleCloudMonitoring.verifiezQueLaCleApi')
       });
     }
   };
@@ -199,7 +199,7 @@ export default function GoogleCloudMonitoring() {
     const configOk = await testApiConfiguration();
     if (!configOk) {
       toast.error('Configuration invalide', {
-        description: 'Veuillez configurer la clé API Google Cloud avant de continuer',
+        description: t('googleCloudMonitoring.veuillezConfigurerLaCleApi'),
         duration: 5000
       });
       return;

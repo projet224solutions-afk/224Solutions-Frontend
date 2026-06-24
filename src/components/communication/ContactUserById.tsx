@@ -43,7 +43,7 @@ export default function ContactUserById({
     // Valider le format
     if (!validateIdFormat(searchInput)) {
       toast.error("Format ID invalide", {
-        description: "Formats acceptés: USR0001 ou 224-123-456"
+        description: t('contactUserById.formatsAcceptesUsr0001Ou224')
       });
       return;
     }

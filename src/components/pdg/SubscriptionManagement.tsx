@@ -237,7 +237,7 @@ export default function SubscriptionManagement() {
       console.error('Error fetching data:', error);
       toast({
         title: 'Erreur',
-        description: 'Impossible de charger les données',
+        description: t('subscriptionManagement.impossibleDeChargerLesDonnees'),
         variant: 'destructive',
       });
     } finally {
@@ -315,7 +315,7 @@ export default function SubscriptionManagement() {
     if (isNaN(priceValue) || priceValue < 0) {
       toast({
         title: 'Erreur',
-        description: 'Veuillez entrer un prix valide',
+        description: t('subscriptionManagement.veuillezEntrerUnPrixValide'),
         variant: 'destructive',
       });
       return;
@@ -324,7 +324,7 @@ export default function SubscriptionManagement() {
     if (priceValue === selectedPlan.monthly_price_gnf) {
       toast({
         title: 'Attention',
-        description: 'Le nouveau prix doit être différent de l\'ancien',
+        description: t('subscriptionManagement.leNouveauPrixDoitEtre'),
         variant: 'destructive',
       });
       return;
@@ -344,7 +344,7 @@ export default function SubscriptionManagement() {
 
       if (success) {
         toast({
-          title: 'Succès',
+          title: t('subscriptionManagement.succes'),
           description: `Prix du plan ${selectedPlan.display_name} modifié avec succès`,
         });
         setIsDialogOpen(false);
@@ -373,7 +373,7 @@ export default function SubscriptionManagement() {
     if (!freeSubscriptionData.userId || !freeSubscriptionData.planId || !freeSubscriptionData.days) {
       toast({
         title: 'Erreur',
-        description: 'Veuillez remplir tous les champs',
+        description: t('subscriptionManagement.veuillezRemplirTousLesChamps'),
         variant: 'destructive',
       });
       return;
@@ -383,7 +383,7 @@ export default function SubscriptionManagement() {
     if (isNaN(days) || days <= 0) {
       toast({
         title: 'Erreur',
-        description: 'Le nombre de jours doit être un nombre positif',
+        description: t('subscriptionManagement.leNombreDeJoursDoit'),
         variant: 'destructive',
       });
       return;
@@ -433,7 +433,7 @@ export default function SubscriptionManagement() {
       if (error) throw error;
 
       toast({
-        title: 'Succès',
+        title: t('subscriptionManagement.succes'),
         description: `Abonnement gratuit de ${days} jours offert avec succès`,
       });
 
@@ -458,7 +458,7 @@ export default function SubscriptionManagement() {
     if (productLimit !== null && (isNaN(productLimit) || productLimit < 0)) {
       toast({
         title: 'Erreur',
-        description: 'Veuillez entrer un nombre valide (ou vide pour illimité)',
+        description: t('subscriptionManagement.veuillezEntrerUnNombreValide'),
         variant: 'destructive',
       });
       return;
@@ -467,7 +467,7 @@ export default function SubscriptionManagement() {
     if (productLimit === selectedPlan.max_products) {
       toast({
         title: 'Attention',
-        description: 'La nouvelle limite doit être différente de l\'ancienne',
+        description: t('subscriptionManagement.laNouvelleLimiteDoitEtre'),
         variant: 'destructive',
       });
       return;
@@ -489,7 +489,7 @@ export default function SubscriptionManagement() {
       if (error) throw error;
 
       toast({
-        title: 'Succès',
+        title: t('subscriptionManagement.succes'),
         description: `Limite de produits du plan ${selectedPlan.display_name} modifiée avec succès`,
       });
       setIsProductLimitDialogOpen(false);
@@ -513,7 +513,7 @@ export default function SubscriptionManagement() {
     if (imageLimit !== null && (isNaN(imageLimit) || imageLimit < 1)) {
       toast({
         title: 'Erreur',
-        description: 'Veuillez entrer un nombre valide (minimum 1)',
+        description: t('subscriptionManagement.veuillezEntrerUnNombreValide2'),
         variant: 'destructive',
       });
       return;
@@ -522,7 +522,7 @@ export default function SubscriptionManagement() {
     if (imageLimit === selectedPlan.max_images_per_product) {
       toast({
         title: 'Attention',
-        description: 'La nouvelle limite doit être différente de l\'ancienne',
+        description: t('subscriptionManagement.laNouvelleLimiteDoitEtre'),
         variant: 'destructive',
       });
       return;
@@ -544,7 +544,7 @@ export default function SubscriptionManagement() {
       if (error) throw error;
 
       toast({
-        title: 'Succès',
+        title: t('subscriptionManagement.succes'),
         description: `Limite d'images du plan ${selectedPlan.display_name} modifiée avec succès`,
       });
       setIsImageLimitDialogOpen(false);

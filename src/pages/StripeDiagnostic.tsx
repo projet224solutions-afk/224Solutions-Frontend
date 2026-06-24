@@ -107,7 +107,7 @@ export default function StripeDiagnostic() {
           category: 'Configuration',
           name: 'Clé Stripe Publique',
           status: 'error',
-          message: 'VITE_STRIPE_PUBLISHABLE_KEY non définie',
+          message: t('stripeDiagnostic.viteStripePublishableKeyNon'),
           details: 'Ajoutez la clé dans .env.local'
         });
       } else if (!stripeKey.startsWith('pk_')) {
@@ -115,7 +115,7 @@ export default function StripeDiagnostic() {
           category: 'Configuration',
           name: 'Clé Stripe Publique',
           status: 'error',
-          message: 'Format de clé invalide',
+          message: t('stripeDiagnostic.formatDeCleInvalide'),
           details: `Clé actuelle: ${stripeKey.substring(0, 10)}...`
         });
       } else {
@@ -165,7 +165,7 @@ export default function StripeDiagnostic() {
           category: 'Stripe',
           name: 'Validation clé',
           status: 'error',
-          message: 'Aucune clé Stripe'
+          message: t('stripeDiagnostic.aucuneCleStripe')
         });
         return;
       }
@@ -210,7 +210,7 @@ export default function StripeDiagnostic() {
           category: 'Dépendances',
           name: '@stripe/stripe-js',
           status: 'success',
-          message: 'Package installé',
+          message: t('stripeDiagnostic.packageInstalle'),
           details: 'Module chargé avec succès'
         });
       } else {
@@ -218,7 +218,7 @@ export default function StripeDiagnostic() {
           category: 'Dépendances',
           name: '@stripe/stripe-js',
           status: 'error',
-          message: 'Package non trouvé',
+          message: t('stripeDiagnostic.packageNonTrouve'),
           details: 'Exécutez: npm install @stripe/stripe-js'
         });
       }
@@ -230,7 +230,7 @@ export default function StripeDiagnostic() {
           category: 'Dépendances',
           name: '@stripe/react-stripe-js',
           status: 'success',
-          message: 'Package installé',
+          message: t('stripeDiagnostic.packageInstalle'),
           details: 'Composants React disponibles'
         });
       } else {
@@ -238,7 +238,7 @@ export default function StripeDiagnostic() {
           category: 'Dépendances',
           name: '@stripe/react-stripe-js',
           status: 'error',
-          message: 'Package non trouvé',
+          message: t('stripeDiagnostic.packageNonTrouve'),
           details: 'Exécutez: npm install @stripe/react-stripe-js'
         });
       }
@@ -247,7 +247,7 @@ export default function StripeDiagnostic() {
         category: 'Dépendances',
         name: 'Vérification packages',
         status: 'error',
-        message: 'Erreur vérification',
+        message: t('stripeDiagnostic.erreurVerification'),
         details: error instanceof Error ? error.message : String(error)
       });
     }
@@ -284,7 +284,7 @@ export default function StripeDiagnostic() {
             category: 'Composants',
             name: components[index].name,
             status: 'error',
-            message: 'Composant non trouvé',
+            message: t('stripeDiagnostic.composantNonTrouve'),
             details: result.reason
           });
         }
@@ -321,7 +321,7 @@ export default function StripeDiagnostic() {
             category: 'Base de données',
             name: `Table ${table}`,
             status: 'error',
-            message: 'Table non trouvée',
+            message: t('stripeDiagnostic.tableNonTrouvee'),
             details: error.message
           });
         } else {
@@ -338,7 +338,7 @@ export default function StripeDiagnostic() {
           category: 'Base de données',
           name: `Table ${table}`,
           status: 'error',
-          message: 'Erreur vérification',
+          message: t('stripeDiagnostic.erreurVerification'),
           details: error instanceof Error ? error.message : String(error)
         });
       }
@@ -363,7 +363,7 @@ export default function StripeDiagnostic() {
             category: 'Edge Functions',
             name: func,
             status: 'error',
-            message: 'Fonction non déployée',
+            message: t('stripeDiagnostic.fonctionNonDeployee'),
             details: 'Exécutez: supabase functions deploy ' + func
           });
         } else {
@@ -371,7 +371,7 @@ export default function StripeDiagnostic() {
             category: 'Edge Functions',
             name: func,
             status: 'success',
-            message: 'Fonction déployée',
+            message: t('stripeDiagnostic.fonctionDeployee'),
             details: 'Accessible via API'
           });
         }
@@ -380,7 +380,7 @@ export default function StripeDiagnostic() {
           category: 'Edge Functions',
           name: func,
           status: 'warning',
-          message: 'Statut indéterminé',
+          message: t('stripeDiagnostic.statutIndetermine'),
           details: 'Fonction peut exister mais retourne une erreur'
         });
       }
@@ -396,7 +396,7 @@ export default function StripeDiagnostic() {
           category: 'Connexion Stripe',
           name: 'API Stripe',
           status: 'error',
-          message: 'Clé manquante'
+          message: t('stripeDiagnostic.cleManquante')
         });
         return;
       }
@@ -410,7 +410,7 @@ export default function StripeDiagnostic() {
           category: 'Connexion Stripe',
           name: 'Chargement Stripe.js',
           status: 'success',
-          message: 'Stripe.js chargé avec succès',
+          message: t('stripeDiagnostic.stripeJsChargeAvecSucces'),
           details: 'SDK initialisé et prêt'
         });
 
@@ -419,7 +419,7 @@ export default function StripeDiagnostic() {
           category: 'Connexion Stripe',
           name: 'SDK Stripe',
           status: 'success',
-          message: 'SDK opérationnel',
+          message: t('stripeDiagnostic.sdkOperationnel'),
           details: 'Prêt pour créer des PaymentIntents'
         });
       } else {
@@ -427,7 +427,7 @@ export default function StripeDiagnostic() {
           category: 'Connexion Stripe',
           name: 'Chargement Stripe.js',
           status: 'error',
-          message: 'Échec chargement SDK'
+          message: t('stripeDiagnostic.echecChargementSdk')
         });
       }
     } catch (error) {
@@ -435,7 +435,7 @@ export default function StripeDiagnostic() {
         category: 'Connexion Stripe',
         name: 'API Stripe',
         status: 'error',
-        message: 'Erreur connexion',
+        message: t('stripeDiagnostic.erreurConnexion'),
         details: error instanceof Error ? error.message : String(error)
       });
     }
@@ -454,7 +454,7 @@ export default function StripeDiagnostic() {
         category: 'Interfaces',
         name,
         status: 'success',
-        message: 'Route configurée',
+        message: t('stripeDiagnostic.routeConfiguree'),
         details: path
       });
     });
@@ -494,7 +494,7 @@ export default function StripeDiagnostic() {
           category: 'Webhooks',
           name: 'Configuration',
           status: 'warning',
-          message: 'Table config non trouvée',
+          message: t('stripeDiagnostic.tableConfigNonTrouvee'),
           details: 'Migration SQL non appliquée'
         });
       } else {
@@ -502,7 +502,7 @@ export default function StripeDiagnostic() {
           category: 'Webhooks',
           name: 'Configuration',
           status: 'success',
-          message: 'Configuration présente',
+          message: t('stripeDiagnostic.configurationPresente'),
           details: 'Webhooks configurables'
         });
       }
@@ -511,7 +511,7 @@ export default function StripeDiagnostic() {
         category: 'Webhooks',
         name: 'URL Webhook',
         status: 'warning',
-        message: 'À configurer dans Stripe Dashboard',
+        message: t('stripeDiagnostic.aConfigurerDansStripeDashboard'),
         details: `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-webhook`
       });
     } catch (error) {
@@ -519,7 +519,7 @@ export default function StripeDiagnostic() {
         category: 'Webhooks',
         name: 'Vérification',
         status: 'error',
-        message: 'Erreur vérification',
+        message: t('stripeDiagnostic.erreurVerification'),
         details: error instanceof Error ? error.message : String(error)
       });
     }

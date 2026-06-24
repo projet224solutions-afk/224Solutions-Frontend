@@ -137,42 +137,42 @@ function getStatusConfig(status: string) {
         icon: Clock,
         label: 'En attente',
         color: 'bg-orange-100 text-[#ff4000]',
-        description: 'Commande à passer au fournisseur'
+        description: "Commande à passer au fournisseur"
       };
     case 'ordered':
       return {
         icon: Package,
-        label: 'Commandé',
+        label: "Commandé",
         color: 'bg-blue-100 text-blue-800',
-        description: 'En attente d\'expédition'
+        description: "En attente d'expédition"
       };
     case 'shipped':
       return {
         icon: Truck,
-        label: 'Expédié',
+        label: "Expédié",
         color: 'bg-blue-100 text-[#04439e]',
-        description: 'En cours de livraison'
+        description: "En cours de livraison"
       };
     case 'delivered':
       return {
         icon: CheckCircle,
-        label: 'Livré',
+        label: "Livré",
         color: 'bg-orange-100 text-[#ff4000]',
-        description: 'Commande livrée au client'
+        description: "Commande livrée au client"
       };
     case 'cancelled':
       return {
         icon: XCircle,
-        label: 'Annulé',
+        label: "Annulé",
         color: 'bg-gray-100 text-gray-800',
-        description: 'Commande annulée'
+        description: "Commande annulée"
       };
     case 'error':
       return {
         icon: AlertTriangle,
         label: 'Erreur',
         color: 'bg-orange-100 text-[#ff4000]',
-        description: 'Erreur lors de la commande'
+        description: "Erreur lors de la commande"
       };
     default:
       return {

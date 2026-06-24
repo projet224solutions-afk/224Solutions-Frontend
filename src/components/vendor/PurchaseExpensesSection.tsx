@@ -149,7 +149,7 @@ export function PurchaseExpensesSection({ vendorId }: PurchaseExpensesSectionPro
     today: { label: "Aujourd'hui", icon: Clock },
     week: { label: 'Cette semaine', icon: CalendarDays },
     month: { label: 'Ce mois', icon: Calendar },
-    year: { label: 'Cette année', icon: CalendarRange },
+    year: { label: t('purchaseExpensesSection.cetteAnnee'), icon: CalendarRange },
     all: { label: 'Tout', icon: ShoppingCart },
   };
 

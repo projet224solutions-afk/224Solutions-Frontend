@@ -48,7 +48,7 @@ interface TicketMessage {
 const priorityConfig = {
   low: { label: 'Faible', color: 'bg-gray-500' },
   normal: { label: 'Normal', color: 'bg-blue-500' },
-  high: { label: 'Élevée', color: 'bg-orange-500' },
+  high: { label: "Élevée", color: 'bg-orange-500' },
   urgent: { label: 'Urgent', color: 'bg-[#ff4000]' },
   critical: { label: 'Critique', color: 'bg-[#ff4000]' }
 };
@@ -57,8 +57,8 @@ const statusConfig = {
   open: { label: 'Ouvert', color: 'bg-blue-500' },
   in_progress: { label: 'En cours', color: 'bg-[#ff4000]' },
   waiting_response: { label: 'En attente', color: 'bg-[#04439e]' },
-  resolved: { label: 'Résolu', color: 'bg-[#ff4000]' },
-  closed: { label: 'Fermé', color: 'bg-gray-500' }
+  resolved: { label: "Résolu", color: 'bg-[#ff4000]' },
+  closed: { label: "Fermé", color: 'bg-gray-500' }
 };
 
 export function SupportTicketSystem() {
@@ -131,7 +131,7 @@ export function SupportTicketSystem() {
     if (!newTicket.subject || !newTicket.description) {
       toast({
         title: 'Erreur',
-        description: 'Veuillez remplir tous les champs',
+        description: t('supportTicketSystem.veuillezRemplirTousLesChamps'),
         variant: 'destructive'
       });
       return;
@@ -162,8 +162,8 @@ export function SupportTicketSystem() {
       if (error) throw error;
 
       toast({
-        title: 'Ticket créé',
-        description: 'Votre ticket de support a été créé avec succès'
+        title: t('supportTicketSystem.ticketCree'),
+        description: t('supportTicketSystem.votreTicketDeSupportA')
       });
 
       setNewTicket({ category: 'technical', subject: '', description: '' });
@@ -172,7 +172,7 @@ export function SupportTicketSystem() {
       console.error('Erreur création ticket:', error);
       toast({
         title: 'Erreur',
-        description: 'Impossible de créer le ticket',
+        description: t('supportTicketSystem.impossibleDeCreerLeTicket'),
         variant: 'destructive'
       });
     }
@@ -200,7 +200,7 @@ export function SupportTicketSystem() {
       console.error('Erreur envoi message:', error);
       toast({
         title: 'Erreur',
-        description: 'Impossible d\'envoyer le message',
+        description: t('supportTicketSystem.impossibleDEnvoyerLeMessage'),
         variant: 'destructive'
       });
     } finally {

@@ -213,7 +213,7 @@ export function JomyPaymentSelector({
     {
       id: 'CCP_ORANGE' as const,
       name: 'Orange Money',
-      description: 'Paiement instantané via ChapChapPay',
+      description: t('jomyPaymentSelector.paiementInstantaneViaChapchappay'),
       icon: <Smartphone className="h-5 w-5 text-orange-500" />,
       iconBg: 'bg-orange-100',
       requiresPhone: true,
@@ -225,7 +225,7 @@ export function JomyPaymentSelector({
     {
       id: 'CCP_MTN' as const,
       name: 'MTN Mobile Money',
-      description: 'Paiement via MTN MoMo (ChapChapPay)',
+      description: t('jomyPaymentSelector.paiementViaMtnMomoChapchappay'),
       icon: <Smartphone className="h-5 w-5 text-[#ff4000]" />,
       iconBg: 'bg-orange-100',
       requiresPhone: true,
@@ -237,7 +237,7 @@ export function JomyPaymentSelector({
     ...(productType === 'physical' && transactionType === 'product' && onCashOnDelivery ? [{
       id: 'CASH_ON_DELIVERY' as const,
       name: 'Paiement à la livraison',
-      description: 'Vous serez contacté pour confirmer l\'adresse de livraison',
+      description: t('jomyPaymentSelector.vousSerezContactePourConfirmer'),
       icon: <Truck className="h-5 w-5 text-[#ff4000]" />,
       iconBg: 'bg-orange-100',
       requiresPhone: false,
@@ -262,14 +262,14 @@ export function JomyPaymentSelector({
       // Valider les informations minimales pour rappeler le client.
       if (!deliveryAddress.street.trim()) {
         toast.error(t('jomyPaymentSelector.numeroRequis'), {
-          description: 'Veuillez entrer le numéro à contacter'
+          description: t('jomyPaymentSelector.veuillezEntrerLeNumeroA')
         });
         return;
       }
 
       if (!deliveryAddress.city) {
         toast.error('Ville requise', {
-          description: 'Veuillez sélectionner votre ville'
+          description: t('jomyPaymentSelector.veuillezSelectionnerVotreVille')
         });
         return;
       }
@@ -362,7 +362,7 @@ export function JomyPaymentSelector({
       } catch (err) {
         console.error('[ChapChapPay] Payment error:', err);
         setPaymentStatus('failed');
-        toast.error(err instanceof Error ? err.message : 'Erreur de paiement');
+        toast.error(err instanceof Error ? err.message: t('jomyPaymentSelector.erreurDePaiement'));
         onPaymentFailed?.(err instanceof Error ? err.message : 'Erreur inconnue');
       } finally {
         setProcessing(false);
@@ -401,7 +401,7 @@ export function JomyPaymentSelector({
         return true;
       } catch (err) {
         setPaymentStatus('failed');
-        const message = err instanceof Error ? err.message : 'Erreur lors de la création de la commande';
+        const message = err instanceof Error ? err.message: t('jomyPaymentSelector.erreurLorsDeLaCreation');
         toast.error(message);
         return false;
       } finally {

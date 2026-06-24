@@ -228,7 +228,7 @@ export default function StolenVehicleManagement({ bureauId }: Props) {
                 loadData();
                 if (payload.eventType === 'INSERT') {
                     toast.error(t('stolenVehicleManagement.nouvelleActiviteSuspecteDetectee'), {
-                        description: 'Une activité a été détectée sur un véhicule volé',
+                        description: t('stolenVehicleManagement.uneActiviteAEteDetectee'),
                         duration: 10000
                     });
                 }
@@ -264,7 +264,7 @@ export default function StolenVehicleManagement({ bureauId }: Props) {
 
             if (result.success) {
                 toast.success(t('stolenVehicleManagement.motoDeclareeVolee'), {
-                    description: 'Blocage global activé. Tous les bureaux sont alertés.',
+                    description: t('stolenVehicleManagement.blocageGlobalActiveTousLes'),
                     duration: 8000
                 });
                 setShowDeclareDialog(false);
@@ -304,7 +304,7 @@ export default function StolenVehicleManagement({ bureauId }: Props) {
 
             if (result.success) {
                 toast.success(t('stolenVehicleManagement.vehiculeReactive'), {
-                    description: 'Le blocage a été levé et le véhicule est de nouveau opérationnel.',
+                    description: t('stolenVehicleManagement.leBlocageAEteLeve'),
                     duration: 6000
                 });
                 setShowRecoveryDialog(false);

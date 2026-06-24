@@ -291,16 +291,16 @@ function getFeatureRows(plan: Plan, isDigitalSubscription: boolean) {
     return [
       { icon: BarChart3, label: 'Analytics & statistiques', enabled: plan.analytics_access },
       { icon: Headphones, label: 'Support prioritaire', enabled: plan.priority_support },
-      { icon: Star, label: 'Produits mis en avant', enabled: plan.featured_products },
+      { icon: Star, label: t('vendorSubscriptionPage.produitsMisEnAvant'), enabled: plan.featured_products },
       { icon: Palette, label: 'Branding personnalise', enabled: plan.custom_branding },
     ];
   }
 
   return [
-    { icon: BarChart3, label: 'Analytics ventes, telechargements et abonnes', enabled: plan.analytics_access },
-    { icon: Headphones, label: 'Support prioritaire pour vos lancements', enabled: plan.priority_support },
-    { icon: Star, label: 'Mise en avant du catalogue et des offres', enabled: plan.featured_products },
-    { icon: Palette, label: 'Branding des pages de vente et de paiement', enabled: plan.custom_branding },
+    { icon: BarChart3, label: t('vendorSubscriptionPage.analyticsVentesTelechargementsEtAbonnes'), enabled: plan.analytics_access },
+    { icon: Headphones, label: t('vendorSubscriptionPage.supportPrioritairePourVosLancements'), enabled: plan.priority_support },
+    { icon: Star, label: t('vendorSubscriptionPage.miseEnAvantDuCatalogue'), enabled: plan.featured_products },
+    { icon: Palette, label: t('vendorSubscriptionPage.brandingDesPagesDeVente'), enabled: plan.custom_branding },
   ];
 }
 

@@ -61,7 +61,7 @@ const CLEANING_SERVICES: CleaningService[] = [
     icon: Home,
     basePrice: 50000,
     unit: 'par session',
-    description: t('cleaningModule.nettoyageStandardDepoussierageAspirateur'),
+    description: "Nettoyage standard: dépoussiérage, aspirateur, sols",
     duration: 3
   },
   {
@@ -70,7 +70,7 @@ const CLEANING_SERVICES: CleaningService[] = [
     icon: Sparkles,
     basePrice: 150000,
     unit: 'par session',
-    description: t('cleaningModule.nettoyageEnProfondeurDeToute'),
+    description: "Nettoyage en profondeur de toute la maison",
     duration: 6
   },
   {
@@ -79,7 +79,7 @@ const CLEANING_SERVICES: CleaningService[] = [
     icon: Building2,
     basePrice: 80000,
     unit: 'par jour',
-    description: t('cleaningModule.entretienQuotidienOuHebdomadaireDe'),
+    description: "Entretien quotidien ou hebdomadaire de bureaux",
     duration: 4
   },
   {
@@ -88,7 +88,7 @@ const CLEANING_SERVICES: CleaningService[] = [
     icon: Shirt,
     basePrice: 5000,
     unit: 'par kg',
-    description: t('cleaningModule.lavageRepassageEtPliageDu'),
+    description: "Lavage, repassage et pliage du linge",
     duration: 2
   },
   {

@@ -37,7 +37,7 @@ const rgb = (c: { r: number; g: number; b: number }) => `rgb(${c.r}, ${c.g}, ${c
 // ── Contenu des guides ───────────────────────────────────────────────────────
 const GUIDES: Guide[] = [
   {
-    id: 'client', title: 'Guide Client (Acheteur)', audience: 'Clients / acheteurs',
+    id: 'client', title: "Guide Client (Acheteur)", audience: 'Clients / acheteurs',
     icon: Users, color: BRAND,
     intro: "Acheter des produits, payer en toute sécurité et suivre vos commandes et livraisons.",
     flow: ["S'inscrire", 'Choisir un produit', 'Payer (escrow)', 'Suivre la livraison', 'Confirmer la réception'],
@@ -67,7 +67,7 @@ const GUIDES: Guide[] = [
     ],
   },
   {
-    id: 'vendeur', title: 'Guide Vendeur (Boutique)', audience: 'Vendeurs / commerçants',
+    id: 'vendeur', title: "Guide Vendeur (Boutique)", audience: 'Vendeurs / commerçants',
     icon: Store, color: BLUE,
     intro: "Créer votre boutique, gérer produits, ventes (en ligne + POS), livraisons, finances et abonnement.",
     flow: ['Créer la boutique', 'Ajouter des produits', 'Recevoir une commande', 'Expédier', 'Être payé'],
@@ -168,7 +168,7 @@ const GUIDES: Guide[] = [
     ],
   },
   {
-    id: 'wallet', title: 'Guide Wallet & Paiements', audience: 'Tous les utilisateurs', icon: Wallet, color: BRAND,
+    id: 'wallet', title: "Guide Wallet & Paiements", audience: 'Tous les utilisateurs', icon: Wallet, color: BRAND,
     intro: "Recharger, transférer de l'argent et comprendre frais et plafonds.",
     flow: ['Recharger', 'Choisir le destinataire', 'Vérifier les frais', 'Valider', 'Confirmation'],
     sections: [
@@ -185,7 +185,7 @@ const GUIDES: Guide[] = [
     ],
   },
   {
-    id: 'services', title: 'Guide Services (Restaurant, Pharmacie…)', audience: 'Prestataires de services',
+    id: 'services', title: "Guide Services (Restaurant, Pharmacie…)", audience: 'Prestataires de services',
     icon: Utensils, color: BLUE,
     intro: "Gérer un service (restaurant, pharmacie, proximité) : offre, commandes et livraison.",
     flow: ["Configurer l'offre", 'Recevoir commande/RDV', 'Valider', 'Livrer / Servir'],

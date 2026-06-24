@@ -68,8 +68,8 @@ export function AgentOverviewProfessional({
   const quickActions = [
     {
       icon: <UserPlus className="w-5 h-5" />,
-      label: 'Créer Utilisateur',
-      description: 'Ajouter un nouveau client',
+      label: t('agentOverviewProfessional.creerUtilisateur'),
+      description: t('agentOverviewProfessional.ajouterUnNouveauClient'),
       gradient: '',
       shadowColor: 'shadow-blue-500/25',
       tab: 'create-user'
@@ -77,15 +77,15 @@ export function AgentOverviewProfessional({
     {
       icon: <Link2 className="w-5 h-5" />,
       label: 'Affiliation',
-      description: 'Gérer vos liens',
+      description: t('agentOverviewProfessional.gererVosLiens'),
       gradient: '',
       shadowColor: 'shadow-[#ff4000]/25',
       tab: 'affiliate'
     },
     {
       icon: <Wallet className="w-5 h-5" />,
-      label: 'Portefeuille',
-      description: 'Gérer vos fonds',
+      label: t('agentOverviewProfessional.portefeuille'),
+      description: t('agentOverviewProfessional.gererVosFonds'),
       gradient: '',
       shadowColor: 'shadow-[#ff4000]/25',
       tab: 'wallet'
@@ -93,15 +93,15 @@ export function AgentOverviewProfessional({
     {
       icon: <BarChart3 className="w-5 h-5" />,
       label: 'Analytics',
-      description: 'Voir les rapports',
+      description: t('agentOverviewProfessional.voirLesRapports'),
       gradient: '',
       shadowColor: 'shadow-[#04439e]/25',
       tab: 'reports'
     },
     {
       icon: <Users className="w-5 h-5" />,
-      label: 'Équipe',
-      description: 'Gérer sous-agents',
+      label: t('agentOverviewProfessional.equipe'),
+      description: t('agentOverviewProfessional.gererSousAgents'),
       gradient: '',
       shadowColor: 'shadow-orange-500/25',
       tab: 'sub-agents'

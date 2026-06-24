@@ -65,7 +65,7 @@ export function VendorAnalyticsDashboard() {
       color: 'text-[#ff4000]'
     },
     {
-      title: "CA du mois (30j)",
+      title: t('vendorAnalyticsDashboard.caDuMois30j'),
       value: format(analytics.monthRevenue, 'GNF'),
       subtitle: `${analytics.totalMonthOrders} commande${analytics.totalMonthOrders > 1 ? 's' : ''}`,
       icon: TrendingUp,
@@ -79,14 +79,14 @@ export function VendorAnalyticsDashboard() {
       color: 'text-[#04439e]'
     },
     {
-      title: "Taux de paiement",
+      title: t('vendorAnalyticsDashboard.tauxDePaiement'),
       value: `${analytics.today.conversionRate.toFixed(1)}%`,
       subtitle: 'commandes payées / total',
       icon: Target,
       color: 'text-[#04439e]'
     },
     {
-      title: "Produits Actifs",
+      title: t('vendorAnalyticsDashboard.produitsActifs'),
       value: analytics.activeProductsCount,
       subtitle: lowStockCount > 0 ? `⚠️ ${lowStockCount} en stock bas` : 'Stocks OK',
       icon: Package,

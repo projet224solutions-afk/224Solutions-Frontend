@@ -46,7 +46,7 @@ const REASON_CONFIG = {
   },
   similar_products: {
     icon: Crown,
-    label: 'Produits similaires',
+    label: "Produits similaires",
     color: 'bg-blue-100 text-[#04439e]'
   },
   trending: {
@@ -61,12 +61,12 @@ const REASON_CONFIG = {
   },
   bought_together: {
     icon: ShoppingCart,
-    label: 'Souvent achetés ensemble',
+    label: "Souvent achetés ensemble",
     color: 'bg-orange-100 text-[#ff4000]'
   },
   personalized: {
     icon: Star,
-    label: 'Pour vous',
+    label: "Pour vous",
     color: 'bg-orange-100 text-[#ff4000]'
   }
 };

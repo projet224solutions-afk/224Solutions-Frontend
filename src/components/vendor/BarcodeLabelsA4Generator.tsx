@@ -110,7 +110,7 @@ export function BarcodeLabelsA4Generator({ vendorId, businessName }: BarcodeLabe
 
       if (validProducts.length === 0) {
         toast.info(t('barcodeLabelsA4Generator.aucunProduitAvecCodeBarres'), {
-          description: 'Créez des produits pour générer des étiquettes'
+          description: t('barcodeLabelsA4Generator.creezDesProduitsPourGenerer')
         });
       } else {
         toast.success(`${validProducts.length} produit(s) avec code-barres détecté(s)`);

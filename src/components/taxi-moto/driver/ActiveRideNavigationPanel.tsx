@@ -162,7 +162,7 @@ export function ActiveRideNavigationPanel({
     switch (activeRide.status) {
       case 'accepted':
         return {
-          label: 'En route vers client',
+          label: t('activeRideNavigationPanel.enRouteVersClient'),
           color: 'bg-[#ff4000]',
           nextAction: 'arriving',
           nextLabel: "Je suis arrivé",
@@ -170,7 +170,7 @@ export function ActiveRideNavigationPanel({
         };
       case 'arriving':
         return {
-          label: 'Arrivé au point',
+          label: t('activeRideNavigationPanel.arriveAuPoint'),
           color: 'bg-blue-500',
           nextAction: 'started',
           nextLabel: "Client à bord",
