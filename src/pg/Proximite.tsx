@@ -309,47 +309,37 @@ export default function Proximite() {
   useEffect(() => {
     const loadCategoriesWithProducts = async () => {
       try {
-        const { data: products, error: productsError } = await supabase
-          .from('products')
-          .select('id, category_id')
-          .eq('is_active', true)
-          .not('category_id', 'is', null);
-
-        if (productsError) throw productsError;
-
-        if (!products || products.length === 0) {
-          setProductCategories([]);
-          setLoadingCategories(false);
-          return;
-        }
-
-        const categoryCountMap = new Map<string, number>();
-        products.forEach((product) => {
-          if (product.category_id) {
-            const count = categoryCountMap.get(product.category_id) || 0;
-            categoryCountMap.set(product.category_id, count + 1);
-          }
-        });
-
-        const categoryIds = Array.from(categoryCountMap.keys());
-
-        const { data: categories, error: categoriesError } = await supabase
+        // ✅ 1 seule requête avec JOIN (categories + produits actifs liés) au lieu
+        // de 2 séquentielles (tous les produits PUIS les catégories). products!inner
+        // ne ramène que les catégories ayant ≥1 produit actif ; le count = longueur.
+        const { data, error } = await supabase
           .from('categories')
-          .select('id, name, image_url')
-          .in('id', categoryIds);
+          .select(`
+            id,
+            name,
+            image_url,
+            products!inner(id)
+          `)
+          .eq('is_active', true)
+          .eq('products.is_active', true);
 
-        if (categoriesError) throw categoriesError;
+        if (error) throw error;
 
-        const categoriesWithProducts: CategoryWithCount[] = (categories || []).map((cat) => ({
-          id: cat.id,
-          name: cat.name,
-          image_url: cat.image_url,
-          product_count: categoryCountMap.get(cat.id) || 0
-        })).sort((a, b) => b.product_count - a.product_count);
+        const categoriesWithProducts: CategoryWithCount[] = (data || [])
+          .map((cat: any) => ({
+            id: cat.id,
+            name: cat.name,
+            image_url: cat.image_url,
+            product_count: Array.isArray(cat.products) ? cat.products.length : 0,
+          }))
+          .filter(c => c.product_count > 0)
+          .sort((a, b) => b.product_count - a.product_count);
 
         setProductCategories(categoriesWithProducts);
       } catch (error) {
         console.error('Erreur chargement catégories:', error);
+        // Fallback : liste vide (pas d'affichage d'erreur bloquant)
+        setProductCategories([]);
       } finally {
         setLoadingCategories(false);
       }
@@ -357,9 +347,23 @@ export default function Proximite() {
     loadCategoriesWithProducts();
   }, []);
 
-  const priorityServices = useMemo(() => getPriorityServices(stats, t), [stats, t]);
-  const quickAccessServices = useMemo(() => getQuickAccessServices(stats, t), [stats, t]);
-  const complementaryServices = useMemo(() => getComplementaryServices(stats, t), [stats, t]);
+  // Listes brutes (toutes les cartes)
+  const priorityServicesAll = useMemo(() => getPriorityServices(stats, t), [stats, t]);
+  const quickAccessServicesAll = useMemo(() => getQuickAccessServices(stats, t), [stats, t]);
+  const complementaryServicesAll = useMemo(() => getComplementaryServices(stats, t), [stats, t]);
+
+  // ✅ Filtrage par searchQuery (insensible à la casse, cherche dans title + description)
+  const filterServices = (items: ServiceCardItem[]) => {
+    if (!searchQuery.trim()) return items;
+    const q = searchQuery.toLowerCase().trim();
+    return items.filter(
+      s => s.title.toLowerCase().includes(q) || s.description.toLowerCase().includes(q)
+    );
+  };
+
+  const priorityServices = useMemo(() => filterServices(priorityServicesAll), [priorityServicesAll, searchQuery]);
+  const quickAccessServices = useMemo(() => filterServices(quickAccessServicesAll), [quickAccessServicesAll, searchQuery]);
+  const complementaryServices = useMemo(() => filterServices(complementaryServicesAll), [complementaryServicesAll, searchQuery]);
 
   const handleServiceClick = (path: string) => {
     navigate(path);
@@ -404,8 +408,12 @@ export default function Proximite() {
               onClick={() => setShowDebug(!showDebug)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-colors"
               style={{
-                backgroundColor: usingRealLocation ? 'rgba(22,163,74,0.25)' : 'rgba(234,179,8,0.2)',
-                color: usingRealLocation ? '#ff4000' : '#ff4000'
+                backgroundColor: usingRealLocation
+                  ? 'rgba(22,163,74,0.25)'   // vert clair si GPS actif
+                  : 'rgba(234,179,8,0.2)',    // amber clair si position par défaut
+                color: usingRealLocation
+                  ? '#16a34a'  // ✅ vert  = GPS réel actif
+                  : '#d97706'  // ✅ amber = position par défaut (Conakry)
               }}
             >
               <MapPin className="w-3 h-3" />
@@ -433,7 +441,11 @@ export default function Proximite() {
                 </div>
                 <div>
                   <span>{t('proximity.debugSource')}:</span>
-                  <div className="font-medium" style={{ color: debugInfo.usingRealGps ? '#ff4000' : '#ff4000' }}>
+                  <div className="font-medium" style={{
+                    color: debugInfo.usingRealGps
+                      ? '#16a34a'  // ✅ vert  = GPS réel
+                      : '#d97706'  // ✅ amber = position par défaut
+                  }}>
                     {debugInfo.usingRealGps ? t('proximity.debugRealGps') : t('proximity.debugDefault')}
                   </div>
                 </div>
@@ -471,6 +483,24 @@ export default function Proximite() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-6 space-y-8">
+
+        {/* Aucun résultat pour la recherche active */}
+        {searchQuery.trim() && priorityServices.length === 0 &&
+         quickAccessServices.length === 0 && complementaryServices.length === 0 && (
+          <div className="py-10 text-center space-y-2">
+            <Search className="w-10 h-10 mx-auto opacity-30" style={{ color: BLUE }} />
+            <p className="text-sm font-medium" style={{ color: BLUE }}>
+              {t('proximity.searchNoResult')} « {searchQuery} »
+            </p>
+            <button
+              className="text-xs underline"
+              style={{ color: ORANGE }}
+              onClick={() => setSearchQuery('')}
+            >
+              {t('proximity.clearSearch')}
+            </button>
+          </div>
+        )}
 
         {/* SERVICES POPULAIRES */}
         <section>
