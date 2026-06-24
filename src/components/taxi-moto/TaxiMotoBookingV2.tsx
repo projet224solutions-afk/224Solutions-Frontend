@@ -17,6 +17,7 @@ import {
     Clock,
     CreditCard,
     Star,
+    Heart,
     Loader2,
     Calendar,
     Users,
@@ -37,6 +38,8 @@ import { PaymentMethod } from "@/services/taxi/paymentsService";
 import DestinationPreview from "./DestinationPreview";
 import GooglePlacesAddressInput, { ValidatedAddress } from "@/components/shared/GooglePlacesAddressInput";
 import { precisionGeoService } from "@/services/gps/PrecisionGeolocationService";
+import { getFavoriteRoutes, saveFavoriteRoute, incrementRouteUsage, type FavoriteRoute } from "@/services/taxi/favoriteRoutesService";
+import { searchLandmarks, getLandmarkIcon, type ConakryLandmark } from "@/data/conakryLandmarks";
 
 interface LocationCoordinates {
     latitude: number;
@@ -70,6 +73,15 @@ export default function TaxiMotoBooking({
     // États du formulaire - GPS ultra-précis
     const [pickupAddress, setPickupAddress] = useState<ValidatedAddress | null>(null);
     const [destinationAddress, setDestinationAddress] = useState<ValidatedAddress | null>(null);
+
+    // ✅ Destinations favorites
+    const [favoriteRoutes, setFavoriteRoutes] = useState<FavoriteRoute[]>([]);
+    const [savingFavorite, setSavingFavorite] = useState(false);
+    const [showFavorites, setShowFavorites] = useState(false);
+
+    // ✅ Repères locaux Conakry
+    const [landmarkResults, setLandmarkResults] = useState<ConakryLandmark[]>([]);
+    const [destinationQuery, setDestinationQuery] = useState('');
     const [_selectedVehicleType, _setSelectedVehicleType] = useState<'moto_economique' | 'moto_rapide' | 'moto_premium'>('moto_rapide');
     const [scheduledTime, setScheduledTime] = useState('');
     const [isScheduled, setIsScheduled] = useState(false);
@@ -233,6 +245,73 @@ export default function TaxiMotoBooking({
         }
     }, [pickupAddress, destinationAddress, calculateRouteAndPrice]);
 
+    // ✅ Charger les destinations favorites au montage
+    useEffect(() => {
+        getFavoriteRoutes().then(setFavoriteRoutes).catch(() => {});
+    }, []);
+
+    // ✅ Rechercher dans les repères locaux Conakry dès 2 caractères
+    useEffect(() => {
+        setLandmarkResults(destinationQuery.length >= 2 ? searchLandmarks(destinationQuery) : []);
+    }, [destinationQuery]);
+
+    // Sélectionner une route favorite (remplit départ + destination, 1 tap)
+    const handleSelectFavorite = async (route: FavoriteRoute) => {
+        setPickupAddress({
+            formattedAddress: route.pickupAddress,
+            latitude: route.pickupLat,
+            longitude: route.pickupLng,
+            placeId: `fav_${route.id}_pickup`,
+        });
+        setDestinationAddress({
+            formattedAddress: route.destinationAddress,
+            latitude: route.destinationLat,
+            longitude: route.destinationLng,
+            placeId: `fav_${route.id}_dest`,
+        });
+        setShowFavorites(false);
+        incrementRouteUsage(route.id).catch(() => {});
+        toast.success(`Route « ${route.name} » chargée`);
+    };
+
+    // Sauvegarder l'itinéraire courant comme favori
+    const handleSaveFavorite = async () => {
+        if (!pickupAddress || !destinationAddress) return;
+        setSavingFavorite(true);
+        try {
+            const name = destinationAddress.formattedAddress.split(',')[0] || 'Ma destination';
+            const result = await saveFavoriteRoute({
+                name,
+                pickupAddress: pickupAddress.formattedAddress,
+                pickupLat: pickupAddress.latitude,
+                pickupLng: pickupAddress.longitude,
+                destinationAddress: destinationAddress.formattedAddress,
+                destinationLat: destinationAddress.latitude,
+                destinationLng: destinationAddress.longitude,
+            });
+            if (result.success) {
+                toast.success('Destination sauvegardée dans vos favoris !');
+                getFavoriteRoutes().then(setFavoriteRoutes);
+            } else {
+                toast.error(result.error || 'Impossible de sauvegarder');
+            }
+        } finally {
+            setSavingFavorite(false);
+        }
+    };
+
+    // Sélectionner un repère local comme destination
+    const handleSelectLandmark = (landmark: ConakryLandmark) => {
+        setDestinationAddress({
+            formattedAddress: `${landmark.name}, ${landmark.commune}, Conakry`,
+            latitude: landmark.latitude,
+            longitude: landmark.longitude,
+            placeId: `landmark_${landmark.id}`,
+        });
+        setLandmarkResults([]);
+        setDestinationQuery('');
+    };
+
     /**
      * Ouvre l'étape de sélection du mode de paiement
      */
@@ -332,6 +411,37 @@ export default function TaxiMotoBooking({
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                    {/* ✅ Destinations favorites — 1 tap pour pré-remplir départ + destination */}
+                    {favoriteRoutes.length > 0 && (
+                        <div className="space-y-2">
+                            <button
+                                onClick={() => setShowFavorites(prev => !prev)}
+                                className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-primary transition-colors"
+                            >
+                                <Star className="w-3.5 h-3.5 text-[#ff4000]" />
+                                Mes destinations ({favoriteRoutes.length})
+                            </button>
+                            {showFavorites && (
+                                <div className="space-y-1.5">
+                                    {favoriteRoutes.map((route) => (
+                                        <button
+                                            key={route.id}
+                                            onClick={() => handleSelectFavorite(route)}
+                                            className="w-full text-left px-3 py-2.5 rounded-xl border bg-card hover:border-primary/40 transition-all flex items-center gap-2.5"
+                                        >
+                                            <Heart className="w-4 h-4 text-[#ff4000] flex-shrink-0" />
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-sm font-medium truncate">{route.name}</p>
+                                                <p className="text-[10px] text-muted-foreground truncate">{route.destinationAddress}</p>
+                                            </div>
+                                            <span className="text-[10px] text-muted-foreground flex-shrink-0">{route.usageCount}×</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     {/* Point de départ - GPS Ultra-Précis */}
                     <GooglePlacesAddressInput
                         label={t('taxiMotoBookingV2.pointDeDepart')}
@@ -358,6 +468,7 @@ export default function TaxiMotoBooking({
                         required={true}
                         variant="destination"
                         onChange={setDestinationAddress}
+                        onInputChange={setDestinationQuery}
                         onValidChange={(valid) => {
                             if (!valid) {
                                 setRouteInfo(null);
@@ -365,6 +476,28 @@ export default function TaxiMotoBooking({
                             }
                         }}
                     />
+
+                    {/* ✅ Repères locaux Conakry — apparaissent dès 2 caractères tapés */}
+                    {landmarkResults.length > 0 && (
+                        <div className="rounded-xl border bg-card overflow-hidden shadow-sm">
+                            <p className="px-3 py-1.5 text-[10px] font-medium text-muted-foreground bg-muted/40 border-b">
+                                Repères Conakry
+                            </p>
+                            {landmarkResults.map((lm) => (
+                                <button
+                                    key={lm.id}
+                                    onClick={() => handleSelectLandmark(lm)}
+                                    className="w-full text-left px-3 py-2.5 hover:bg-muted/50 transition-colors border-b last:border-b-0 flex items-center gap-2.5"
+                                >
+                                    <span className="text-base flex-shrink-0">{getLandmarkIcon(lm.category)}</span>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-medium truncate">{lm.name}</p>
+                                        <p className="text-[10px] text-muted-foreground">{lm.commune}</p>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    )}
 
                     {/* Statut de validation GPS */}
                     {(pickupAddress || destinationAddress) && (
@@ -426,6 +559,22 @@ export default function TaxiMotoBooking({
                         setPriceEstimate(null);
                     }}
                 />
+            )}
+
+            {/* ✅ Sauvegarder l'itinéraire courant en favori */}
+            {pickupAddress && destinationAddress && (
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSaveFavorite}
+                    disabled={savingFavorite}
+                    className="w-full text-xs gap-1.5"
+                >
+                    {savingFavorite
+                        ? <Loader2 className="w-3 h-3 animate-spin" />
+                        : <Heart className="w-3 h-3 text-[#ff4000]" />}
+                    Sauvegarder cette route
+                </Button>
             )}
 
             {/* Informations d'itinéraire Google Maps */}

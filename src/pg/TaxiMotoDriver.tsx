@@ -44,6 +44,12 @@ import MyPurchasesOrdersList from "@/components/shared/MyPurchasesOrdersList";
 
 const ONLINE_SINCE_KEY = 'taxi_driver_online_since';
 
+// ✅ Throttle GPS adaptatif — économie batterie (téléphones d'entrée de gamme en Guinée)
+const GPS_INTERVAL_ACTIVE = 5_000;    // 5s pendant une course (précision maximale)
+const GPS_INTERVAL_IDLE = 30_000;     // 30s en attente (économie batterie ~80%)
+const TRACK_INTERVAL_ACTIVE = 10_000; // 10s tracking pendant course
+const TRACK_INTERVAL_IDLE = 60_000;   // 60s tracking en attente (minimal)
+
 export default function TaxiMotoDriver() {
     const { t } = useTranslation();
     const { user, profile, signOut } = useAuth();
@@ -60,8 +66,15 @@ export default function TaxiMotoDriver() {
         watchPosition: true,  // ✅ Suivi GPS continu (throttle 5s/10s géré ci-dessous)
         onLocationChange: (loc) => {
             const now = Date.now();
+
+            // ✅ Interval adaptatif : court si course en cours, long en attente (batterie)
+            const hasActiveRide = !!activeRideRef.current &&
+                ['accepted', 'arriving', 'picked_up', 'in_progress'].includes(activeRideRef.current.status);
+            const locationInterval = hasActiveRide ? GPS_INTERVAL_ACTIVE : GPS_INTERVAL_IDLE;
+            const trackingInterval = hasActiveRide ? TRACK_INTERVAL_ACTIVE : TRACK_INTERVAL_IDLE;
+
             if (driverIdRef.current && isOnlineRef.current) {
-                if (now - lastLocationUpdateRef.current >= 5000) {
+                if (now - lastLocationUpdateRef.current >= locationInterval) {
                     lastLocationUpdateRef.current = now;
                     updateDriverLocation(loc.latitude, loc.longitude);
                 }
@@ -69,7 +82,7 @@ export default function TaxiMotoDriver() {
             if (activeRideRef.current) {
                 const ride = activeRideRef.current;
                 if (['accepted', 'arriving', 'picked_up', 'in_progress'].includes(ride.status)) {
-                    if (now - lastTrackingRef.current >= 10000) {
+                    if (now - lastTrackingRef.current >= trackingInterval) {
                         lastTrackingRef.current = now;
                         TaxiMotoService.trackPosition(
                             ride.id,
@@ -326,6 +339,16 @@ export default function TaxiMotoDriver() {
                 driverPhone={profile?.phone || ''}
                 onSignOut={handleSignOut}
             />
+
+            {/* ✅ Indicateur mode économie batterie GPS */}
+            {isOnline && (
+                <div className="flex items-center justify-center gap-1.5 text-[9px] text-gray-500 py-1">
+                    <span className={`w-1.5 h-1.5 rounded-full ${!activeRide ? 'bg-green-500' : 'bg-[#ff4000] animate-pulse'}`} />
+                    {!activeRide
+                        ? 'GPS économique (30s) — en attente de course'
+                        : 'GPS précis (5s) — course en cours'}
+                </div>
+            )}
 
             {activeTab === 'dashboard' && (
                 <DriverMainDashboard
