@@ -39,7 +39,13 @@ import DestinationPreview from "./DestinationPreview";
 import GooglePlacesAddressInput, { ValidatedAddress } from "@/components/shared/GooglePlacesAddressInput";
 import { precisionGeoService } from "@/services/gps/PrecisionGeolocationService";
 import { getFavoriteRoutes, saveFavoriteRoute, incrementRouteUsage, type FavoriteRoute } from "@/services/taxi/favoriteRoutesService";
-import { searchLandmarks, getLandmarkIcon, type ConakryLandmark } from "@/data/conakryLandmarks";
+import { searchLandmarks, getLandmarkIcon, CONAKRY_LANDMARKS, type ConakryLandmark } from "@/data/conakryLandmarks";
+
+// Repères les plus demandés à Conakry — accès rapide toujours visible
+const POPULAR_LANDMARK_IDS = ['madina', 'donka', 'gbessia', 'kaloum', 'ratoma', 'cosa'];
+const POPULAR_LANDMARKS = POPULAR_LANDMARK_IDS
+    .map(id => CONAKRY_LANDMARKS.find(l => l.id === id))
+    .filter((l): l is ConakryLandmark => !!l);
 
 interface LocationCoordinates {
     latitude: number;
@@ -477,7 +483,27 @@ export default function TaxiMotoBooking({
                         }}
                     />
 
-                    {/* ✅ Repères locaux Conakry — apparaissent dès 2 caractères tapés */}
+                    {/* ✅ Repères populaires Conakry — TOUJOURS visibles, 1 tap = destination */}
+                    <div className="space-y-1.5">
+                        <p className="text-[10px] font-medium text-muted-foreground flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-[#ff4000]" />
+                            Repères rapides Conakry
+                        </p>
+                        <div className="flex flex-wrap gap-1.5">
+                            {POPULAR_LANDMARKS.map((lm) => (
+                                <button
+                                    key={lm.id}
+                                    onClick={() => handleSelectLandmark(lm)}
+                                    className="px-2.5 py-1 rounded-full border bg-card text-xs hover:border-[#ff4000]/50 hover:text-[#ff4000] transition-all flex items-center gap-1"
+                                >
+                                    <span>{getLandmarkIcon(lm.category)}</span>
+                                    {lm.name.replace(/^(Marché |Hôpital |CHU |Aéroport |Centre )/, '')}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* ✅ Repères locaux Conakry — résultats de recherche dès 2 caractères tapés */}
                     {landmarkResults.length > 0 && (
                         <div className="rounded-xl border bg-card overflow-hidden shadow-sm">
                             <p className="px-3 py-1.5 text-[10px] font-medium text-muted-foreground bg-muted/40 border-b">
