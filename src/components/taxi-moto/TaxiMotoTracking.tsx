@@ -4,7 +4,7 @@
  * 224Solutions - Taxi-Moto System
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -76,6 +76,15 @@ const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: numbe
     return R * c;
 };
 
+// ✅ Raisons d'annulation (client) — modal au lieu de window.confirm
+const CANCEL_REASONS = [
+    'Attente trop longue',
+    'Chauffeur trop loin',
+    'J\'ai trouvé un autre moyen',
+    'Erreur de réservation',
+    'Prix trop élevé',
+];
+
 export default function TaxiMotoTracking({
     currentRide,
     userLocation
@@ -88,6 +97,35 @@ export default function TaxiMotoTracking({
     const [showPayment, setShowPayment] = useState(false);
     const [pickupCoords, setPickupCoords] = useState<LocationCoordinates | null>(null);
     const [driverIdForTracking, setDriverIdForTracking] = useState<string | undefined>(undefined);
+
+    // ✅ #9 Annulation avec raison obligatoire
+    const [showCancelModal, setShowCancelModal] = useState(false);
+    const [selectedCancelReason, setSelectedCancelReason] = useState('');
+    const [isCancelling, setIsCancelling] = useState(false);
+
+    // ✅ #10 Compteur d'attente client depuis l'acceptation
+    const [waitingSeconds, setWaitingSeconds] = useState(0);
+    const waitingStartRef = useRef<number | null>(null);
+
+    useEffect(() => {
+        const isWaiting = ['accepted', 'driver_arriving', 'arriving'].includes(currentRide?.status || '');
+        if (!isWaiting || !currentRide?.driver) {
+            setWaitingSeconds(0);
+            waitingStartRef.current = null;
+            return;
+        }
+        if (!waitingStartRef.current) waitingStartRef.current = Date.now();
+        const timer = setInterval(() => {
+            setWaitingSeconds(Math.floor((Date.now() - waitingStartRef.current!) / 1000));
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [currentRide?.status, currentRide?.driver]);
+
+    const formatWait = (s: number) => {
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        return m > 0 ? `${m} min ${sec.toString().padStart(2, '0')} s` : `${s} s`;
+    };
 
     // Hook de suivi temps réel avec notifications ETA
     const { driverPosition, etaMinutes, isMoving } = useDriverTracking(
@@ -217,7 +255,24 @@ export default function TaxiMotoTracking({
 
     const shareRide = () => {
         if (!currentRide) return;
-        const shareText = `🚗 Je suis en course avec 224Solutions Taxi-Moto\nCourse: ${currentRide.id}\nDe: ${currentRide.pickupAddress}\nVers: ${currentRide.destinationAddress}\nConducteur: ${currentRide.driver?.name || 'En attente'}\nSuivi en temps réel: https://224solution.net/track/${currentRide.id}`;
+
+        // ✅ Message enrichi : ETA + plaque + consigne de sécurité (proches)
+        const etaText = displayEta ? ` · Arrivée ~${displayEta} min` : '';
+        const plateText = currentRide.driver?.vehicleNumber
+            ? ` · Plaque : ${currentRide.driver.vehicleNumber}` : '';
+        const driverLine = currentRide.driver
+            ? `👤 Chauffeur : ${currentRide.driver.name}${plateText}${etaText}`
+            : '👤 Chauffeur en route';
+
+        const shareText = [
+            '🛺 Je suis en taxi avec 224Solutions (Conakry)',
+            `📍 De : ${currentRide.pickupAddress}`,
+            `🏁 Vers : ${currentRide.destinationAddress}`,
+            driverLine,
+            '⚠️ Si tu n\'as pas de mes nouvelles dans 30 min, appelle-moi.',
+            `🔗 Suivi : https://224solution.net/track/${currentRide.id}`,
+        ].join('\n');
+
         void (async () => {
             const result = await tryNativeShare({ title: t('taxiMotoTracking.suiviDeMaCourseTaxi'), text: shareText });
             if (result === 'fallback') {
@@ -239,16 +294,25 @@ export default function TaxiMotoTracking({
         }
     };
 
-    const cancelRide = async () => {
+    // ✅ Annulation avec raison obligatoire (modal) au lieu de window.confirm
+    const cancelRide = () => {
         if (!currentRide) return;
-        if (window.confirm(t('taxiMotoTracking.etesVousSurDeVouloir'))) {
-            try {
-                await RidesService.updateRideStatus(currentRide.id, 'cancelled');
-                toast.success(t('taxiMotoTracking.courseAnnulee'));
-            } catch (error) {
-                console.error('Error cancelling ride:', error);
-                toast.error(t('taxiMotoTracking.erreurLorsDeLAnnulation'));
-            }
+        setSelectedCancelReason('');
+        setShowCancelModal(true);
+    };
+
+    const confirmCancel = async () => {
+        if (!currentRide || !selectedCancelReason) return;
+        setIsCancelling(true);
+        try {
+            await RidesService.updateRideStatus(currentRide.id, 'cancelled');
+            toast.success(t('taxiMotoTracking.courseAnnulee'));
+            setShowCancelModal(false);
+        } catch (error) {
+            console.error('Error cancelling ride:', error);
+            toast.error(t('taxiMotoTracking.erreurLorsDeLAnnulation'));
+        } finally {
+            setIsCancelling(false);
         }
     };
 
@@ -374,6 +438,17 @@ export default function TaxiMotoTracking({
                                 <span className="text-2xl font-bold text-primary">{displayEta}</span>
                                 <span className="text-sm text-muted-foreground">min</span>
                             </div>
+                        </div>
+                    )}
+
+                    {/* ✅ #10 Compteur d'attente depuis acceptation */}
+                    {waitingSeconds > 5 && ['accepted', 'driver_arriving', 'arriving'].includes(currentRide?.status || '') && (
+                        <div className="flex items-center justify-between bg-secondary/40 rounded-xl px-3 py-2 mt-2">
+                            <div className="flex items-center gap-2">
+                                <Clock className="w-3.5 h-3.5 text-muted-foreground" />
+                                <span className="text-xs text-muted-foreground">En route depuis</span>
+                            </div>
+                            <span className="text-xs font-semibold">{formatWait(waitingSeconds)}</span>
                         </div>
                     )}
                 </CardContent>
@@ -574,6 +649,43 @@ export default function TaxiMotoTracking({
                 )}
             </div>
             {/* Bloc SOS retiré côté client : seul le chauffeur peut déclencher une alerte SOS. */}
+
+            {/* ✅ #9 Modal raison d'annulation obligatoire */}
+            {showCancelModal && (
+                <div className="fixed inset-0 z-50 flex items-end bg-black/60"
+                     style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+                    <div className="w-full bg-background rounded-t-3xl p-5 space-y-4 shadow-2xl">
+                        <h3 className="text-base font-semibold text-center">Pourquoi annulez-vous ?</h3>
+                        <div className="space-y-2">
+                            {CANCEL_REASONS.map(r => (
+                                <button
+                                    key={r}
+                                    onClick={() => setSelectedCancelReason(r)}
+                                    className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all ${
+                                        selectedCancelReason === r
+                                            ? 'border-[#ff4000] bg-[#ff4000]/8 text-[#ff4000] font-medium'
+                                            : 'border-border bg-card'
+                                    }`}
+                                >
+                                    {r}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="flex gap-3 pt-1">
+                            <Button variant="outline" className="flex-1" onClick={() => setShowCancelModal(false)} disabled={isCancelling}>
+                                Retour
+                            </Button>
+                            <Button
+                                className="flex-1 bg-[#ff4000] hover:bg-[#ff4000]/90 text-white"
+                                onClick={confirmCancel}
+                                disabled={!selectedCancelReason || isCancelling}
+                            >
+                                {isCancelling ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Confirmer annulation'}
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
