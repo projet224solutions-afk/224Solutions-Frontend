@@ -109,6 +109,7 @@ interface UseMarketplaceUniversalOptions {
   itemType?: 'all' | 'product' | 'digital_product' | 'professional_service';
   sortBy?: 'popular' | 'price_asc' | 'price_desc' | 'rating' | 'newest' | 'position' | 'visibility';
   autoLoad?: boolean;
+  userPreferredCategories?: string[]; // ✅ catégories préférées (bonus pertinence)
 }
 
 const MARKETPLACE_SOURCE_TIMEOUT_MS = 8000;
@@ -144,7 +145,8 @@ export const useMarketplaceUniversal = (options: UseMarketplaceUniversalOptions 
     city,
     itemType = 'all',
     sortBy = 'newest',
-    autoLoad = true
+    autoLoad = true,
+    userPreferredCategories = [],
   } = options;
 
   const [items, setItems] = useState<MarketplaceItem[]>([]);
@@ -796,6 +798,8 @@ export const useMarketplaceUniversal = (options: UseMarketplaceUniversalOptions 
               itemType,
               country: country || 'all',
               city: city || 'all',
+              // ✅ Catégories préférées (bonus de pertinence personnalisé côté backend)
+              userPreferredCategories: userPreferredCategories || [],
             }),
             null,
             'visibility_ranking',

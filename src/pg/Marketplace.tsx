@@ -552,6 +552,13 @@ export default function Marketplace() {
   const handleProductClick = (itemId: string) => {
     setSelectedProductId(itemId);
     setShowProductModal(true);
+    // ✅ Signal de vue pour le score de tendance (fire-and-forget, ne bloque jamais l'UI).
+    // Le scoring tendance s'indexe sur product_id ; item_type='product' par défaut suffit.
+    supabase.rpc('record_product_trend_signal' as any, {
+      p_product_id: itemId,
+      p_item_type: 'product',
+      p_signal_type: 'view',
+    }).then(() => {}, () => { /* silencieux */ });
   };
 
   const [contactLoading, setContactLoading] = useState<string | null>(null);

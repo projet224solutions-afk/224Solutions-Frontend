@@ -13,7 +13,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Eye, DollarSign, RefreshCw, User, Phone, Calendar } from 'lucide-react';
+import { Eye, DollarSign, RefreshCw, User, Phone, Calendar, AlertTriangle } from 'lucide-react';
 import { DebtDetailsDialog } from './DebtDetailsDialog';
 import { RecordPaymentDialog } from './RecordPaymentDialog';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -123,6 +123,23 @@ export function DebtsList({ vendorId }: DebtsListProps) {
     return new Date(dateString).toLocaleDateString('fr-FR');
   };
 
+  // Dette en retard : échéance dépassée alors que toujours en cours.
+  const isOverdue = (debt: Debt) =>
+    debt.status === 'in_progress' && !!debt.due_date && new Date(debt.due_date) < new Date();
+  const overdueDays = (debt: Debt) =>
+    Math.floor((Date.now() - new Date(debt.due_date!).getTime()) / 86400000);
+  const overdueCount = debts.filter(isOverdue).length;
+
+  // Bannière d'alerte (réutilisée mobile + desktop).
+  const overdueBanner = overdueCount > 0 ? (
+    <div className="flex items-center gap-2 p-3 rounded-xl bg-red-50 border border-red-200 mb-4">
+      <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0" />
+      <p className="text-sm text-red-700 font-medium">
+        {overdueCount} dette{overdueCount > 1 ? 's' : ''} en retard — relancez vos clients
+      </p>
+    </div>
+  ) : null;
+
   if (loading) {
     return <div className="text-center py-8 text-sm">{t('debtsList.chargementDesDettes')}</div>;
   }
@@ -146,6 +163,8 @@ export function DebtsList({ vendorId }: DebtsListProps) {
           </Button>
         </div>
 
+        {overdueBanner}
+
         <div className="space-y-3">
           {debts.map((debt) => (
             <Card key={debt.id} className="overflow-hidden">
@@ -164,7 +183,15 @@ export function DebtsList({ vendorId }: DebtsListProps) {
                       </div>
                     </div>
                   </div>
-                  {getStatusBadge(debt.status)}
+                  <div className="flex flex-col items-end gap-1">
+                    {getStatusBadge(debt.status)}
+                    {isOverdue(debt) && (
+                      <Badge variant="destructive" className="text-[10px] gap-0.5">
+                        <AlertTriangle className="h-3 w-3" />
+                        {overdueDays(debt)}j de retard
+                      </Badge>
+                    )}
+                  </div>
                 </div>
 
                 {/* Montants */}
@@ -252,6 +279,8 @@ export function DebtsList({ vendorId }: DebtsListProps) {
         </Button>
       </div>
 
+      {overdueBanner}
+
       <div className="border rounded-lg overflow-x-auto">
         <Table>
           <TableHeader>
@@ -276,7 +305,17 @@ export function DebtsList({ vendorId }: DebtsListProps) {
                 <TableCell className="text-orange-600 font-medium">
                   {formatAmount(debt.remaining_amount)}
                 </TableCell>
-                <TableCell>{getStatusBadge(debt.status)}</TableCell>
+                <TableCell>
+                  <div className="flex flex-col gap-1">
+                    {getStatusBadge(debt.status)}
+                    {isOverdue(debt) && (
+                      <Badge variant="destructive" className="text-[10px] gap-0.5 w-fit">
+                        <AlertTriangle className="h-3 w-3" />
+                        {overdueDays(debt)}j
+                      </Badge>
+                    )}
+                  </div>
+                </TableCell>
                 <TableCell>{formatDate(debt.due_date)}</TableCell>
                 <TableCell className="text-right space-x-2">
                   <Button

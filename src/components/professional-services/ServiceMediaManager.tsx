@@ -36,7 +36,7 @@ const MAX_ITEMS = 20;
 export function ServiceMediaManager({ serviceId, readonly = false, isPremium: isPremiumProp }: ServiceMediaManagerProps) {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const { uploadFile } = useStorageUpload();
+  const { uploadAndPersist } = useStorageUpload();
   const imageInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
 
@@ -142,24 +142,30 @@ export function ServiceMediaManager({ serviceId, readonly = false, isPremium: is
     setUploading(true);
     setUploadProgress('Upload de l\'image...');
     try {
-      const result = await uploadFile(file, { folder: 'products', subfolder: `service-gallery/${serviceId}` });
-      if (!result.success || !result.publicUrl) throw new Error(result.error);
-      const publicUrl = result.publicUrl;
-
       // Première image de la galerie → couverture automatique
       const isFirstImage = items.filter(i => i.media_type === 'image').length === 0;
 
-      const { error: dbErr } = await supabase.from('service_gallery_images').insert({
-        professional_service_id: serviceId,
-        media_type: 'image',
-        image_url: publicUrl,
-        display_order: items.length,
-        is_cover: isFirstImage,
-      });
-      if (dbErr) throw dbErr;
+      // ✅ ATOMIQUE : fichier + ligne service_gallery_images tout-ou-rien.
+      // Bucket dédié service-gallery (était product-images par erreur via folder 'products').
+      const atomic = await uploadAndPersist(
+        file,
+        { folder: 'service-gallery', subfolder: serviceId },
+        async (up) => {
+          const { error: dbErr } = await supabase.from('service_gallery_images').insert({
+            professional_service_id: serviceId,
+            media_type: 'image',
+            image_url: up.publicUrl!,
+            display_order: items.length,
+            is_cover: isFirstImage,
+          });
+          if (dbErr) throw dbErr;
+          return up.publicUrl!;
+        },
+      );
+      if (!atomic.success) throw new Error(atomic.error || 'Upload échoué');
+      const publicUrl = atomic.data!;
 
-      // Synchroniser cover_image_url dans professional_services
-      // pour que l'image apparaisse immédiatement sur le marketplace
+      // Synchroniser cover_image_url (secondaire, hors transaction atomique).
       if (isFirstImage) {
         await syncCoverToService(publicUrl);
       }
@@ -195,20 +201,26 @@ export function ServiceMediaManager({ serviceId, readonly = false, isPremium: is
     setUploading(true);
     setUploadProgress('Upload de la vidéo (peut prendre quelques secondes)...');
     try {
-      const result = await uploadFile(file, { folder: 'videos', subfolder: `service-gallery/${serviceId}` });
-      if (!result.success || !result.publicUrl) throw new Error(result.error);
-      const publicUrl = result.publicUrl;
-
-      // image_url laissé null pour les vidéos (colonne nullable depuis migration 20260518010000)
-      const { error: dbErr } = await supabase.from('service_gallery_images').insert({
-        professional_service_id: serviceId,
-        media_type: 'video',
-        image_url: null,
-        video_url: publicUrl,
-        display_order: items.length,
-        is_cover: false,
-      });
-      if (dbErr) throw dbErr;
+      // ✅ ATOMIQUE : fichier + ligne service_gallery_images tout-ou-rien.
+      // Bucket dédié service-gallery-videos (était communication-files via folder 'videos').
+      const atomic = await uploadAndPersist(
+        file,
+        { folder: 'service-gallery-videos', subfolder: serviceId },
+        async (up) => {
+          // image_url null pour les vidéos (colonne nullable depuis migration 20260518010000)
+          const { error: dbErr } = await supabase.from('service_gallery_images').insert({
+            professional_service_id: serviceId,
+            media_type: 'video',
+            image_url: null,
+            video_url: up.publicUrl!,
+            display_order: items.length,
+            is_cover: false,
+          });
+          if (dbErr) throw dbErr;
+          return up.publicUrl!;
+        },
+      );
+      if (!atomic.success) throw new Error(atomic.error || 'Upload échoué');
 
       toast({ title: '✅ Vidéo ajoutée', description: 'Votre vidéo est maintenant visible' });
       loadMedia();

@@ -186,35 +186,40 @@ export default function VendorReportsManager() {
 
   const exportReport = () => {
     const { start, end } = getDateRange();
-    const reportContent = `
-RAPPORT DE SYNTHÈSE
-===================
-Période: ${start.toLocaleDateString('fr-FR')} - ${end.toLocaleDateString('fr-FR')}
+    // Export CSV (s'ouvre nativement dans Excel) — sans dépendance externe.
+    // BOM UTF-8 + séparateur ';' (Excel FR) + CRLF pour une compatibilité maximale.
+    const esc = (v: any) => {
+      const s = String(v ?? '');
+      return /[";\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const rows: string[][] = [
+      ['Rapport de synthèse'],
+      ['Période', `${start.toLocaleDateString('fr-FR')} - ${end.toLocaleDateString('fr-FR')}`],
+      [],
+      ['Indicateur', 'Valeur (GNF)'],
+      ['Ventes totales', String(reportData.sales)],
+      ['Nombre de commandes', String(reportData.orders)],
+      ['Dépenses', String(reportData.expenses)],
+      ['Retours/Remboursements', String(reportData.returns)],
+      ['Créances en cours', String(reportData.creditSales)],
+      ['Bénéfice net', String(reportData.profit)],
+      [],
+      ['Top produits', 'Ventes'],
+      ...topProducts.map((p) => [p.name, String(p.sales)]),
+      [],
+      ['Généré le', new Date().toLocaleString('fr-FR')],
+    ];
+    const csv = '﻿' + rows.map((row) => row.map(esc).join(';')).join('\r\n');
 
-RÉSUMÉ FINANCIER
-----------------
-Ventes totales: ${fc(reportData.sales)}
-Nombre de commandes: ${reportData.orders}
-Dépenses: ${fc(reportData.expenses)}
-Retours/Remboursements: ${fc(reportData.returns)}
-Créances en cours: ${fc(reportData.creditSales)}
-Bénéfice net: ${fc(reportData.profit)}
-
-TOP 5 PRODUITS
---------------
-${topProducts.map((p, i) => `${i + 1}. ${p.name}: ${p.sales} ventes`).join('\n')}
-
-Généré le: ${new Date().toLocaleString('fr-FR')}
-    `;
-
-    const blob = new Blob([reportContent], { type: 'text/plain' });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `rapport_${period}_${new Date().toISOString().split('T')[0]}.txt`;
+    a.download = `rapport_${period}_${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
+    URL.revokeObjectURL(url);
 
-    toast({ title: '✅ Rapport exporté' });
+    toast({ title: '✅ Rapport Excel (CSV) téléchargé' });
   };
 
   const periodLabels = {

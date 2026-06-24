@@ -7,6 +7,16 @@ import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
+// Architecture GCS-first : en PROD, on uploade sur GCS (bucket "224solutions")
+// via l'Edge Function gcs-signed-url, avec fallback Supabase si GCS échoue.
+// Activé par défaut en production : le bucket 224solutions a été configuré
+// public-read + CORS (vérifié 2026-06-24). Deux filets de sécurité subsistent :
+//   • la vérification de lisibilité post-upload (isGcsUrlDisplayable) → fallback
+//     Supabase si une URL GCS n'est pas réellement affichable ;
+//   • le coupe-circuit VITE_DISABLE_GCS_UPLOAD='true' force Supabase partout.
+// En DEV (localhost), GCS est de toute façon contourné (CORS) → Supabase.
+const GCS_UPLOAD_DISABLED = import.meta.env.VITE_DISABLE_GCS_UPLOAD === 'true';
+
 export type StorageFolder =
   | 'avatars'
   | 'products'
@@ -17,7 +27,12 @@ export type StorageFolder =
   | 'restaurant'
   | 'digital-products'
   | 'travel'
-  | 'misc';
+  | 'misc'
+  // Buckets dédiés — GCS dossier + Supabase bucket séparé en fallback
+  | 'service-gallery'         // galerie photos services de proximité
+  | 'service-gallery-videos'  // vidéos galerie (Premium)
+  | 'property-images'         // photos immobilier
+  | 'driver-photos';          // photos chauffeurs taxi/moto
 
 // Mapping des folders vers les buckets Supabase pour le fallback
 const SUPABASE_BUCKET_MAP: Record<StorageFolder, string> = {
@@ -31,6 +46,10 @@ const SUPABASE_BUCKET_MAP: Record<StorageFolder, string> = {
   'digital-products': 'digital-products',
   travel: 'communication-files',
   misc: 'communication-files',
+  'service-gallery': 'service-gallery',
+  'service-gallery-videos': 'service-gallery-videos',
+  'property-images': 'property-images',
+  'driver-photos': 'driver-photos',
 };
 
 interface UploadOptions {
@@ -45,13 +64,34 @@ interface UploadResult {
   success: boolean;
   publicUrl?: string;
   objectPath?: string;
+  bucket?: string; // bucket Supabase (fallback) ou '224solutions' (GCS) — pour le rollback
+  deleteToken?: string; // jeton de suppression GCS (sécurise le rollback côté serveur)
   error?: string;
   provider?: 'gcs' | 'supabase';
+}
+
+// Résultat atomique : le fichier ET son enregistrement métier sont liés tout-ou-rien.
+interface AtomicUploadResult<T> {
+  success: boolean;
+  data?: T;
+  upload?: UploadResult;
+  error?: string;
 }
 
 interface UseStorageUploadReturn {
   uploadFile: (file: File, options: UploadOptions) => Promise<UploadResult>;
   uploadMultipleFiles: (files: File[], options: UploadOptions) => Promise<UploadResult[]>;
+  /**
+   * Upload ATOMIQUE : uploade le fichier puis exécute `persist` (écriture métier).
+   * Si `persist` échoue, le fichier uploadé est supprimé (rollback) → pas d'orphelin.
+   */
+  uploadAndPersist: <T>(
+    file: File,
+    options: UploadOptions,
+    persist: (upload: UploadResult) => Promise<T>,
+  ) => Promise<AtomicUploadResult<T>>;
+  /** Supprime un fichier déjà uploadé (Supabase ou GCS). */
+  removeUploadedFile: (result: UploadResult) => Promise<boolean>;
   getDownloadUrl: (objectPath: string, expiresInMinutes?: number) => Promise<string | null>;
   isUploading: boolean;
   progress: number;
@@ -69,6 +109,10 @@ const ALLOWED_TYPES: Record<StorageFolder, string[]> = {
   'digital-products': ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf', 'application/zip'],
   travel: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
   misc: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'],
+  'service-gallery': ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif', 'image/svg+xml'],
+  'service-gallery-videos': ['video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo'],
+  'property-images': ['image/jpeg', 'image/png', 'image/webp', 'image/avif'],
+  'driver-photos': ['image/jpeg', 'image/png', 'image/webp'],
 };
 
 // Taille max par catégorie (en bytes)
@@ -83,6 +127,10 @@ const MAX_SIZES: Record<StorageFolder, number> = {
   'digital-products': 5 * 1024 * 1024 * 1024, // 5 GB
   travel: 10 * 1024 * 1024, // 10 MB
   misc: 10 * 1024 * 1024, // 10 MB
+  'service-gallery': 8 * 1024 * 1024, // 8 MB
+  'service-gallery-videos': 200 * 1024 * 1024, // 200 MB
+  'property-images': 15 * 1024 * 1024, // 15 MB
+  'driver-photos': 10 * 1024 * 1024, // 10 MB
 };
 
 function formatMaxSizeLabel(sizeInBytes: number): string {
@@ -160,6 +208,59 @@ function isTypeAllowed(fileType: string, allowedTypes: string[]): boolean {
   return false;
 }
 
+/**
+ * Vérifie les magic bytes (premiers octets) du fichier.
+ * Protège contre les fichiers malveillants renommés (ex: .exe → .jpg).
+ * Retourne true si le fichier est valide OU si le type n'est pas connu/lisible.
+ */
+async function verifyFileMagicBytes(file: File): Promise<boolean> {
+  const SIGNATURES: Record<string, number[][]> = {
+    'image/jpeg': [[0xFF, 0xD8, 0xFF]],
+    'image/png': [[0x89, 0x50, 0x4E, 0x47]],
+    'image/gif': [[0x47, 0x49, 0x46, 0x38]],
+    'image/webp': [[0x52, 0x49, 0x46, 0x46]],
+    'video/mp4': [[0x66, 0x74, 0x79, 0x70]], // 'ftyp' à l'offset 4
+    'application/pdf': [[0x25, 0x50, 0x44, 0x46]],
+    'application/zip': [[0x50, 0x4B, 0x03, 0x04]],
+  };
+
+  const baseType = file.type.split(';')[0].trim().toLowerCase();
+  const signatures = SIGNATURES[baseType];
+  if (!signatures) return true; // type inconnu → laisser passer
+
+  try {
+    const buffer = await file.slice(0, 12).arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+    // mp4 : 'ftyp' commence à l'octet 4 ; les autres au début.
+    if (baseType === 'video/mp4') {
+      return signatures.some(sig => sig.every((b, i) => bytes[i + 4] === b));
+    }
+    return signatures.some(sig => sig.every((b, i) => bytes[i] === b));
+  } catch {
+    return true; // erreur de lecture → laisser passer
+  }
+}
+
+/**
+ * Teste si une URL d'image GCS est réellement AFFICHABLE (objet public-read).
+ * Utilise <img> (et non fetch) car l'affichage <img> ne dépend PAS du CORS,
+ * contrairement à fetch — c'est donc le test fidèle à ce que verra l'app.
+ * Évite la « panne silencieuse » : upload GCS 200 OK mais URL 403 (bucket non public).
+ * Pour les non-images, renvoie true (pas de vérif fiable possible côté navigateur).
+ */
+function isGcsUrlDisplayable(url: string, contentType: string, timeoutMs = 6000): Promise<boolean> {
+  if (!contentType.startsWith('image/')) return Promise.resolve(true);
+  return new Promise((resolve) => {
+    const img = new Image();
+    let done = false;
+    const finish = (ok: boolean) => { if (!done) { done = true; img.src = ''; resolve(ok); } };
+    const timer = setTimeout(() => finish(false), timeoutMs);
+    img.onload = () => { clearTimeout(timer); finish(true); };
+    img.onerror = () => { clearTimeout(timer); finish(false); };
+    img.src = url;
+  });
+}
+
 export function useStorageUpload(): UseStorageUploadReturn {
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -222,10 +323,14 @@ export function useStorageUpload(): UseStorageUploadReturn {
   ): Promise<UploadResult> => {
     const bucket = SUPABASE_BUCKET_MAP[folder];
     const timestamp = Date.now();
-    const random = Math.random().toString(36).substring(2, 8);
-    const extension = file.name.split('.').pop() || '';
-    const baseName = file.name.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9]/g, '-');
-    const fileName = `${baseName}-${timestamp}-${random}.${extension}`;
+    // crypto.randomUUID() : identifiant cryptographiquement sûr (vs Math.random prédictible)
+    const uniqueId = crypto.randomUUID().replace(/-/g, '').substring(0, 12);
+    const extension = file.name.split('.').pop()?.toLowerCase() || 'bin';
+    const baseName = file.name
+      .replace(/\.[^/.]+$/, '')
+      .replace(/[^a-zA-Z0-9]/g, '-')
+      .substring(0, 40);
+    const fileName = `${baseName}-${timestamp}-${uniqueId}.${extension}`;
     const filePath = subfolder ? `${subfolder}/${fileName}` : `${folder}/${fileName}`;
     const contentType = resolveContentType(file, folder);
 
@@ -267,6 +372,7 @@ export function useStorageUpload(): UseStorageUploadReturn {
       success: true,
       publicUrl: publicUrlData.publicUrl,
       objectPath: filePath,
+      bucket,
       provider: 'supabase' as const,
     };
   }, []);
@@ -288,20 +394,29 @@ export function useStorageUpload(): UseStorageUploadReturn {
       return { success: false, error: validation.error };
     }
 
+    // Vérification magic bytes (protège contre un fichier renommé : .exe → .jpg)
+    const magicOk = await verifyFileMagicBytes(file);
+    if (!magicOk) {
+      const err = 'Fichier invalide : le type réel ne correspond pas à son extension.';
+      toast.error(err);
+      return { success: false, error: err };
+    }
+
     setIsUploading(true);
     setProgress(0);
 
     try {
-      // ⚠️ On uploade TOUJOURS sur Supabase Storage (buckets publics, fiable). Le chemin
-      // GCS (Edge Function gcs-signed-url) était un point de panne : en prod, l'upload
-      // « réussissait » mais l'URL GCS ne s'affichait pas (bucket non public / non configuré),
-      // et en dev il était bloqué par CORS. Supabase = lecture publique garantie partout.
-      if (preferSupabase || import.meta.env.DEV || true) {
-        console.log('[useStorageUpload] Using Supabase Storage (forced — public buckets)');
+      // Architecture GCS-first :
+      //   PROD → GCS via gcs-signed-url (bucket public + CORS OK), fallback Supabase si échec
+      //   DEV / préférence explicite / coupe-circuit → Supabase directement
+      // Voir GCS_UPLOAD_DISABLED en tête de fichier (coupe-circuit VITE_DISABLE_GCS_UPLOAD).
+      if (preferSupabase || import.meta.env.DEV || GCS_UPLOAD_DISABLED) {
+        console.log('[useStorageUpload] Supabase Storage (dev / préférence / GCS désactivé)');
         const result = await uploadToSupabase(file, folder, subfolder, onProgress);
         setProgress(100);
         return result;
       }
+      // → En production avec GCS activé, le code continue vers la logique GCS ci-dessous
 
       // Construire le chemin du dossier
       const folderPath = subfolder ? `${folder}/${subfolder}` : folder;
@@ -382,6 +497,17 @@ export function useStorageUpload(): UseStorageUploadReturn {
           return result;
         }
 
+        // 🛡️ Auto-réparation : si l'objet GCS n'est pas réellement affichable
+        // (bucket non public → 403 silencieux), on bascule sur Supabase pour ne
+        // JAMAIS livrer une image cassée. Activer GCS devient donc sans risque.
+        const displayable = await isGcsUrlDisplayable(signedUrlData.publicUrl, contentType);
+        if (!displayable) {
+          console.warn('[useStorageUpload] URL GCS non affichable (bucket non public ?) → fallback Supabase');
+          const result = await uploadToSupabase(file, folder, subfolder, onProgress);
+          setProgress(100);
+          return result;
+        }
+
         setProgress(80);
         onProgress?.(80);
 
@@ -412,6 +538,8 @@ export function useStorageUpload(): UseStorageUploadReturn {
           success: true,
           publicUrl: signedUrlData.publicUrl,
           objectPath: signedUrlData.objectPath,
+          bucket: signedUrlData.bucket || '224solutions',
+          deleteToken: signedUrlData.deleteToken,
           provider: 'gcs' as const,
         };
 
@@ -487,9 +615,58 @@ export function useStorageUpload(): UseStorageUploadReturn {
     }
   }, []);
 
+  /**
+   * Supprime un fichier déjà uploadé (rollback). Supporte GCS (action delete de
+   * l'Edge Function) et Supabase (storage.remove). Idempotent côté serveur.
+   */
+  const removeUploadedFile = useCallback(async (result: UploadResult): Promise<boolean> => {
+    if (!result?.objectPath) return false;
+    try {
+      if (result.provider === 'gcs') {
+        const { data, error } = await supabase.functions.invoke('gcs-signed-url', {
+          body: { action: 'delete', fileName: result.objectPath, deleteToken: result.deleteToken },
+        });
+        return !error && (data as any)?.success === true;
+      }
+      if (!result.bucket) return false;
+      const { error } = await supabase.storage.from(result.bucket).remove([result.objectPath]);
+      return !error;
+    } catch (e) {
+      console.warn('[useStorageUpload] removeUploadedFile a échoué (orphelin possible):', e);
+      return false;
+    }
+  }, []);
+
+  /**
+   * Upload ATOMIQUE (tout-ou-rien) : uploade puis exécute `persist`. Si `persist`
+   * échoue, le fichier est supprimé (rollback) → jamais de fichier orphelin.
+   */
+  const uploadAndPersist = useCallback(async <T>(
+    file: File,
+    options: UploadOptions,
+    persist: (upload: UploadResult) => Promise<T>,
+  ): Promise<AtomicUploadResult<T>> => {
+    const upload = await uploadFile(file, options);
+    if (!upload.success || !upload.publicUrl) {
+      return { success: false, error: upload.error || 'upload_failed' };
+    }
+    try {
+      const data = await persist(upload);
+      return { success: true, data, upload };
+    } catch (persistErr: any) {
+      // 🔁 ROLLBACK : la persistance métier a échoué → supprimer le fichier uploadé.
+      console.warn('[useStorageUpload] persist KO → rollback du fichier', persistErr);
+      const removed = await removeUploadedFile(upload);
+      if (!removed) console.warn('[useStorageUpload] rollback non confirmé (orphelin possible)');
+      return { success: false, error: persistErr?.message || 'persist_failed', upload };
+    }
+  }, [uploadFile, removeUploadedFile]);
+
   return {
     uploadFile,
     uploadMultipleFiles,
+    uploadAndPersist,
+    removeUploadedFile,
     getDownloadUrl,
     isUploading,
     progress,

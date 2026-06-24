@@ -5,7 +5,13 @@
  */
 
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
-import { getFirestore, Firestore, enableIndexedDbPersistence } from 'firebase/firestore';
+import {
+  initializeFirestore,
+  getFirestore,
+  Firestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+} from 'firebase/firestore';
 import { getAuth, Auth } from 'firebase/auth';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -60,19 +66,20 @@ async function initializeFirebase(): Promise<boolean> {
       app = getApps()[0];
     }
 
-    db = getFirestore(app);
-    auth = getAuth(app);
-
-    // Activer la persistance hors ligne de Firestore
+    // Persistance hors ligne MODERNE (remplace enableIndexedDbPersistence, déprécié
+    // en Firebase 12). persistentMultipleTabManager gère proprement le multi-onglets
+    // (plus d'avertissement 'failed-precondition'). Doit être appelé AVANT tout getFirestore.
     try {
-      await enableIndexedDbPersistence(db);
-    } catch (err: any) {
-      if (err.code === 'failed-precondition') {
-        console.warn('Persistance Firestore: plusieurs onglets ouverts');
-      } else if (err.code === 'unimplemented') {
-        console.warn('Persistance Firestore: navigateur non supporté');
-      }
+      db = initializeFirestore(app, {
+        localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+      });
+    } catch (err) {
+      // Firestore déjà initialisé (HMR / double init) ou navigateur sans IndexedDB
+      // → on récupère/utilise l'instance par défaut (cache mémoire en repli).
+      console.warn('Persistance Firestore indisponible, repli getFirestore:', err);
+      db = getFirestore(app);
     }
+    auth = getAuth(app);
 
     isInitialized = true;
     console.log('✅ Firebase initialisé avec persistance hors ligne');

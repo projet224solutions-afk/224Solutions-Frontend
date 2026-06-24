@@ -1,10 +1,12 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Card } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { useVendorAnalytics } from '@/hooks/useVendorAnalytics';
 import { useMoneyFormat } from '@/components/Money';
 import { usePriceConverter } from '@/hooks/usePriceConverter';
-import { TrendingUp, Target, Package } from 'lucide-react';
+import { backendFetch } from '@/services/backendApi';
+import { TrendingUp, Target, Package, ShoppingCart, Loader2 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export function VendorAnalyticsDashboard() {
@@ -12,6 +14,23 @@ export function VendorAnalyticsDashboard() {
   const { analytics, loading } = useVendorAnalytics();
   const { format, userCurrency } = useMoneyFormat();
   const { convert } = usePriceConverter();
+
+  // ✅ Checklist de visibilité marketplace (depuis le backend — route gatée par JWT)
+  const [visibilityChecklist, setVisibilityChecklist] = useState<Array<{
+    done: boolean; action: string; impact: string; priority: number;
+  }>>([]);
+  const [checklistLoading, setChecklistLoading] = useState(false);
+
+  useEffect(() => {
+    setChecklistLoading(true);
+    backendFetch<any>('/api/marketplace-visibility/vendor/me', { method: 'GET' })
+      .then((res) => {
+        const list = res?.data?.checklist;
+        if (Array.isArray(list) && list.length) setVisibilityChecklist(list);
+      })
+      .catch(() => { /* silencieux */ })
+      .finally(() => setChecklistLoading(false));
+  }, []);
 
   // Données du graphique converties (GNF stocké → devise de l'utilisateur, taux BCRG)
   const weekChartData = useMemo(
@@ -36,6 +55,7 @@ export function VendorAnalyticsDashboard() {
 
   if (!analytics) return null;
 
+  const lowStockCount = analytics.lowStockProducts?.length || 0;
   const stats = [
     {
       title: "Ventes Aujourd'hui",
@@ -45,23 +65,39 @@ export function VendorAnalyticsDashboard() {
       color: 'text-[#ff4000]'
     },
     {
-      title: "Taux de Conversion",
+      title: "CA du mois (30j)",
+      value: format(analytics.monthRevenue, 'GNF'),
+      subtitle: `${analytics.totalMonthOrders} commande${analytics.totalMonthOrders > 1 ? 's' : ''}`,
+      icon: TrendingUp,
+      color: 'text-[#16a34a]'
+    },
+    {
+      title: "Panier moyen",
+      value: format(analytics.avgOrderValue, 'GNF'),
+      subtitle: '30 derniers jours',
+      icon: ShoppingCart,
+      color: 'text-[#04439e]'
+    },
+    {
+      title: "Taux de paiement",
       value: `${analytics.today.conversionRate.toFixed(1)}%`,
+      subtitle: 'commandes payées / total',
       icon: Target,
       color: 'text-[#04439e]'
     },
     {
       title: "Produits Actifs",
       value: analytics.activeProductsCount,
+      subtitle: lowStockCount > 0 ? `⚠️ ${lowStockCount} en stock bas` : 'Stocks OK',
       icon: Package,
-      color: 'text-orange-600'
+      color: lowStockCount > 0 ? 'text-amber-600' : 'text-[#16a34a]'
     }
   ];
 
   return (
     <div className="space-y-6">
       {/* KPIs - grille responsive */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
         {stats.map((stat) => (
           <Card key={stat.title} className="p-4 border-2 border-[#ff4000]">
             <div className="flex items-center justify-between">
@@ -77,6 +113,43 @@ export function VendorAnalyticsDashboard() {
           </Card>
         ))}
       </div>
+
+      {/* ✅ Checklist de visibilité marketplace */}
+      {(checklistLoading || visibilityChecklist.length > 0) && (
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-[#04439e]" />
+              Score de visibilité marketplace
+              {checklistLoading && <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-1.5">
+            {visibilityChecklist.map((item) => (
+              <div
+                key={item.priority}
+                className={`flex items-start gap-3 p-2.5 rounded-lg text-sm transition-colors ${
+                  item.done ? 'bg-[#16a34a]/5' : 'bg-slate-50 hover:bg-slate-100'
+                }`}
+              >
+                <span className="text-base mt-0.5 flex-shrink-0">{item.done ? '✅' : '⬜'}</span>
+                <div className="flex-1 min-w-0">
+                  <p className={`text-xs font-medium leading-relaxed ${
+                    item.done ? 'text-[#16a34a] line-through opacity-70' : 'text-slate-700'
+                  }`}>
+                    {item.action}
+                  </p>
+                </div>
+                {!item.done && (
+                  <Badge className="text-[10px] border-0 bg-[#04439e]/10 text-[#04439e] flex-shrink-0">
+                    {item.impact}
+                  </Badge>
+                )}
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Graphique des ventes + Top Produits - côte à côte en paysage */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">

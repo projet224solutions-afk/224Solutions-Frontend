@@ -6,6 +6,13 @@ import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription,
+  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { Undo2, RefreshCw, CheckCircle, XCircle, PackageCheck } from 'lucide-react';
 
 interface ReturnRow {
@@ -42,6 +49,10 @@ export default function VendorReturnsManager() {
   const [rows, setRows] = useState<ReturnRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
+  // ✅ Remplacent les pop-ups natifs (bloqués sur Android/WebView)
+  const [rejectDialog, setRejectDialog] = useState<{ id: string } | null>(null);
+  const [rejectReason, setRejectReason] = useState('');
+  const [receivedDialog, setReceivedDialog] = useState<{ id: string } | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -54,12 +65,7 @@ export default function VendorReturnsManager() {
 
   useEffect(() => { load(); }, [load]);
 
-  const act = async (id: string, action: 'approve' | 'reject' | 'received') => {
-    let vendor_response: string | undefined;
-    if (action === 'reject') {
-      vendor_response = window.prompt(t('vendorReturns.rejectPrompt')) || undefined;
-    }
-    if (action === 'received' && !window.confirm(t('vendorReturns.receivedConfirm'))) return;
+  const act = async (id: string, action: 'approve' | 'reject' | 'received', vendor_response?: string) => {
     setBusy(id);
     try {
       const res = await backendFetch<{ success: boolean; status?: string; error?: string }>(`/api/returns/${id}`, {
@@ -77,6 +83,7 @@ export default function VendorReturnsManager() {
   };
 
   return (
+    <>
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2"><Undo2 className="w-5 h-5" /> {t('vendorReturns.title')}</CardTitle>
@@ -110,13 +117,13 @@ export default function VendorReturnsManager() {
                   <Button size="sm" onClick={() => act(r.id, 'approve')} disabled={busy === r.id} className="gap-1">
                     <CheckCircle className="w-4 h-4" /> {t('vendorReturns.approve')}
                   </Button>
-                  <Button size="sm" variant="destructive" onClick={() => act(r.id, 'reject')} disabled={busy === r.id} className="gap-1">
+                  <Button size="sm" variant="destructive" onClick={() => setRejectDialog({ id: r.id })} disabled={busy === r.id} className="gap-1">
                     <XCircle className="w-4 h-4" /> {t('vendorReturns.reject')}
                   </Button>
                 </div>
               )}
               {r.status === 'approved' && (
-                <Button size="sm" onClick={() => act(r.id, 'received')} disabled={busy === r.id} className="gap-1 mt-3">
+                <Button size="sm" onClick={() => setReceivedDialog({ id: r.id })} disabled={busy === r.id} className="gap-1 mt-3">
                   <PackageCheck className="w-4 h-4" /> {t('vendorReturns.receivePackage')}
                 </Button>
               )}
@@ -128,5 +135,61 @@ export default function VendorReturnsManager() {
         })}
       </CardContent>
     </Card>
+
+    {/* Dialog : Rejeter un retour (remplace le prompt natif) */}
+    <AlertDialog open={!!rejectDialog} onOpenChange={(o) => { if (!o) { setRejectDialog(null); setRejectReason(''); } }}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{t('vendorReturns.reject')}</AlertDialogTitle>
+          <AlertDialogDescription>{t('vendorReturns.rejectPrompt')}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <div className="my-2">
+          <Label className="text-sm">{t('vendorReturns.rejectReason')}</Label>
+          <Textarea
+            className="mt-1"
+            rows={3}
+            value={rejectReason}
+            onChange={(e) => setRejectReason(e.target.value)}
+            placeholder={t('vendorReturns.rejectPrompt')}
+          />
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t('vendorReturns.cancel')}</AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-red-600 hover:bg-red-700"
+            onClick={() => {
+              if (!rejectReason.trim()) { toast.error(t('vendorReturns.rejectPrompt')); return; }
+              const id = rejectDialog!.id;
+              setRejectDialog(null);
+              const reason = rejectReason;
+              setRejectReason('');
+              act(id, 'reject', reason);
+            }}
+          >
+            {t('vendorReturns.reject')}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+
+    {/* Dialog : Confirmer réception (remplace la confirmation native) */}
+    <AlertDialog open={!!receivedDialog} onOpenChange={(o) => { if (!o) setReceivedDialog(null); }}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{t('vendorReturns.receivePackage')}</AlertDialogTitle>
+          <AlertDialogDescription>{t('vendorReturns.receivedConfirm')}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t('vendorReturns.cancel')}</AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-[#16a34a] hover:bg-[#16a34a]/90"
+            onClick={() => { const id = receivedDialog!.id; setReceivedDialog(null); act(id, 'received'); }}
+          >
+            {t('vendorReturns.receivePackage')}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+    </>
   );
 }

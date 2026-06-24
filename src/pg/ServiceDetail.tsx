@@ -24,6 +24,7 @@ import {
   Images,
 } from "lucide-react";
 import { ServiceMediaManager } from "@/components/professional-services/ServiceMediaManager";
+import { useStorageUpload } from "@/hooks/useStorageUpload";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -148,6 +149,7 @@ export default function ServiceDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { uploadAndPersist } = useStorageUpload();
   const { getDistanceTo, usingRealLocation, positionReady } = useGeoDistance();
   const [service, setService] = useState<ServiceDetail | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -424,28 +426,28 @@ export default function ServiceDetailPage() {
 
     setUploadingImage(true);
     try {
-      const ext = file.name.split('.').pop();
-      const filePath = `${id}/${Date.now()}.${ext}`;
+      // ✅ ATOMIQUE : fichier + ligne service_gallery_images tout-ou-rien (rollback
+      // du fichier si l'écriture DB échoue). GCS en prod, Supabase sinon ; validation
+      // MIME + magic bytes + retry inclus.
+      const atomic = await uploadAndPersist(
+        file,
+        { folder: 'service-gallery', subfolder: id },
+        async (up) => {
+          const { error: dbError } = await supabase
+            .from('service_gallery_images')
+            .insert({
+              professional_service_id: id,
+              image_url: up.publicUrl!,
+              display_order: galleryImages.length,
+            });
+          if (dbError) throw dbError;
+          return up.publicUrl!;
+        },
+      );
 
-      const { error: uploadError } = await supabase.storage
-        .from('service-gallery')
-        .upload(filePath, file);
-
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('service-gallery')
-        .getPublicUrl(filePath);
-
-      const { error: dbError } = await supabase
-        .from('service_gallery_images')
-        .insert({
-          professional_service_id: id,
-          image_url: publicUrl,
-          display_order: galleryImages.length,
-        });
-
-      if (dbError) throw dbError;
+      if (!atomic.success) {
+        throw new Error(atomic.error || 'Upload échoué');
+      }
 
       toast.success(t('serviceDetail.imageAjouteeALaGalerie'));
       loadGalleryImages();
