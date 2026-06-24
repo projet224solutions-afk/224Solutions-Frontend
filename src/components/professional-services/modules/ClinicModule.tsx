@@ -105,9 +105,9 @@ export function ClinicModule({ serviceId, businessName }: ClinicModuleProps) {
             <CardContent className="flex items-center gap-3 p-4">
               <CalendarClock className="h-8 w-8 opacity-80" />
               <div>
-                <p className="text-sm font-semibold">Prochaine disponibilité</p>
+                <p className="text-sm font-semibold">{t('clinicModule.prochaineDisponibilite')}</p>
                 <p className="text-xl font-bold">{new Date().getHours() < 16 ? "Aujourd'hui · cet après-midi" : 'Demain · matin'}</p>
-                <p className="text-xs opacity-70">Confirmation en moins de 24h</p>
+                <p className="text-xs opacity-70">{t('clinicModule.confirmationEnMoinsDe24h')}</p>
               </div>
             </CardContent>
           </Card>
@@ -224,7 +224,7 @@ function AppointmentRow({ b, onStatus, compact }: { b: ServiceBooking; onStatus:
       {b.status === 'confirmed' && b.scheduled_date && b.scheduled_time &&
         new Date(`${b.scheduled_date}T${b.scheduled_time}`) < new Date() && (
         <div className="flex w-full items-center justify-between rounded-lg border border-red-200 bg-red-50 p-2">
-          <p className="text-xs font-medium text-red-600">⚠️ RDV passé — patient non présenté</p>
+          <p className="text-xs font-medium text-red-600">{t('clinicModule.rdvPassePatientNonPresente')}</p>
           <Button size="sm" variant="outline" className="h-6 border-red-300 text-xs text-red-600" onClick={() => onStatus(b.id, 'cancelled')}>
             Marquer absent
           </Button>

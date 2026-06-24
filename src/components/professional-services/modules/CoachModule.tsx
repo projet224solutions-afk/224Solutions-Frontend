@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * MODULE COACH SPORTIF — données réelles.
  * Séances via useServiceBookings (table proximity_bookings, écritures backend atomiques).
@@ -28,13 +29,14 @@ interface CoachModuleProps {
 
 const STATUS_META: Record<string, { label: string; color: string }> = {
   pending: { label: 'En attente', color: 'bg-amber-100 text-amber-700' },
-  confirmed: { label: 'Confirmée', color: 'bg-[#04439e]/10 text-[#04439e]' },
+  confirmed: { label: t('coachModule.confirmee'), color: 'bg-[#04439e]/10 text-[#04439e]' },
   in_progress: { label: 'En cours', color: 'bg-blue-100 text-blue-700' },
-  completed: { label: 'Terminée', color: 'bg-[#16a34a]/10 text-[#16a34a]' },
-  cancelled: { label: 'Annulée', color: 'bg-red-100 text-red-600' },
+  completed: { label: t('coachModule.terminee'), color: 'bg-[#16a34a]/10 text-[#16a34a]' },
+  cancelled: { label: t('coachModule.annulee'), color: 'bg-red-100 text-red-600' },
 };
 
 export function CoachModule({ serviceId, businessName }: CoachModuleProps) {
+  const { t } = useTranslation();
   const { bookings, loading, createBooking, setStatus, stats } = useServiceBookings(serviceId);
   const [activeTab, setActiveTab] = useState('seances');
   const [showNewSession, setShowNewSession] = useState(false);
@@ -61,7 +63,7 @@ export function CoachModule({ serviceId, businessName }: CoachModuleProps) {
   const completedTotal = bookings.filter((b) => b.status === 'completed').length;
 
   const submitSession = async () => {
-    if (!form.customer_name || !form.scheduled_date) { toast.error('Nom du client et date requis'); return; }
+    if (!form.customer_name || !form.scheduled_date) { toast.error(t('coachModule.nomDuClientEtDate')); return; }
     setSubmitting(true);
     const ok = await createBooking({
       service_id: serviceId,
@@ -86,7 +88,7 @@ export function CoachModule({ serviceId, businessName }: CoachModuleProps) {
         <div className="p-3 bg-[#04439e] rounded-xl"><Dumbbell className="w-8 h-8 text-white" /></div>
         <div>
           <h2 className="text-2xl font-bold">{businessName || 'Coach Sportif'}</h2>
-          <p className="text-muted-foreground">Gestion des séances, clients et progression</p>
+          <p className="text-muted-foreground">{t('coachModule.gestionDesSeancesClientsEt')}</p>
         </div>
       </div>
 
@@ -97,7 +99,7 @@ export function CoachModule({ serviceId, businessName }: CoachModuleProps) {
           <p className="text-2xl font-bold mt-1">{clients.length}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
-          <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-[#ff4000]" /><span className="text-sm text-muted-foreground">Séances aujourd'hui</span></div>
+          <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-[#ff4000]" /><span className="text-sm text-muted-foreground">{t('coachModule.seancesAujourdHui')}</span></div>
           <p className="text-2xl font-bold mt-1">{stats.todayBookings}</p>
         </CardContent></Card>
         <Card><CardContent className="p-4">
@@ -112,7 +114,7 @@ export function CoachModule({ serviceId, businessName }: CoachModuleProps) {
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="seances">Séances</TabsTrigger>
+          <TabsTrigger value="seances">{t('coachModule.seances')}</TabsTrigger>
           <TabsTrigger value="clients">Clients</TabsTrigger>
           <TabsTrigger value="progress">Progression</TabsTrigger>
         </TabsList>
@@ -120,30 +122,30 @@ export function CoachModule({ serviceId, businessName }: CoachModuleProps) {
         {/* Séances — données réelles */}
         <TabsContent value="seances" className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold">Planning des séances</h3>
+            <h3 className="font-semibold">{t('coachModule.planningDesSeances')}</h3>
             <Dialog open={showNewSession} onOpenChange={setShowNewSession}>
-              <DialogTrigger asChild><Button><Plus className="h-4 w-4 mr-2" />Nouvelle séance</Button></DialogTrigger>
+              <DialogTrigger asChild><Button><Plus className="h-4 w-4 mr-2" />{t('coachModule.nouvelleSeance')}</Button></DialogTrigger>
               <DialogContent>
-                <DialogHeader><DialogTitle>Planifier une séance</DialogTitle></DialogHeader>
+                <DialogHeader><DialogTitle>{t('coachModule.planifierUneSeance')}</DialogTitle></DialogHeader>
                 <div className="grid gap-3 py-2">
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-1"><Label>Client *</Label><Input value={form.customer_name || ''} onChange={(e) => setForm({ ...form, customer_name: e.target.value })} /></div>
-                    <div className="space-y-1"><Label>Téléphone</Label><Input value={form.customer_phone || ''} onChange={(e) => setForm({ ...form, customer_phone: e.target.value })} /></div>
+                    <div className="space-y-1"><Label>{t('coachModule.client')}</Label><Input value={form.customer_name || ''} onChange={(e) => setForm({ ...form, customer_name: e.target.value })} /></div>
+                    <div className="space-y-1"><Label>{t('coachModule.telephone')}</Label><Input value={form.customer_phone || ''} onChange={(e) => setForm({ ...form, customer_phone: e.target.value })} /></div>
                   </div>
-                  <div className="space-y-1"><Label>Type de séance</Label><Input value={form.service_label || ''} onChange={(e) => setForm({ ...form, service_label: e.target.value })} placeholder="Ex : Musculation, Cardio, Préparation" /></div>
+                  <div className="space-y-1"><Label>{t('coachModule.typeDeSeance')}</Label><Input value={form.service_label || ''} onChange={(e) => setForm({ ...form, service_label: e.target.value })} placeholder={t('coachModule.exMusculationCardioPreparation')} /></div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1"><Label>Date *</Label><Input type="date" value={form.scheduled_date || ''} onChange={(e) => setForm({ ...form, scheduled_date: e.target.value })} /></div>
                     <div className="space-y-1"><Label>Heure</Label><Input type="time" value={form.scheduled_time || ''} onChange={(e) => setForm({ ...form, scheduled_time: e.target.value })} /></div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-1"><Label>Durée (min)</Label><Input type="number" value={form.duration_minutes || ''} onChange={(e) => setForm({ ...form, duration_minutes: e.target.value })} placeholder="60" /></div>
+                    <div className="space-y-1"><Label>{t('coachModule.dureeMin')}</Label><Input type="number" value={form.duration_minutes || ''} onChange={(e) => setForm({ ...form, duration_minutes: e.target.value })} placeholder="60" /></div>
                     <div className="space-y-1"><Label>Prix (GNF)</Label><Input type="number" value={form.price || ''} onChange={(e) => setForm({ ...form, price: e.target.value })} /></div>
                   </div>
                   <div className="space-y-1"><Label>Lieu</Label><Input value={form.address || ''} onChange={(e) => setForm({ ...form, address: e.target.value })} placeholder="Salle, parc, domicile…" /></div>
                   <div className="space-y-1"><Label>Notes</Label><Textarea value={form.notes || ''} onChange={(e) => setForm({ ...form, notes: e.target.value })} rows={2} /></div>
                 </div>
                 <div className="flex justify-end gap-2">
-                  <Button variant="outline" onClick={() => setShowNewSession(false)}>Annuler</Button>
+                  <Button variant="outline" onClick={() => setShowNewSession(false)}>{t('coachModule.annuler')}</Button>
                   <Button onClick={submitSession} disabled={submitting}>{submitting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Plus className="h-4 w-4 mr-1" />}Planifier</Button>
                 </div>
               </DialogContent>
@@ -153,7 +155,7 @@ export function CoachModule({ serviceId, businessName }: CoachModuleProps) {
           {loading ? (
             <div className="py-10 text-center"><Loader2 className="mx-auto h-6 w-6 animate-spin text-[#04439e]" /></div>
           ) : bookings.length === 0 ? (
-            <p className="py-8 text-center text-sm text-muted-foreground">Aucune séance planifiée. Créez votre première séance.</p>
+            <p className="py-8 text-center text-sm text-muted-foreground">{t('coachModule.aucuneSeancePlanifieeCreezVotre')}</p>
           ) : (
             <div className="space-y-3">
               {bookings.map((s) => {
@@ -194,7 +196,7 @@ export function CoachModule({ serviceId, businessName }: CoachModuleProps) {
         <TabsContent value="clients" className="space-y-4">
           <h3 className="font-semibold">Mes clients ({clients.length})</h3>
           {clients.length === 0 ? (
-            <p className="py-8 text-center text-sm text-muted-foreground">Vos clients apparaîtront ici dès que vous aurez planifié des séances.</p>
+            <p className="py-8 text-center text-sm text-muted-foreground">{t('coachModule.vosClientsApparaitrontIciDes')}</p>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2">
               {clients.map((c, i) => (
@@ -219,11 +221,11 @@ export function CoachModule({ serviceId, businessName }: CoachModuleProps) {
           <Card className="border-0 bg-[#ff4000] text-white">
             <CardContent className="flex items-center gap-4 p-4">
               <div className="text-4xl">🔥</div>
-              <div><p className="text-2xl font-bold">{completedTotal}</p><p className="text-sm opacity-80">Séances totales complétées</p></div>
+              <div><p className="text-2xl font-bold">{completedTotal}</p><p className="text-sm opacity-80">{t('coachModule.seancesTotalesCompletees')}</p></div>
             </CardContent>
           </Card>
           <Card>
-            <CardHeader className="pb-2"><CardTitle className="text-sm">Clients les plus actifs</CardTitle></CardHeader>
+            <CardHeader className="pb-2"><CardTitle className="text-sm">{t('coachModule.clientsLesPlusActifs')}</CardTitle></CardHeader>
             <CardContent className="space-y-3">
               {clients.filter((c) => c.completed > 0).sort((a, b) => b.completed - a.completed).slice(0, 5).map((c, i) => (
                 <div key={i} className="flex items-center gap-3">
@@ -236,7 +238,7 @@ export function CoachModule({ serviceId, businessName }: CoachModuleProps) {
                 </div>
               ))}
               {clients.filter((c) => c.completed > 0).length === 0 && (
-                <p className="py-4 text-center text-sm text-muted-foreground">Terminez vos premières séances pour voir la progression.</p>
+                <p className="py-4 text-center text-sm text-muted-foreground">{t('coachModule.terminezVosPremieresSeancesPour')}</p>
               )}
             </CardContent>
           </Card>

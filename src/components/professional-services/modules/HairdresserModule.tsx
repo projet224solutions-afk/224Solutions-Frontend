@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * MODULE COIFFEUR / SALON — données réelles.
  * Réutilise les composants Beauté (agenda Fresha-style, services, clients, galerie) qui sont
@@ -18,13 +19,14 @@ interface HairdresserModuleProps {
 }
 
 export function HairdresserModule({ serviceId, businessName }: HairdresserModuleProps) {
+  const { t } = useTranslation();
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
         <div className="rounded-xl bg-[#04439e] p-3"><Scissors className="h-8 w-8 text-white" /></div>
         <div>
           <h2 className="text-2xl font-bold">{businessName || 'Salon de Coiffure'}</h2>
-          <p className="text-muted-foreground">Agenda, prestations, clients et galerie — données réelles</p>
+          <p className="text-muted-foreground">{t('hairdresserModule.agendaPrestationsClientsEtGalerie')}</p>
         </div>
       </div>
 

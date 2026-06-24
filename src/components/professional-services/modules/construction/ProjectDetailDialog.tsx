@@ -15,17 +15,17 @@ import { CheckCircle2, Clock, AlertTriangle, Plus, ClipboardList, FileText, Sun,
 import type { BTPProject, BTPTask, BTPDailyReport, BTPProfessional } from '@/hooks/useBTPData';
 
 const STATUS_MAP: Record<string, { label: string; color: string }> = {
-  'planifie': { label: 'Planifié', color: 'bg-muted text-muted-foreground' },
+  'planifie': { label: t('projectDetailDialog.planifie'), color: 'bg-muted text-muted-foreground' },
   'en_cours': { label: 'En cours', color: 'bg-blue-100 text-blue-800' },
   'en_pause': { label: 'En pause', color: 'bg-orange-100 text-[#ff4000]' },
-  'termine': { label: 'Terminé', color: 'bg-orange-100 text-[#ff4000]' },
-  'annule': { label: 'Annulé', color: 'bg-orange-100 text-[#ff4000]' },
+  'termine': { label: t('projectDetailDialog.termine'), color: 'bg-orange-100 text-[#ff4000]' },
+  'annule': { label: t('projectDetailDialog.annule'), color: 'bg-orange-100 text-[#ff4000]' },
 };
 
 const TASK_STATUS_MAP: Record<string, { label: string; icon: any }> = {
-  'a_faire': { label: 'À faire', icon: Clock },
+  'a_faire': { label: t('projectDetailDialog.aFaire'), icon: Clock },
   'en_cours': { label: 'En cours', icon: AlertTriangle },
-  'termine': { label: 'Terminé', icon: CheckCircle2 },
+  'termine': { label: t('projectDetailDialog.termine'), icon: CheckCircle2 },
 };
 
 interface Props {

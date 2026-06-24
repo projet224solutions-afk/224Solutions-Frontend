@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🏗️ Réserves / Punch List — Gestion des non-conformités (style Archipad)
  * Créer, suivre et lever les réserves par corps d'état.
@@ -45,6 +46,7 @@ interface Props {
 }
 
 export function ConstructionReserves({ project }: Props) {
+  const { t } = useTranslation();
   const { reserves, loading, addReserve, updateReserve, reserveStats } = useConstructionReserves(project.id);
   const { lots } = useConstructionLots(project.id);
   const { uploadFile } = useStorageUpload();
@@ -74,7 +76,7 @@ export function ConstructionReserves({ project }: Props) {
   };
 
   const submit = async () => {
-    if (!form.title.trim()) { toast.error('Le titre de la réserve est requis'); return; }
+    if (!form.title.trim()) { toast.error(t('constructionReserves.leTitreDeLaReserve')); return; }
     setSaving(true);
     await addReserve({
       ...form,
@@ -88,7 +90,7 @@ export function ConstructionReserves({ project }: Props) {
 
   const submitResolve = async () => {
     if (!selectedReserve) return;
-    if (!resolveForm.resolution_note.trim()) { toast.error('Décrivez comment la réserve a été levée'); return; }
+    if (!resolveForm.resolution_note.trim()) { toast.error(t('constructionReserves.decrivezCommentLaReserveA')); return; }
     setSaving(true);
     await updateReserve(selectedReserve.id, {
       status: 'resolved',
@@ -122,7 +124,7 @@ export function ConstructionReserves({ project }: Props) {
         {[
           { label: 'Ouvertes', val: reserveStats.open, color: 'text-red-600' },
           { label: 'En cours', val: reserveStats.inProgress, color: 'text-amber-600' },
-          { label: 'Levées', val: reserveStats.resolved, color: 'text-[#16a34a]' },
+          { label: t('constructionReserves.levees'), val: reserveStats.resolved, color: 'text-[#16a34a]' },
           { label: 'Critiques', val: reserveStats.critical, color: 'text-red-700 font-bold' },
         ].map(s => (
           <Card key={s.label} className="border-0 shadow-sm">
@@ -144,7 +146,7 @@ export function ConstructionReserves({ project }: Props) {
           <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v as any)}>
             <SelectTrigger className="h-8 w-[130px] text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tous les statuts</SelectItem>
+              <SelectItem value="all">{t('constructionReserves.tousLesStatuts')}</SelectItem>
               {Object.entries(RESERVE_STATUS_LABELS).map(([k, v]) => (
                 <SelectItem key={k} value={k}>{v.label}</SelectItem>
               ))}
@@ -153,7 +155,7 @@ export function ConstructionReserves({ project }: Props) {
           <Select value={filterPriority} onValueChange={(v) => setFilterPriority(v as any)}>
             <SelectTrigger className="h-8 w-[130px] text-xs"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Toutes priorités</SelectItem>
+              <SelectItem value="all">{t('constructionReserves.toutesPriorites')}</SelectItem>
               {Object.entries(RESERVE_PRIORITY_LABELS).map(([k, v]) => (
                 <SelectItem key={k} value={k}>{v.label}</SelectItem>
               ))}
@@ -272,7 +274,7 @@ export function ConstructionReserves({ project }: Props) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Nouvelle réserve</DialogTitle>
+            <DialogTitle>{t('constructionReserves.nouvelleReserve')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
             <div>
@@ -280,7 +282,7 @@ export function ConstructionReserves({ project }: Props) {
               <Input
                 value={form.title}
                 onChange={(e) => setForm(f => ({ ...f, title: e.target.value }))}
-                placeholder="Ex : Fissure sur cloison"
+                placeholder={t('constructionReserves.exFissureSurCloison')}
               />
             </div>
             <div>
@@ -289,12 +291,12 @@ export function ConstructionReserves({ project }: Props) {
                 rows={2}
                 value={form.description}
                 onChange={(e) => setForm(f => ({ ...f, description: e.target.value }))}
-                placeholder="Détail de la non-conformité constatée"
+                placeholder={t('constructionReserves.detailDeLaNonConformite')}
               />
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <Label>Priorité</Label>
+                <Label>{t('constructionReserves.priorite')}</Label>
                 <Select value={form.priority} onValueChange={(v) => setForm(f => ({ ...f, priority: v as ReservePriority }))}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -305,11 +307,11 @@ export function ConstructionReserves({ project }: Props) {
                 </Select>
               </div>
               <div>
-                <Label>Corps d'état</Label>
+                <Label>{t('constructionReserves.corpsDEtat')}</Label>
                 <Select value={form.lot_id || 'none'} onValueChange={(v) => setForm(f => ({ ...f, lot_id: v === 'none' ? '' : v }))}>
-                  <SelectTrigger><SelectValue placeholder="Aucun" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={t('constructionReserves.aucun')} /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">Aucun</SelectItem>
+                    <SelectItem value="none">{t('constructionReserves.aucun')}</SelectItem>
                     {lots.map((l) => (
                       <SelectItem key={l.id} value={l.id}>{l.name}</SelectItem>
                     ))}
@@ -327,7 +329,7 @@ export function ConstructionReserves({ project }: Props) {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <Label>Assignée à</Label>
+                <Label>{t('constructionReserves.assigneeA')}</Label>
                 <Input
                   value={form.assigned_to}
                   onChange={(e) => setForm(f => ({ ...f, assigned_to: e.target.value }))}
@@ -335,7 +337,7 @@ export function ConstructionReserves({ project }: Props) {
                 />
               </div>
               <div>
-                <Label>Échéance</Label>
+                <Label>{t('constructionReserves.echeance')}</Label>
                 <Input
                   type="date"
                   value={form.due_date}
@@ -371,16 +373,16 @@ export function ConstructionReserves({ project }: Props) {
           </DialogHeader>
           <div className="space-y-3">
             <div>
-              <Label>Comment la réserve a-t-elle été levée ? *</Label>
+              <Label>{t('constructionReserves.commentLaReserveAT')}</Label>
               <Textarea
                 rows={3}
                 value={resolveForm.resolution_note}
                 onChange={(e) => setResolveForm(f => ({ ...f, resolution_note: e.target.value }))}
-                placeholder="Décrivez les travaux de reprise effectués"
+                placeholder={t('constructionReserves.decrivezLesTravauxDeReprise')}
               />
             </div>
             <div>
-              <Label>Photos de la reprise</Label>
+              <Label>{t('constructionReserves.photosDeLaReprise')}</Label>
               <div className="flex flex-wrap gap-2 pt-1">
                 {resolveForm.resolution_photos.map((p, i) => <img key={i} src={p} alt="" className="h-16 w-16 rounded object-cover" />)}
                 <label className="flex h-16 w-16 cursor-pointer items-center justify-center rounded border-2 border-dashed hover:border-[#16a34a]">

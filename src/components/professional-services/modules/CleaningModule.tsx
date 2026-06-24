@@ -61,7 +61,7 @@ const CLEANING_SERVICES: CleaningService[] = [
     icon: Home,
     basePrice: 50000,
     unit: 'par session',
-    description: 'Nettoyage standard: dépoussiérage, aspirateur, sols',
+    description: t('cleaningModule.nettoyageStandardDepoussierageAspirateur'),
     duration: 3
   },
   {
@@ -70,7 +70,7 @@ const CLEANING_SERVICES: CleaningService[] = [
     icon: Sparkles,
     basePrice: 150000,
     unit: 'par session',
-    description: 'Nettoyage en profondeur de toute la maison',
+    description: t('cleaningModule.nettoyageEnProfondeurDeToute'),
     duration: 6
   },
   {
@@ -79,7 +79,7 @@ const CLEANING_SERVICES: CleaningService[] = [
     icon: Building2,
     basePrice: 80000,
     unit: 'par jour',
-    description: 'Entretien quotidien ou hebdomadaire de bureaux',
+    description: t('cleaningModule.entretienQuotidienOuHebdomadaireDe'),
     duration: 4
   },
   {
@@ -88,7 +88,7 @@ const CLEANING_SERVICES: CleaningService[] = [
     icon: Shirt,
     basePrice: 5000,
     unit: 'par kg',
-    description: 'Lavage, repassage et pliage du linge',
+    description: t('cleaningModule.lavageRepassageEtPliageDu'),
     duration: 2
   },
   {
@@ -170,10 +170,10 @@ export function CleaningModule({ serviceId, businessName }: CleaningModuleProps)
   const getStatusBadge = (status: Booking['status']) => {
     const variants = {
       pending: { color: 'bg-amber-100 text-amber-700', label: 'En attente' },
-      confirmed: { color: 'bg-[#04439e]/10 text-[#04439e]', label: 'Confirmé' },
+      confirmed: { color: 'bg-[#04439e]/10 text-[#04439e]', label: t('cleaningModule.confirme') },
       in_progress: { color: 'bg-blue-100 text-blue-700', label: 'En cours…' },
-      completed: { color: 'bg-[#16a34a]/10 text-[#16a34a]', label: 'Terminé ✓' },
-      cancelled: { color: 'bg-red-100 text-red-600', label: 'Annulé' }
+      completed: { color: 'bg-[#16a34a]/10 text-[#16a34a]', label: t('cleaningModule.termine') },
+      cancelled: { color: 'bg-red-100 text-red-600', label: t('cleaningModule.annule') }
     };
     return variants[status];
   };

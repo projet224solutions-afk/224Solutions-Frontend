@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🏗️ Intervenants — Multi-stakeholders du chantier (BTP professionnel)
  * Maître d'ouvrage, maître d'œuvre, architecte, BET, bureau de contrôle,
@@ -37,6 +38,7 @@ interface Props {
 }
 
 export function ConstructionIntervenants({ project }: Props) {
+  const { t } = useTranslation();
   const { intervenants, loading, addIntervenant, removeIntervenant } = useConstructionIntervenants(project.id);
   const { lots } = useConstructionLots(project.id);
   const [open, setOpen] = useState(false);
@@ -44,7 +46,7 @@ export function ConstructionIntervenants({ project }: Props) {
   const [saving, setSaving] = useState(false);
 
   const submit = async () => {
-    if (!form.name.trim()) { toast.error('Le nom de l\'intervenant est requis'); return; }
+    if (!form.name.trim()) { toast.error(t('constructionIntervenants.leNomDeLIntervenant')); return; }
     setSaving(true);
     await addIntervenant({ ...form, lot_id: form.lot_id || null });
     setSaving(false);
@@ -113,7 +115,7 @@ export function ConstructionIntervenants({ project }: Props) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Ajouter un intervenant</DialogTitle>
+            <DialogTitle>{t('constructionIntervenants.ajouterUnIntervenant')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
             <div>
@@ -121,11 +123,11 @@ export function ConstructionIntervenants({ project }: Props) {
               <Input
                 value={form.name}
                 onChange={(e) => setForm(f => ({ ...f, name: e.target.value }))}
-                placeholder="Nom de la personne ou de l'organisme"
+                placeholder={t('constructionIntervenants.nomDeLaPersonneOu')}
               />
             </div>
             <div>
-              <Label>Rôle *</Label>
+              <Label>{t('constructionIntervenants.role')}</Label>
               <Select value={form.role} onValueChange={(v) => setForm(f => ({ ...f, role: v as IntervenantRole }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -145,7 +147,7 @@ export function ConstructionIntervenants({ project }: Props) {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <Label>Téléphone</Label>
+                <Label>{t('constructionIntervenants.telephone')}</Label>
                 <Input
                   value={form.phone}
                   onChange={(e) => setForm(f => ({ ...f, phone: e.target.value }))}
@@ -163,11 +165,11 @@ export function ConstructionIntervenants({ project }: Props) {
               </div>
             </div>
             <div>
-              <Label>Corps d'état lié</Label>
+              <Label>{t('constructionIntervenants.corpsDEtatLie')}</Label>
               <Select value={form.lot_id || 'none'} onValueChange={(v) => setForm(f => ({ ...f, lot_id: v === 'none' ? '' : v }))}>
-                <SelectTrigger><SelectValue placeholder="Aucun" /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder={t('constructionIntervenants.aucun')} /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">Aucun</SelectItem>
+                  <SelectItem value="none">{t('constructionIntervenants.aucun')}</SelectItem>
                   {lots.map((l) => (
                     <SelectItem key={l.id} value={l.id}>{l.name}</SelectItem>
                   ))}

@@ -321,7 +321,7 @@ export function BeautyModule({ serviceId, businessName }: BeautyModuleProps) {
           <div className="grid grid-cols-2 gap-3">
             <Card className="border-0 bg-[#04439e] text-white">
               <CardContent className="p-4">
-                <p className="text-xs opacity-70">CA total terminé</p>
+                <p className="text-xs opacity-70">{t('beautyModule.caTotalTermine')}</p>
                 <p className="text-2xl font-bold">
                   <Money amount={allAppts.filter(a => a.status === 'completed').reduce((s, a) => s + (a.total_price || 0), 0)} />
                 </p>
@@ -359,7 +359,7 @@ export function BeautyModule({ serviceId, businessName }: BeautyModuleProps) {
                 </div>
               ))}
               {allAppts.filter(a => a.status === 'completed').length === 0 && (
-                <p className="py-4 text-center text-sm text-muted-foreground">Aucune prestation terminée pour le moment.</p>
+                <p className="py-4 text-center text-sm text-muted-foreground">{t('beautyModule.aucunePrestationTermineePourLe')}</p>
               )}
             </CardContent>
           </Card>

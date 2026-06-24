@@ -59,7 +59,7 @@ export function FitnessModule({ serviceId, businessName }: FitnessModuleProps) {
                 <div className="space-y-1"><Label>{t('fitnessModule.telephone')}</Label><Input value={form.customer_phone || ''} onChange={(e) => setForm({ ...form, customer_phone: e.target.value })} /></div>
               </div>
               <div className="space-y-1">
-                <Label>Type de cours</Label>
+                <Label>{t('fitnessModule.typeDeCours')}</Label>
                 <div className="grid grid-cols-4 gap-2">
                   {[
                     { value: 'yoga', label: 'Yoga', icon: '🧘' }, { value: 'hiit', label: 'HIIT', icon: '⚡' },
@@ -75,7 +75,7 @@ export function FitnessModule({ serviceId, businessName }: FitnessModuleProps) {
                   ))}
                 </div>
               </div>
-              <div className="space-y-1"><Label>Intitulé (optionnel)</Label><Input value={form.service_label || ''} onChange={(e) => setForm({ ...form, service_label: e.target.value })} placeholder="Ex: Coaching personnel" /></div>
+              <div className="space-y-1"><Label>{t('fitnessModule.intituleOptionnel')}</Label><Input value={form.service_label || ''} onChange={(e) => setForm({ ...form, service_label: e.target.value })} placeholder="Ex: Coaching personnel" /></div>
               <div className="grid grid-cols-3 gap-2">
                 <div className="space-y-1"><Label>Date</Label><Input type="date" value={form.scheduled_date || ''} onChange={(e) => setForm({ ...form, scheduled_date: e.target.value })} /></div>
                 <div className="space-y-1"><Label>Heure</Label><Input type="time" value={form.scheduled_time || ''} onChange={(e) => setForm({ ...form, scheduled_time: e.target.value })} /></div>

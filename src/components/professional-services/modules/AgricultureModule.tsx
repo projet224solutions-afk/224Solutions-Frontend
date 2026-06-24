@@ -143,7 +143,7 @@ export function AgricultureModule({ serviceId, businessName }: AgricultureModule
                     </div>
                     {CROP_CALENDAR[season] && (
                       <div className="mt-2 border-t border-dashed pt-2">
-                        <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">Cultures typiques en Guinée</p>
+                        <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">{t('agricultureModule.culturesTypiquesEnGuinee')}</p>
                         <div className="flex flex-wrap gap-1">
                           {CROP_CALENDAR[season].map((c) => <Badge key={c} variant="outline" className="text-[10px] text-muted-foreground">{c}</Badge>)}
                         </div>

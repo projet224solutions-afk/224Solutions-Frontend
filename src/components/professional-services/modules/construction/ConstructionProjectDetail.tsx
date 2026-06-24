@@ -39,7 +39,7 @@ export function ConstructionProjectDetail({ project, onBack }: { project: Constr
   const exportReport = async () => {
     setExporting(true);
     try { await exportProjectReportPdf(project, (n) => moneyFmt(n)); }
-    catch { toast.error('Erreur lors de la génération du PDF'); }
+    catch { toast.error(t('constructionProjectDetail.erreurLorsDeLaGeneration')); }
     finally { setExporting(false); }
   };
 
@@ -78,9 +78,9 @@ export function ConstructionProjectDetail({ project, onBack }: { project: Constr
         <TabsList className="grid h-auto w-full grid-cols-3 sm:grid-cols-4 lg:grid-cols-8">
           <TabsTrigger value="overview">{t('constructionProjectDetail.vueGenerale')}</TabsTrigger>
           <TabsTrigger value="journal">Journal</TabsTrigger>
-          <TabsTrigger value="lots">Corps d'état</TabsTrigger>
-          <TabsTrigger value="reserves">Réserves</TabsTrigger>
-          <TabsTrigger value="meetings">Réunions</TabsTrigger>
+          <TabsTrigger value="lots">{t('constructionProjectDetail.corpsDEtat')}</TabsTrigger>
+          <TabsTrigger value="reserves">{t('constructionProjectDetail.reserves')}</TabsTrigger>
+          <TabsTrigger value="meetings">{t('constructionProjectDetail.reunions')}</TabsTrigger>
           <TabsTrigger value="intervenants">Intervenants</TabsTrigger>
           <TabsTrigger value="budget">Budget</TabsTrigger>
           <TabsTrigger value="milestones">Jalons</TabsTrigger>

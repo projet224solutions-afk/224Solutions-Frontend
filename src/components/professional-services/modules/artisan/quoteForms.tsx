@@ -171,7 +171,7 @@ export function PlumbingQuote({ onCreate }: { onCreate: CreateFn }) {
 export function CarpentryQuote({ onCreate }: { onCreate: CreateFn }) {
   const { t } = useTranslation();
   const [lines, setLines] = useState<{ label: string; wood: string; finish: string; phase: string; qty: number; material: number; labor: number }[]>(
-    [{ label: 'Porte intérieure 83×204', wood: WOOD_TYPES[0].code, finish: WOOD_FINISHES[1].code, phase: CARPENTRY_PHASES[0].code, qty: 1, material: 150000, labor: 80000 }]);
+    [{ label: t('quoteForms.porteInterieure83204'), wood: WOOD_TYPES[0].code, finish: WOOD_FINISHES[1].code, phase: CARPENTRY_PHASES[0].code, qty: 1, material: 150000, labor: 80000 }]);
   const phaseLabel = (code: string) => CARPENTRY_PHASES.find((p) => p.code === code)?.label ?? '';
   const items: QuoteItem[] = lines.map((l) => ({ label: `[${phaseLabel(l.phase)}] ${l.label} (${WOOD_TYPES.find(w => w.code === l.wood)?.label}, ${WOOD_FINISHES.find(f => f.code === l.finish)?.label})`, qty: l.qty, unit_price_material: l.material, unit_price_labor: l.labor }));
   const totals = useMemo(() => computeQuoteTotals(items, 18), [JSON.stringify(lines)]);

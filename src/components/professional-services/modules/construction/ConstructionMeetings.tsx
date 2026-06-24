@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🏗️ Réunions OPC — Comptes-rendus de chantier (BTP professionnel)
  * Participants, observations, décisions, actions à suivre, prochaine réunion.
@@ -34,6 +35,7 @@ interface Props {
 }
 
 export function ConstructionMeetings({ project }: Props) {
+  const { t } = useTranslation();
   const { meetings, loading, createMeeting, updateMeeting, validateMeeting } = useConstructionMeetings(project.id);
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -105,7 +107,7 @@ export function ConstructionMeetings({ project }: Props) {
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-slate-800">Réunion N°{m.meeting_number}</span>
                     {m.validated_at
-                      ? <Badge className="bg-[#16a34a]/10 text-[#16a34a] border-0 text-[10px] gap-1"><Lock className="h-3 w-3" />Validé</Badge>
+                      ? <Badge className="bg-[#16a34a]/10 text-[#16a34a] border-0 text-[10px] gap-1"><Lock className="h-3 w-3" />{t('constructionMeetings.valide')}</Badge>
                       : <Badge className="bg-amber-100 text-amber-700 border-0 text-[10px]">Brouillon</Badge>}
                   </div>
                   <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mt-1">
@@ -135,7 +137,7 @@ export function ConstructionMeetings({ project }: Props) {
 
               {(m.decisions?.length || 0) > 0 && (
                 <div>
-                  <p className="text-[11px] font-semibold uppercase text-muted-foreground mb-1">Décisions</p>
+                  <p className="text-[11px] font-semibold uppercase text-muted-foreground mb-1">{t('constructionMeetings.decisions')}</p>
                   <ul className="space-y-0.5">
                     {m.decisions.map((d, i) => (
                       <li key={d.id || i} className="text-xs text-slate-700">• {d.text}{d.responsible && <span className="text-muted-foreground"> — {d.responsible}</span>}</li>
@@ -146,7 +148,7 @@ export function ConstructionMeetings({ project }: Props) {
 
               {(m.action_items?.length || 0) > 0 && (
                 <div>
-                  <p className="text-[11px] font-semibold uppercase text-muted-foreground mb-1">Actions à suivre</p>
+                  <p className="text-[11px] font-semibold uppercase text-muted-foreground mb-1">{t('constructionMeetings.actionsASuivre')}</p>
                   <ul className="space-y-1">
                     {m.action_items.map((a, i) => (
                       <li key={a.id || i}>
@@ -177,7 +179,7 @@ export function ConstructionMeetings({ project }: Props) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-h-[92vh] max-w-2xl overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Nouvelle réunion de chantier</DialogTitle>
+            <DialogTitle>{t('constructionMeetings.nouvelleReunionDeChantier')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             {/* En-tête */}
@@ -188,15 +190,15 @@ export function ConstructionMeetings({ project }: Props) {
               </div>
               <div>
                 <Label>Lieu</Label>
-                <Input value={head.location} onChange={(e) => setHead(h => ({ ...h, location: e.target.value }))} placeholder="Bureau de chantier" />
+                <Input value={head.location} onChange={(e) => setHead(h => ({ ...h, location: e.target.value }))} placeholder={t('constructionMeetings.bureauDeChantier')} />
               </div>
             </div>
             <div>
-              <Label>Météo</Label>
-              <Input value={head.weather} onChange={(e) => setHead(h => ({ ...h, weather: e.target.value }))} placeholder="Ex : Ensoleillé, 28°C" />
+              <Label>{t('constructionMeetings.meteo')}</Label>
+              <Input value={head.weather} onChange={(e) => setHead(h => ({ ...h, weather: e.target.value }))} placeholder={t('constructionMeetings.exEnsoleille28C')} />
             </div>
             <div>
-              <Label>Observations générales</Label>
+              <Label>{t('constructionMeetings.observationsGenerales')}</Label>
               <Textarea rows={2} value={head.general_observations} onChange={(e) => setHead(h => ({ ...h, general_observations: e.target.value }))} />
             </div>
 
@@ -213,7 +215,7 @@ export function ConstructionMeetings({ project }: Props) {
                 <div key={i} className="flex flex-wrap items-center gap-2">
                   <Input className="h-8 flex-1 min-w-[120px] text-xs" placeholder="Nom" value={a.name}
                     onChange={(e) => setAttendees(arr => arr.map((x, j) => j === i ? { ...x, name: e.target.value } : x))} />
-                  <Input className="h-8 w-28 text-xs" placeholder="Rôle" value={a.role}
+                  <Input className="h-8 w-28 text-xs" placeholder={t('constructionMeetings.role')} value={a.role}
                     onChange={(e) => setAttendees(arr => arr.map((x, j) => j === i ? { ...x, role: e.target.value } : x))} />
                   <label className="flex items-center gap-1 text-xs">
                     <input type="checkbox" checked={a.present}
@@ -230,7 +232,7 @@ export function ConstructionMeetings({ project }: Props) {
             {/* Décisions */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label>Décisions</Label>
+                <Label>{t('constructionMeetings.decisions')}</Label>
                 <Button type="button" variant="outline" size="sm" className="h-7 text-xs"
                   onClick={() => setDecisions(d => [...d, { id: uid(), text: '', responsible: '', deadline: null, status: 'pending' }])}>
                   <Plus className="h-3.5 w-3.5 mr-1" />Ajouter
@@ -238,7 +240,7 @@ export function ConstructionMeetings({ project }: Props) {
               </div>
               {decisions.map((d, i) => (
                 <div key={d.id} className="flex flex-wrap items-center gap-2">
-                  <Input className="h-8 flex-1 min-w-[140px] text-xs" placeholder="Décision prise" value={d.text}
+                  <Input className="h-8 flex-1 min-w-[140px] text-xs" placeholder={t('constructionMeetings.decisionPrise')} value={d.text}
                     onChange={(e) => setDecisions(arr => arr.map((x, j) => j === i ? { ...x, text: e.target.value } : x))} />
                   <Input className="h-8 w-28 text-xs" placeholder="Responsable" value={d.responsible}
                     onChange={(e) => setDecisions(arr => arr.map((x, j) => j === i ? { ...x, responsible: e.target.value } : x))} />
@@ -252,7 +254,7 @@ export function ConstructionMeetings({ project }: Props) {
             {/* Actions à suivre */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label>Actions à suivre</Label>
+                <Label>{t('constructionMeetings.actionsASuivre')}</Label>
                 <Button type="button" variant="outline" size="sm" className="h-7 text-xs"
                   onClick={() => setActions(a => [...a, { id: uid(), text: '', responsible: '', deadline: null, status: 'pending' }])}>
                   <Plus className="h-3.5 w-3.5 mr-1" />Ajouter
@@ -260,9 +262,9 @@ export function ConstructionMeetings({ project }: Props) {
               </div>
               {actions.map((a, i) => (
                 <div key={a.id} className="flex flex-wrap items-center gap-2">
-                  <Input className="h-8 flex-1 min-w-[140px] text-xs" placeholder="Action à réaliser" value={a.text}
+                  <Input className="h-8 flex-1 min-w-[140px] text-xs" placeholder={t('constructionMeetings.actionARealiser')} value={a.text}
                     onChange={(e) => setActions(arr => arr.map((x, j) => j === i ? { ...x, text: e.target.value } : x))} />
-                  <Input className="h-8 w-28 text-xs" placeholder="Assignée à" value={a.responsible}
+                  <Input className="h-8 w-28 text-xs" placeholder={t('constructionMeetings.assigneeA')} value={a.responsible}
                     onChange={(e) => setActions(arr => arr.map((x, j) => j === i ? { ...x, responsible: e.target.value } : x))} />
                   <Input className="h-8 w-36 text-xs" type="date" value={a.deadline || ''}
                     onChange={(e) => setActions(arr => arr.map((x, j) => j === i ? { ...x, deadline: e.target.value || null } : x))} />
@@ -276,11 +278,11 @@ export function ConstructionMeetings({ project }: Props) {
             {/* Prochaine réunion */}
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <Label>Prochaine réunion</Label>
+                <Label>{t('constructionMeetings.prochaineReunion')}</Label>
                 <Input type="date" value={head.next_meeting_date} onChange={(e) => setHead(h => ({ ...h, next_meeting_date: e.target.value }))} />
               </div>
               <div>
-                <Label>Lieu prochaine réunion</Label>
+                <Label>{t('constructionMeetings.lieuProchaineReunion')}</Label>
                 <Input value={head.next_meeting_location} onChange={(e) => setHead(h => ({ ...h, next_meeting_location: e.target.value }))} />
               </div>
             </div>

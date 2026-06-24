@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * 🏗️ Corps d'État / Lots — Gestion par métier (BTP professionnel)
  * Liste les lots (gros œuvre, électricité, plomberie...) avec budget et avancement.
@@ -55,6 +56,7 @@ interface Props {
 }
 
 export function ConstructionLots({ project }: Props) {
+  const { t } = useTranslation();
   const { lots, loading, addLot, updateLot, deleteLot, lotStats } = useConstructionLots(project.id);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<ConstructionLot | null>(null);
@@ -83,7 +85,7 @@ export function ConstructionLots({ project }: Props) {
   };
 
   const save = async () => {
-    if (!form.name.trim()) { toast.error('Le nom du lot est requis'); return; }
+    if (!form.name.trim()) { toast.error(t('constructionLots.leNomDuLotEst')); return; }
     setSaving(true);
     const payload = { ...form, budget_amount: Number(form.budget_amount), spent_amount: Number(form.spent_amount) };
     if (editing) {
@@ -103,9 +105,9 @@ export function ConstructionLots({ project }: Props) {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
           { label: 'Budget total lots', value: <Money amount={lotStats.totalBudget} />, icon: Building2, color: 'text-[#04439e]' },
-          { label: 'Dépensé', value: <Money amount={lotStats.totalSpent} />, icon: TrendingUp, color: 'text-[#ff4000]' },
+          { label: t('constructionLots.depense'), value: <Money amount={lotStats.totalSpent} />, icon: TrendingUp, color: 'text-[#ff4000]' },
           { label: 'En cours', value: lotStats.inProgressLots, icon: AlertCircle, color: 'text-amber-600' },
-          { label: 'Terminés', value: lotStats.completedLots, icon: CheckCircle2, color: 'text-[#16a34a]' },
+          { label: t('constructionLots.termines'), value: lotStats.completedLots, icon: CheckCircle2, color: 'text-[#16a34a]' },
         ].map((s) => (
           <Card key={s.label} className="border-0 shadow-sm">
             <CardContent className="p-3">
@@ -206,11 +208,11 @@ export function ConstructionLots({ project }: Props) {
           </DialogHeader>
           <div className="space-y-3">
             <div>
-              <Label>Nom du lot *</Label>
+              <Label>{t('constructionLots.nomDuLot')}</Label>
               <Input
                 value={form.name}
                 onChange={(e) => setForm(f => ({ ...f, name: e.target.value }))}
-                placeholder="Ex : Lot 3 — Électricité"
+                placeholder={t('constructionLots.exLot3Electricite')}
               />
             </div>
             <div>
@@ -230,11 +232,11 @@ export function ConstructionLots({ project }: Props) {
                 <Input
                   value={form.company_name}
                   onChange={(e) => setForm(f => ({ ...f, company_name: e.target.value }))}
-                  placeholder="Nom de l'entreprise"
+                  placeholder={t('constructionLots.nomDeLEntreprise')}
                 />
               </div>
               <div>
-                <Label>Téléphone</Label>
+                <Label>{t('constructionLots.telephone')}</Label>
                 <Input
                   value={form.company_phone}
                   onChange={(e) => setForm(f => ({ ...f, company_phone: e.target.value }))}
@@ -253,7 +255,7 @@ export function ConstructionLots({ project }: Props) {
               </div>
               {editing && (
                 <div>
-                  <Label>Dépensé (GNF)</Label>
+                  <Label>{t('constructionLots.depenseGnf')}</Label>
                   <Input
                     type="number"
                     value={form.spent_amount}
