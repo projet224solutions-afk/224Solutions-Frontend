@@ -32,7 +32,7 @@ export function FitnessModule({ serviceId, businessName }: FitnessModuleProps) {
     if (!form.customer_name || !form.scheduled_date) { toast.error(t('fitnessModule.nomEtDateRequis')); return; }
     const ok = await createBooking({
       service_id: serviceId, customer_name: form.customer_name, customer_phone: form.customer_phone,
-      service_label: form.service_label || 'Séance coaching', scheduled_date: form.scheduled_date,
+      service_code: form.service_code, service_label: form.service_label || 'Séance coaching', scheduled_date: form.scheduled_date,
       scheduled_time: form.scheduled_time, duration_minutes: Number(form.duration_minutes) || 60,
       price: Number(form.price) || 0, notes: form.notes,
     });
@@ -58,7 +58,24 @@ export function FitnessModule({ serviceId, businessName }: FitnessModuleProps) {
                 <div className="space-y-1"><Label>{t('fitnessModule.client')}</Label><Input value={form.customer_name || ''} onChange={(e) => setForm({ ...form, customer_name: e.target.value })} /></div>
                 <div className="space-y-1"><Label>{t('fitnessModule.telephone')}</Label><Input value={form.customer_phone || ''} onChange={(e) => setForm({ ...form, customer_phone: e.target.value })} /></div>
               </div>
-              <div className="space-y-1"><Label>Type</Label><Input value={form.service_label || ''} onChange={(e) => setForm({ ...form, service_label: e.target.value })} placeholder="Ex: Coaching personnel, Cours collectif" /></div>
+              <div className="space-y-1">
+                <Label>Type de cours</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {[
+                    { value: 'yoga', label: 'Yoga', icon: '🧘' }, { value: 'hiit', label: 'HIIT', icon: '⚡' },
+                    { value: 'pilates', label: 'Pilates', icon: '🤸' }, { value: 'muscu', label: 'Muscu', icon: '💪' },
+                    { value: 'cardio', label: 'Cardio', icon: '🏃' }, { value: 'boxe', label: 'Boxe', icon: '🥊' },
+                    { value: 'natation', label: 'Natation', icon: '🏊' }, { value: 'individuel', label: 'Individuel', icon: '👤' },
+                  ].map((ct) => (
+                    <button key={ct.value} type="button"
+                      onClick={() => setForm({ ...form, service_code: ct.value, service_label: ct.label })}
+                      className={`flex flex-col items-center rounded-xl border-2 p-2 text-xs font-medium transition-all ${form.service_code === ct.value ? 'border-[#04439e] bg-[#04439e]/10 text-[#04439e]' : 'border-slate-200 hover:border-[#04439e]/50'}`}>
+                      <span className="text-xl">{ct.icon}</span>{ct.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-1"><Label>Intitulé (optionnel)</Label><Input value={form.service_label || ''} onChange={(e) => setForm({ ...form, service_label: e.target.value })} placeholder="Ex: Coaching personnel" /></div>
               <div className="grid grid-cols-3 gap-2">
                 <div className="space-y-1"><Label>Date</Label><Input type="date" value={form.scheduled_date || ''} onChange={(e) => setForm({ ...form, scheduled_date: e.target.value })} /></div>
                 <div className="space-y-1"><Label>Heure</Label><Input type="time" value={form.scheduled_time || ''} onChange={(e) => setForm({ ...form, scheduled_time: e.target.value })} /></div>
@@ -86,14 +103,19 @@ export function FitnessModule({ serviceId, businessName }: FitnessModuleProps) {
         <TabsContent value="planning" className="space-y-2">
         {loading && <div className="flex justify-center py-8"><Loader2 className="h-6 w-6 animate-spin text-[#ff4000]" /></div>}
         {!loading && bookings.length === 0 && <p className="text-center text-sm text-muted-foreground py-8">{t('fitnessModule.aucuneSeancePlanifiee')}</p>}
-        {bookings.map((b) => (
+        {bookings.map((b) => {
+          const icon = ({ yoga: '🧘', hiit: '⚡', pilates: '🤸', muscu: '💪', cardio: '🏃', boxe: '🥊', natation: '🏊', individuel: '👤' } as Record<string, string>)[b.service_code || ''] || '🏋️';
+          const statusColor = b.status === 'completed' ? 'bg-[#16a34a]/10 text-[#16a34a]' : b.status === 'confirmed' ? 'bg-[#04439e]/10 text-[#04439e]' : b.status === 'in_progress' ? 'bg-blue-100 text-blue-700' : b.status === 'cancelled' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-700';
+          const statusLabel = b.status === 'completed' ? 'Terminée' : b.status === 'confirmed' ? 'Confirmée' : b.status === 'in_progress' ? 'En cours' : b.status === 'cancelled' ? 'Annulée' : 'En attente';
+          return (
           <Card key={b.id}><CardContent className="flex flex-wrap items-center gap-3 py-3">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#04439e]/10 text-xl">{icon}</div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
-                <h4 className="font-semibold text-sm">{b.customer_name}</h4>
-                <Badge className={b.status === 'completed' ? 'bg-green-100 text-green-700' : b.status === 'cancelled' ? 'bg-muted text-muted-foreground' : b.status === 'in_progress' ? 'bg-blue-100 text-blue-700' : b.status === 'confirmed' ? 'bg-orange-100 text-[#ff4000]' : 'bg-yellow-100 text-yellow-700'}>{b.status}</Badge>
+                <h4 className="font-semibold text-sm">{b.service_label || 'Séance'}</h4>
+                <Badge className={`border-0 text-[10px] ${statusColor}`}>{statusLabel}</Badge>
               </div>
-              <p className="text-xs text-muted-foreground">{b.service_label} · {b.scheduled_date} {b.scheduled_time} · {b.duration_minutes}min</p>
+              <p className="text-xs text-muted-foreground">{b.customer_name || 'Client'} · {b.scheduled_date} {b.scheduled_time} · {b.duration_minutes}min</p>
             </div>
             <span className="font-bold text-[#ff4000] text-sm"><Money amount={b.price} from="GNF" /></span>
             <div className="flex gap-1">
@@ -103,7 +125,8 @@ export function FitnessModule({ serviceId, businessName }: FitnessModuleProps) {
               {['pending', 'confirmed'].includes(b.status) && <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => setStatus(b.id, 'cancelled')}><X className="h-4 w-4 text-destructive" /></Button>}
             </div>
           </CardContent></Card>
-        ))}
+          );
+        })}
         </TabsContent>
         <TabsContent value="vitrine">
           <ServiceShowcaseManager serviceId={serviceId} />

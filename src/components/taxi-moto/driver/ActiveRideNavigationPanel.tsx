@@ -295,7 +295,7 @@ export function ActiveRideNavigationPanel({
           {/* Point de départ */}
           <div className={cn(
             "p-4 border-l-4 flex items-start gap-3",
-            currentTarget === 'pickup' ? 'border-[#ff4000] bg-[#ff4000]/10' : 'border-gray-600'
+            currentTarget === 'pickup' ? 'border-[#ff4000]' : 'border-gray-600'
           )}>
             <div className={cn(
               "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
@@ -327,7 +327,7 @@ export function ActiveRideNavigationPanel({
           {/* Destination */}
           <div className={cn(
             "p-4 border-l-4 flex items-start gap-3",
-            currentTarget === 'destination' ? 'border-[#ff4000] bg-[#ff4000]/10' : 'border-gray-600'
+            currentTarget === 'destination' ? 'border-[#ff4000]' : 'border-gray-600'
           )}>
             <div className={cn(
               "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",

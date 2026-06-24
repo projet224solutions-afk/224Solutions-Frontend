@@ -78,7 +78,12 @@ export function useProjectDetail(projectId?: string) {
 
   const addLog = useCallback(async (payload: Partial<DailyLog>) => {
     if (!projectId) return false;
-    const { error } = await supabase.from('construction_daily_logs').insert({ ...payload, project_id: projectId } as any);
+    const { error } = await supabase.from('construction_daily_logs').insert({
+      ...payload,
+      project_id: projectId,
+      // S'assurer que log_date est toujours défini (date du jour si non fourni)
+      log_date: payload.log_date || new Date().toISOString().split('T')[0],
+    } as any);
     if (error) { toast.error(error.message); return false; }
     toast.success('Journal enregistré'); await load(); return true;
   }, [projectId, load]);

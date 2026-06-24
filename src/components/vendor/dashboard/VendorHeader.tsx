@@ -57,7 +57,7 @@ const AppBranding = memo(function AppBranding({ displayName }: { displayName: st
       />
 
       <div
-        className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden bg-white shadow-sm ring-1 ring-blue-100"
+        className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden ring-1 ring-blue-100"
         aria-hidden="true"
       >
         <img

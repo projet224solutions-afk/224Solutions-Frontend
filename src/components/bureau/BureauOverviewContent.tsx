@@ -27,6 +27,7 @@ interface BureauOverviewContentProps {
     president_phone?: string;
     status?: string;
     created_at?: string;
+    monthly_goal?: number;
   };
   stats: {
     workersCount: number;
@@ -48,7 +49,8 @@ export function BureauOverviewContent({ bureau, stats, walletBalance = 0 }: Bure
     });
   };
 
-  const monthlyGoal = 100; // Objectif mensuel d'adhérents
+  // Objectif configurable par bureau (champ bureau.monthly_goal en DB), repli à 100
+  const monthlyGoal = bureau.monthly_goal || 100;
   const monthlyProgress = Math.min((stats.membersCount / monthlyGoal) * 100, 100);
 
   return (
@@ -75,7 +77,7 @@ export function BureauOverviewContent({ bureau, stats, walletBalance = 0 }: Bure
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-orange-50 rounded-lg">
+                  <div className="p-2 rounded-lg">
                     <MapPin className="w-4 h-4 text-[#ff4000]" />
                   </div>
                   <div>
@@ -86,7 +88,7 @@ export function BureauOverviewContent({ bureau, stats, walletBalance = 0 }: Bure
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-blue-50 rounded-lg">
+                  <div className="p-2 rounded-lg">
                     <Mail className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
@@ -96,7 +98,7 @@ export function BureauOverviewContent({ bureau, stats, walletBalance = 0 }: Bure
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-orange-50 rounded-lg">
+                  <div className="p-2 rounded-lg">
                     <Phone className="w-4 h-4 text-[#ff4000]" />
                   </div>
                   <div>
@@ -113,7 +115,7 @@ export function BureauOverviewContent({ bureau, stats, walletBalance = 0 }: Bure
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-blue-50 rounded-lg">
+                  <div className="p-2 rounded-lg">
                     <Calendar className="w-4 h-4 text-[#04439e]" />
                   </div>
                   <div>

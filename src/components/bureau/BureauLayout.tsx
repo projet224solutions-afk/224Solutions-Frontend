@@ -237,7 +237,7 @@ export function BureauLayout({
 
           {/* Bureau Info */}
           {!sidebarCollapsed && (
-            <div className="p-4 bg-[#ff4000]/5 mx-3 mt-3 rounded-xl">
+            <div className="p-4 mx-3 mt-3 rounded-xl">
               <div className="flex items-center gap-3">
                 <Avatar className="h-12 w-12 ring-2 ring-white shadow">
                   <AvatarFallback className="bg-[#ff4000] text-white font-semibold">

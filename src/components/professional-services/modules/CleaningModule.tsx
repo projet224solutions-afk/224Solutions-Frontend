@@ -20,7 +20,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import {
   Sparkles, Home, Building2, Users, Calendar,
   Clock, CheckCircle2, DollarSign, TrendingUp,
-  MapPin, Star, ShoppingBag, Shirt
+  MapPin, Star, ShoppingBag, Shirt, Shield
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ServiceShowcaseManager } from '@/components/service-common/ServiceShowcaseManager';
@@ -169,11 +169,11 @@ export function CleaningModule({ serviceId, businessName }: CleaningModuleProps)
 
   const getStatusBadge = (status: Booking['status']) => {
     const variants = {
-      pending: { color: 'bg-[#ff4000]', label: 'En attente' },
-      confirmed: { color: 'bg-blue-500', label: 'Confirmé' },
-      in_progress: { color: 'bg-[#ff4000]', label: 'En cours' },
-      completed: { color: 'bg-gray-500', label: 'Terminé' },
-      cancelled: { color: 'bg-[#ff4000]', label: 'Annulé' }
+      pending: { color: 'bg-amber-100 text-amber-700', label: 'En attente' },
+      confirmed: { color: 'bg-[#04439e]/10 text-[#04439e]', label: 'Confirmé' },
+      in_progress: { color: 'bg-blue-100 text-blue-700', label: 'En cours…' },
+      completed: { color: 'bg-[#16a34a]/10 text-[#16a34a]', label: 'Terminé ✓' },
+      cancelled: { color: 'bg-red-100 text-red-600', label: 'Annulé' }
     };
     return variants[status];
   };
@@ -444,6 +444,11 @@ export function CleaningModule({ serviceId, businessName }: CleaningModuleProps)
                                   </Badge>
                                   {booking.recurring && (
                                     <Badge variant="outline">{t('cleaningModule.recurrent')}</Badge>
+                                  )}
+                                  {['confirmed', 'completed', 'in_progress'].includes(booking.status) && (
+                                    <Badge className="gap-0.5 border-0 bg-[#16a34a]/10 text-[10px] text-[#16a34a]">
+                                      <Shield className="h-2.5 w-2.5" /> Agent vérifié
+                                    </Badge>
                                   )}
                                 </div>
                                 <h3 className="font-bold">{booking.customerName}</h3>

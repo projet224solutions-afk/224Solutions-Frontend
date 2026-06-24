@@ -55,7 +55,7 @@ export function BottomNavigation({
               >
                 {/* Active background pill */}
                 {isActive && (
-                  <div className="absolute inset-x-2 inset-y-1.5 rounded-xl bg-[#ff4000]/10 border border-[#ff4000]/20" />
+                  <div className="absolute inset-x-2 inset-y-1.5 rounded-xl border border-[#ff4000]/20" />
                 )}
 
                 {/* Highlight glow for active ride */}

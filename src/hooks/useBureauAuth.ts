@@ -183,20 +183,35 @@ export const useBureauAuth = () => {
    * Renvoyer OTP
    */
   const resendOTP = async (): Promise<void> => {
+    if (!identifier) {
+      toast.error('Session expirée — veuillez vous reconnecter');
+      setRequiresOTP(false);
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      toast.info('Nouveau code en cours d\'envoi...');
+      toast.info('Envoi du nouveau code en cours...');
 
-      // Pour simplifier, on réinitialise et demande de ressaisir mot de passe
-      toast.warning('Veuillez vous reconnecter pour recevoir un nouveau code');
-      setRequiresOTP(false);
-      setIdentifier('');
-      setOtpExpiresAt('');
+      // Appel réel au backend pour déclencher un nouvel OTP (même signature que verify-otp)
+      const data = await bureauFetch<{ success: boolean; otp_expires_at?: string; error?: string }>(
+        '/api/v2/bureau/auth/resend-otp',
+        { method: 'POST', auth: false, body: { identifier } }
+      );
 
+      if (!data.success) {
+        toast.error((data as any).error || 'Impossible de renvoyer le code');
+        return;
+      }
+
+      const newExpiry = (data as any).otp_expires_at;
+      if (newExpiry) setOtpExpiresAt(newExpiry);
+
+      toast.success('Nouveau code envoyé à votre adresse email');
     } catch (error) {
       console.error('[useBureauAuth] Erreur renvoi OTP:', error);
-      toast.error('Erreur lors du renvoi du code');
+      toast.error('Erreur réseau lors du renvoi du code');
     } finally {
       setIsLoading(false);
     }

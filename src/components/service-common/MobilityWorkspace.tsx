@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Money } from '@/components/Money';
-import { Plus, Wallet, Loader2, Check, X, Play, Copy, Banknote, MapPin, Navigation } from 'lucide-react';
+import { Plus, Wallet, Loader2, Check, X, Play, Copy, Banknote, MapPin, Navigation, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
 import { useMobilityJobs, type JobStatus } from '@/hooks/useMobilityJobs';
 
@@ -31,21 +31,36 @@ export function MobilityWorkspace({ serviceId, jobType }: { serviceId: string; j
   const isCourse = jobType === 'course';
 
   const submit = async () => {
-    if (!form.pickup || !form.price) { toast.error(t('mobilityWorkspace.departEtPrixRequis')); return; }
+    // Validation prix > 0 (avant : un prix 0 / négatif / NaN passait)
+    const parsedPrice = parseFloat(form.price);
+    if (!form.pickup) { toast.error('Adresse de départ requise'); return; }
+    if (!form.price || isNaN(parsedPrice) || parsedPrice <= 0) {
+      toast.error('Le prix doit être supérieur à 0 GNF');
+      return;
+    }
+    // Surge pricing (style Uber) : le multiplicateur est replié dans le prix final
+    const finalPrice = Math.round(parsedPrice * (form.surgeMultiplier || 1.0));
     const ok = await createJob({
       customer_name: form.customer_name, customer_phone: form.customer_phone,
       pickup: form.pickup, destination: form.destination, vehicle_type: form.vehicle_type,
-      package_label: form.package_label, price: Number(form.price) || 0,
+      package_label: form.package_label, price: finalPrice,
     });
     if (ok) { setShow(false); setForm({}); }
   };
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-3 gap-3">
-        <Card className="bg-[#04439e] text-white"><CardContent className="p-3"><Navigation className="h-4 w-4 opacity-80" /><p className="text-xl font-bold mt-1">{stats.active}</p><p className="text-[11px] opacity-80">En cours</p></CardContent></Card>
-        <Card className="bg-[#ff4000] text-white"><CardContent className="p-3"><Check className="h-4 w-4 opacity-80" /><p className="text-xl font-bold mt-1">{stats.completed}</p><p className="text-[11px] opacity-80">{t('mobilityWorkspace.terminees')}</p></CardContent></Card>
-        <Card className="bg-[#04439e] text-white"><CardContent className="p-3"><Wallet className="h-4 w-4 opacity-80" /><p className="text-base font-bold mt-1"><Money amount={stats.revenue} from="GNF" /></p><p className="text-[11px] opacity-80">{t('mobilityWorkspace.encaisse')}</p></CardContent></Card>
+      {/* Dashboard gains — style Uber Driver */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <Card className="bg-[#04439e] border-0 text-white"><CardContent className="p-3"><Navigation className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.active}</p><p className="text-[11px] opacity-80">En cours</p></CardContent></Card>
+        <Card className="bg-[#16a34a] border-0 text-white"><CardContent className="p-3"><Check className="h-4 w-4 opacity-80" /><p className="text-2xl font-bold mt-1">{stats.completed}</p><p className="text-[11px] opacity-80">{t('mobilityWorkspace.terminees')}</p></CardContent></Card>
+        <Card className="bg-[#ff4000] border-0 text-white"><CardContent className="p-3"><Wallet className="h-4 w-4 opacity-80" /><p className="text-base font-bold mt-1"><Money amount={stats.revenue} from="GNF" /></p><p className="text-[11px] opacity-80">{t('mobilityWorkspace.encaisse')}</p></CardContent></Card>
+        <Card className="border-2 border-[#04439e]/20"><CardContent className="p-3">
+          <TrendingUp className="h-4 w-4 text-[#04439e]" />
+          <p className="text-xl font-bold mt-1 text-[#04439e]">{Math.min(100, Math.round((stats.revenue / 500000) * 100))}%</p>
+          <p className="text-[11px] text-muted-foreground">Objectif du jour</p>
+          <div className="mt-1.5 h-1 bg-slate-100 rounded-full overflow-hidden"><div className="h-full bg-[#04439e] rounded-full" style={{ width: `${Math.min(100, Math.round((stats.revenue / 500000) * 100))}%` }} /></div>
+        </CardContent></Card>
       </div>
 
       <Dialog open={show} onOpenChange={setShow}>
@@ -62,7 +77,27 @@ export function MobilityWorkspace({ serviceId, jobType }: { serviceId: string; j
             {isCourse
               ? <div className="space-y-1"><Label>{t('mobilityWorkspace.typeDeVehicule')}</Label><Input value={form.vehicle_type || ''} onChange={(e) => setForm({ ...form, vehicle_type: e.target.value })} placeholder="Berline, Confort…" /></div>
               : <div className="space-y-1"><Label>Colis</Label><Input value={form.package_label || ''} onChange={(e) => setForm({ ...form, package_label: e.target.value })} placeholder={t('mobilityWorkspace.descriptionDuColis')} /></div>}
+            {!isCourse && (
+              <div className="space-y-1">
+                <Label>Distance estimée (km)</Label>
+                <Input type="number" min={0} step={0.1} value={form.distance_km || ''}
+                  onChange={(e) => { const km = parseFloat(e.target.value) || 0; const calc = km <= 3 ? 10000 : km <= 7 ? 20000 : 35000; setForm({ ...form, distance_km: km, price: String(calc) }); }}
+                  placeholder="Ex : 4.5" />
+                <p className="text-[10px] text-muted-foreground">Prix calculé automatiquement selon le barème</p>
+              </div>
+            )}
             <div className="space-y-1"><Label>Prix (GNF)</Label><Input type="number" value={form.price || ''} onChange={(e) => setForm({ ...form, price: e.target.value })} /></div>
+            {isCourse && (
+              <div className="space-y-1">
+                <Label>Multiplicateur tarif</Label>
+                <div className="flex flex-wrap gap-2">
+                  {[{ mult: 1.0, label: 'Normal' }, { mult: 1.2, label: '×1.2' }, { mult: 1.5, label: '×1.5 🔥' }, { mult: 2.0, label: '×2 🔥🔥' }].map(({ mult, label }) => (
+                    <button key={mult} type="button" onClick={() => setForm({ ...form, surgeMultiplier: mult })}
+                      className={`rounded-xl border-2 px-3 py-1.5 text-sm font-semibold transition-all ${(form.surgeMultiplier || 1.0) === mult ? 'border-[#ff4000] bg-[#ff4000]/10 text-[#ff4000]' : 'border-slate-200 text-slate-600 hover:bg-slate-50'}`}>{label}</button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <div className="flex justify-end gap-2"><Button variant="outline" onClick={() => setShow(false)}>{t('mobilityWorkspace.annuler')}</Button><Button onClick={submit}>{t('mobilityWorkspace.creer')}</Button></div>
         </DialogContent>

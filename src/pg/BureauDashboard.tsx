@@ -53,7 +53,6 @@ export default function BureauDashboard() {
   const [isSubmittingMember, setIsSubmittingMember] = useState(false);
   const [showPasswordDialog, setShowPasswordDialog] = useState(false);
   const [showEmailDialog, setShowEmailDialog] = useState(false);
-  const [showToken, setShowToken] = useState(false);
   const [workerForm, setWorkerForm] = useState({
     nom: '',
     email: '',
@@ -82,6 +81,25 @@ export default function BureauDashboard() {
     try {
       setLoading(true);
 
+      // Vérification préalable : si une session JWT (émise après OTP, expire 24h) existe,
+      // elle ne doit pas être expirée.
+      const sessionStr = sessionStorage.getItem('bureau_session') || localStorage.getItem('bureau_session');
+      if (sessionStr) {
+        try {
+          const session = JSON.parse(sessionStr);
+          if (session?.expiresAt && new Date(session.expiresAt) < new Date()) {
+            toast.error('Session expirée — veuillez vous reconnecter');
+            navigate('/');
+            return;
+          }
+        } catch { /* session illisible → on retombe sur le token URL */ }
+      }
+
+      // TODO MIGRATION SÉCURITÉ : passer de l'auth par token URL à l'auth JWT.
+      //   1. Changer la route '/bureau/:token' → '/bureau'
+      //   2. Obtenir bureauId via getCurrentBureau() (session JWT)
+      //   3. Charger via .eq('id', currentBureau.id) et supprimer .eq('access_token', token)
+      //   Prérequis : tous les bureaux migrés vers le système OTP.
       const { data: bureauData, error: bureauError } = await supabase
         .from('bureaus')
         .select('*')
@@ -529,8 +547,9 @@ export default function BureauDashboard() {
                       <p className="text-sm text-slate-500">{worker.email}</p>
                       <p className="text-xs text-slate-400">Accès: {worker.access_level}</p>
                     </div>
-                    <Badge className={worker.is_active ? "bg-orange-100 text-[#ff4000]" : "bg-slate-100 text-slate-600"}>
-                      {worker.is_active ? '● Actif' : '○ Inactif'}
+                    <Badge className={worker.is_active ? "bg-[#16a34a]/10 text-[#16a34a] border-0" : "bg-slate-100 text-slate-500 border-0"}>
+                      <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${worker.is_active ? 'bg-[#16a34a]' : 'bg-slate-400'}`} />
+                      {worker.is_active ? 'Actif' : 'Inactif'}
                     </Badge>
                   </div>
                 ))}
@@ -573,24 +592,33 @@ export default function BureauDashboard() {
                 {alerts.map((alert) => (
                   <div
                     key={alert.id}
-                    className={`flex items-start gap-4 p-4 rounded-xl border ${
-                      alert.is_critical ? 'border-orange-200 bg-orange-50' : 'border-orange-200 bg-orange-50'
+                    className={`flex items-start gap-4 p-4 rounded-xl border transition-colors ${
+                      alert.is_critical
+                        ? 'border-red-300 bg-red-50'        // Critique → fond rouge
+                        : 'border-orange-200 bg-orange-50'  // Normal → orange pâle
                     }`}
                   >
-                    <AlertCircle className={`w-5 h-5 ${alert.is_critical ? 'text-[#ff4000]' : 'text-[#ff4000]'} flex-shrink-0 mt-0.5`} />
+                    <AlertCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${alert.is_critical ? 'text-red-600' : 'text-[#ff4000]'}`} />
                     <div className="flex-1">
-                      <h3 className={`font-medium ${alert.is_critical ? 'text-[#ff4000]' : 'text-[#ff4000]'}`}>
-                        {alert.title}
-                      </h3>
-                      <p className={`text-sm mt-1 ${alert.is_critical ? 'text-[#ff4000]' : 'text-[#ff4000]'}`}>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className={`font-medium ${alert.is_critical ? 'text-red-700' : 'text-[#ff4000]'}`}>
+                          {alert.title}
+                        </h3>
+                        {alert.is_critical && (
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-red-600 text-white px-2 py-0.5 rounded-full">
+                            URGENT
+                          </span>
+                        )}
+                      </div>
+                      <p className={`text-sm mt-1 ${alert.is_critical ? 'text-red-600' : 'text-slate-600'}`}>
                         {alert.message}
                       </p>
-                      <p className="text-xs text-slate-500 mt-2">
-                        {new Date(alert.created_at).toLocaleDateString('fr-FR')}
+                      <p className="text-xs text-slate-400 mt-2">
+                        {new Date(alert.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
-                    <Badge className={alert.is_critical ? 'bg-[#ff4000]' : 'bg-[#ff4000]'}>
-                      {alert.severity}
+                    <Badge className={alert.is_critical ? 'bg-red-600 text-white border-0' : 'bg-orange-100 text-[#ff4000] border-0'}>
+                      {alert.severity || (alert.is_critical ? 'Critique' : 'Normal')}
                     </Badge>
                   </div>
                 ))}
@@ -673,35 +701,40 @@ export default function BureauDashboard() {
               </CardHeader>
               <CardContent className="p-6 space-y-4">
                 <div>
-                  <Label className="text-sm text-slate-500">{t('bureauDashboard.tokenDAccesPermanent')}</Label>
-                  <div className="flex gap-2 mt-2">
-                    <Input
-                      value={showToken ? (bureau?.access_token || '') : '••••••••••••••••••••••••'}
-                      readOnly
-                      className="font-mono text-xs"
-                    />
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => setShowToken(!showToken)}
-                      title={showToken ? 'Masquer' : 'Afficher'}
-                    >
-                      {showToken ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        navigator.clipboard.writeText(bureau?.access_token || '');
-                        toast.success(t('bureauDashboard.tokenCopie'));
-                      }}
-                    >
-                      <Copy className="w-4 h-4" />
-                    </Button>
+                  <Label className="text-sm text-slate-500">Accès & Identification</Label>
+                  <div className="mt-3 space-y-3">
+                    {/* Code bureau (non sensible, partageable) */}
+                    <div className="flex items-center gap-3 p-3 rounded-xl border border-slate-200">
+                      <div className="flex-1">
+                        <p className="text-xs text-slate-500 mb-1">Code bureau (partageable)</p>
+                        <p className="font-mono font-semibold text-slate-800 text-sm">{bureau?.bureau_code}</p>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-slate-300"
+                        onClick={() => {
+                          navigator.clipboard.writeText(bureau?.bureau_code || '');
+                          toast.success('Code bureau copié');
+                        }}
+                      >
+                        <Copy className="w-3.5 h-3.5 mr-1.5" />
+                        Copier
+                      </Button>
+                    </div>
+
+                    {/* Token d'accès — non affiché, non copiable (géré par le PDG) */}
+                    <div className="flex items-start gap-3 p-3 rounded-xl border border-[#ff4000]/20">
+                      <Lock className="w-4 h-4 text-[#ff4000] mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-xs font-medium text-[#ff4000] mb-1">Token d'accès sécurisé</p>
+                        <p className="text-xs text-slate-600 leading-relaxed">
+                          Le token d'accès est géré de manière sécurisée par l'administration PDG.
+                          En cas de compromission suspectée, contactez le support pour une régénération immédiate.
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-xs text-[#ff4000] mt-2 flex items-center gap-1">
-                    <AlertCircle className="w-3 h-3" />
-                    Ne partagez jamais ce token. Il donne un accès complet à votre bureau.
-                  </p>
                 </div>
               </CardContent>
             </Card>

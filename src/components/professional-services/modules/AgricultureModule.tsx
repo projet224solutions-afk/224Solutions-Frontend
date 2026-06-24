@@ -17,6 +17,13 @@ interface AgricultureModuleProps { serviceId: string; businessName?: string; }
 
 const SEASONS = ['Saison sèche (Nov-Avr)', 'Saison des pluies (Mai-Oct)', "Toute l'année"];
 
+// Référence agronomique : cultures typiques par saison en Guinée (guide de planification, pas une donnée vendeur).
+const CROP_CALENDAR: Record<string, string[]> = {
+  'Saison sèche (Nov-Avr)': ['Tomate', 'Oignon', 'Pomme de terre', 'Aubergine', 'Piment', 'Chou', 'Carotte', 'Gombo (irrigué)'],
+  'Saison des pluies (Mai-Oct)': ['Riz', 'Maïs', 'Fonio', 'Arachide', 'Manioc', 'Igname', 'Gombo', 'Niébé'],
+  "Toute l'année": ['Banane plantain', 'Manioc', 'Patate douce', 'Légumes-feuilles', 'Papaye'],
+};
+
 export function AgricultureModule({ serviceId, businessName }: AgricultureModuleProps) {
   const { t } = useTranslation();
   const { products, lowStock } = useFarmProducts(serviceId);
@@ -134,6 +141,14 @@ export function AgricultureModule({ serviceId, businessName }: AgricultureModule
                       {sp.map((p) => <Badge key={p.id} variant="secondary" className="text-xs">{p.name}</Badge>)}
                       {sp.length === 0 && <p className="text-xs text-muted-foreground">{t('agricultureModule.aucunProduitPourCetteSaison')}</p>}
                     </div>
+                    {CROP_CALENDAR[season] && (
+                      <div className="mt-2 border-t border-dashed pt-2">
+                        <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">Cultures typiques en Guinée</p>
+                        <div className="flex flex-wrap gap-1">
+                          {CROP_CALENDAR[season].map((c) => <Badge key={c} variant="outline" className="text-[10px] text-muted-foreground">{c}</Badge>)}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}

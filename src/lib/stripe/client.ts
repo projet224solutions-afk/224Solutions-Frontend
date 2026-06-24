@@ -1,6 +1,5 @@
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { supabase } from '@/integrations/supabase/client';
-import { resolveBackendUrl } from '@/config/backend';
 
 let publishableKeyPromise: Promise<string> | null = null;
 let stripeInstancePromise: Promise<Stripe | null> | null = null;
@@ -19,34 +18,6 @@ const isValidStripeKey = (key: string | undefined): key is string => {
   return /^pk_(test|live)_[A-Za-z0-9]{20,}$/.test(trimmed);
 };
 
-const getBackendStripePublishableKey = async (): Promise<string | null> => {
-  try {
-    const response = await fetch(resolveBackendUrl('/api/payments/stripe/config'), {
-      headers: { Accept: 'application/json' },
-    });
-
-    const contentType = response.headers.get('content-type') || '';
-    const data = contentType.includes('application/json') ? await response.json() : null;
-
-    if (!response.ok) {
-      throw new Error(data?.error || `Erreur backend Stripe ${response.status}`);
-    }
-
-    const backendKey = (data?.publishableKey || data?.publishable_key)?.trim();
-    if (isValidStripeKey(backendKey)) {
-      return backendKey;
-    }
-
-    if (backendKey) {
-      console.warn('⚠️ [Stripe] Clé publique Stripe du backend invalide');
-    }
-  } catch (error) {
-    console.warn('⚠️ [Stripe] Impossible de récupérer la clé publique depuis le backend:', error);
-  }
-
-  return null;
-};
-
 export const getStripePublishableKey = async (): Promise<string> => {
   if (isOffline()) {
     throw new Error(STRIPE_OFFLINE_ERROR);
@@ -63,11 +34,6 @@ export const getStripePublishableKey = async (): Promise<string> => {
 
   if (!publishableKeyPromise) {
     publishableKeyPromise = (async () => {
-      const backendKey = await getBackendStripePublishableKey();
-      if (backendKey) {
-        return backendKey;
-      }
-
       try {
         const { data, error } = await supabase
           .from('stripe_config')
@@ -90,7 +56,7 @@ export const getStripePublishableKey = async (): Promise<string> => {
         console.warn('⚠️ [Stripe] Impossible de récupérer la clé publique depuis stripe_config:', error);
       }
 
-      throw new Error('Clé publique Stripe non configurée. Ajoutez `STRIPE_PUBLISHABLE_KEY` dans `backend/.env`, `VITE_STRIPE_PUBLISHABLE_KEY` côté frontend, ou renseignez `stripe_config`.');
+      throw new Error('Clé Stripe non configurée. Ajoutez `VITE_STRIPE_PUBLISHABLE_KEY` ou renseignez `stripe_config`.');
     })().catch((error) => {
       publishableKeyPromise = null;
       throw error;

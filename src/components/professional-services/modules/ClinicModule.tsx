@@ -100,6 +100,17 @@ export function ClinicModule({ serviceId, businessName }: ClinicModuleProps) {
 
         {/* Vue d'ensemble : agenda du jour */}
         <TabsContent value="overview" className="mt-4 space-y-3">
+          {/* Prochaine disponibilité — style Zocdoc */}
+          <Card className="border-0 bg-[#04439e] text-white">
+            <CardContent className="flex items-center gap-3 p-4">
+              <CalendarClock className="h-8 w-8 opacity-80" />
+              <div>
+                <p className="text-sm font-semibold">Prochaine disponibilité</p>
+                <p className="text-xl font-bold">{new Date().getHours() < 16 ? "Aujourd'hui · cet après-midi" : 'Demain · matin'}</p>
+                <p className="text-xs opacity-70">Confirmation en moins de 24h</p>
+              </div>
+            </CardContent>
+          </Card>
           <Card>
             <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><CalendarClock className="h-4 w-4 text-[#04439e]" /> {t('clinic.todayAppointments')}</CardTitle></CardHeader>
             <CardContent>
@@ -209,6 +220,16 @@ function AppointmentRow({ b, onStatus, compact }: { b: ServiceBooking; onStatus:
           <Button size="sm" className="h-8 gap-1 bg-emerald-600 hover:bg-emerald-700" onClick={() => onStatus(b.id, 'completed')}><CheckCircle2 className="h-3.5 w-3.5" /> {t('clinic.finish')}</Button>
         )}
       </div>
+      {/* No-show : RDV confirmé dont l'heure est dépassée — style Zocdoc */}
+      {b.status === 'confirmed' && b.scheduled_date && b.scheduled_time &&
+        new Date(`${b.scheduled_date}T${b.scheduled_time}`) < new Date() && (
+        <div className="flex w-full items-center justify-between rounded-lg border border-red-200 bg-red-50 p-2">
+          <p className="text-xs font-medium text-red-600">⚠️ RDV passé — patient non présenté</p>
+          <Button size="sm" variant="outline" className="h-6 border-red-300 text-xs text-red-600" onClick={() => onStatus(b.id, 'cancelled')}>
+            Marquer absent
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

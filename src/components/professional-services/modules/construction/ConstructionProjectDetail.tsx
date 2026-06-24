@@ -14,9 +14,14 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Money } from '@/components/Money';
-import { ArrowLeft, Plus, Camera, Lock, Loader2, CheckCircle2, Circle, Wallet, Share2 } from 'lucide-react';
+import { Money, useMoneyFormat } from '@/components/Money';
+import { ArrowLeft, Plus, Camera, Lock, Loader2, CheckCircle2, Circle, Wallet, Share2, FileDown } from 'lucide-react';
 import { toast } from 'sonner';
+import { ConstructionLots } from './ConstructionLots';
+import { ConstructionReserves } from './ConstructionReserves';
+import { ConstructionMeetings } from './ConstructionMeetings';
+import { ConstructionIntervenants } from './ConstructionIntervenants';
+import { exportProjectReportPdf } from '@/lib/constructionPdf';
 
 const WEATHER = ['☀️', '⛅', '🌧️', '⛈️', '🌬️', '❄️'];
 
@@ -28,6 +33,15 @@ export function ConstructionProjectDetail({ project, onBack }: { project: Constr
   const [uploading, setUploading] = useState(false);
   const [savingLog, setSavingLog] = useState(false);
   const [ms, setMs] = useState({ title: '', amount: 0 });
+  const [exporting, setExporting] = useState(false);
+  const { format: moneyFmt } = useMoneyFormat();
+
+  const exportReport = async () => {
+    setExporting(true);
+    try { await exportProjectReportPdf(project, (n) => moneyFmt(n)); }
+    catch { toast.error('Erreur lors de la génération du PDF'); }
+    finally { setExporting(false); }
+  };
 
   const onPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; e.target.value = '';
@@ -57,12 +71,17 @@ export function ConstructionProjectDetail({ project, onBack }: { project: Constr
         <Badge variant="outline" className="capitalize">{project.status.replace('_', ' ')}</Badge>
         <span className="ml-auto text-sm text-muted-foreground">{project.client_name}</span>
         <Button size="sm" variant="outline" onClick={() => { void navigator.clipboard?.writeText(`${window.location.origin}/chantier/${project.id}`); toast.success(t('constructionProjectDetail.lienClientCopie')); }}><Share2 className="h-4 w-4 mr-1" />{t('constructionProjectDetail.lienClient')}</Button>
+        <Button size="sm" variant="outline" onClick={exportReport} disabled={exporting}>{exporting ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <FileDown className="h-4 w-4 mr-1" />}Rapport PDF</Button>
       </div>
 
       <Tabs defaultValue="overview">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid h-auto w-full grid-cols-3 sm:grid-cols-4 lg:grid-cols-8">
           <TabsTrigger value="overview">{t('constructionProjectDetail.vueGenerale')}</TabsTrigger>
           <TabsTrigger value="journal">Journal</TabsTrigger>
+          <TabsTrigger value="lots">Corps d'état</TabsTrigger>
+          <TabsTrigger value="reserves">Réserves</TabsTrigger>
+          <TabsTrigger value="meetings">Réunions</TabsTrigger>
+          <TabsTrigger value="intervenants">Intervenants</TabsTrigger>
           <TabsTrigger value="budget">Budget</TabsTrigger>
           <TabsTrigger value="milestones">Jalons</TabsTrigger>
         </TabsList>
@@ -142,6 +161,26 @@ export function ConstructionProjectDetail({ project, onBack }: { project: Constr
             </CardContent></Card>
           ))}
           <p className="text-[11px] text-muted-foreground">{t('constructionProjectDetail.leClientFinancePuisValide')}</p>
+        </TabsContent>
+
+        {/* Corps d'état / Lots par métier */}
+        <TabsContent value="lots" className="mt-4">
+          <ConstructionLots project={project} />
+        </TabsContent>
+
+        {/* Réserves / Punch list */}
+        <TabsContent value="reserves" className="mt-4">
+          <ConstructionReserves project={project} />
+        </TabsContent>
+
+        {/* Réunions OPC */}
+        <TabsContent value="meetings" className="mt-4">
+          <ConstructionMeetings project={project} />
+        </TabsContent>
+
+        {/* Intervenants */}
+        <TabsContent value="intervenants" className="mt-4">
+          <ConstructionIntervenants project={project} />
         </TabsContent>
       </Tabs>
     </div>

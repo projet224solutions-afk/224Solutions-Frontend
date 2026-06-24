@@ -102,7 +102,7 @@ export function DriverMainDashboard({
 
         {/* Accent glow when online */}
         {isOnline && (
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-72 bg-[#ff4000]/10 rounded-full blur-3xl" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full blur-3xl" />
         )}
       </div>
 
@@ -114,7 +114,7 @@ export function DriverMainDashboard({
         {/* Error Banner - compact */}
         {error && (
           <div className="px-2 pt-1">
-            <div className="flex items-center gap-2 p-2 rounded-lg bg-[#ff4000]/10 border border-[#ff4000]/20">
+            <div className="flex items-center gap-2 p-2 rounded-lg border border-[#ff4000]/20">
               <AlertCircle className="w-4 h-4 text-[#ff4000] flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-[#ff4000] text-xs font-medium truncate">
@@ -156,7 +156,7 @@ export function DriverMainDashboard({
               {/* Header with count */}
               <div className="flex items-center justify-between w-full px-1">
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-[#ff4000]/20 flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center">
                     <Car className="w-3.5 h-3.5 text-[#ff4000]" />
                   </div>
                   <div>
@@ -166,7 +166,7 @@ export function DriverMainDashboard({
                     <p className="text-gray-500 text-[10px]">Nouvelles demandes</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#ff4000]/10 border border-[#ff4000]/20">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#ff4000]/20">
                   <Zap className="w-2.5 h-2.5 text-[#ff4000]" />
                   <span className="text-[#ff4000] text-[10px] font-medium">En direct</span>
                 </div>
@@ -225,7 +225,7 @@ export function DriverMainDashboard({
 
                   <div className="relative flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-10 h-10 rounded-lg bg-[#ff4000]/20 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center">
                         <Zap className="w-5 h-5 text-[#ff4000] animate-pulse" />
                       </div>
                       <div>

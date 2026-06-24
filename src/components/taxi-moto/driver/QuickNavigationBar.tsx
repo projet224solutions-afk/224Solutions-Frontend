@@ -38,8 +38,7 @@ export function QuickNavigationBar({
       <div className="bg-gray-800 rounded-2xl shadow-xl border border-gray-700 overflow-hidden">
         {/* Info de navigation */}
         <div className={cn(
-          "px-4 py-2 flex items-center gap-3",
-          targetType === 'pickup' ? 'bg-[#ff4000]/20' : 'bg-[#ff4000]/20'
+          "px-4 py-2 flex items-center gap-3"
         )}>
           <div className={cn(
             "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",

@@ -144,7 +144,7 @@ export function SyndicateWorkersManagement({ bureauId, bureauName }: SyndicateWo
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center">
                 <Users className="w-5 h-5 text-blue-600" />
               </div>
               <div>
@@ -157,7 +157,7 @@ export function SyndicateWorkersManagement({ bureauId, bureauName }: SyndicateWo
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center">
                 <UserCheck className="w-5 h-5 text-[#ff4000]" />
               </div>
               <div>
@@ -170,7 +170,7 @@ export function SyndicateWorkersManagement({ bureauId, bureauName }: SyndicateWo
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center">
                 <Crown className="w-5 h-5 text-[#ff4000]" />
               </div>
               <div>
@@ -183,7 +183,7 @@ export function SyndicateWorkersManagement({ bureauId, bureauName }: SyndicateWo
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center">
                 <Key className="w-5 h-5 text-[#04439e]" />
               </div>
               <div>
@@ -374,7 +374,7 @@ export function SyndicateWorkersManagement({ bureauId, bureauName }: SyndicateWo
                   }`}
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center">
                       <span className="text-lg font-bold text-primary">
                         {worker.nom?.charAt(0)?.toUpperCase() || '?'}
                       </span>

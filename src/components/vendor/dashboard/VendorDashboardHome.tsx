@@ -63,10 +63,10 @@ const OrderCard = memo(function OrderCard({
   const { t } = useTranslation();
 
   return (
-    <div className="flex items-center justify-between p-2 sm:p-3 bg-muted/50 rounded-lg">
+    <div className="flex items-center justify-between p-2 sm:p-3 border border-border rounded-lg">
       <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
         <div
-          className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0"
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center flex-shrink-0"
           aria-hidden="true"
         >
           <Package className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />

@@ -20,6 +20,8 @@ import { toast } from 'sonner';
 function startOfWeek(d: Date) { const x = new Date(d); const day = (x.getDay() + 6) % 7; x.setDate(x.getDate() - day); x.setHours(0, 0, 0, 0); return x; }
 const DAYS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 const iso = (d: Date) => d.toISOString().slice(0, 10);
+// Palette de 8 couleurs pour les coiffeurs — style Fresha multi-staff
+const STAFF_COLORS = ['#04439e', '#7c3aed', '#0891b2', '#059669', '#d97706', '#dc2626', '#be185d', '#6d28d9'];
 
 export function BeautyAgenda({ serviceId }: { serviceId: string }) {
   const { t } = useTranslation();
@@ -27,7 +29,7 @@ export function BeautyAgenda({ serviceId }: { serviceId: string }) {
   const { services } = useBeautyServices(serviceId);
   const [weekStart, setWeekStart] = useState(() => startOfWeek(new Date()));
   const [selected, setSelected] = useState<BeautyAppointment | null>(null);
-  const [busyOnline, setBusyOnline] = useState(false); // « Mode occupé »
+  const [busyOnline, setBusyOnline] = useState(false); // « Mode occupé » (local — voir note d'audit)
   const [newOpen, setNewOpen] = useState(false);
   const [form, setForm] = useState({ beauty_service_id: '', customer_name: '', customer_phone: '', appointment_date: iso(new Date()), appointment_time: '10:00' });
   const [saving, setSaving] = useState(false);
@@ -41,6 +43,12 @@ export function BeautyAgenda({ serviceId }: { serviceId: string }) {
   }, [appointments, days]);
 
   const svc = (id: string | null) => services.find((s) => s.id === id);
+
+  // Couleur dédiée par coiffeur (multi-staff) — style Fresha
+  const staffColorMap = useMemo(() => {
+    const ids = [...new Set(appointments.map((a) => a.staff_id).filter(Boolean))] as string[];
+    return Object.fromEntries(ids.map((id, i) => [id, STAFF_COLORS[i % STAFF_COLORS.length]]));
+  }, [appointments]);
 
   const submitNew = async () => {
     const s = svc(form.beauty_service_id);
@@ -80,12 +88,20 @@ export function BeautyAgenda({ serviceId }: { serviceId: string }) {
             <div key={i} className="min-h-[8rem] space-y-1 rounded-lg border p-1">
               <div className={`text-center text-xs font-semibold ${isToday ? 'text-[#ff4000]' : 'text-muted-foreground'}`}>{DAYS[i]} {d.getDate()}</div>
               {list.length === 0 && <button onClick={() => { setForm((f) => ({ ...f, appointment_date: iso(d) })); setNewOpen(true); }} className="w-full rounded border border-dashed py-1 text-[10px] text-muted-foreground hover:border-[#ff4000]">+ libre</button>}
-              {list.map((a) => (
-                <button key={a.id} onClick={() => setSelected(a)} className={`w-full rounded px-1.5 py-1 text-left text-[11px] text-white ${a.status === 'cancelled' || a.status === 'no_show' ? 'bg-slate-400 line-through' : colorFor(svc(a.beauty_service_id)?.category)}`}>
-                  <div className="font-semibold">{a.appointment_time.slice(0, 5)} · {a.customer_name}</div>
-                  <div className="truncate opacity-90">{svc(a.beauty_service_id)?.name || 'Service'}</div>
-                </button>
-              ))}
+              {list.map((a) => {
+                const cancelled = a.status === 'cancelled' || a.status === 'no_show';
+                // Multi-staff : couleur du coiffeur si assigné, sinon couleur par catégorie (mono-staff)
+                const staffColor = a.staff_id ? staffColorMap[a.staff_id] : null;
+                const useStaff = !cancelled && !!staffColor;
+                return (
+                  <button key={a.id} onClick={() => setSelected(a)}
+                    className={`w-full rounded px-1.5 py-1 text-left text-[11px] ${cancelled ? 'bg-slate-400 line-through text-white' : useStaff ? 'text-slate-900' : `text-white ${colorFor(svc(a.beauty_service_id)?.category)}`}`}
+                    style={useStaff ? { backgroundColor: staffColor + '20', borderLeft: `3px solid ${staffColor}` } : undefined}>
+                    <div className="font-semibold">{a.appointment_time.slice(0, 5)} · {a.customer_name}</div>
+                    <div className="truncate opacity-90">{svc(a.beauty_service_id)?.name || 'Service'}</div>
+                  </button>
+                );
+              })}
             </div>
           );
         })}
