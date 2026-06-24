@@ -57,7 +57,7 @@ export default function TaxiMotoDriver() {
         stopWatching,
     } = useGPSLocation({
         enableHighAccuracy: true,
-        watchPosition: false,
+        watchPosition: true,  // ✅ Suivi GPS continu (throttle 5s/10s géré ci-dessous)
         onLocationChange: (loc) => {
             const now = Date.now();
             if (driverIdRef.current && isOnlineRef.current) {

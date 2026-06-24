@@ -223,7 +223,7 @@ export function useTaxiActiveRide(
     try {
       console.log('❌ Annulation de la course:', activeRide.id);
 
-      await TaxiMotoService.updateRideStatus(activeRide.id, 'cancelled', {
+      await TaxiMotoService.updateRideStatus(activeRide.id, 'cancelled', 'driver', {
         cancel_reason: 'Annulée par le conducteur',
         cancelled_at: new Date().toISOString()
       });
@@ -244,7 +244,7 @@ export function useTaxiActiveRide(
     try {
       console.log('🏁 Finalisation de la course:', activeRide.id);
 
-      await TaxiMotoService.updateRideStatus(activeRide.id, 'completed', {
+      await TaxiMotoService.updateRideStatus(activeRide.id, 'completed', 'driver', {
         completed_at: new Date().toISOString()
       });
 

@@ -59,28 +59,22 @@ export function useTaxiRideRequests(
     let customerRating = 4.5;
 
     try {
-      const { data: customerProfile } = await supabase
-        .from('profiles')
-        .select('first_name, last_name, phone')
-        .eq('id', ride.customer_id as string)
-        .single();
+      // ✅ 1 seule RPC (profil + note moyenne) au lieu de 2 requêtes séquentielles.
+      // (l'ancien code filtrait taxi_ratings.customer_id qui n'existe pas → renvoyait
+      //  toujours 4.5 ; la RPC utilise le vrai champ user_id côté serveur.)
+      const { data: customerInfo, error: infoError } = await supabase.rpc(
+        'get_customer_ride_info' as any,
+        { p_customer_id: ride.customer_id }
+      );
 
-      if (customerProfile) {
-        customerName = `${customerProfile.first_name || ''} ${customerProfile.last_name || ''}`.trim() || 'Client';
-        customerPhone = customerProfile.phone || customerPhone;
-      }
-
-      // Charger les notes - bypass type checking pour taxi_ratings
-      const { data: ratingsData } = await (supabase as any)
-        .from('taxi_ratings')
-        .select('stars')
-        .eq('customer_id', String(ride.customer_id));
-
-      if (ratingsData && Array.isArray(ratingsData) && ratingsData.length > 0) {
-        customerRating = ratingsData.reduce((sum: number, r: any) => sum + (r.stars || 0), 0) / ratingsData.length;
+      if (!infoError && customerInfo) {
+        const info = customerInfo as any;
+        customerName  = `${info.first_name || ''} ${info.last_name || ''}`.trim() || 'Client';
+        customerPhone = info.phone || customerPhone;
+        customerRating = Number(info.avg_rating ?? 4.5);
       }
     } catch (error) {
-      console.error('Error loading customer:', error);
+      console.error('Error loading customer info:', error);
     }
 
     const request: RideRequest = {

@@ -133,7 +133,7 @@ export function useDriverRideActions({
     if (!activeRide) return;
 
     try {
-      await TaxiMotoService.updateRideStatus(activeRide.id, 'cancelled', {
+      await TaxiMotoService.updateRideStatus(activeRide.id, 'cancelled', 'driver', {
         cancel_reason: reason
       } as any);
 
@@ -151,7 +151,7 @@ export function useDriverRideActions({
     if (!activeRide) return;
 
     try {
-      await TaxiMotoService.updateRideStatus(activeRide.id, 'completed', {
+      await TaxiMotoService.updateRideStatus(activeRide.id, 'completed', 'driver', {
         completed_at: new Date().toISOString()
       });
 
