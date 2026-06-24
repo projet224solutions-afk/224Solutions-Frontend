@@ -16,6 +16,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:smoke": "playwright test",
     "test:load": "k6 run scripts/load-test.js",
     "test:load:light": "k6 run --vus 100 --duration 1m scripts/load-test.js",
     "migrate:type-agent": "tsx scripts/apply-type-agent-migration.ts",
@@ -116,6 +117,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@playwright/test": "^1.49.1",
     "@swc/core": "^1.15.8",
     "@tailwindcss/typography": "^0.5.16",
     "@types/crypto-js": "^4.2.2",

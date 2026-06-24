@@ -55,3 +55,8 @@ src/i18n/*.bak*
 
 # Fichier de remplacement de la purge de secrets (contient les tokens fuités — NE JAMAIS committer)
 scripts/security/.purge-replacements.txt
+
+# Playwright
+test-results/
+playwright-report/
+.playwright/

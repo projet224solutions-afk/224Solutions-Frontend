@@ -1,0 +1,62 @@
+name: CI — Quality Gate
+
+# Porte qualité : bloque le merge si types / build / secrets / smoke échouent.
+# À activer ensuite dans GitHub : Settings → Branches → Branch protection rules
+# → exiger le job "quality-gate" sur `main` et `frontend`.
+
+on:
+  pull_request:
+  push:
+    branches: [main, frontend]
+
+# Annule les runs précédents sur la même branche (économise des minutes)
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    env:
+      # ⚠️ À renseigner dans Settings → Secrets and variables → Actions
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Types (tsc)
+        run: npx tsc --noEmit
+
+      - name: Scan secrets (bundle)
+        run: npm run scan:secrets
+
+      - name: Build (Vite/SWC)
+        run: npm run build
+
+      - name: Unit tests (vitest)
+        run: npm run test:run
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Smoke tests (navigateur réel)
+        run: npm run test:smoke
+
+  # Détection de secrets dans tout l'historique du commit/PR
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
