@@ -28,16 +28,24 @@ export interface NearbyDriver {
 export type TaxiRide = TaxiTrip;
 
 export interface FareCalculation {
-  base_fare: number;
-  distance_cost: number;
-  time_cost: number;
-  subtotal: number;
-  surge_multiplier: number;
-  surge_amount: number;
+  // Champs réels retournés par la RPC calculate_taxi_fare
   total: number;
-  commission: number;
-  driver_earnings: number;
-  currency: string;
+  base_fare: number;
+  distance_fee: number;   // ✅ nom exact de la RPC
+  time_fee: number;       // ✅ nom exact de la RPC
+  platform_fee: number;   // ✅ nom exact de la RPC
+  driver_share: number;   // ✅ nom exact de la RPC
+  surge_multiplier: number;
+
+  // Alias / champs optionnels conservés pour compatibilité (pas de breaking change)
+  distance_cost?: number;   // alias → distance_fee
+  time_cost?: number;       // alias → time_fee
+  commission?: number;      // alias → platform_fee
+  driver_earnings?: number; // alias → driver_share
+  surge_amount?: number;
+  subtotal?: number;
+  currency?: string;
+  total_fare?: number;      // certains appels utilisent total_fare
 }
 
 export interface TrackingPoint {

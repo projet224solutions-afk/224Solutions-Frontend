@@ -30,6 +30,7 @@ import { toast } from "sonner";
 import { getVehicleTypeInfo } from "@/services/pricingService";
 import { useAuth } from "@/hooks/useAuth";
 import { TaxiMotoService } from "@/services/taxi/TaxiMotoService";
+import { TaxiMotoPricingService } from "@/services/taxi/TaxiMotoPricingService";
 import { supabase } from "@/integrations/supabase/client";
 import PaymentMethodStep from "./PaymentMethodStep";
 import { PaymentMethod } from "@/services/taxi/paymentsService";
@@ -83,6 +84,12 @@ export default function TaxiMotoBooking({
     const [priceEstimate, setPriceEstimate] = useState<{
         totalPrice: number;
         basePrice: number;
+        distanceFee: number;     // ✅ distance_fee de la RPC
+        timeFee: number;         // ✅ time_fee de la RPC
+        surgeMultiplier: number; // ✅ surge_multiplier de la RPC
+        surgeAmount: number;     // ✅ calculé = total - (base+distance+temps)
+        driverShare: number;     // ✅ driver_share de la RPC
+        platformFee: number;     // ✅ platform_fee de la RPC
         distance: number;
         duration: number;
         currency: string;
@@ -147,24 +154,62 @@ export default function TaxiMotoBooking({
                     duration: route.duration.text,
                 });
 
-                // Calculer le prix via le service backend
+                // ✅ Surge dynamique (ratio demande/offre dans la zone). Non bloquant.
+                let surgeFactor = 1.0;
+                if (pickupAddress) {
+                    try {
+                        surgeFactor = await TaxiMotoPricingService.calculateSurgeMultiplier(
+                            pickupAddress.latitude,
+                            pickupAddress.longitude,
+                            5 // rayon 5 km
+                        );
+                    } catch {
+                        surgeFactor = 1.0; // fallback silencieux
+                    }
+                }
+
+                // Calculer le prix via le service backend (avec le vrai surge)
                 const fareCalculation = await TaxiMotoService.calculateFare(
                     distanceKm,
                     durationMin,
-                    1.0
+                    surgeFactor
                 );
 
                 if (fareCalculation) {
-                    const totalPrice = (fareCalculation as any).total_fare || (fareCalculation as any).total || fareCalculation.total;
-                    const basePrice = (fareCalculation as any).base_fare || 0;
+                    const f = fareCalculation as any;
+                    const totalPrice = Number(f.total_fare ?? f.total ?? 0);
+                    const baseFare = Number(f.base_fare ?? 0);
+                    const distanceFee = Number(f.distance_fee ?? f.distance_cost ?? 0);
+                    const timeFee = Number(f.time_fee ?? f.time_cost ?? 0);
+                    const surgeMultiplier = Number(f.surge_multiplier ?? 1.0);
+                    const driverShare = Number(f.driver_share ?? f.driver_earnings ?? 0);
+                    const platformFee = Number(f.platform_fee ?? f.commission ?? 0);
 
-                    setPriceEstimate({
-                        totalPrice: Math.round(totalPrice),
-                        basePrice: Math.round(basePrice),
-                        distance: distanceKm,
-                        duration: durationMin,
-                        currency: 'GNF'
-                    });
+                    // Montant ajouté par le surge
+                    const subtotalWithoutSurge = baseFare + distanceFee + timeFee;
+                    const surgeAmount = surgeMultiplier > 1
+                        ? Math.round(totalPrice - subtotalWithoutSurge)
+                        : 0;
+
+                    if (totalPrice > 0) {
+                        setPriceEstimate({
+                            totalPrice: Math.round(totalPrice),
+                            basePrice: Math.round(baseFare),
+                            distanceFee: Math.round(distanceFee),
+                            timeFee: Math.round(timeFee),
+                            surgeMultiplier,
+                            surgeAmount: Math.round(surgeAmount),
+                            driverShare: Math.round(driverShare),
+                            platformFee: Math.round(platformFee),
+                            distance: parseFloat(distanceKm.toFixed(2)),
+                            duration: Math.round(durationMin),
+                            currency: 'GNF',
+                        });
+                    } else {
+                        console.error('[TaxiMotoBooking] Prix invalide:', fareCalculation);
+                        setPriceEstimate(null);
+                        toast.error(t('taxiMotoBookingV2.impossibleDeCalculerLItineraire'));
+                    }
                 }
             }
 
@@ -425,27 +470,70 @@ export default function TaxiMotoBooking({
                             Détail du prix
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-3">
+                    <CardContent className="space-y-2.5">
+                        {/* Tarif de base */}
                         <div className="flex justify-between text-sm">
-                            <span>{t('taxiMotoBookingV2.prixDeBase')}</span>
-                            <span><Money amount={priceEstimate.basePrice || 0} from="GNF" /></span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                            <span>Distance ({routeInfo?.distanceText || `${priceEstimate.distance}km`})</span>
-                            <span>Inclus</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                            <span>Temps estimé ({routeInfo?.durationText || `${priceEstimate.duration}min`})</span>
-                            <span>Inclus</span>
+                            <span className="text-muted-foreground">{t('taxiMotoBookingV2.prixDeBase')}</span>
+                            <span className="font-medium"><Money amount={priceEstimate.basePrice || 0} from="GNF" /></span>
                         </div>
 
+                        {/* Distance — montant réel */}
+                        <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">
+                                Distance ({routeInfo?.distanceText || `${priceEstimate.distance} km`})
+                            </span>
+                            <span className="font-medium">
+                                {priceEstimate.distanceFee > 0
+                                    ? <Money amount={priceEstimate.distanceFee} from="GNF" />
+                                    : 'Inclus'}
+                            </span>
+                        </div>
+
+                        {/* Temps — montant réel */}
+                        <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">
+                                Temps ({routeInfo?.durationText || `${priceEstimate.duration} min`})
+                            </span>
+                            <span className="font-medium">
+                                {priceEstimate.timeFee > 0
+                                    ? <Money amount={priceEstimate.timeFee} from="GNF" />
+                                    : 'Inclus'}
+                            </span>
+                        </div>
+
+                        {/* Surge — uniquement si majoration */}
+                        {priceEstimate.surgeMultiplier > 1.0 && (
+                            <>
+                                <Separator />
+                                <div className="flex justify-between text-sm">
+                                    <span className="flex items-center gap-1 text-[#ff4000] font-medium">
+                                        <Zap className="w-3.5 h-3.5" />
+                                        Majoration forte demande (×{priceEstimate.surgeMultiplier.toFixed(2)})
+                                    </span>
+                                    <span className="text-[#ff4000] font-medium">
+                                        +<Money amount={priceEstimate.surgeAmount} from="GNF" />
+                                    </span>
+                                </div>
+                            </>
+                        )}
+
                         <Separator />
-                        <div className="flex justify-between text-lg font-bold">
-                            <span>Total</span>
-                            <span className="text-[#ff4000]">
+
+                        {/* Total */}
+                        <div className="flex justify-between">
+                            <span className="text-base font-bold">Total</span>
+                            <span className="text-lg font-bold text-[#ff4000]">
                                 <Money amount={priceEstimate.totalPrice || 0} from="GNF" />
                             </span>
                         </div>
+
+                        {/* Part chauffeur (informatif) */}
+                        {priceEstimate.driverShare > 0 && (
+                            <div className="flex justify-between text-xs text-muted-foreground pt-1 border-t">
+                                <span>Revenu chauffeur</span>
+                                <span><Money amount={priceEstimate.driverShare} from="GNF" /></span>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             )}
