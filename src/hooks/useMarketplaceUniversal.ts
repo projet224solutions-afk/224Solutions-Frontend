@@ -233,6 +233,15 @@ export const useMarketplaceUniversal = (options: UseMarketplaceUniversalOptions 
         const c = sanitizeSearchTerm(city);
         query = query.or(`city.ilike.${c}`, { referencedTable: 'vendors' });
       }
+      // 🌍 Filtre PAYS côté SERVEUR — match EXACT (insensible à la casse), même
+      // mécanisme que la ville. Auparavant filtré côté client APRÈS .limit() →
+      // pagination tronquée (peu de résultats puis hasMore=false). Désormais le
+      // .limit() s'applique aux produits DÉJÀ filtrés par pays. Pas de '%…%'
+      // (éviterait "Guinea" de matcher "Guinea-Bissau").
+      if (country && country !== 'all') {
+        const cc = sanitizeSearchTerm(country);
+        query = query.or(`country.ilike.${cc}`, { referencedTable: 'vendors' });
+      }
       if (minPrice && minPrice > 0) query = query.gte('price', minPrice);
       if (maxPrice && maxPrice > 0) query = query.lte('price', maxPrice);
       if (minRating && minRating > 0) query = query.gte('rating', minRating);
@@ -242,20 +251,9 @@ export const useMarketplaceUniversal = (options: UseMarketplaceUniversalOptions 
         .limit(sourceRowLimit);
       if (error) throw error;
 
-      // Reste : seul le filtre PAYS demeure côté client (correspondance normalisée exacte,
-      // robuste aux variations de casse/espaces). business_type + ville sont déjà filtrés serveur.
-      const filtered = (data || []).filter(product => {
-        const vendor = (product.vendors as any);
-        if (!vendor) return false; // sécurité (jointure inner garantit déjà la présence)
-
-        if (country && country !== 'all') {
-          const vendorCountry = (vendor.country || '').trim().replace(/\s+/g, ' ').toLowerCase();
-          const normalizedCountry = country.trim().replace(/\s+/g, ' ').toLowerCase();
-          if (vendorCountry !== normalizedCountry) return false;
-        }
-
-        return true;
-      });
+      // business_type + ville + pays sont désormais filtrés CÔTÉ SERVEUR (cf. plus haut).
+      // Reste juste la sécurité : ne garder que les produits ayant bien un vendeur joint.
+      const filtered = (data || []).filter(product => !!(product.vendors as any));
 
       // Récupérer les public_id des vendeurs depuis profiles
       const vendorUserIds = filtered

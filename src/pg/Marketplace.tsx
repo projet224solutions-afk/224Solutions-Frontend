@@ -733,6 +733,7 @@ export default function Marketplace() {
             onClick={() => {
               setActiveTab('services');
               setSelectedItemType('professional_service');
+              setSelectedCategory('all');          // ✅ évite la page blanche (catégorie e-commerce résiduelle)
               setSelectedDigitalCategory('all');
               setShowCountryPicker(false);
             }}
@@ -751,6 +752,8 @@ export default function Marketplace() {
             onClick={() => {
               setActiveTab('digital');
               setSelectedItemType('digital_product');
+              setSelectedCategory('all');          // ✅ évite la page blanche (catégorie e-commerce résiduelle)
+              setSelectedDigitalCategory('all');
               setShowCountryPicker(false);
             }}
             className={cn(
@@ -770,6 +773,23 @@ export default function Marketplace() {
       {/* Filtre categories numeriques - Visible uniquement pour les produits numeriques */}
       {selectedItemType === 'digital_product' && (
         <section className="px-2 py-2 border-b border-border">
+          {/* ✅ Les produits numériques sont mondiaux : le filtre pays ne s'applique pas. */}
+          {selectedCountry && selectedCountry !== 'all' && (
+            <div className="flex items-center justify-between gap-2 text-xs text-[#04439e] bg-[#04439e]/5 rounded-xl border border-[#04439e]/20 px-3 py-2 mb-2">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <Globe className="h-3.5 w-3.5 flex-shrink-0" />
+                <span className="truncate">
+                  Produits numériques mondiaux — filtre <strong>{selectedCountry}</strong> ignoré
+                </span>
+              </div>
+              <button
+                className="text-[10px] underline text-[#04439e] flex-shrink-0"
+                onClick={() => setSelectedCountry('all')}
+              >
+                Effacer
+              </button>
+            </div>
+          )}
           <div className="flex gap-1.5 overflow-x-auto scrollbar-hide pb-1 -mx-1 px-1">
             {DIGITAL_CATEGORIES.map((cat) => {
               const IconComponent = cat.icon;
