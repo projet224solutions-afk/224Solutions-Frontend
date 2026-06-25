@@ -85,17 +85,24 @@ export default function TaxiMotoHistory({ userId }: TaxiMotoHistoryProps) {
         setLoading(true);
         setError(null);
         try {
-            if (!effectiveUserId) {
+            // ✅ Repli ULTIME : lire directement la session Supabase si le contexte
+            // n'a pas (encore) peuplé l'utilisateur (course d'init / route non protégée).
+            let uid = effectiveUserId;
+            if (!uid) {
+                const { data: { user: sessionUser } } = await supabase.auth.getUser();
+                uid = sessionUser?.id;
+            }
+            if (!uid) {
                 setError('Connectez-vous pour voir votre historique');
                 return;
             }
 
-            console.log('[TaxiMotoHistory] Loading ride history for user:', effectiveUserId);
+            console.log('[TaxiMotoHistory] Loading ride history for user:', uid);
 
             const { data: trips, error: tripsError } = await supabase
                 .from('taxi_trips')
                 .select('*')
-                .eq('customer_id', effectiveUserId)
+                .eq('customer_id', uid)
                 .in('status', ['completed', 'cancelled'])
                 .order('requested_at', { ascending: false })
                 .limit(50);
