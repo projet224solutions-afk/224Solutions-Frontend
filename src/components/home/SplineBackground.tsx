@@ -54,7 +54,8 @@ export function SplineBackground({ className, height = '130vh' }: SplineBackgrou
     script.src = SPLINE_VIEWER_SCRIPT;
     script.async = true;
     script.onload = () => setIsLoaded(true);
-    script.onerror = () => console.warn('Failed to load Spline viewer');
+    // ✅ CDN indisponible (réseau Guinée) → on reste sur le fallback gradient
+    script.onerror = () => { console.warn('[SplineBackground] CDN indisponible — fallback gradient'); setIsLoaded(false); };
     document.head.appendChild(script);
 
     return () => {
