@@ -212,10 +212,12 @@ export function DriverEarnings({ driverId }: DriverEarningsProps) {
           .single();
 
         if (walletData) {
+          // ✅ vraies colonnes : sender_wallet_id / receiver_wallet_id
+          // (from_wallet_id / to_wallet_id n'existent pas → historique restait vide)
           const { data: transactionsData } = await supabase
             .from('wallet_transactions')
             .select('*')
-            .or(`from_wallet_id.eq.${walletData.id},to_wallet_id.eq.${walletData.id}`)
+            .or(`sender_wallet_id.eq.${walletData.id},receiver_wallet_id.eq.${walletData.id}`)
             .order('created_at', { ascending: false })
             .limit(20);
 
