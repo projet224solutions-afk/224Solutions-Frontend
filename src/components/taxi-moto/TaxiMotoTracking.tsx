@@ -127,11 +127,17 @@ export default function TaxiMotoTracking({
         return m > 0 ? `${m} min ${sec.toString().padStart(2, '0')} s` : `${s} s`;
     };
 
+    // ✅ Ne suivre la position que si le conducteur est réellement EN ROUTE
+    // (sinon on affichait la dernière position même course terminée/sans chauffeur).
+    const isDriverEnRoute = ['accepted', 'arriving', 'driver_arriving', 'started', 'picked_up', 'in_progress']
+        .includes(currentRide?.status || '');
+    const trackingDriverId = isDriverEnRoute ? driverIdForTracking : undefined;
+
     // Hook de suivi temps réel avec notifications ETA
     const { driverPosition, etaMinutes, isMoving } = useDriverTracking(
         currentRide?.id,
         pickupCoords ?? userLocation,
-        driverIdForTracking
+        trackingDriverId
     );
 
     // ETA calculé depuis la position du chauffeur (via useDriverTracking)
