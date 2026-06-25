@@ -165,24 +165,30 @@ export class TaxiMotoService {
   private static _platformConfig: { driverShareRate: number; platformFeeRate: number } | null = null;
   private static _platformConfigAt = 0;
 
-  static async getPlatformConfig(): Promise<{ driverShareRate: number; platformFeeRate: number }> {
+  static async getPlatformConfig(retries = 2): Promise<{ driverShareRate: number; platformFeeRate: number }> {
     const TTL = 3_600_000; // 1 heure
     if (this._platformConfig && Date.now() - this._platformConfigAt < TTL) {
       return this._platformConfig;
     }
-    try {
-      const { data, error } = await supabase.rpc('get_taxi_platform_config' as any);
-      if (!error && data) {
-        const cfg = data as any;
-        this._platformConfig = {
-          driverShareRate: Number(cfg.driver_share_rate ?? 0.85),
-          platformFeeRate: Number(cfg.platform_fee_rate ?? 0.15),
-        };
-        this._platformConfigAt = Date.now();
-        return this._platformConfig;
+    // ✅ Retry + backoff (réseau 3G Conakry) ; clamp anti-valeurs aberrantes
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      try {
+        const { data, error } = await supabase.rpc('get_taxi_platform_config' as any);
+        if (!error && data) {
+          const cfg = data as any;
+          this._platformConfig = {
+            driverShareRate: Math.min(0.99, Math.max(0.50, Number(cfg.driver_share_rate ?? 0.85))),
+            platformFeeRate: Math.min(0.50, Math.max(0.01, Number(cfg.platform_fee_rate ?? 0.15))),
+          };
+          this._platformConfigAt = Date.now();
+          return this._platformConfig;
+        }
+      } catch (err) {
+        console.warn(`[TaxiMotoService] Config commission tentative ${attempt + 1} échouée:`, err);
       }
-    } catch (err) {
-      console.warn('[TaxiMotoService] Config commission indisponible, valeurs par défaut:', err);
+      if (attempt < retries) {
+        await new Promise(r => setTimeout(r, 500 * Math.pow(2, attempt))); // 500ms, 1000ms
+      }
     }
     return { driverShareRate: 0.85, platformFeeRate: 0.15 }; // fallback sûr
   }

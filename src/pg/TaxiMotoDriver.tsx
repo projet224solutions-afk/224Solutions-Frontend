@@ -18,7 +18,7 @@ import { useTaxiNotifications } from "@/hooks/useTaxiNotifications";
 import { useTaxiErrorBoundary } from "@/hooks/useTaxiErrorBoundary";
 import { TaxiMotoService } from "@/services/taxi/TaxiMotoService";
 import { GeolocationService } from "@/services/taxi/GeolocationService";
-import { Car, Star } from "lucide-react";
+import { Car, Star, AlertTriangle } from "lucide-react";
 
 // Hooks modulaires refactorisés
 import { useTaxiDriverProfile } from "@/hooks/useTaxiDriverProfile";
@@ -168,6 +168,9 @@ export default function TaxiMotoDriver() {
         setNavigationActive,
         updateRideStatus,
         cancelActiveRide,
+        pendingCancelRide,
+        confirmCancelRide,
+        rejectCancelRide,
     } = useTaxiActiveRide(driverId, startNavigation, updateLocalStats);
 
     useEffect(() => { activeRideRef.current = activeRide; }, [activeRide]);
@@ -377,6 +380,29 @@ export default function TaxiMotoDriver() {
                 driverPhone={profile?.phone || ''}
                 onSignOut={handleSignOut}
             />
+
+            {/* ✅ Modal confirmation d'annulation (remplace window.confirm bloqué sur iOS) */}
+            {pendingCancelRide && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+                    <div className="w-full max-w-sm bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl space-y-4">
+                        <div className="text-center space-y-2">
+                            <div className="w-14 h-14 rounded-full bg-red-500/15 flex items-center justify-center mx-auto">
+                                <AlertTriangle className="w-7 h-7 text-red-500" />
+                            </div>
+                            <h3 className="text-base font-semibold text-white">Annuler la course ?</h3>
+                            <p className="text-sm text-gray-400">Le client sera notifié. Une pénalité peut s'appliquer.</p>
+                        </div>
+                        <div className="flex gap-3">
+                            <button onClick={rejectCancelRide} className="flex-1 py-2.5 rounded-xl border border-gray-600 text-gray-200 text-sm font-medium">
+                                Retour
+                            </button>
+                            <button onClick={confirmCancelRide} className="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium">
+                                Confirmer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* ✅ Indicateur mode économie batterie GPS */}
             {isOnline && (

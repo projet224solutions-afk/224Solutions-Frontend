@@ -4,6 +4,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { TaxiMotoService } from '@/services/taxi/TaxiMotoService';
 import { formatCurrency } from '@/lib/formatters';
 
+// ✅ Logs limités au DEV (perf sur téléphones d'entrée de gamme en prod)
+const DEV = import.meta.env.DEV;
+const log = (...args: any[]) => { if (DEV) console.log(...args); };
+
 export interface RideRequest {
   id: string;
   customerId: string;
@@ -155,10 +159,10 @@ export function useTaxiRideRequests(
 
   // Accepter une demande de course
   const acceptRideRequest = useCallback(async (request: RideRequest) => {
-    console.log('🎯 Tentative d\'acceptation de course:', request.id);
+    log('🎯 Tentative d\'acceptation de course:', request.id);
 
     if (acceptingRideId) {
-      console.log('⏳ Une acceptation est déjà en cours:', acceptingRideId);
+      log('⏳ Une acceptation est déjà en cours:', acceptingRideId);
       toast.info('Veuillez patienter, une course est en cours d\'acceptation...');
       return null;
     }
@@ -169,13 +173,13 @@ export function useTaxiRideRequests(
       return null;
     }
 
-    console.log('✅ DriverId trouvé:', driverId);
+    log('✅ DriverId trouvé:', driverId);
     setAcceptingRideId(request.id);
 
     try {
-      console.log('📞 Appel de TaxiMotoService.acceptRide...');
+      log('📞 Appel de TaxiMotoService.acceptRide...');
       await TaxiMotoService.acceptRide(request.id, driverId);
-      console.log('✅ Course acceptée avec succès dans la DB');
+      log('✅ Course acceptée avec succès dans la DB');
 
       // Charger le téléphone réel du client
       let customerPhone = '+224 600 00 00 00';
@@ -188,7 +192,7 @@ export function useTaxiRideRequests(
 
         if (customerProfile?.phone) {
           customerPhone = customerProfile.phone;
-          console.log('📱 Téléphone client chargé:', customerPhone);
+          log('📱 Téléphone client chargé:', customerPhone);
         }
       } catch (error) {
         console.error('Error loading customer phone:', error);
@@ -255,14 +259,15 @@ export function useTaxiRideRequests(
   // S'abonner aux demandes de courses temps réel
   useEffect(() => {
     if (!driverId || !isOnline || !hasAccess) {
-      console.log('⚠️ [useTaxiRideRequests] Subscription NON activée:', { driverId, isOnline, hasAccess });
+      log('⚠️ [useTaxiRideRequests] Subscription NON activée:', { driverId, isOnline, hasAccess });
       return;
     }
 
-    console.log('🔔 [useTaxiRideRequests] Subscription aux courses activée pour driver:', driverId);
+    log('🔔 [useTaxiRideRequests] Subscription aux courses activée pour driver:', driverId);
 
+    // ✅ Canal unique par driver — évite les abonnements dupliqués au remontage
     const channel = supabase
-      .channel('driver-ride-requests-v2')
+      .channel(`ride-requests-${driverId}-${Date.now()}`)
       .on(
         'postgres_changes',
         {
@@ -271,26 +276,26 @@ export function useTaxiRideRequests(
           table: 'taxi_trips'
         },
         async (payload) => {
-          console.log('📲 [useTaxiRideRequests] Nouvelle entrée taxi_trips détectée:', payload);
+          log('📲 [useTaxiRideRequests] Nouvelle entrée taxi_trips détectée:', payload);
           const ride = payload.new as any;
 
           if (ride.status !== 'requested') {
-            console.log('⚠️ Course ignorée, status:', ride.status);
+            log('⚠️ Course ignorée, status:', ride.status);
             return;
           }
 
           if (ride.driver_id) {
-            console.log('⚠️ Course déjà assignée à un driver:', ride.driver_id);
+            log('⚠️ Course déjà assignée à un driver:', ride.driver_id);
             return;
           }
 
           const declinedDrivers = ride.declined_drivers || [];
           if (declinedDrivers.includes(driverId)) {
-            console.log('⚠️ Course déjà refusée par ce conducteur, ignorée');
+            log('⚠️ Course déjà refusée par ce conducteur, ignorée');
             return;
           }
 
-          console.log('🔊 Affichage notification + son pour course:', ride.id);
+          log('🔊 Affichage notification + son pour course:', ride.id);
           const priceDisplay = typeof ride.price_total === 'number' && !isNaN(ride.price_total)
             ? formatCurrency(ride.price_total)
             : '0';
@@ -310,7 +315,7 @@ export function useTaxiRideRequests(
             audioRef.current.play().catch(() => {});
           } catch (_e) {}
 
-          console.log('✅ Ajout course à la liste des demandes');
+          log('✅ Ajout course à la liste des demandes');
           await addRideRequestFromDB(ride);
 
           if (location && ride.pickup_lat && ride.pickup_lng) {
@@ -320,14 +325,14 @@ export function useTaxiRideRequests(
               ride.pickup_lat,
               ride.pickup_lng
             );
-            console.log(`📍 Distance au point de ramassage: ${distance.toFixed(2)}km`);
+            log(`📍 Distance au point de ramassage: ${distance.toFixed(2)}km`);
           }
         }
       )
       .subscribe((status) => {
-        console.log('🔔 Subscription status:', status);
+        log('🔔 Subscription status:', status);
         if (status === 'SUBSCRIBED') {
-          console.log('✅ [useTaxiRideRequests] ABONNÉ avec succès aux courses');
+          log('✅ [useTaxiRideRequests] ABONNÉ avec succès aux courses');
         } else if (status === 'CHANNEL_ERROR') {
           console.error('❌ [useTaxiRideRequests] ERREUR subscription Realtime!');
           toast.error('Erreur de connexion temps réel. Rechargez la page.');
@@ -335,7 +340,7 @@ export function useTaxiRideRequests(
       });
 
     return () => {
-      console.log('🔕 Unsubscribe des courses');
+      log('🔕 Unsubscribe des courses');
       supabase.removeChannel(channel);
     };
   }, [driverId, isOnline, hasAccess, location, addRideRequestFromDB]);
