@@ -7,6 +7,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { calculateDistance } from '@/hooks/useGeoDistance';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Money } from '@/components/Money';
 import { toast } from "sonner";
@@ -170,6 +171,43 @@ export default function TaxiMotoDriver() {
     } = useTaxiActiveRide(driverId, startNavigation, updateLocalStats);
 
     useEffect(() => { activeRideRef.current = activeRide; }, [activeRide]);
+
+    // ✅ AUTO-TRANSITION par proximité GPS (le conducteur n'a plus à tout cliquer)
+    //   - près du point de prise en charge → « Client à bord » (picked_up)
+    //   - près de la destination → « Arrivé à destination » (in_progress → finalisation)
+    // Seuil 60 m : le « 2 m » demandé est impossible avec la précision GPS réelle
+    // (souvent 5-30 m). Garde anti-doublon par (course, transition).
+    const autoTransitionRef = useRef<string>('');
+    useEffect(() => {
+        if (!location || !activeRide || !isOnline) return;
+        const NEAR_KM = 0.06; // ~60 m
+        const { latitude, longitude } = location;
+        const status = activeRide.status;
+        const pickup = activeRide.pickup?.coords;
+        const dest = activeRide.destination?.coords;
+
+        // Près du client → client à bord
+        if ((status === 'accepted' || status === 'arriving') && pickup) {
+            const d = calculateDistance(latitude, longitude, pickup.latitude, pickup.longitude);
+            const key = `${activeRide.id}:picked_up`;
+            if (d <= NEAR_KM && autoTransitionRef.current !== key) {
+                autoTransitionRef.current = key;
+                toast.info('📍 Arrivé près du client — passage auto à « Client à bord »');
+                updateRideStatus('picked_up');
+            }
+        }
+
+        // Près de la destination → arrivé à destination (révèle la finalisation)
+        if (status === 'picked_up' && dest) {
+            const d = calculateDistance(latitude, longitude, dest.latitude, dest.longitude);
+            const key = `${activeRide.id}:arrived_dest`;
+            if (d <= NEAR_KM && autoTransitionRef.current !== key) {
+                autoTransitionRef.current = key;
+                toast.info('🏁 Arrivé à destination — finalisez la course');
+                updateRideStatus('in_progress');
+            }
+        }
+    }, [location, activeRide, isOnline, updateRideStatus]);
 
     // Hook demandes de courses
     const {
