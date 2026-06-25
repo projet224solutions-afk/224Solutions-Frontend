@@ -40,6 +40,7 @@ import GooglePlacesAddressInput, { ValidatedAddress } from "@/components/shared/
 import { precisionGeoService } from "@/services/gps/PrecisionGeolocationService";
 import { getFavoriteRoutes, saveFavoriteRoute, incrementRouteUsage, type FavoriteRoute } from "@/services/taxi/favoriteRoutesService";
 import { searchLandmarks, getLandmarkIcon, CONAKRY_LANDMARKS, type ConakryLandmark } from "@/data/conakryLandmarks";
+import { searchLocalPlaces, type LocalPlace } from "@/services/taxi/localPlacesService";
 
 // Repères les plus demandés à Conakry — accès rapide toujours visible
 const POPULAR_LANDMARK_IDS = ['madina', 'donka', 'gbessia', 'kaloum', 'ratoma', 'cosa'];
@@ -87,6 +88,7 @@ export default function TaxiMotoBooking({
 
     // ✅ Repères locaux Conakry
     const [landmarkResults, setLandmarkResults] = useState<ConakryLandmark[]>([]);
+    const [localPlaceHits, setLocalPlaceHits] = useState<LocalPlace[]>([]);
     const [destinationQuery, setDestinationQuery] = useState('');
     const [_selectedVehicleType, _setSelectedVehicleType] = useState<'moto_economique' | 'moto_rapide' | 'moto_premium'>('moto_rapide');
     const [scheduledTime, setScheduledTime] = useState('');
@@ -256,10 +258,31 @@ export default function TaxiMotoBooking({
         getFavoriteRoutes().then(setFavoriteRoutes).catch(() => {});
     }, []);
 
-    // ✅ Rechercher dans les repères locaux Conakry dès 2 caractères
+    // ✅ Rechercher dans les repères Conakry + les lieux locaux APPRIS dès 2 caractères
     useEffect(() => {
-        setLandmarkResults(destinationQuery.length >= 2 ? searchLandmarks(destinationQuery) : []);
+        if (destinationQuery.length < 2) {
+            setLandmarkResults([]);
+            setLocalPlaceHits([]);
+            return;
+        }
+        setLandmarkResults(searchLandmarks(destinationQuery));
+        let active = true;
+        searchLocalPlaces(destinationQuery).then(r => { if (active) setLocalPlaceHits(r); });
+        return () => { active = false; };
     }, [destinationQuery]);
+
+    // Sélectionner un lieu local appris (coordonnées réelles issues des courses)
+    const handleSelectLocalPlace = (lp: LocalPlace) => {
+        setDestinationAddress({
+            formattedAddress: lp.name,
+            latitude: lp.latitude,
+            longitude: lp.longitude,
+            placeId: `local_${lp.id}`,
+        });
+        setLandmarkResults([]);
+        setLocalPlaceHits([]);
+        setDestinationQuery('');
+    };
 
     // Sélectionner une route favorite (remplit départ + destination, 1 tap)
     const handleSelectFavorite = async (route: FavoriteRoute) => {
@@ -502,6 +525,30 @@ export default function TaxiMotoBooking({
                             ))}
                         </div>
                     </div>
+
+                    {/* ✅ Lieux locaux APPRIS (coordonnées réelles issues des courses) — prioritaires */}
+                    {localPlaceHits.length > 0 && (
+                        <div className="rounded-xl border border-[#16a34a]/30 bg-card overflow-hidden shadow-sm">
+                            <p className="px-3 py-1.5 text-[10px] font-medium text-[#16a34a] bg-[#16a34a]/10 border-b flex items-center gap-1">
+                                <MapPin className="w-3 h-3" />
+                                Lieux connus (GPS vérifié par les courses)
+                            </p>
+                            {localPlaceHits.map((lp) => (
+                                <button
+                                    key={lp.id}
+                                    onClick={() => handleSelectLocalPlace(lp)}
+                                    className="w-full text-left px-3 py-2.5 hover:bg-muted/50 transition-colors border-b last:border-b-0 flex items-center gap-2.5"
+                                >
+                                    <span className="text-base flex-shrink-0">📍</span>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-medium truncate">{lp.name}</p>
+                                        <p className="text-[10px] text-muted-foreground">{lp.usageCount} course{lp.usageCount > 1 ? 's' : ''}</p>
+                                    </div>
+                                    <span className="text-[10px] text-[#16a34a] font-medium">✓ précis</span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
 
                     {/* ✅ Repères locaux Conakry — résultats de recherche dès 2 caractères tapés */}
                     {landmarkResults.length > 0 && (
