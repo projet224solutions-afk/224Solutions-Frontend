@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Grid, List, ArrowUpDown, Menu, ShoppingCart as ShoppingCartIcon, MapPin, Globe, Share2, Filter, Package, Briefcase, Laptop, Plane, Monitor, GraduationCap, BookOpen, Bot, ShoppingBag, Star, Sparkles } from "lucide-react";
+import { Grid, List, ArrowUpDown, Menu, ShoppingCart as ShoppingCartIcon, MapPin, Globe, Share2, Filter, Package, Briefcase, Laptop, Plane, Monitor, GraduationCap, BookOpen, Bot, ShoppingBag, Star, Sparkles, ExternalLink, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -115,7 +115,9 @@ const DIGITAL_CATEGORIES = [
   { id: 'formation', name: 'Formations', icon: GraduationCap },
   { id: 'livre', name: 'Livres', icon: BookOpen },
   { id: 'ai', name: 'IA', icon: Bot },
-  { id: 'physique_affilie', name: 'Affili├®s', icon: ShoppingBag },
+  // ✅ Clarification : ce sont des produits PHYSIQUES vendus via lien d'affiliation
+  // (Amazon, AliExpress…), pas des fichiers numériques. Libellé + icône explicites.
+  { id: 'physique_affilie', name: 'Liens Affiliés', icon: ExternalLink },
 ] as const;
 
 const PAGE_LIMIT = 24;
@@ -176,6 +178,72 @@ export default function Marketplace() {
   const autoCountryAppliedRef = useRef(false);
   // Pays « maison » résolu (pays détecté → chip), pour que « Produits » y ramène depuis Mondial
   const homeCountryRef = useRef<string>('all');
+
+  // 🧭 Barre d'outils filtres « auto-hide » : collée juste SOUS l'en-tête. Elle GLISSE vers
+  // le haut (derrière l'en-tête) au défilement vers le BAS jusqu'à disparaître, et REDESCEND
+  // au MOINDRE défilement vers le HAUT — sans devoir remonter toute la liste de produits.
+  const headerRef = useRef<HTMLElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const [toolbarHeight, setToolbarHeight] = useState(0);
+  const [hideToolbar, setHideToolbar] = useState(false);
+  const lastScrollYRef = useRef(0);
+
+  // Mesure dynamique des hauteurs en-tête + barre d'outils (elles varient : nom de boutique,
+  // ouverture des sélecteurs pays/ville/tri, panneau de filtres…). headerHeight positionne la
+  // barre (fixed) sous l'en-tête ; toolbarHeight dimensionne l'espaceur qui réserve sa place.
+  useEffect(() => {
+    const h = headerRef.current;
+    const t = toolbarRef.current;
+    const measure = () => {
+      if (h) setHeaderHeight(h.offsetHeight);
+      if (t) setToolbarHeight(t.offsetHeight);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (h) ro.observe(h);
+    if (t) ro.observe(t);
+    window.addEventListener('resize', measure);
+    return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
+  }, []);
+
+  // Direction de défilement (transform pur → aucun reflow, donc aucun effet yo-yo).
+  // ⚠️ Sur cette app, ce n'est PAS window qui défile mais le <body> (height = viewport +
+  // overflow-y:auto). Donc window.scrollY reste à 0 et un listener sur window ne se déclenche
+  // jamais. On lit la position de façon robuste et on écoute en phase de CAPTURE pour capter
+  // le défilement de n'importe quel conteneur (l'événement scroll ne bulle pas, mais traverse
+  // la phase de capture).
+  const getScrollTop = () =>
+    window.scrollY ||
+    (document.scrollingElement && document.scrollingElement.scrollTop) ||
+    document.body.scrollTop ||
+    0;
+  useEffect(() => {
+    lastScrollYRef.current = getScrollTop();
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = getScrollTop();
+        if (y < 80) {
+          setHideToolbar(false);            // près du haut → toujours visible
+          lastScrollYRef.current = y;
+          ticking = false;
+          return;
+        }
+        const delta = y - lastScrollYRef.current;
+        // Seuil anti-jitter (6px) : un défilement lent finit par franchir le seuil.
+        if (Math.abs(delta) > 6) {
+          setHideToolbar(delta > 0);        // bas → glisser/cacher ; haut → réafficher
+          lastScrollYRef.current = y;
+        }
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { capture: true, passive: true });
+    return () => window.removeEventListener('scroll', onScroll, { capture: true } as any);
+  }, []);
 
   // Behavior tracking diff├®r├® pour ne pas ralentir l'ouverture initiale
   useBehaviorTracking({ sessionType: 'browse' }, deferRecommendations);
@@ -580,8 +648,8 @@ export default function Marketplace() {
 
   return (
     <div className="min-h-screen bg-background pb-20 scroll-smooth">
-      {/* Header compact mobile */}
-      <header className="bg-card border-b border-border sticky top-0 z-40">
+      {/* Header compact mobile : barre de recherche TOUJOURS visible (collée en haut). */}
+      <header ref={headerRef} className="bg-card border-b border-border sticky top-0 z-40">
         <div className="px-3 py-2 sm:px-4 sm:py-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex-1 min-w-0 overflow-hidden">
@@ -660,6 +728,22 @@ export default function Marketplace() {
         </div>
       </header>
 
+      {/* Espaceur : réserve la hauteur de la barre d'outils (en position fixed) pour que le
+          contenu ne saute pas et démarre juste sous elle quand elle est visible. */}
+      <div aria-hidden style={{ height: toolbarHeight }} />
+
+      {/* 🧭 Barre d'outils filtres « auto-hide » (fixed, sous l'en-tête). Elle GLISSE vers le
+          haut jusqu'à disparaître au défilement vers le bas, et REDESCEND au moindre
+          défilement vers le haut — sans devoir remonter toute la liste de produits. */}
+      <div
+        ref={toolbarRef}
+        className={cn(
+          'fixed left-0 right-0 z-30 bg-background transition-transform duration-300 ease-in-out will-change-transform',
+          hideToolbar ? '-translate-y-[120%]' : 'translate-y-0'
+        )}
+        style={{ top: headerHeight }}
+      >
+
       {/* Categories - compact on mobile */}
       <section className="px-2 py-1.5 border-b border-border overflow-visible bg-background">
         <div className="flex gap-1 overflow-x-auto scrollbar-hide pb-0.5 -mx-0.5 px-0.5">
@@ -720,7 +804,11 @@ export default function Marketplace() {
                 : 'bg-card border border-border hover:border-primary/50'
             )}
             style={activeTab === 'country' ? { backgroundColor: BRAND_BLUE } : undefined}
-            title={t('marketplace.chooseCountry')}
+            title={
+              selectedItemType !== 'all'
+                ? 'Revenir aux produits · Sélectionner un pays'
+                : t('marketplace.chooseCountry')
+            }
           >
             {activeTab === 'country' && selectedCountry !== 'all'
               ? <span className="text-sm leading-none shrink-0" aria-hidden>{getFlagEmoji(selectedCountry) || '📍'}</span>
@@ -1021,8 +1109,12 @@ export default function Marketplace() {
         </section>
       )}
 
-      {/* AI Recommendations - Alibaba style (contenu filtré par pays, voir reco*Filtered) */}
-      {selectedCategory === 'all' && selectedItemType !== 'professional_service' && selectedItemType !== 'digital_product' && (
+      </div>{/* /barre d'outils auto-hide (translation) */}
+
+      {/* AI Recommendations - Alibaba style (contenu filtré par pays, voir reco*Filtered).
+          Masqué pendant une recherche : on ne montre alors QUE la grille de résultats filtrés
+          (sinon les carrousels affichent tous les produits → la recherche semble ne rien filtrer). */}
+      {!searchQuery.trim() && selectedCategory === 'all' && selectedItemType !== 'professional_service' && selectedItemType !== 'digital_product' && (
         <section className="px-2 sm:px-4 py-2">
           <AIRecommendationSection
             title={t('marketplace.selectedForYou') || 'Sélection pour vous'}
@@ -1121,13 +1213,34 @@ export default function Marketplace() {
             {marketplaceLoading ? (
               <MarketplaceLoadingState onRetry={marketplaceRefresh} />
             ) : marketplaceItems.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground mb-2">
-                   {t('marketplace.noProducts')}
+              <div className="text-center py-12 space-y-3">
+                <div className="text-4xl">🔍</div>
+                <p className="font-medium text-slate-700">
+                  {selectedCountry !== 'all'
+                    ? `Aucun produit trouvé en ${selectedCountry}`
+                    : selectedItemType === 'digital_product'
+                    ? 'Aucun produit numérique trouvé'
+                    : selectedItemType === 'professional_service'
+                    ? 'Aucun service trouvé'
+                    : 'Aucun produit trouvé'}
+                  {selectedCategory !== 'all' ? ' dans cette catégorie' : ''}
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  {t('marketplace.noProducts')}
-                </p>
+                {(selectedCountry !== 'all' || selectedCategory !== 'all' || searchQuery) && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedCountry('all');
+                      setSelectedCategory('all');
+                      setSearchQuery('');
+                      setFilters({ minPrice: 0, maxPrice: 0, minRating: 0 });
+                    }}
+                    className="gap-1.5"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                    Réinitialiser les filtres
+                  </Button>
+                )}
               </div>
             ) : (
               <MarketplaceGrid>

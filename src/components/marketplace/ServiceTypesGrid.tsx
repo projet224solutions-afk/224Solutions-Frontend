@@ -202,25 +202,30 @@ export function ServiceTypesGrid({ onBack, searchQuery, country = 'all', city = 
 
   const loadServiceTypes = async () => {
     try {
-      // Charger les types de services SAUF les numériques (qui vont dans le bouton "Numériques")
-      // Les services numériques (dropshipping, logiciel, ebooks) n'ont pas de GPS
-      const { data: types, error } = await supabase
-        .from('service_types')
-        .select('*')
-        .eq('is_active', true)
-        .neq('category', 'Numérique') // Exclure les services numériques
-        .not('code', 'in', '(dropshipping,digital_logiciel,digital_livre)') // Double sécurité
-        .order('name');
+      // ⚡ Requêtes INDÉPENDANTES exécutées en PARALLÈLE (gain réseau mobile lent) :
+      //  1) types de services SAUF numériques (qui vont dans le bouton "Numériques")
+      //     — les services numériques (dropshipping, logiciel, ebooks) n'ont pas de GPS
+      //  2) services actifs (id pour résoudre la localisation effective)
+      const [typesResult, countsResult] = await Promise.all([
+        supabase
+          .from('service_types')
+          .select('*')
+          .eq('is_active', true)
+          .neq('category', 'Numérique') // Exclure les services numériques
+          .not('code', 'in', '(dropshipping,digital_logiciel,digital_livre)') // Double sécurité
+          .order('name'),
+        supabase
+          .from('professional_services')
+          .select('id, service_type_id, user_id, city')
+          .eq('status', 'active'),
+      ]);
+
+      const { data: types, error } = typesResult;
+      const { data: counts, error: countError } = countsResult;
 
       if (error) throw error;
 
       setServiceTypes(types || []);
-
-      // Charger les services actifs (id pour résoudre la localisation effective)
-      const { data: counts, error: countError } = await supabase
-        .from('professional_services')
-        .select('id, service_type_id, user_id, city')
-        .eq('status', 'active');
 
       if (!countError && counts) {
         let rows = counts as any[];

@@ -632,13 +632,24 @@ export const useMarketplaceUniversal = (options: UseMarketplaceUniversalOptions 
             ...(((props.data as any[]) || []).map((r) => ({ r: { ...r, name: r.title }, link: `/bien/${r.id}`, images: propCover(r), cat: 'Immobilier' }))),
             ...(((showcase.data as any[]) || []).map((r) => ({ r: { ...r, name: r.title }, link: `/services-proximite/${r.professional_service_id}`, images: r.image_url ? [r.image_url] : [], video: r.video_url, cat: 'Service' }))),
           ];
-          const psids = [...new Set(rows.map((x) => x.r.professional_service_id).filter(Boolean))];
+          // 🔎 Appliquer la recherche AUSSI aux produits de modules (sinon ils remontaient
+          // quel que soit le terme → la recherche semblait ne rien filtrer). Match
+          // insensible aux accents/casse sur nom + description + catégorie.
+          const svcSearch = sanitizeSearchTerm(searchQuery);
+          const svcNeedle = svcSearch ? stripAccents(svcSearch).toLowerCase() : '';
+          const searchedRows = svcNeedle
+            ? rows.filter((x) => {
+                const hay = stripAccents(`${x.r.name || ''} ${x.r.description || ''} ${x.cat || ''}`).toLowerCase();
+                return hay.includes(svcNeedle);
+              })
+            : rows;
+          const psids = [...new Set(searchedRows.map((x) => x.r.professional_service_id).filter(Boolean))];
           let nameMap = new Map<string, string>();
           if (psids.length) {
             const { data: svcs } = await supabase.from('professional_services').select('id, business_name').in('id', psids);
             nameMap = new Map(((svcs as any[]) || []).map((s) => [s.id, s.business_name as string]));
           }
-          return rows.filter((x) => x.images.length > 0).map((x) => ({
+          return searchedRows.filter((x) => x.images.length > 0).map((x) => ({
             id: x.r.id, name: x.r.name, price: Number(x.r.price) || 0, images: x.images.filter(Boolean),
             description: x.r.description || '', vendor_id: x.r.professional_service_id,
             vendor_name: nameMap.get(x.r.professional_service_id) || x.cat,
