@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Bike, Users, Plus, AlertCircle, RefreshCw, MessageSquare, Settings, Lock, Mail, Copy, Ticket, Eye, EyeOff, UserPlus } from 'lucide-react';
+import { Bike, Users, Plus, AlertCircle, RefreshCw, MessageSquare, Settings, Lock, Mail, Copy, Ticket, Eye, EyeOff, UserPlus, DollarSign } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from '@/integrations/supabase/client';
@@ -27,6 +27,8 @@ import { BureauLayout } from '@/components/bureau/BureauLayout';
 import { BureauOverviewContent } from '@/components/bureau/BureauOverviewContent';
 import { BureauSyndicatSOSDashboard } from '@/components/bureau-syndicat/BureauSyndicatSOSDashboard';
 import TransportTicketGenerator from '@/components/syndicate/TransportTicketGenerator';
+import CotisationsTracker from '@/components/syndicate/CotisationsTracker';
+import BureauBroadcast from '@/components/syndicate/BureauBroadcast';
 import { ChangePasswordDialog, ChangeEmailDialog } from '@/components/bureau/BureauSettingsDialogs';
 import MyPurchasesOrdersList from '@/components/shared/MyPurchasesOrdersList';
 import { SupportTicketsUniversal } from '@/components/shared/SupportTicketsUniversal';
@@ -390,6 +392,21 @@ export default function BureauDashboard() {
           />
         );
 
+      case 'cotisations':
+        return (
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="bg-[#04439e]/5 border-b">
+              <CardTitle className="flex items-center gap-2 text-base">
+                <DollarSign className="w-5 h-5 text-[#04439e]" />
+                Suivi des Cotisations Mensuelles
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-4">
+              <CotisationsTracker bureauId={bureau.id} />
+            </CardContent>
+          </Card>
+        );
+
       case 'my-purchases':
         return (
           <MyPurchasesOrdersList title="Mes Achats - Bureau Syndicat" />
@@ -634,17 +651,30 @@ export default function BureauDashboard() {
 
       case 'communication':
         return (
-          <Card className="border-0 shadow-lg">
-            <CardHeader className="bg-[#04439e]/5 border-b">
-              <CardTitle className="flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-blue-600" />
-                Hub de Communication
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <UniversalCommunicationHub />
-            </CardContent>
-          </Card>
+          <div className="space-y-4">
+            <Card className="border-0 shadow-lg">
+              <CardHeader className="bg-[#04439e]/5 border-b">
+                <CardTitle className="flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-blue-600" />
+                  Diffusion aux chauffeurs
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                <BureauBroadcast bureauId={bureau.id} />
+              </CardContent>
+            </Card>
+            <Card className="border-0 shadow-lg">
+              <CardHeader className="bg-[#04439e]/5 border-b">
+                <CardTitle className="flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-blue-600" />
+                  Hub de Communication
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <UniversalCommunicationHub />
+              </CardContent>
+            </Card>
+          </div>
         );
 
       case 'support':

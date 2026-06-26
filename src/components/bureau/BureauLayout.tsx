@@ -28,7 +28,8 @@ import {
   ShieldAlert,
   Ticket,
   ShoppingBag,
-  Headphones
+  Headphones,
+  DollarSign
 } from 'lucide-react';
 import { BureauWalletDisplay } from '@/components/wallet/BureauWalletDisplay';
 
@@ -99,6 +100,11 @@ export function BureauLayout({
       id: 'tickets',
       label: 'Tickets Transport',
       icon: <Ticket className="w-5 h-5 text-[#ff4000]" />
+    },
+    {
+      id: 'cotisations',
+      label: 'Cotisations',
+      icon: <DollarSign className="w-5 h-5 text-green-600" />
     },
     {
       id: 'my-purchases',

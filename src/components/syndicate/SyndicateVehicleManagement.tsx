@@ -116,12 +116,26 @@ export default function SyndicateVehicleManagement({ bureauId }: SyndicateVehicl
 
     // Liste des membres (chargée depuis Supabase)
     const [members, setMembers] = useState<{ id: string; name: string; member_id: string }[]>([]);
+    const [expiringBadges, setExpiringBadges] = useState<any[]>([]);
 
     useEffect(() => {
         loadBureauInfo();
         loadVehicles();
         loadMembers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [bureauId]);
+
+    // Badges expirant dans les 30 jours (RPC get_expiring_badges)
+    useEffect(() => {
+        if (!bureauId) return;
+        let isMounted = true;
+        (async () => {
+            try {
+                const { data } = await supabase.rpc('get_expiring_badges' as any, { p_bureau_id: bureauId, p_days_ahead: 30 });
+                if (isMounted) setExpiringBadges((data as any[]) || []);
+            } catch { /* RPC indisponible → pas de bannière */ }
+        })();
+        return () => { isMounted = false; };
     }, [bureauId]);
 
     /**
@@ -606,6 +620,29 @@ export default function SyndicateVehicleManagement({ bureauId }: SyndicateVehicl
 
     return (
         <div className="space-y-6">
+            {/* Alerte badges expirant sous 30 jours */}
+            {expiringBadges.length > 0 && (
+              <div className="p-3 rounded-xl border bg-amber-50 border-amber-200 flex items-start gap-2.5">
+                <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-amber-800">
+                    {expiringBadges.length} badge{expiringBadges.length > 1 ? 's expirent' : ' expire'} dans moins de 30 jours
+                  </p>
+                  <div className="mt-1 space-y-0.5">
+                    {expiringBadges.slice(0, 3).map((b: any) => (
+                      <p key={b.vehicle_id} className="text-xs text-amber-700">
+                        {b.license_plate || b.serial_number} —{' '}
+                        {b.days_until_expiry <= 0 ? 'Expiré' : `expire dans ${b.days_until_expiry} jour${b.days_until_expiry > 1 ? 's' : ''}`}
+                      </p>
+                    ))}
+                    {expiringBadges.length > 3 && (
+                      <p className="text-xs text-amber-600">+ {expiringBadges.length - 3} autres</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Header avec statistiques */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Card>
