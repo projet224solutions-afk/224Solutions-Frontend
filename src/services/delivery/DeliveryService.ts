@@ -334,15 +334,14 @@ export class DeliveryService {
     idempotencyKey?: string
   ): Promise<{ success: boolean; transactionId?: string; error?: string }> {
     try {
-      const { data, error } = await supabase.functions.invoke('delivery-payment', {
-        body: {
-          deliveryId,
-          paymentMethod,
-          idempotencyKey: idempotencyKey || `delivery-${deliveryId}-${Date.now()}`
-        }
-      });
-
-      if (error) throw error;
+      // ✅ Point d'entrée unique : backend Node.js (/service type=delivery), fallback Edge idempotent
+      const idem = idempotencyKey || `delivery-${deliveryId}-${Date.now()}`;
+      const edgeBody = { deliveryId, paymentMethod, idempotencyKey: idem };
+      const { payViaBackend } = await import('@/services/payments/payViaBackend');
+      const data = await payViaBackend(
+        '/api/v2/payments/service', 'delivery-payment',
+        { type: 'delivery', ...edgeBody }, edgeBody, idem,
+      );
 
       return {
         success: data.success,

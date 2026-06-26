@@ -505,20 +505,16 @@ export class TaxiMotoService {
     paymentMethod: string,
     idempotencyKey?: string
   ): Promise<any> {
-    const { data, error } = await supabase.functions.invoke('taxi-payment', {
-      body: {
-        rideId,
-        paymentMethod,
-        idempotencyKey: idempotencyKey || `${rideId}-${Date.now()}`
-      }
-    });
-
-    if (error) {
+    // ✅ Point d'entrée unique : backend Node.js (fallback Edge si indispo, idempotent)
+    const idem = idempotencyKey || `${rideId}-${Date.now()}`;
+    const body = { rideId, paymentMethod, idempotencyKey: idem };
+    const { payViaBackend } = await import('@/services/payments/payViaBackend');
+    try {
+      return await payViaBackend('/api/v2/payments/taxi', 'taxi-payment', body, body, idem);
+    } catch (error) {
       console.error('[TaxiMotoService] Error processing payment:', error);
       throw error;
     }
-
-    return data;
   }
 
   /**
