@@ -538,12 +538,8 @@ export default function Proximite() {
                   />
                   {/* Content */}
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 160 }}>
-                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
-                      {service.logoImage ? (
-                        <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
-                      ) : (
-                        <Icon className="h-5 w-5" style={{ color: service.accent }} />
-                      )}
+                    <div className="mb-2 flex h-12 w-12 items-center justify-center">
+                      <img src={`/service-icons-3d/${service.id}.png`} alt={service.title} className="h-full w-full object-contain drop-shadow-[0_3px_5px_rgba(0,0,0,0.35)]" loading="lazy" />
                     </div>
                     <h3 className="text-sm font-bold text-white leading-tight">{service.title}</h3>
                     <p className="text-[11px] text-white/70 mt-0.5">{service.description}</p>
@@ -574,12 +570,8 @@ export default function Proximite() {
                     }}
                   />
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 160 }}>
-                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
-                      {service.logoImage ? (
-                        <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
-                      ) : (
-                        <Icon className="h-5 w-5" style={{ color: service.accent }} />
-                      )}
+                    <div className="mb-2 flex h-12 w-12 items-center justify-center">
+                      <img src={`/service-icons-3d/${service.id}.png`} alt={service.title} className="h-full w-full object-contain drop-shadow-[0_3px_5px_rgba(0,0,0,0.35)]" loading="lazy" />
                     </div>
                     <h3 className="text-sm font-bold text-white leading-tight">{service.title}</h3>
                     <p className="text-[11px] text-white/70 mt-0.5">{service.description}</p>
@@ -626,12 +618,8 @@ export default function Proximite() {
                     </div>
                   )}
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 160 }}>
-                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
-                      {service.logoImage ? (
-                        <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
-                      ) : (
-                        <Icon className="h-5 w-5" style={{ color: service.accent }} />
-                      )}
+                    <div className="mb-2 flex h-12 w-12 items-center justify-center">
+                      <img src={`/service-icons-3d/${service.id}.png`} alt={service.title} className="h-full w-full object-contain drop-shadow-[0_3px_5px_rgba(0,0,0,0.35)]" loading="lazy" />
                     </div>
                     <h3 className="text-sm font-bold text-white leading-tight">{service.title}</h3>
                     <p className="text-[11px] text-white/70 mt-0.5">{service.description}</p>
@@ -738,12 +726,8 @@ export default function Proximite() {
                     }}
                   />
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 150 }}>
-                    <div className="mb-1.5 flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl">
-                      {service.logoImage ? (
-                        <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
-                      ) : (
-                        <Icon className="h-4.5 w-4.5" style={{ color: service.accent }} />
-                      )}
+                    <div className="mb-1.5 flex h-11 w-11 items-center justify-center">
+                      <img src={`/service-icons-3d/${service.id}.png`} alt={service.title} className="h-full w-full object-contain drop-shadow-[0_3px_5px_rgba(0,0,0,0.35)]" loading="lazy" />
                     </div>
                     <h3 className="text-sm font-bold text-white leading-tight">{service.title}</h3>
                     <p className="text-[11px] text-white/65 mt-0.5">{service.description}</p>
