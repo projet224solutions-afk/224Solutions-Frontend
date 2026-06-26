@@ -28,11 +28,6 @@ import {
   Square,
   Hammer,
   Flame,
-  Stethoscope,
-  Car,
-  SprayCan,
-  Sofa,
-  Droplets,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -113,7 +108,7 @@ const getPriorityServices = (stats: any, t: TFn): ServiceCardItem[] => [
   {
     id: "sante",
     title: t("proximity.svc.sante.title"),
-    icon: Stethoscope,
+    icon: Heart,
     count: stats.sante,
     path: "/services-proximite?type=sante",
     description: t("proximity.svc.sante.desc"),
@@ -160,7 +155,7 @@ const getQuickAccessServices = (stats: any, t: TFn): ServiceCardItem[] => [
   {
     id: "vtc",
     title: t("proximity.svc.vtc.title"),
-    icon: Car,
+    icon: Bike,
     count: stats.vtc,
     path: "/proximite/taxi-moto",
     description: t("proximity.svc.vtc.desc"),
@@ -197,7 +192,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
   {
     id: "nettoyage",
     title: t("proximity.svc.nettoyage.title"),
-    icon: SprayCan,
+    icon: Sparkles,
     description: t("proximity.svc.nettoyage.desc"),
     count: stats.nettoyage,
     path: "/services-proximite?type=menage",
@@ -241,7 +236,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
   {
     id: "maison",
     title: t("proximity.svc.maison.title"),
-    icon: Sofa,
+    icon: Home,
     description: t("proximity.svc.maison.desc"),
     count: stats.maison,
     path: "/services-proximite?type=maison",
@@ -252,7 +247,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
   {
     id: "plomberie",
     title: t("proximity.svc.plomberie.title"),
-    icon: Droplets,
+    icon: Wrench,
     description: t("proximity.svc.plomberie.desc"),
     count: stats.plomberie,
     path: "/services-proximite?type=plomberie",
@@ -543,8 +538,12 @@ export default function Proximite() {
                   />
                   {/* Content */}
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 160 }}>
-                    <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm">
-                      <Icon className="h-5 w-5" style={{ color: service.accent }} />
+                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
+                      {service.logoImage ? (
+                        <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
+                      ) : (
+                        <Icon className="h-5 w-5" style={{ color: service.accent }} />
+                      )}
                     </div>
                     <h3 className="text-sm font-bold text-white leading-tight">{service.title}</h3>
                     <p className="text-[11px] text-white/70 mt-0.5">{service.description}</p>
@@ -575,8 +574,12 @@ export default function Proximite() {
                     }}
                   />
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 160 }}>
-                    <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm">
-                      <Icon className="h-5 w-5" style={{ color: service.accent }} />
+                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
+                      {service.logoImage ? (
+                        <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
+                      ) : (
+                        <Icon className="h-5 w-5" style={{ color: service.accent }} />
+                      )}
                     </div>
                     <h3 className="text-sm font-bold text-white leading-tight">{service.title}</h3>
                     <p className="text-[11px] text-white/70 mt-0.5">{service.description}</p>
@@ -623,8 +626,12 @@ export default function Proximite() {
                     </div>
                   )}
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 160 }}>
-                    <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm">
-                      <Icon className="h-5 w-5" style={{ color: service.accent }} />
+                    <div className="mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
+                      {service.logoImage ? (
+                        <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
+                      ) : (
+                        <Icon className="h-5 w-5" style={{ color: service.accent }} />
+                      )}
                     </div>
                     <h3 className="text-sm font-bold text-white leading-tight">{service.title}</h3>
                     <p className="text-[11px] text-white/70 mt-0.5">{service.description}</p>
@@ -731,8 +738,12 @@ export default function Proximite() {
                     }}
                   />
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 150 }}>
-                    <div className="mb-1.5 flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm">
-                      <Icon className="h-4 w-4" style={{ color: service.accent }} />
+                    <div className="mb-1.5 flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl">
+                      {service.logoImage ? (
+                        <img src={service.logoImage} alt={service.title} className="h-full w-full object-cover" loading="lazy" />
+                      ) : (
+                        <Icon className="h-4.5 w-4.5" style={{ color: service.accent }} />
+                      )}
                     </div>
                     <h3 className="text-sm font-bold text-white leading-tight">{service.title}</h3>
                     <p className="text-[11px] text-white/65 mt-0.5">{service.description}</p>
