@@ -67,7 +67,7 @@ const getPriorityServices = (stats: any, t: TFn): ServiceCardItem[] => [
     count: stats.boutiques,
     path: "/proximite/boutiques",
     description: t("proximity.svc.boutique.desc"),
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/logo-boutique.jpeg",
     accent: "#04439e"
   },
@@ -78,7 +78,7 @@ const getPriorityServices = (stats: any, t: TFn): ServiceCardItem[] => [
     count: stats.restaurant,
     path: "/services-proximite?type=restaurant",
     description: t("proximity.svc.restaurant.desc"),
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/logo-resto.jpeg",
     accent: "#e85d04"
   },
@@ -89,7 +89,7 @@ const getPriorityServices = (stats: any, t: TFn): ServiceCardItem[] => [
     count: stats.reparation,
     path: "/services-proximite?type=reparation",
     description: t("proximity.svc.reparation.desc"),
-    image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-reparation.png",
     accent: "#ff4000"
   },
@@ -102,7 +102,6 @@ const getPriorityServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.immobilier.desc"),
     image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
     logoImage: "/service-icons/logo-immobilier.jpeg",
-    overlayGradient: "linear-gradient(120deg,rgba(3,105,161,0.18) 0%,rgba(191,219,254,0.68) 100%)",
     accent: "#04439e"
   },
   {
@@ -112,7 +111,7 @@ const getPriorityServices = (stats: any, t: TFn): ServiceCardItem[] => [
     count: stats.sante,
     path: "/services-proximite?type=sante",
     description: t("proximity.svc.sante.desc"),
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-sante.png",
     accent: "#ff4000"
   },
@@ -123,7 +122,7 @@ const getPriorityServices = (stats: any, t: TFn): ServiceCardItem[] => [
     count: stats.construction,
     path: "/services-proximite?type=construction",
     description: t("proximity.svc.construction.desc"),
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/logo-construction-btp.jpeg",
     accent: "#ff4000"
   },
@@ -134,7 +133,7 @@ const getPriorityServices = (stats: any, t: TFn): ServiceCardItem[] => [
     count: stats.media,
     path: "/services-proximite?type=media",
     description: t("proximity.svc.media.desc"),
-    image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-photo-video.png",
     accent: "#04439e"
   },
@@ -145,7 +144,7 @@ const getPriorityServices = (stats: any, t: TFn): ServiceCardItem[] => [
     count: stats.informatique,
     path: "/services-proximite?type=informatique",
     description: t("proximity.svc.informatique.desc"),
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-informatique.png",
     accent: "#04439e"
   }
@@ -159,7 +158,7 @@ const getQuickAccessServices = (stats: any, t: TFn): ServiceCardItem[] => [
     count: stats.vtc,
     path: "/proximite/taxi-moto",
     description: t("proximity.svc.vtc.desc"),
-    image: "https://images.unsplash.com/photo-1601979107535-46367552bc25?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1601979107535-46367552bc25?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-taxi-moto.png",
     accent: "#04439e"
   },
@@ -171,7 +170,7 @@ const getQuickAccessServices = (stats: any, t: TFn): ServiceCardItem[] => [
     path: "/proximite/livraison",
     description: t("proximity.svc.livraison.desc"),
     trending: stats.livraison > 5,
-    image: "https://images.unsplash.com/photo-1648394794449-5dbe63f6a8b5?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1648394794449-5dbe63f6a8b5?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-livreur.png",
     accent: "#ff4000"
   }
@@ -185,7 +184,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.beaute.desc"),
     count: stats.beaute,
     path: "/beaute",
-    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-beaute.png",
     accent: "#ff4000"
   },
@@ -196,7 +195,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.nettoyage.desc"),
     count: stats.nettoyage,
     path: "/services-proximite?type=menage",
-    image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-nettoyage.png",
     accent: "#04439e"
   },
@@ -207,7 +206,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.sport.desc"),
     count: stats.sport,
     path: "/services-proximite?type=sport",
-    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-sport-fitness.png",
     accent: "#ff4000"
   },
@@ -218,7 +217,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.agriculture.desc"),
     count: stats.agriculture,
     path: "/services-proximite?type=agriculture",
-    image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-agriculture.png",
     accent: "#ff4000"
   },
@@ -229,7 +228,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.freelance.desc"),
     count: stats.freelance,
     path: "/services-proximite?type=freelance",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-administratif.png",
     accent: "#04439e"
   },
@@ -240,7 +239,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.maison.desc"),
     count: stats.maison,
     path: "/services-proximite?type=maison",
-    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-maison.png",
     accent: "#c2410c"
   },
@@ -251,7 +250,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.plomberie.desc"),
     count: stats.plomberie,
     path: "/services-proximite?type=plomberie",
-    image: "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/logo-plomberie.svg",
     accent: "#0E6BA8"
   },
@@ -262,7 +261,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.vitrerie.desc"),
     count: stats.vitrerie,
     path: "/services-proximite?type=vitrerie",
-    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/logo-vitrerie.svg",
     accent: "#29A7C4"
   },
@@ -273,7 +272,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.menuiserie.desc"),
     count: stats.menuiserie,
     path: "/services-proximite?type=menuiserie",
-    image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/logo-menuiserie.svg",
     accent: "#B5651D"
   },
@@ -284,7 +283,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.soudure.desc"),
     count: stats.soudure,
     path: "/services-proximite?type=soudure",
-    image: "https://images.unsplash.com/photo-1565952511394-1e3e5f1f2f3d?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1565952511394-1e3e5f1f2f3d?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/logo-soudure.svg",
     accent: "#ff4000"
   }
@@ -533,7 +532,7 @@ export default function Proximite() {
                   <div
                     className="absolute inset-0 pointer-events-none"
                     style={{
-                      background: service.overlayGradient || `linear-gradient(120deg,${service.accent}33 0%,rgba(11,27,51,0.80) 100%)`
+                      background: service.overlayGradient || `linear-gradient(to top, rgba(8,15,30,0.92) 0%, rgba(8,15,30,0.42) 50%, ${service.accent}26 100%)`
                     }}
                   />
                   {/* Content */}
@@ -566,7 +565,7 @@ export default function Proximite() {
                   <div
                     className="absolute inset-0 pointer-events-none"
                     style={{
-                      background: service.overlayGradient || `linear-gradient(120deg,${service.accent}33 0%,rgba(11,27,51,0.80) 100%)`
+                      background: service.overlayGradient || `linear-gradient(to top, rgba(8,15,30,0.92) 0%, rgba(8,15,30,0.42) 50%, ${service.accent}26 100%)`
                     }}
                   />
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 160 }}>
@@ -609,7 +608,7 @@ export default function Proximite() {
                   <div
                     className="absolute inset-0 pointer-events-none"
                     style={{
-                      background: `linear-gradient(120deg,${service.accent}33 0%,rgba(11,27,51,0.78) 100%)`
+                      background: `linear-gradient(to top, rgba(8,15,30,0.92) 0%, rgba(8,15,30,0.42) 50%, ${service.accent}26 100%)`
                     }}
                   />
                   {service.trending && (
@@ -722,7 +721,7 @@ export default function Proximite() {
                   <div
                     className="absolute inset-0 pointer-events-none"
                     style={{
-                      background: `linear-gradient(120deg,${service.accent}33 0%,rgba(11,27,51,0.82) 100%)`
+                      background: `linear-gradient(to top, rgba(8,15,30,0.92) 0%, rgba(8,15,30,0.42) 50%, ${service.accent}26 100%)`
                     }}
                   />
                   <div className="relative z-10 flex h-full flex-col justify-end p-3.5" style={{ minHeight: 150 }}>
