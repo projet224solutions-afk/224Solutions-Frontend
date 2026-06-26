@@ -2049,9 +2049,17 @@ export default function Auth() {
                       }}
                       className="group flex flex-col items-center p-3 bg-[#ff4000]/5 rounded-xl border-2 hover:border-[#ff4000] hover:shadow-lg hover:scale-[1.02] transition-all border-orange-200"
                     >
-                      <div className="mb-2 flex h-20 w-full items-center justify-center rounded-xl">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#ff4000]/10">
-                          <Icon className="h-7 w-7 text-[#ff4000]" />
+                      <div className="relative mb-2 h-24 w-full overflow-hidden rounded-xl">
+                        <img src={item.image} alt={item.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-black/5 to-transparent" />
+                        <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-center">
+                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
+                            {item.logoImage ? (
+                              <img src={item.logoImage} alt={item.name} className="h-full w-full object-cover" loading="lazy" />
+                            ) : (
+                              <Icon className="h-6 w-6 text-[#ff4000]" />
+                            )}
+                          </div>
                         </div>
                       </div>
                       <span className="text-sm font-semibold text-foreground">{item.name}</span>
@@ -2080,9 +2088,17 @@ export default function Auth() {
                         selectedServiceType === service.id ? 'border-primary ring-2 ring-primary/30 bg-primary/5' : 'border-slate-200'
                       }`}
                     >
-                      <div className="mb-2 flex h-20 w-full items-center justify-center rounded-xl">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-                          <Icon className="h-7 w-7 text-primary" />
+                      <div className="relative mb-2 h-24 w-full overflow-hidden rounded-xl">
+                        <img src={service.image} alt={service.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/5 to-transparent" />
+                        <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-center">
+                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
+                            {service.logoImage ? (
+                              <img src={service.logoImage} alt={service.name} className="h-full w-full object-cover" loading="lazy" />
+                            ) : (
+                              <Icon className="h-6 w-6 text-primary" />
+                            )}
+                          </div>
                         </div>
                       </div>
                       <span className="text-sm font-semibold text-foreground">{service.name}</span>
@@ -2111,9 +2127,17 @@ export default function Auth() {
                         selectedServiceType === service.id ? 'border-[#04439e] ring-2 ring-[#04439e]/30' : 'border-blue-200'
                       }`}
                     >
-                      <div className="mb-2 flex h-20 w-full items-center justify-center rounded-xl">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#04439e]/10">
-                          <Icon className="h-7 w-7 text-[#04439e]" />
+                      <div className="relative mb-2 h-24 w-full overflow-hidden rounded-xl">
+                        <img src={service.image} alt={service.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/5 to-transparent" />
+                        <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-center">
+                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
+                            {service.logoImage ? (
+                              <img src={service.logoImage} alt={service.name} className="h-full w-full object-cover" loading="lazy" />
+                            ) : (
+                              <Icon className="h-6 w-6 text-[#04439e]" />
+                            )}
+                          </div>
                         </div>
                       </div>
                       <span className="text-sm font-semibold text-foreground">{service.name}</span>
@@ -2145,8 +2169,12 @@ export default function Auth() {
                           onClick={() => handleHealthSubtypeSelect(service.id)}
                           className="group flex items-center gap-3 rounded-xl border-2 border-blue-200 bg-white p-3 text-left transition-all hover:border-[#04439e] hover:shadow-lg"
                         >
-                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#04439e]/10">
-                            <Icon className="h-6 w-6 text-[#04439e]" />
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
+                            {service.logoImage ? (
+                              <img src={service.logoImage} alt={service.name} className="h-full w-full object-cover" loading="lazy" />
+                            ) : (
+                              <Icon className="h-6 w-6 text-[#04439e]" />
+                            )}
                           </div>
                           <div>
                             <span className="block text-sm font-semibold text-foreground">{service.name}</span>
@@ -2298,7 +2326,7 @@ export default function Auth() {
               <>
                 <div className="mb-4 p-4 bg-primary/10 border border-primary/20 rounded-xl shadow-sm">
                   <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
                       <Zap className="h-5 w-5 text-primary" />
                     </div>
                     <div>
@@ -2327,7 +2355,7 @@ export default function Auth() {
 
                 <div className="bg-muted/10 border border-border/50 rounded-2xl p-6 shadow-sm">
                   <div className="text-center mb-5">
-                    <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                    <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
                       <Store className="h-7 w-7 text-primary" />
                     </div>
                     <h3 className="text-base font-bold text-foreground mb-1">{t('auth.classicSeller')}</h3>
@@ -2348,8 +2376,8 @@ export default function Auth() {
                       }}
                       className="group flex flex-col items-center text-center gap-2 sm:gap-3 p-3 sm:p-5 rounded-xl border-2 border-border/60 bg-background hover:border-primary hover:bg-primary/5 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200"
                     >
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 group-hover:bg-primary flex items-center justify-center shrink-0 transition-colors">
-                        <ShoppingBag className="h-6 w-6 sm:h-7 sm:w-7 text-primary group-hover:text-white transition-colors" />
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shrink-0">
+                        <ShoppingBag className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
                       </div>
                       <div className="min-w-0">
                         <span className="text-xs sm:text-sm font-bold text-foreground block mb-0.5 sm:mb-1">E-commerce</span>
@@ -2370,8 +2398,8 @@ export default function Auth() {
                       }}
                       className="group flex flex-col items-center text-center gap-2 sm:gap-3 p-3 sm:p-5 rounded-xl border-2 border-border/60 bg-background hover:border-[#04439e] hover:bg-blue-50/60 hover:shadow-lg hover:shadow-[#04439e]/10 transition-all duration-200"
                     >
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-blue-100 group-hover:bg-[#04439e] flex items-center justify-center shrink-0 transition-colors">
-                        <Laptop className="h-6 w-6 sm:h-7 sm:w-7 text-[#04439e] group-hover:text-white transition-colors" />
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shrink-0">
+                        <Laptop className="h-6 w-6 sm:h-7 sm:w-7 text-[#04439e]" />
                       </div>
                       <div className="min-w-0">
                         <span className="text-xs sm:text-sm font-bold text-foreground block mb-0.5 sm:mb-1">Digitaux</span>
@@ -2437,9 +2465,7 @@ export default function Auth() {
                         : 'bg-background border-border/60 hover:border-primary/50 hover:bg-primary/5'
                     }`}
                   >
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
-                      selectedRole === 'vendeur' && !selectedServiceType ? 'bg-white/20' : 'bg-primary/10 group-hover:bg-primary/20'
-                    }`}>
+                    <div className="w-12 h-12 flex items-center justify-center">
                       <Store className={`h-6 w-6 ${selectedRole === 'vendeur' && !selectedServiceType ? 'text-white' : 'text-primary'}`} />
                     </div>
                     <span className={`text-sm font-semibold ${selectedRole === 'vendeur' && !selectedServiceType ? 'text-white' : 'text-foreground'}`}>
@@ -2460,9 +2486,7 @@ export default function Auth() {
                         : 'bg-background border-border/60 hover:border-orange-300 hover:bg-orange-50/50'
                     }`}
                   >
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
-                      selectedRole === 'prestataire' ? 'bg-white/20' : 'bg-orange-100 group-hover:bg-orange-200'
-                    }`}>
+                    <div className="w-12 h-12 flex items-center justify-center">
                       <Briefcase className={`h-6 w-6 ${selectedRole === 'prestataire' ? 'text-white' : 'text-[#ff4000]'}`} />
                     </div>
                     <span className={`text-sm font-semibold ${selectedRole === 'prestataire' ? 'text-white' : 'text-foreground'}`}>
