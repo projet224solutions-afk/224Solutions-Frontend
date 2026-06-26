@@ -52,8 +52,16 @@ export interface CreateSubAgentData {
   accessToken?: string;
 }
 
+// Données retournées après création réussie
+export interface CreatedUserInfo {
+  id:        string;
+  email:     string;
+  role:      string;
+  publicId?: string;
+}
+
 interface UseAgentActionsOptions {
-  onUserCreated?: () => void;
+  onUserCreated?: (info: CreatedUserInfo) => void;
   onSubAgentCreated?: () => void;
   onSubAgentUpdated?: () => void;
   onSubAgentDeleted?: () => void;
@@ -68,7 +76,7 @@ export const useAgentActions = (options: UseAgentActionsOptions = {}) => {
     agentId: string,
     agentCode: string,
     accessToken?: string
-  ): Promise<{ success: boolean; error?: string }> => {
+  ): Promise<{ success: boolean; error?: string; user?: CreatedUserInfo }> => {
     try {
       // Vérifier l'authentification AVANT tout
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
@@ -80,11 +88,6 @@ export const useAgentActions = (options: UseAgentActionsOptions = {}) => {
           error: '🔒 Session expirée. Veuillez vous reconnecter.'
         };
       }
-
-      console.log('✅ [useAgentActions] Session active:', {
-        userId: session.user.id,
-        email: session.user.email
-      });
 
       // Validation basique
       if (!userData.firstName || !userData.email || !userData.phone) {
@@ -140,29 +143,30 @@ export const useAgentActions = (options: UseAgentActionsOptions = {}) => {
 
       // Créer l'utilisateur via le BACKEND Node (migré depuis l'edge create-user-by-agent)
       // → atomique avec rollback complet côté serveur (pas de compte orphelin).
-      console.log('[useAgentActions] Appel backend /api/agents/users avec:', {
-        agentId,
-        agentCode,
-        role: userData.role,
-        email: userData.email,
-        hasSession: true
-      });
-
       const { backendFetch } = await import('@/services/backendApi');
       const resp = await backendFetch<{ user: any }>('/api/agents/users', {
         method: 'POST',
         body: requestBody,
       });
 
-      console.log('[useAgentActions] Réponse backend:', resp);
-
       if (!resp.success) {
         return { success: false, error: resp.error || "Erreur lors de la création de l'utilisateur" };
       }
 
       toast.success(`Utilisateur ${userData.role} créé avec succès!`);
-      options.onUserCreated?.();
-      return { success: true };
+
+      // ✅ Transmettre les infos du compte créé au composant parent.
+      // Le backend peut renvoyer { data: { user } } ou { user } → on couvre les deux formes.
+      const respAny = resp as any;
+      const createdUser = respAny.data?.user || respAny.user || {};
+      const createdInfo: CreatedUserInfo = {
+        id:       createdUser.id || '',
+        email:    createdUser.email || userData.email,
+        role:     createdUser.role || userData.role,
+        publicId: createdUser.public_id,
+      };
+      options.onUserCreated?.(createdInfo);
+      return { success: true, user: createdInfo };
     } catch (error: any) {
       console.error('[useAgentActions] Create user error:', error);
       return { success: false, error: error.message || "Erreur lors de la création de l'utilisateur" };
@@ -202,12 +206,6 @@ export const useAgentActions = (options: UseAgentActionsOptions = {}) => {
 
       // Générer un mot de passe temporaire sécurisé
       const tempPassword = secureRandomString(14) + 'Aa1!';
-
-      console.log('📤 [useAgentActions] Appel edge function create-sub-agent:', {
-        parentAgentId,
-        email: subAgentData.email,
-        name: subAgentData.name
-      });
 
       // Appeler l'edge function pour créer le sous-agent
       const { data, error } = await supabase.functions.invoke('create-sub-agent', {
