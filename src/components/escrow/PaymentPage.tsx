@@ -62,7 +62,7 @@ const PaymentPage: React.FC<PaymentPageProps> = () => {
             const data = await response.json();
             setInvoice(data.invoice);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Erreur de chargement');
+            setError(err instanceof Error ? err.message: t('paymentPage.erreurDeChargement'));
         } finally {
             setLoading(false);
         }

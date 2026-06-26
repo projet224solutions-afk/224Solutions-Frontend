@@ -49,12 +49,12 @@ function PWAInstallPromptInner() {
 
     if (installed) {
       toast.success(t('pWAInstallPrompt.applicationInstalleeAvecSucces'), {
-        description: 'Vous pouvez maintenant utiliser 224Solutions depuis votre écran d\'accueil'
+        description: t('pWAInstallPrompt.vousPouvezMaintenantUtiliser224solutions')
       });
       setIsVisible(false);
     } else {
       toast.error(t('pWAInstallPrompt.installationAnnulee'), {
-        description: 'Vous pourrez installer l\'application plus tard'
+        description: t('pWAInstallPrompt.vousPourrezInstallerLApplication')
       });
     }
   };
@@ -65,7 +65,7 @@ function PWAInstallPromptInner() {
     localStorage.setItem('pwa-install-dismissed', String(Date.now()));
 
     toast.info(t('pWAInstallPrompt.invitationMasquee'), {
-      description: 'Vous pourrez installer l\'application depuis les paramètres de votre navigateur'
+      description: t('pWAInstallPrompt.vousPourrezInstallerLApplication2')
     });
   };
 

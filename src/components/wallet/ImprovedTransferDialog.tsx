@@ -248,7 +248,7 @@ export const ImprovedTransferDialog = ({
           try {
             await executeInternationalTransfer();
           } catch (err) {
-            const message = err instanceof Error ? err.message : 'Erreur de transfert';
+            const message = err instanceof Error ? err.message: t('improvedTransferDialog.erreurDeTransfert');
             toast.error(message);
           } finally {
             setExecuting(false);
@@ -286,7 +286,7 @@ export const ImprovedTransferDialog = ({
               setPendingTransferKind(null);
             }
           } catch (err) {
-            const message = err instanceof Error ? err.message : 'Erreur lors du transfert';
+            const message = err instanceof Error ? err.message: t('improvedTransferDialog.erreurLorsDuTransfert');
             const isPinError = /code pin|pin invalide|pin bloqué|tentative|configurer.*pin/i.test(message);
             if (isPinError) {
               setPinError(message);

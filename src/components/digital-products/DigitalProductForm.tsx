@@ -92,8 +92,8 @@ const categoryConfig: Record<ProductCategory, {
   allowAffiliate: boolean;
 }> = {
   dropshipping: {
-    title: 'Produit Dropshipping',
-    description: 'Importez un produit depuis Amazon, AliExpress ou Alibaba',
+    title: "Produit Dropshipping",
+    description: "Importez un produit depuis Amazon, AliExpress ou Alibaba",
     icon: '📦',
     defaultMode: 'affiliate',
     allowDirectSale: false,
@@ -101,7 +101,7 @@ const categoryConfig: Record<ProductCategory, {
   },
   voyage: {
     title: 'Voyage & Billetterie',
-    description: 'Vols, hôtels, locations - en affiliation ou propres services',
+    description: "Vols, hôtels, locations - en affiliation ou propres services",
     icon: '✈️',
     defaultMode: 'affiliate',
     allowDirectSale: true,
@@ -109,7 +109,7 @@ const categoryConfig: Record<ProductCategory, {
   },
   logiciel: {
     title: 'Logiciel & SaaS',
-    description: 'Vendez votre logiciel ou promouvez en affiliation',
+    description: "Vendez votre logiciel ou promouvez en affiliation",
     icon: '💻',
     defaultMode: 'affiliate',
     allowDirectSale: true,
@@ -117,7 +117,7 @@ const categoryConfig: Record<ProductCategory, {
   },
   formation: {
     title: 'Formation & Coaching',
-    description: 'Créez et vendez vos propres formations',
+    description: "Créez et vendez vos propres formations",
     icon: '🎓',
     defaultMode: 'direct',
     allowDirectSale: true,
@@ -125,15 +125,15 @@ const categoryConfig: Record<ProductCategory, {
   },
   livre: {
     title: 'Livre & eBook',
-    description: 'Vendez vos eBooks ou promouvez en affiliation',
+    description: "Vendez vos eBooks ou promouvez en affiliation",
     icon: '📚',
     defaultMode: 'direct',
     allowDirectSale: true,
     allowAffiliate: true
   },
   custom: {
-    title: 'Produit Numérique',
-    description: 'Templates, scripts, designs, services...',
+    title: "Produit Numérique",
+    description: "Templates, scripts, designs, services...",
     icon: '✨',
     defaultMode: 'direct',
     allowDirectSale: true,
@@ -141,15 +141,15 @@ const categoryConfig: Record<ProductCategory, {
   },
   ai: {
     title: 'Outil IA',
-    description: 'Solutions et services d\'intelligence artificielle',
+    description: "Solutions et services d'intelligence artificielle",
     icon: '🤖',
     defaultMode: 'affiliate',
     allowDirectSale: true,
     allowAffiliate: true
   },
   physique_affilie: {
-    title: 'Produit Physique Affilié',
-    description: 'Vendez des produits physiques en affiliation (Amazon, AliExpress...)',
+    title: "Produit Physique Affilié",
+    description: "Vendez des produits physiques en affiliation (Amazon, AliExpress...)",
     icon: '🛍️',
     defaultMode: 'affiliate',
     allowDirectSale: false,
@@ -235,7 +235,7 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
   });
   const productTypes: Record<ProductCategory, { value: string; label: string }[]> = {
     logiciel: [
-      { value: 'logiciel_montage', label: 'Logiciel de montage vidéo' },
+      { value: 'logiciel_montage', label: t('digitalProductForm.logicielDeMontageVideo') },
       { value: 'antivirus', label: 'Antivirus / Sécurité' },
       { value: 'vpn', label: 'VPN' },
       { value: 'saas', label: 'SaaS / Application en ligne' },
@@ -244,16 +244,16 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
       { value: 'autre_logiciel', label: 'Autre logiciel' }
     ],
     voyage: [
-      { value: 'reservation_hotel', label: 'Réservation hôtel' },
+      { value: 'reservation_hotel', label: t('digitalProductForm.reservationHotel') },
       { value: 'billet_avion', label: 'Billet d\'avion' },
-      { value: 'location_voiture', label: 'Location de voiture' },
-      { value: 'croisiere', label: 'Croisière' },
+      { value: 'location_voiture', label: t('digitalProductForm.locationDeVoiture') },
+      { value: 'croisiere', label: t('digitalProductForm.croisiere') },
       { value: 'excursion', label: 'Excursion / Visite guidée' },
       { value: 'assurance_voyage', label: 'Assurance voyage' },
-      { value: 'autre_voyage', label: 'Autre service voyage' }
+      { value: 'autre_voyage', label: t('digitalProductForm.autreServiceVoyage') }
     ],
     formation: [
-      { value: 'formation_video', label: 'Formation vidéo' },
+      { value: 'formation_video', label: t('digitalProductForm.formationVideo') },
       { value: 'cours_en_ligne', label: 'Cours en ligne' },
       { value: 'coaching', label: 'Coaching / Mentorat' },
       { value: 'masterclass', label: 'Masterclass' },
@@ -266,14 +266,14 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
       { value: 'audiobook', label: 'Livre audio' },
       { value: 'guide_pdf', label: 'Guide PDF' },
       { value: 'rapport', label: 'Rapport / Étude' },
-      { value: 'magazine', label: 'Magazine numérique' },
+      { value: 'magazine', label: t('digitalProductForm.magazineNumerique') },
       { value: 'autre_livre', label: 'Autre publication' }
     ],
     dropshipping: [
-      { value: 'produit_aliexpress', label: 'Produit AliExpress' },
-      { value: 'produit_amazon', label: 'Produit Amazon' },
-      { value: 'produit_alibaba', label: 'Produit Alibaba' },
-      { value: 'autre_dropship', label: 'Autre produit dropshipping' }
+      { value: 'produit_aliexpress', label: t('digitalProductForm.produitAliexpress') },
+      { value: 'produit_amazon', label: t('digitalProductForm.produitAmazon') },
+      { value: 'produit_alibaba', label: t('digitalProductForm.produitAlibaba') },
+      { value: 'autre_dropship', label: t('digitalProductForm.autreProduitDropshipping') }
     ],
     custom: [
       { value: 'template', label: 'Template / Modèle' },
@@ -281,27 +281,27 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
       { value: 'musique', label: 'Musique / Audio' },
       { value: 'video', label: 'Vidéo / Animation' },
       { value: 'script', label: 'Script / Code' },
-      { value: 'service_digital', label: 'Service numérique' },
-      { value: 'autre_custom', label: 'Autre produit numérique' }
+      { value: 'service_digital', label: t('digitalProductForm.serviceNumerique') },
+      { value: 'autre_custom', label: t('digitalProductForm.autreProduitNumerique') }
     ],
     ai: [
       { value: 'outil_ia', label: 'Outil IA' },
       { value: 'chatbot', label: 'Chatbot IA' },
       { value: 'api_ia', label: 'API IA' },
-      { value: 'modele_ia', label: 'Modèle IA' },
-      { value: 'prompt', label: 'Pack de prompts' },
+      { value: 'modele_ia', label: t('digitalProductForm.modeleIa') },
+      { value: 'prompt', label: t('digitalProductForm.packDePrompts') },
       { value: 'autre_ia', label: 'Autre solution IA' }
     ],
     physique_affilie: [
-      { value: 'produit_amazon', label: 'Produit Amazon' },
-      { value: 'produit_aliexpress', label: 'Produit AliExpress' },
-      { value: 'produit_alibaba', label: 'Produit Alibaba' },
-      { value: 'electronique', label: 'Électronique' },
-      { value: 'mode_vetements', label: 'Mode & Vêtements' },
+      { value: 'produit_amazon', label: t('digitalProductForm.produitAmazon') },
+      { value: 'produit_aliexpress', label: t('digitalProductForm.produitAliexpress') },
+      { value: 'produit_alibaba', label: t('digitalProductForm.produitAlibaba') },
+      { value: 'electronique', label: t('digitalProductForm.electronique') },
+      { value: 'mode_vetements', label: t('digitalProductForm.modeVetements') },
       { value: 'maison_jardin', label: 'Maison & Jardin' },
-      { value: 'beaute_sante', label: 'Beauté & Santé' },
+      { value: 'beaute_sante', label: t('digitalProductForm.beauteSante') },
       { value: 'sport_loisirs', label: 'Sport & Loisirs' },
-      { value: 'autre_physique', label: 'Autre produit physique' }
+      { value: 'autre_physique', label: t('digitalProductForm.autreProduitPhysique') }
     ]
   };
 
@@ -453,16 +453,16 @@ export function DigitalProductForm({ category, onBack, onSuccess, mode = 'create
   // Pour physique_affilie, on n'inclut pas l'étape "mode" car seule l'affiliation est disponible
   const steps: { id: FormStep; label: string }[] = category === 'physique_affilie'
     ? [
-      { id: 'details', label: 'Détails' },
+      { id: 'details', label: t('digitalProductForm.details') },
       { id: 'pricing', label: 'Affiliation' },
-      { id: 'media', label: 'Médias' },
+      { id: 'media', label: t('digitalProductForm.medias') },
       { id: 'review', label: 'Validation' }
     ]
     : [
       { id: 'mode', label: 'Mode' },
-      { id: 'details', label: 'Détails' },
+      { id: 'details', label: t('digitalProductForm.details') },
       { id: 'pricing', label: salesMode === 'affiliate' ? 'Affiliation' : 'Prix' },
-      { id: 'media', label: 'Médias' },
+      { id: 'media', label: t('digitalProductForm.medias') },
       { id: 'review', label: 'Validation' }
     ];
 

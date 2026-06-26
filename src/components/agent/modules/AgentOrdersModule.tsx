@@ -145,12 +145,12 @@ export function AgentOrdersModule({ agentId, canManage = false }: AgentOrdersMod
   const getStatusBadge = (status: string) => {
     const statusConfig: Record<string, { color: string; icon: React.ReactNode; label: string }> = {
       pending: { color: 'bg-orange-100 text-[#ff4000]', icon: <Clock className="w-3 h-3" />, label: 'En attente' },
-      confirmed: { color: 'bg-blue-100 text-blue-700', icon: <CheckCircle className="w-3 h-3" />, label: 'Confirmée' },
-      processing: { color: 'bg-blue-100 text-[#04439e]', icon: <Package className="w-3 h-3" />, label: 'En préparation' },
-      shipped: { color: 'bg-blue-100 text-[#04439e]', icon: <Truck className="w-3 h-3" />, label: 'Expédiée' },
-      delivered: { color: 'bg-orange-100 text-[#ff4000]', icon: <CheckCircle className="w-3 h-3" />, label: 'Livrée' },
-      completed: { color: 'bg-orange-100 text-[#ff4000]', icon: <CheckCircle className="w-3 h-3" />, label: 'Terminée' },
-      cancelled: { color: 'bg-orange-100 text-[#ff4000]', icon: <XCircle className="w-3 h-3" />, label: 'Annulée' },
+      confirmed: { color: 'bg-blue-100 text-blue-700', icon: <CheckCircle className="w-3 h-3" />, label: t('agentOrdersModule.confirmee') },
+      processing: { color: 'bg-blue-100 text-[#04439e]', icon: <Package className="w-3 h-3" />, label: t('agentOrdersModule.enPreparation') },
+      shipped: { color: 'bg-blue-100 text-[#04439e]', icon: <Truck className="w-3 h-3" />, label: t('agentOrdersModule.expediee') },
+      delivered: { color: 'bg-orange-100 text-[#ff4000]', icon: <CheckCircle className="w-3 h-3" />, label: t('agentOrdersModule.livree') },
+      completed: { color: 'bg-orange-100 text-[#ff4000]', icon: <CheckCircle className="w-3 h-3" />, label: t('agentOrdersModule.terminee') },
+      cancelled: { color: 'bg-orange-100 text-[#ff4000]', icon: <XCircle className="w-3 h-3" />, label: t('agentOrdersModule.annulee') },
     };
     const config = statusConfig[status] || { color: 'bg-gray-100 text-gray-700', icon: null, label: status };
 

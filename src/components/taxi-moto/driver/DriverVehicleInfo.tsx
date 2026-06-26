@@ -50,7 +50,7 @@ export function DriverVehicleInfo({
       className
     )}>
       {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-[#04439e]/5" />
+      <div className="absolute inset-0" />
 
       <div className="relative">
         {/* Header compact */}
@@ -65,7 +65,7 @@ export function DriverVehicleInfo({
         <div className="grid grid-cols-2 gap-2">
           {/* ID Chauffeur - Toujours affiché en premier */}
           {displayDriverId && (
-            <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-[#ff4000]/10 border border-[#ff4000]/30 col-span-2">
+            <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg border border-[#ff4000]/30 col-span-2">
               <User className="w-3 h-3 text-[#ff4000]" />
               <span className="text-[#ff4000] text-[10px] font-medium">ID:</span>
               <span

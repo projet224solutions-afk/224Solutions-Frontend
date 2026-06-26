@@ -71,12 +71,12 @@ const STATUS_CONFIG = {
     color: 'bg-orange-500/10 text-orange-600 border-orange-500/30',
   },
   document_generated: {
-    label: 'Document généré',
+    label: "Document généré",
     icon: FileText,
     color: 'bg-blue-500/10 text-blue-600 border-blue-500/30',
   },
   validated: {
-    label: 'Validé',
+    label: "Validé",
     icon: Clock,
     color: 'bg-[#ff4000]/10 text-[#ff4000] border-[#ff4000]/30',
   },

@@ -47,9 +47,9 @@ interface DigitalSubscription {
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof CheckCircle }> = {
   active: { label: 'Actif', color: 'bg-[#ff4000]/10 text-[#ff4000] border-[#ff4000]/20', icon: CheckCircle },
-  past_due: { label: 'Paiement en retard', color: 'bg-[#ff4000]/10 text-[#ff4000] border-[#ff4000]/20', icon: AlertTriangle },
-  cancelled: { label: 'Annulé', color: 'bg-muted text-muted-foreground border-border', icon: XCircle },
-  expired: { label: 'Expiré', color: 'bg-destructive/10 text-destructive border-destructive/20', icon: Clock },
+  past_due: { label: "Paiement en retard", color: 'bg-[#ff4000]/10 text-[#ff4000] border-[#ff4000]/20', icon: AlertTriangle },
+  cancelled: { label: "Annulé", color: 'bg-muted text-muted-foreground border-border', icon: XCircle },
+  expired: { label: "Expiré", color: 'bg-destructive/10 text-destructive border-destructive/20', icon: Clock },
   paused: { label: 'Suspendu', color: 'bg-blue-500/10 text-blue-600 border-blue-500/20', icon: Clock },
 };
 
@@ -106,7 +106,7 @@ export default function MyDigitalSubscriptions() {
       setSubscriptions(enriched);
     } catch (error) {
       console.error('Erreur chargement abonnements:', error);
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de charger vos abonnements' });
+      toast({ variant: 'destructive', title: 'Erreur', description: t('myDigitalSubscriptions.impossibleDeChargerVosAbonnements') });
     } finally {
       setLoading(false);
     }
@@ -129,12 +129,12 @@ export default function MyDigitalSubscriptions() {
 
       if (error) throw error;
 
-      toast({ title: 'Abonnement annulé', description: 'Vous gardez l\'accès jusqu\'à la fin de la période en cours.' });
+      toast({ title: t('myDigitalSubscriptions.abonnementAnnule'), description: t('myDigitalSubscriptions.vousGardezLAccesJusqu') });
       setCancelDialogOpen(false);
       setSelectedSubId(null);
       await loadSubscriptions();
     } catch (_error) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible d\'annuler l\'abonnement' });
+      toast({ variant: 'destructive', title: 'Erreur', description: t('myDigitalSubscriptions.impossibleDAnnulerLAbonnement') });
     } finally {
       setCancelling(false);
     }

@@ -40,11 +40,11 @@ export function DisputesList() {
   const getStatusBadge = (status: string) => {
     const variants: Record<string, { variant: any; icon: any; label: string }> = {
       open: { variant: 'default', icon: AlertCircle, label: 'Ouvert' },
-      negotiating: { variant: 'secondary', icon: Clock, label: 'En négociation' },
-      escalated: { variant: 'destructive', icon: AlertCircle, label: 'Escaladé' },
+      negotiating: { variant: 'secondary', icon: Clock, label: t('disputesList.enNegociation') },
+      escalated: { variant: 'destructive', icon: AlertCircle, label: t('disputesList.escalade') },
       ai_review: { variant: 'outline', icon: Clock, label: 'Analyse IA' },
-      resolved: { variant: 'default', icon: CheckCircle, label: 'Résolu' },
-      closed: { variant: 'secondary', icon: XCircle, label: 'Fermé' }
+      resolved: { variant: 'default', icon: CheckCircle, label: t('disputesList.resolu') },
+      closed: { variant: 'secondary', icon: XCircle, label: t('disputesList.ferme') }
     };
 
     const config = variants[status] || variants.open;

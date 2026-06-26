@@ -23,7 +23,7 @@ export default function PWAInstallButton({
 
     if (installed) {
       toast.success(t('pWAInstallButton.applicationInstallee'), {
-        description: 'Ouvrez 224Solutions depuis votre écran d\'accueil'
+        description: t('pWAInstallButton.ouvrez224solutionsDepuisVotreEcran')
       });
     }
   };

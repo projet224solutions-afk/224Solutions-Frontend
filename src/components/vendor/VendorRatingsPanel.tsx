@@ -83,24 +83,34 @@ export default function VendorRatingsPanel() {
 
       if (error) throw error;
 
-      // Récupérer les profils des clients séparément
-      const ratingsWithProfiles = await Promise.all((data || []).map(async (rating) => {
-        const { data: profile } = await supabase
+      // ✅ Anti N+1 : 1 SEULE requête batch pour tous les profils clients (au lieu
+      // d'une requête par avis). Pas de JOIN PostgREST ici : il n'existe aucune FK
+      // vendor_ratings.customer_id → profiles, donc l'embed échouerait.
+      const customerIds = Array.from(
+        new Set((data || []).map((r: any) => r.customer_id).filter(Boolean))
+      );
+      let profilesById: Record<string, { first_name: string; last_name: string }> = {};
+      if (customerIds.length > 0) {
+        const { data: profilesData } = await supabase
           .from('profiles')
-          .select('first_name, last_name')
-          .eq('id', rating.customer_id)
-          .maybeSingle();
+          .select('id, first_name, last_name')
+          .in('id', customerIds);
+        profilesById = Object.fromEntries(
+          (profilesData || []).map((p: any) => [
+            p.id, { first_name: p.first_name || '', last_name: p.last_name || '' },
+          ])
+        );
+      }
 
-        return {
-          ...rating,
-          vendor_response: rating.vendor_response || null,
-          vendor_response_at: rating.vendor_response_at || null,
-          ai_suggested_response: rating.ai_suggested_response || null,
-          ai_response_status: rating.ai_response_status || 'none',
-          ai_sentiment: rating.ai_sentiment || null,
-          ai_analyzed_at: rating.ai_analyzed_at || null,
-          profiles: profile || { first_name: '', last_name: '' }
-        };
+      const ratingsWithProfiles = (data || []).map((rating: any) => ({
+        ...rating,
+        vendor_response: rating.vendor_response || null,
+        vendor_response_at: rating.vendor_response_at || null,
+        ai_suggested_response: rating.ai_suggested_response || null,
+        ai_response_status: rating.ai_response_status || 'none',
+        ai_sentiment: rating.ai_sentiment || null,
+        ai_analyzed_at: rating.ai_analyzed_at || null,
+        profiles: profilesById[rating.customer_id] || { first_name: '', last_name: '' },
       }));
 
       setRatings(ratingsWithProfiles);

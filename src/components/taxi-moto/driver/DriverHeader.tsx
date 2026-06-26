@@ -43,7 +43,7 @@ export function DriverHeader({
   return (
     <header className="relative bg-gray-900 text-white sticky top-0 z-40 w-full overflow-hidden">
       {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-[#ff4000]/5 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 to-transparent pointer-events-none" />
 
       <div className="relative px-3 py-2.5 safe-area-inset-top w-full">
         <div className="flex items-center justify-between gap-2 w-full">

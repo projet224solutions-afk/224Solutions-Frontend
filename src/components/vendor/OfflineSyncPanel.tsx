@@ -84,11 +84,11 @@ export default function OfflineSyncPanel() {
 
     // Couleur du badge de statut
     const getStatusColor = () => {
-        if (isSyncing) return "bg-blue-500";
-        if (!isOnline) return "bg-[#ff4000]";
-        if (hasFailedEvents) return "bg-orange-500";
-        if (hasPendingEvents) return "bg-[#ff4000]";
-        return "bg-[#ff4000]";
+        if (isSyncing) return "bg-[#04439e]";       // Bleu = en cours
+        if (!isOnline) return "bg-slate-500";        // Gris = hors ligne
+        if (hasFailedEvents) return "bg-red-500";    // Rouge = erreurs
+        if (hasPendingEvents) return "bg-amber-500"; // Amber = en attente
+        return "bg-[#16a34a]";                       // Vert = tout synchronisé ✓
     };
 
     // Texte du statut
@@ -113,12 +113,12 @@ export default function OfflineSyncPanel() {
     };
 
     // Couleur par statut
-    const getStatusBadgeColor = (status) => {
+    const getStatusBadgeColor = (status: string): string => {
         switch (status) {
-            case 'synced': return 'bg-orange-100 text-[#ff4000]';
-            case 'pending': return 'bg-orange-100 text-[#ff4000]';
-            case 'failed': return 'bg-orange-100 text-[#ff4000]';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'synced':  return 'bg-[#16a34a]/10 text-[#16a34a]'; // vert = synchronisé
+            case 'pending': return 'bg-amber-100 text-amber-700';    // amber = en attente
+            case 'failed':  return 'bg-red-100 text-red-600';        // rouge = erreur
+            default:        return 'bg-slate-100 text-slate-500';
         }
     };
 
@@ -153,15 +153,15 @@ export default function OfflineSyncPanel() {
                                 <div className="text-sm text-gray-600">Total</div>
                             </div>
                             <div className="text-center p-3 bg-white rounded-lg shadow-sm">
-                                <div className="text-2xl font-bold text-[#ff4000]">{syncStats.pending}</div>
+                                <div className="text-2xl font-bold text-amber-600">{syncStats.pending}</div>
                                 <div className="text-sm text-gray-600">En attente</div>
                             </div>
                             <div className="text-center p-3 bg-white rounded-lg shadow-sm">
-                                <div className="text-2xl font-bold text-[#ff4000]">{syncStats.synced}</div>
+                                <div className="text-2xl font-bold text-[#16a34a]">{syncStats.synced}</div>
                                 <div className="text-sm text-gray-600">{t('offlineSyncPanel.synchronises')}</div>
                             </div>
                             <div className="text-center p-3 bg-white rounded-lg shadow-sm">
-                                <div className="text-2xl font-bold text-[#ff4000]">{syncStats.failed}</div>
+                                <div className="text-2xl font-bold text-red-600">{syncStats.failed}</div>
                                 <div className="text-sm text-gray-600">{t('offlineSyncPanel.echoues')}</div>
                             </div>
                         </div>
@@ -319,9 +319,9 @@ export default function OfflineSyncPanel() {
                                                 <span className="capitalize">{type}</span>
                                             </div>
                                             <div className="flex gap-2 text-sm">
-                                                <span className="text-[#ff4000]">{(stats as unknown)?.pending || 0}</span>
-                                                <span className="text-[#ff4000]">{(stats as unknown)?.synced || 0}</span>
-                                                <span className="text-[#ff4000]">{(stats as unknown)?.failed || 0}</span>
+                                                <span className="text-amber-600">{(stats as unknown)?.pending || 0}</span>
+                                                <span className="text-[#16a34a]">{(stats as unknown)?.synced || 0}</span>
+                                                <span className="text-red-600">{(stats as unknown)?.failed || 0}</span>
                                             </div>
                                         </div>
                                     ))}

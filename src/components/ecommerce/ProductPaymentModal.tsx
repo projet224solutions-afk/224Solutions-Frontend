@@ -318,11 +318,11 @@ export default function ProductPaymentModal({
   };
 
   const paymentMethods = [
-    { id: 'wallet' as ProductPaymentMethod, name: 'Wallet 224Solutions', description: 'Paiement instantané depuis votre wallet', icon: Wallet, color: 'text-primary' },
+    { id: 'wallet' as ProductPaymentMethod, name: 'Wallet 224Solutions', description: t('productPaymentModal.paiementInstantaneDepuisVotreWallet'), icon: Wallet, color: 'text-primary' },
     { id: 'card' as ProductPaymentMethod, name: 'Carte Bancaire', description: 'Paiement sécurisé VISA / Mastercard via Stripe', icon: CreditCard, color: 'text-primary' },
-    { id: 'orange_money' as ProductPaymentMethod, name: 'Orange Money', description: 'Débit instantané sur votre téléphone', icon: Smartphone, color: 'text-orange-500' },
-    { id: 'mtn_money' as ProductPaymentMethod, name: 'MTN Mobile Money', description: 'Débit instantané via MTN MoMo', icon: Smartphone, color: 'text-yellow-600' },
-    { id: 'cash' as ProductPaymentMethod, name: 'Paiement à la livraison', description: 'Payez en espèces à la réception', icon: Banknote, color: 'text-green-600' },
+    { id: 'orange_money' as ProductPaymentMethod, name: 'Orange Money', description: t('productPaymentModal.debitInstantaneSurVotreTelephone'), icon: Smartphone, color: 'text-orange-500' },
+    { id: 'mtn_money' as ProductPaymentMethod, name: 'MTN Mobile Money', description: t('productPaymentModal.debitInstantaneViaMtnMomo'), icon: Smartphone, color: 'text-yellow-600' },
+    { id: 'cash' as ProductPaymentMethod, name: 'Paiement à la livraison', description: t('productPaymentModal.payezEnEspecesALa'), icon: Banknote, color: 'text-green-600' },
   ];
 
   const createOrderAfterPayment = async (paymentId: string, method: string) => {
@@ -547,7 +547,7 @@ export default function ProductPaymentModal({
           toast.success(t('productPaymentModal.paiementMobileReussi'), { description: `${fc(effectiveGrandTotal, cur)} débité de votre compte` });
           setTimeout(() => { finalizeSuccessfulCheckout(); }, 2000);
         } else {
-          toast.error(t('productPaymentModal.paiementNonConfirme'), { description: 'Veuillez réessayer' });
+          toast.error(t('productPaymentModal.paiementNonConfirme'), { description: t('productPaymentModal.veuillezReessayer') });
           setPaymentStep('mobile_money_form');
         }
       } else {

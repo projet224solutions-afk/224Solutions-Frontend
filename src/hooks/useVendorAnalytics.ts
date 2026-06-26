@@ -27,6 +27,11 @@ export interface AnalyticsSummary {
     sales: number;
   }>;
   activeProductsCount: number;
+  // KPI additionnels (30 derniers jours)
+  monthRevenue: number;
+  totalMonthOrders: number;
+  avgOrderValue: number;
+  lowStockProducts: Array<{ id: string; name: string; stock_quantity: number; low_stock_threshold: number }>;
 }
 
 export const useVendorAnalytics = () => {
@@ -195,6 +200,27 @@ export const useVendorAnalytics = () => {
 
       const activeProductsCount = (activePhysicalCount || 0) + (activeDigitalCount || 0);
 
+      // CA du mois (30 derniers jours) dérivé de monthData (orders payées + POS) → déjà précis.
+      const monthRevenue = monthData.reduce((s, d) => s + d.total_sales, 0);
+      const totalMonthOrders = monthData.reduce((s, d) => s + d.total_orders, 0);
+      const avgOrderValue = totalMonthOrders > 0 ? Math.round(monthRevenue / totalMonthOrders) : 0;
+
+      // Alertes stock bas : on récupère stock + seuil et on filtre EN JS.
+      // (PostgREST ne sait pas comparer deux colonnes entre elles dans .filter().)
+      const { data: stockRows } = await supabase
+        .from('products')
+        .select('id, name, stock_quantity, low_stock_threshold')
+        .eq('vendor_id', vendorId)
+        .eq('is_active', true);
+      const lowStockProducts = (stockRows || [])
+        .filter((p: any) =>
+          p.low_stock_threshold != null && p.stock_quantity != null &&
+          Number(p.stock_quantity) <= Number(p.low_stock_threshold))
+        .map((p: any) => ({
+          id: p.id, name: p.name,
+          stock_quantity: Number(p.stock_quantity), low_stock_threshold: Number(p.low_stock_threshold),
+        }));
+
       const todayAnalytics: VendorAnalytics = {
         date: today,
         totalSales: todaySales,
@@ -216,7 +242,11 @@ export const useVendorAnalytics = () => {
         week: weekData,
         month: monthData,
         topProducts,
-        activeProductsCount: activeProductsCount
+        activeProductsCount: activeProductsCount,
+        monthRevenue,
+        totalMonthOrders,
+        avgOrderValue,
+        lowStockProducts,
       });
     } catch (error) {
       console.error('Erreur chargement analytics:', error);

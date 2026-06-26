@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Loader2, TrendingUp, Calendar, Clock, MapPin, Wallet, ArrowUpCircle, ArrowDownCircle, History, Shield } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { useWalletBalance } from '@/hooks/useWalletBalance';
 import { Money } from '@/components/Money';
 import { format } from 'date-fns';
@@ -64,6 +65,7 @@ interface WalletTransaction {
 export function DriverEarnings({ driverId }: DriverEarningsProps) {
   const { t } = useTranslation();
   const [rides, setRides] = useState<Ride[]>([]);
+  const [weekChartData, setWeekChartData] = useState<{ label: string; total: number; isToday: boolean }[]>([]);
   const [transactions, setTransactions] = useState<WalletTransaction[]>([]);
   const [stats, setStats] = useState<EarningsStats>({
     todayEarnings: 0,
@@ -185,6 +187,23 @@ export function DriverEarnings({ driverId }: DriverEarningsProps) {
         yearRides: yearRides.length,
       });
 
+      // ✅ Données graphique 7 derniers jours (réutilise formattedRides)
+      const chartData = Array.from({ length: 7 }, (_, i) => {
+        const d = new Date();
+        d.setDate(d.getDate() - (6 - i));
+        const dayStart = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        const dayEnd = new Date(dayStart.getTime() + 86_400_000);
+        const label = d.toLocaleDateString('fr-FR', { weekday: 'short' });
+        const total = formattedRides
+          .filter((r) => {
+            const ts = new Date(r.completed_at || r.requested_at);
+            return ts >= dayStart && ts < dayEnd;
+          })
+          .reduce((sum, r) => sum + (r.fare || 0), 0);
+        return { label, total, isToday: i === 6 };
+      });
+      setWeekChartData(chartData);
+
       if (driverData) {
         const { data: walletData } = await supabase
           .from('wallets')
@@ -193,10 +212,12 @@ export function DriverEarnings({ driverId }: DriverEarningsProps) {
           .single();
 
         if (walletData) {
+          // ✅ vraies colonnes : sender_wallet_id / receiver_wallet_id
+          // (from_wallet_id / to_wallet_id n'existent pas → historique restait vide)
           const { data: transactionsData } = await supabase
             .from('wallet_transactions')
             .select('*')
-            .or(`from_wallet_id.eq.${walletData.id},to_wallet_id.eq.${walletData.id}`)
+            .or(`sender_wallet_id.eq.${walletData.id},receiver_wallet_id.eq.${walletData.id}`)
             .order('created_at', { ascending: false })
             .limit(20);
 
@@ -561,6 +582,38 @@ export function DriverEarnings({ driverId }: DriverEarningsProps) {
                   ))
                 )}
               </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* ✅ Graphique gains 7 derniers jours */}
+        {weekChartData.length > 0 && (
+          <Card className="bg-card border-0 shadow-sm">
+            <CardHeader className="pb-1 pt-4 px-4">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-[#ff4000]" />
+                Gains — 7 derniers jours
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-2 pb-4 pt-0">
+              <ResponsiveContainer width="100%" height={110}>
+                <BarChart data={weekChartData} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+                  <XAxis dataKey="label" tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }} axisLine={false} tickLine={false} />
+                  <YAxis hide />
+                  <Tooltip
+                    formatter={(v: number) => [`${v.toLocaleString()} GNF`, 'Gains']}
+                    contentStyle={{ fontSize: 11, borderRadius: 8, border: '0.5px solid hsl(var(--border))', background: 'hsl(var(--background))' }}
+                  />
+                  <Bar dataKey="total" radius={[4, 4, 0, 0]}>
+                    {weekChartData.map((e, i) => (
+                      <Cell key={i} fill={e.isToday ? '#ff4000' : '#04439e'} opacity={e.total === 0 ? 0.25 : 1} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+              <p className="text-[10px] text-center text-muted-foreground">
+                Aujourd'hui en rouge · Jours précédents en bleu
+              </p>
             </CardContent>
           </Card>
         )}

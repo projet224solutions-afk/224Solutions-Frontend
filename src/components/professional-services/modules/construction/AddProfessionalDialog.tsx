@@ -9,16 +9,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Loader2 } from 'lucide-react';
 
 const SPECIALTIES = [
-  { value: 'macon', label: '🧱 Maçon' },
-  { value: 'electricien', label: '⚡ Électricien' },
+  { value: 'macon', label: "🧱 Maçon" },
+  { value: 'electricien', label: "⚡ Électricien" },
   { value: 'plombier', label: '🔧 Plombier' },
   { value: 'architecte', label: '📐 Architecte' },
-  { value: 'ingenieur', label: '👷 Ingénieur' },
+  { value: 'ingenieur', label: "👷 Ingénieur" },
   { value: 'menuisier', label: '🪚 Menuisier' },
   { value: 'peintre', label: '🎨 Peintre' },
   { value: 'carreleur', label: '🔲 Carreleur' },
   { value: 'soudeur', label: '🔥 Soudeur' },
-  { value: 'chef_chantier', label: '🏗️ Chef de chantier' },
+  { value: 'chef_chantier', label: "🏗️ Chef de chantier" },
 ];
 
 interface Props {

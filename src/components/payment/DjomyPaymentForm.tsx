@@ -95,7 +95,7 @@ export function DjomyPaymentForm({
       return;
     }
 
-    setStatus({ status: 'processing', message: 'Initialisation du paiement...' });
+    setStatus({ status: 'processing', message: t('djomyPaymentForm.initialisationDuPaiement') });
 
     try {
       const { data, error } = await supabase.functions.invoke('djomy-init-payment', {
@@ -118,7 +118,7 @@ export function DjomyPaymentForm({
       if (data?.success) {
         setStatus({
           status: 'success',
-          message: 'Paiement initié ! Validez sur votre téléphone.',
+          message: t('djomyPaymentForm.paiementInitieValidezSurVotre'),
           transactionId: data.transactionId,
         });
 

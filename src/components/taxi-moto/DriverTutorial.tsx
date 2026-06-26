@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 /**
  * TUTORIEL CONDUCTEUR - Guide d'utilisation de l'application
  * Explique comment utiliser l'app pour effectuer des courses
@@ -109,6 +110,7 @@ const tutorialSteps: TutorialStep[] = [
 ];
 
 export function DriverTutorial() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
 

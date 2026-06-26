@@ -8,7 +8,12 @@ import { supabase } from '@/integrations/supabase/client';
 export type GCSFolder =
   | 'avatars' | 'products' | 'videos' | 'audio' | 'documents'
   | 'stamps' | 'restaurant' | 'digital-products' | 'travel' | 'misc'
-  | 'kyc' | 'sos';
+  | 'kyc' | 'sos'
+  // Dossiers GCS alignés avec les nouveaux StorageFolder
+  | 'service-gallery'
+  | 'service-gallery-videos'
+  | 'property-images'
+  | 'driver-photos';
 
 const SUPABASE_BUCKET_MAP: Record<GCSFolder, string> = {
   avatars: 'avatars',
@@ -23,6 +28,10 @@ const SUPABASE_BUCKET_MAP: Record<GCSFolder, string> = {
   misc: 'communication-files',
   kyc: 'kyc-documents',
   sos: 'sos-recordings',
+  'service-gallery': 'service-gallery',
+  'service-gallery-videos': 'service-gallery-videos',
+  'property-images': 'property-images',
+  'driver-photos': 'driver-photos',
 };
 
 export interface GCSUploadResult {

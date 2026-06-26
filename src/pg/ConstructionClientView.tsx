@@ -11,6 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { backendFetch } from '@/services/backendApi';
 import { useProjectDetail, isLogLocked } from '@/hooks/useConstruction';
+import { useConstructionReserves, RESERVE_PRIORITY_LABELS, RESERVE_STATUS_LABELS } from '@/hooks/useConstructionExtended';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -28,10 +29,11 @@ export default function ConstructionClientView() {
   const [claiming, setClaiming] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
   const { logs, milestones, fundMilestone, releaseMilestone, reload } = useProjectDetail(projectId);
+  const { reserves } = useConstructionReserves(projectId);
 
   const loadProject = async () => {
     if (!projectId) return;
-    const { data } = await supabase.from('construction_projects').select('*').eq('id', projectId).maybeSingle();
+    const { data } = await (supabase as any).from('construction_projects').select('*').eq('id', projectId).maybeSingle();
     setProject(data); setLoading(false);
   };
   useEffect(() => { void loadProject(); /* eslint-disable-next-line */ }, [projectId]);
@@ -90,6 +92,40 @@ export default function ConstructionClientView() {
         ))}
         {isClient && <p className="text-[11px] text-muted-foreground">{t('constructionClientView.vosFondsSontConservesSous')}</p>}
       </div>
+
+      {/* Réserves / Points à lever (lecture seule client) */}
+      {reserves.length > 0 && (
+        <div className="space-y-2">
+          <h2 className="text-sm font-semibold">Réserves / Points à lever</h2>
+          {reserves.map((r) => {
+            const p = RESERVE_PRIORITY_LABELS[r.priority];
+            const s = RESERVE_STATUS_LABELS[r.status];
+            return (
+              <Card key={r.id}><CardContent className="space-y-1.5 p-3">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 font-mono text-xs text-muted-foreground">#{String(r.reserve_number).padStart(3, '0')}</span>
+                    <div>
+                      <p className="text-sm font-medium">{r.title}</p>
+                      {r.description && <p className="text-xs text-muted-foreground">{r.description}</p>}
+                    </div>
+                  </div>
+                  <div className="flex gap-1.5">
+                    <Badge className={`border-0 text-[10px] ${p.color}`}>{p.label}</Badge>
+                    <Badge className={`border-0 text-[10px] ${s.color}`}>{s.label}</Badge>
+                  </div>
+                </div>
+                {r.location_note && <p className="text-xs text-muted-foreground">📍 {r.location_note}</p>}
+                {r.photo_urls.length > 0 && (
+                  <div className="flex gap-1">
+                    {r.photo_urls.slice(0, 5).map((u, i) => <img key={i} src={u} alt="" className="h-14 w-14 rounded object-cover" />)}
+                  </div>
+                )}
+              </CardContent></Card>
+            );
+          })}
+        </div>
+      )}
 
       {/* Journal de chantier (lecture seule) */}
       <div className="space-y-2">

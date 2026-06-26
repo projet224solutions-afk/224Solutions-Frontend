@@ -163,7 +163,7 @@ function PharmacyOnCall({ serviceId }: { serviceId: string }) {
     setSavingHours(true);
     const { error } = await supabase.from('professional_services').update({ opening_hours: hours, updated_at: new Date().toISOString() }).eq('id', serviceId);
     setSavingHours(false);
-    toast[error ? 'error' : 'success'](error ? error.message : 'Horaires enregistrés');
+    toast[error ? 'error' : 'success'](error ? error.message: t('pharmacyModule.horairesEnregistres'));
   };
   const add = async () => {
     if (!newDate) return;

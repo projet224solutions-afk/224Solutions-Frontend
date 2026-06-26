@@ -249,7 +249,7 @@ export default function ProductDetail() {
       } else {
         console.warn('⚠️ [ProductDetail] Aucun profil customer trouvé pour user:', user.id);
         toast.error(t('productDetail.profilClientManquant'), {
-          description: 'Veuillez compléter votre profil client'
+          description: t('productDetail.veuillezCompleterVotreProfilClient')
         });
       }
     }

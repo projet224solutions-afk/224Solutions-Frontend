@@ -63,7 +63,7 @@ export function AgentLayout({
   const navItems: NavItem[] = [
     {
       id: 'overview',
-      label: 'Tableau de bord',
+      label: t('agentLayout.tableauDeBord'),
       icon: <LayoutDashboard className="w-5 h-5" />
     },
     {
@@ -73,7 +73,7 @@ export function AgentLayout({
     },
     {
       id: 'create-user',
-      label: 'Créer Utilisateur',
+      label: t('agentLayout.creerUtilisateur'),
       icon: <UserPlus className="w-5 h-5" />
     },
     {
@@ -89,7 +89,7 @@ export function AgentLayout({
     },
     {
       id: 'settings',
-      label: 'Paramètres',
+      label: t('agentLayout.parametres'),
       icon: <Settings className="w-5 h-5" />
     }
   ];

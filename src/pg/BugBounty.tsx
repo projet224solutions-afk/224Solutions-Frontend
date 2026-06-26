@@ -49,7 +49,7 @@ const BugBounty = () => {
       if (error) throw error;
 
       toast.success(t('bugBounty.rapportEnvoyeAvecSucces'), {
-        description: "Notre équipe de sécurité examinera votre rapport. Merci pour votre contribution !",
+        description: t('bugBounty.notreEquipeDeSecuriteExaminera'),
       });
       form.reset();
     } catch (error: any) {

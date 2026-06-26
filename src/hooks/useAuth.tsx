@@ -10,7 +10,7 @@ export interface Profile {
   email: string;
   first_name?: string;
   last_name?: string;
-  role: 'admin' | 'ceo' | 'pdg' | 'vendeur' | 'livreur' | 'taxi' | 'syndicat' | 'transitaire' | 'client' | 'agent' | 'vendor_agent' | 'actionnaire';
+  role: 'admin' | 'ceo' | 'pdg' | 'vendeur' | 'livreur' | 'taxi' | 'driver' | 'syndicat' | 'transitaire' | 'client' | 'agent' | 'vendor_agent' | 'restaurant_agent' | 'prestataire' | 'actionnaire';
   avatar_url?: string;
   phone?: string;
   city?: string;
@@ -35,6 +35,95 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// ── Cache profil avec TTL (ÉLEVÉ 1) ─────────────────────────────────────────
+// Le profil mis en cache est enveloppé avec un horodatage. Au-delà du TTL, le
+// cache est ignoré (et purgé) sur les chemins EN LIGNE pour ne pas servir un
+// rôle obsolète après une modification admin. Les chemins OFFLINE / erreur
+// réseau tolèrent un cache périmé (mieux qu'un écran vide ou une perte de rôle)
+// via l'option ignoreTtl.
+const PROFILE_CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes
+
+// Rôles qu'un utilisateur peut s'auto-attribuer depuis le client (inscription
+// publique self-service). Les rôles PROVISIONNÉS (agent, vendor_agent,
+// restaurant_agent, syndicat) et privilégiés (admin/pdg/ceo/actionnaire) ne
+// doivent JAMAIS être posés via la correction OAuth pilotée par localStorage —
+// sinon escalade (cf. trigger DB prevent_role_self_escalation, défense en profondeur).
+const SELF_SERVICE_SIGNUP_ROLES = new Set([
+  'client', 'vendeur', 'livreur', 'taxi', 'transitaire', 'prestataire',
+]);
+
+function writeProfileCache(key: string, profile: Profile): void {
+  try {
+    localStorage.setItem(key, JSON.stringify({ data: profile, cachedAt: Date.now() }));
+  } catch { /* quota/stockage indisponible → on ignore */ }
+}
+
+function readProfileCache(key: string, opts?: { ignoreTtl?: boolean }): Profile | null {
+  const raw = localStorage.getItem(key);
+  if (!raw) return null;
+  try {
+    const parsed: any = JSON.parse(raw);
+    // Compat ancien format : profil stocké directement, sans enveloppe.
+    const data: Profile | null = parsed && parsed.data ? parsed.data : parsed;
+    const cachedAt: number = parsed && typeof parsed.cachedAt === 'number' ? parsed.cachedAt : 0;
+    if (!opts?.ignoreTtl && Date.now() - cachedAt > PROFILE_CACHE_TTL_MS) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return data ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Récupère les credentials TURN depuis le backend et les injecte dans
+ * sessionStorage pour que WebRTC les utilise. Fire-and-forget : les appels
+ * fonctionnent sans TURN (STUN seul), mais échouent sur NAT symétrique (4G).
+ */
+async function injectTurnCredentials(accessToken: string): Promise<void> {
+  try {
+    const res = await supabase.functions.invoke('get-turn-credentials', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (res.error) {
+      console.warn('[TURN] Impossible de charger les credentials:', res.error);
+      return;
+    }
+
+    const data = res.data as {
+      success: boolean;
+      iceServers: Array<{ urls: string | string[]; username?: string; credential?: string }>;
+      provider?: string;
+      warning?: string;
+    };
+
+    if (!data?.success || !Array.isArray(data.iceServers)) return;
+    if (data.warning) console.warn('[TURN]', data.warning);
+
+    const turnServer = data.iceServers.find(s =>
+      typeof s.urls === 'string'
+        ? s.urls.startsWith('turn:')
+        : (s.urls as string[])?.some(u => u.startsWith('turn:'))
+    );
+
+    if (turnServer && turnServer.username && turnServer.credential) {
+      const url = typeof turnServer.urls === 'string'
+        ? turnServer.urls
+        : (turnServer.urls as string[])[0];
+      sessionStorage.setItem('vf_turn_url', url);
+      sessionStorage.setItem('vf_turn_username', String(turnServer.username));
+      sessionStorage.setItem('vf_turn_credential', String(turnServer.credential));
+      // Notifier les hooks WebRTC (même onglet) que les ICE servers ont changé.
+      try { window.dispatchEvent(new Event('storage')); } catch { /* noop */ }
+      console.log(`🔒 TURN configuré (${data.provider || 'ok'}) → appels OK sur 4G`);
+    }
+  } catch (err) {
+    console.warn('[TURN] Exception (non bloquant):', err);
+  }
+}
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation();
@@ -67,6 +156,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const setupStartedAt = performance.now();
     console.log('⚙️ [useAuth] ensureUserSetup:start', { userId: user.id });
 
+    // ✅ Optimisation (ÉLEVÉ 3) : éviter 3 SELECT Supabase à chaque connexion si
+    // le setup a déjà été confirmé complet dans cette session. sessionStorage (et
+    // non localStorage) → re-vérification au moins une fois par session navigateur.
+    const setupDoneKey = `setup_done_${user.id}`;
+    if (sessionStorage.getItem(setupDoneKey) === 'true') {
+      console.log('✅ [useAuth] ensureUserSetup ignoré — setup déjà confirmé cette session');
+      return;
+    }
+
     try {
       const p = profileRef.current;
       console.log('🔍 Vérification setup utilisateur:', user.id);
@@ -87,6 +185,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (!needsWallet && !needsUserId && !needsVirtualCard) {
         console.log('✅ Setup utilisateur complet');
+        sessionStorage.setItem(setupDoneKey, 'true');
         return;
       }
 
@@ -140,37 +239,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       // Créer carte virtuelle si manquante
+      // ✅ SÉCURISÉ (CRITIQUE 1) : génération via RPC côté serveur. Plus de
+      // génération aléatoire côté client (valeurs prédictibles / PCI-DSS). Le RPC
+      // est idempotent (ne crée pas de doublon) et n'expose pas le CVV en clair.
       if (needsVirtualCard) {
-        const last4Digits = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
-        const cardNumber = `4*** **** **** ${last4Digits}`;
+        const holderName = `${p?.first_name || ''} ${p?.last_name || customId}`.trim()
+          || 'Titulaire 224';
 
-        const holderName = `${p?.first_name || ''} ${p?.last_name || customId}`.trim();
+        try {
+          const { data: cardResult, error: cardError } = await supabase
+            .rpc('create_virtual_card_secure' as any, {
+              p_user_id: user.id,
+              p_holder_name: holderName,
+            });
 
-        const futureDate = new Date(Date.now() + 3 * 365 * 24 * 60 * 60 * 1000);
-        const month = (futureDate.getMonth() + 1).toString().padStart(2, '0');
-        const year = futureDate.getFullYear().toString().slice(-2);
-        const expiryDate = `${month}/${year}`;
-
-        const { error: cardError } = await supabase
-          .from('virtual_cards')
-          .upsert({
-            user_id: user.id,
-            card_number: cardNumber,
-            holder_name: holderName,
-            expiry_date: expiryDate,
-            cvv: Math.floor(Math.random() * 900 + 100).toString(),
-            daily_limit: 500000,
-            monthly_limit: 2000000,
-          });
-
-        if (cardError) {
-          console.error('❌ Erreur création carte virtuelle:', cardError);
-        } else {
-          console.log('✅ Carte virtuelle créée:', cardNumber);
+          if (cardError) {
+            console.error('❌ Erreur création carte virtuelle (RPC):', cardError);
+          } else {
+            const result = cardResult as any;
+            if (result?.success) {
+              console.log(result.already_exists
+                ? 'ℹ️ Carte virtuelle déjà existante'
+                : '✅ Carte virtuelle créée via RPC sécurisée');
+            } else {
+              console.error('❌ RPC create_virtual_card_secure échouée:', result?.error);
+            }
+          }
+        } catch (rpcErr) {
+          console.error('❌ Exception création carte virtuelle:', rpcErr);
         }
       }
 
       console.log('✅ Configuration utilisateur complétée !');
+      // Tous les éléments manquants viennent d'être créés → setup complet pour
+      // cette session : on évite de relancer les SELECT au prochain rendu.
+      sessionStorage.setItem(setupDoneKey, 'true');
     } catch (error) {
       console.warn('⚠️ [useAuth] ensureUserSetup:error (non bloquant)', error);
     } finally {
@@ -215,15 +318,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const profileCacheKey = `profile_cache_${user.id}`;
 
     const applyMinimalProfileFallback = (reason: string) => {
+      // 1. Préférer un profil RÉEL déjà mis en cache : ne JAMAIS dégrader un vendeur
+      //    (ou tout autre rôle) en 'client' juste parce qu'une lecture a échoué.
+      //    ignoreTtl : on est dans un repli dégradé (lecture DB en échec) → un rôle
+      //    réel même périmé vaut mieux qu'un 'client' deviné.
+      const cachedReal = readProfileCache(profileCacheKey, { ignoreTtl: true });
+      if (cachedReal) {
+        console.warn('⚠️ [useAuth] fallback → profil en cache', { reason, role: cachedReal.role });
+        setProfile((prev) => prev ?? cachedReal);
+        return;
+      }
+      // 2. Dériver le rôle des métadonnées d'inscription (meta.role posé par Auth.tsx /
+      //    le trigger handle_new_user) plutôt que de SUPPOSER 'client'.
+      const meta: any = (user as any).user_metadata || {};
+      const metaRole = mapAccountTypeToRole(meta.role || meta.account_type || '') || 'client';
       const fallbackProfile: Profile = {
         id: user.id,
         email: user.email || '',
-        role: 'client',
+        role: metaRole as any,
         is_active: true,
       };
-      console.warn('⚠️ [useAuth] fallback profil minimal', { reason, userId: user.id });
+      console.warn('⚠️ [useAuth] fallback profil minimal', { reason, userId: user.id, role: metaRole });
       setProfile((prev) => prev ?? fallbackProfile);
-      localStorage.setItem(profileCacheKey, JSON.stringify(fallbackProfile));
+      // 3. On n'arrive ici que si aucun cache réel n'existe : on peut donc semer le cache
+      //    avec ce profil minimal sans risque d'écraser un rôle réel.
+      writeProfileCache(profileCacheKey, fallbackProfile);
     };
 
     // ✅ Fonction réutilisable pour créer vendor lors de l'OAuth (vendeurs uniquement)
@@ -390,11 +509,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Timeout sécurité: ne jamais bloquer plus de 4 secondes
     const profileTimeout = setTimeout(() => {
       console.warn('[TIMEOUT TRIGGERED] Profile load timeout (4s) - usage cache/fallback');
-      const cachedProfile = localStorage.getItem(profileCacheKey);
-      if (cachedProfile && !profileRef.current) {
-        try {
-          setProfile(JSON.parse(cachedProfile) as Profile);
-        } catch (_e) {}
+      // En ligne : on respecte le TTL (pas de rôle obsolète) ; une lecture DB fraîche
+      // reste de toute façon en cours.
+      const cached = readProfileCache(profileCacheKey);
+      if (cached && !profileRef.current) {
+        setProfile(cached);
       }
       setProfileLoading(false);
     }, 4000);
@@ -403,15 +522,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // ✨ NOUVEAU: En mode offline, utiliser le profil en cache
       if (isOffline()) {
         console.log('📡 Mode hors ligne - utilisation profil en cache');
-        const cachedProfile = localStorage.getItem(profileCacheKey);
-        if (cachedProfile) {
-          try {
-            const parsed = JSON.parse(cachedProfile) as Profile;
-            console.log('✅ Profil restauré depuis cache:', parsed.role);
-            setProfile(parsed);
-          } catch (_e) {
-            console.warn('⚠️ Erreur parsing profil cache');
-          }
+        // Offline : impossible de rafraîchir → on tolère un cache périmé (ignoreTtl)
+        // plutôt que de laisser l'utilisateur sans profil.
+        const cached = readProfileCache(profileCacheKey, { ignoreTtl: true });
+        if (cached) {
+          console.log('✅ Profil restauré depuis cache:', cached.role);
+          setProfile(cached);
         }
         setProfileLoading(false);
         return;
@@ -434,13 +550,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (profileError.message?.includes('network') || profileError.message?.includes('fetch')) {
           console.warn('⚠️ Erreur réseau - utilisation profil en cache');
           logFirstSupabaseError('refreshProfile.profile_query.network', profileError);
-          const cachedProfile = localStorage.getItem(profileCacheKey);
-          if (cachedProfile) {
-            try {
-              const parsedProfile = JSON.parse(cachedProfile) as Profile;
-              setProfile(parsedProfile);
-              console.log('[PROFILE LOADED]', { source: 'cache_after_network_error', role: parsedProfile.role });
-            } catch (_e) {}
+          // Erreur réseau : on tolère un cache périmé (ignoreTtl) faute de pouvoir rafraîchir.
+          const cached = readProfileCache(profileCacheKey, { ignoreTtl: true });
+          if (cached) {
+            setProfile(cached);
+            console.log('[PROFILE LOADED]', { source: 'cache_after_network_error', role: cached.role });
           }
           setProfileLoading(false);
           return;
@@ -463,22 +577,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         // Si l'utilisateur essayait de créer un compte (isNewOAuthSignup=true)
         // et le profil a été créé par le trigger avec le rôle par défaut 'client'
         // mais l'utilisateur avait choisi un rôle différent → mettre à jour le rôle
-        if (isNewOAuthSignup && intendedRole && intendedRole !== 'client' && current.role === 'client') {
+        if (
+          isNewOAuthSignup &&
+          intendedRole &&
+          intendedRole !== 'client' &&
+          current.role === 'client' &&
+          // 🔒 ISOLATION : ne corriger QUE vers un rôle self-service. Empêche
+          // l'auto-escalade vers un rôle provisionné/privilégié via un
+          // localStorage.oauth_intent_role falsifié (agent, syndicat, admin…).
+          SELF_SERVICE_SIGNUP_ROLES.has(intendedRole)
+        ) {
           console.log('🔄 Mise à jour du rôle OAuth:', current.role, '→', intendedRole);
 
-          const { error: updateError } = await supabase
-            .from('profiles')
-            .update({ role: intendedRole as any })
-            .eq('id', user.id);
+          // 🔒 ATOMIQUE + AUDITÉ : la correction de rôle passe par un RPC serveur
+          // tout-ou-rien (autorise client→self-service uniquement, idempotent,
+          // journalisé dans audit_logs + alerté si anormal). Plus d'UPDATE direct.
+          const { data: roleRes, error: roleErr } = await supabase
+            .rpc('apply_signup_role' as any, { p_role: intendedRole });
+          const updateError = roleErr
+            || ((roleRes as any)?.success ? null : new Error((roleRes as any)?.error || 'role_update_failed'));
 
           if (!updateError) {
             const updatedProfile = { ...current, role: intendedRole } as Profile;
-            localStorage.setItem(profileCacheKey, JSON.stringify(updatedProfile));
+            writeProfileCache(profileCacheKey, updatedProfile);
 
             // Créer les entités métier selon le rôle
             // Pour taxi: await pour que la ligne existe avant le redirect
             if (intendedRole === 'vendeur') {
-              void createVendorForOAuth(user);
+              await createVendorForOAuth(user);
             } else if (intendedRole === 'prestataire') {
               // await : la ligne professional_services (type pharmacie/…) doit exister AVANT le
               // redirect, et oauth_service_type ne doit pas être effacé avant lecture.
@@ -512,7 +638,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           } else {
             console.error('❌ Erreur mise à jour rôle OAuth:', updateError);
             setProfile(current);
-            localStorage.setItem(profileCacheKey, JSON.stringify(current));
+            writeProfileCache(profileCacheKey, current);
           }
 
           localStorage.removeItem('oauth_intent_role');
@@ -528,7 +654,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             `Cet email est déjà enregistré ! Vous avez été connecté à votre compte ${current.role} existant.`,
             {
               duration: 6000,
-              description: 'Votre compte existant a été utilisé pour la connexion.',
+              description: t('useAuth.votreCompteExistantAEte'),
             }
           );
         } else {
@@ -563,7 +689,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.log('[PROFILE LOADED]', { source: 'existing_profile', role: current.role, userId: current.id });
 
         // ✨ NOUVEAU: Mettre en cache le profil pour mode offline
-        localStorage.setItem(profileCacheKey, JSON.stringify(current));
+        writeProfileCache(profileCacheKey, current);
 
         // Nettoyer immédiatement les flags
         localStorage.removeItem('oauth_intent_role');
@@ -599,8 +725,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const firstName = (meta.first_name || (fullName ? fullName.split(' ')[0] : '') || '').toString().trim();
       const lastName = (meta.last_name || (fullName ? fullName.split(' ').slice(1).join(' ') : '') || '').toString().trim();
 
-      // Utiliser le rôle choisi lors de l'inscription OU client par défaut
-      const roleToUse = intendedRole || mapAccountTypeToRole(meta.account_type || '') || 'client';
+      // Utiliser le rôle choisi lors de l'inscription OU client par défaut.
+      // ⚠️ Auth.tsx et le trigger handle_new_user posent le rôle dans meta.role :
+      // on le lit EN PRIORITÉ (account_type n'est qu'un repli legacy) pour ne pas
+      // dégrader silencieusement un vendeur/prestataire/livreur en 'client'.
+      const roleToUse =
+        intendedRole || mapAccountTypeToRole(meta.role || meta.account_type || '') || 'client';
 
       const profileToCreate = {
         id: user.id,
@@ -648,7 +778,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         // Créer les entités métier selon le rôle
         if (createdProfile.role === 'vendeur') {
-          void createVendorForOAuth(user);
+          await createVendorForOAuth(user);
         } else if ((createdProfile.role as string) === 'prestataire') {
           await createServiceForOAuthPrestataire(user);
         } else if ((createdProfile.role as string) === 'taxi') {
@@ -673,7 +803,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         );
 
         localStorage.setItem('needs_profile_completion', 'true');
-        localStorage.setItem(profileCacheKey, JSON.stringify(createdProfile));
+        writeProfileCache(profileCacheKey, createdProfile as Profile);
 
         // ✅ Supprimer les flags AVANT setProfile : quand React flush setProfile,
         // Flags nettoyés AVANT setProfile : isNewSignup=false au prochain rendu (pas de double insert taxi_drivers)
@@ -685,7 +815,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         setProfile(profileToCreate as any);
         console.log('[PROFILE LOADED]', { source: 'profile_fallback_object', role: profileToCreate.role, userId: profileToCreate.id });
-        localStorage.setItem(profileCacheKey, JSON.stringify(profileToCreate));
+        writeProfileCache(profileCacheKey, profileToCreate as any);
       }
 
       // Nettoyer les flags (chemin fallback uniquement — le chemin principal retourne plus haut)
@@ -738,6 +868,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         stopSessionMonitor();
       } else {
         startSessionMonitor();
+        // ✅ Charger les credentials TURN pour les appels WebRTC (4G Guinée)
+        if (event === 'SIGNED_IN' && nextSession?.access_token) {
+          injectTurnCredentials(nextSession.access_token);
+        }
       }
 
       setLoading(false);

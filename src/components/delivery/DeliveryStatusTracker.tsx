@@ -45,14 +45,14 @@ interface StatusStep {
 }
 
 const STATUS_STEPS: StatusStep[] = [
-  { key: 'assigned', label: 'Livreur assigné', icon: User, description: 'Un livreur a accepté votre commande' },
-  { key: 'driver_on_way_to_vendor', label: 'En route vers le vendeur', icon: Navigation, description: 'Le livreur se dirige vers le point de retrait' },
-  { key: 'driver_arrived_vendor', label: 'Arrivé chez le vendeur', icon: Store, description: 'Le livreur est arrivé pour récupérer le colis' },
-  { key: 'picked_up', label: 'Colis récupéré', icon: Package, description: 'Le colis a été récupéré' },
-  { key: 'in_transit', label: 'En route vers vous', icon: Truck, description: 'Le livreur est en chemin' },
-  { key: 'driver_5min_away', label: 'À 5 minutes', icon: Clock, description: 'Le livreur arrive dans environ 5 minutes' },
-  { key: 'driver_arrived', label: 'Livreur arrivé', icon: MapPin, description: 'Le livreur est à votre porte' },
-  { key: 'delivered', label: 'Livré', icon: CheckCircle2, description: 'Votre colis a été livré avec succès' }
+  { key: 'assigned', label: "Livreur assigné", icon: User, description: "Un livreur a accepté votre commande" },
+  { key: 'driver_on_way_to_vendor', label: "En route vers le vendeur", icon: Navigation, description: "Le livreur se dirige vers le point de retrait" },
+  { key: 'driver_arrived_vendor', label: "Arrivé chez le vendeur", icon: Store, description: "Le livreur est arrivé pour récupérer le colis" },
+  { key: 'picked_up', label: "Colis récupéré", icon: Package, description: "Le colis a été récupéré" },
+  { key: 'in_transit', label: "En route vers vous", icon: Truck, description: "Le livreur est en chemin" },
+  { key: 'driver_5min_away', label: "À 5 minutes", icon: Clock, description: "Le livreur arrive dans environ 5 minutes" },
+  { key: 'driver_arrived', label: "Livreur arrivé", icon: MapPin, description: "Le livreur est à votre porte" },
+  { key: 'delivered', label: "Livré", icon: CheckCircle2, description: "Votre colis a été livré avec succès" }
 ];
 
 interface DeliveryStatusTrackerProps {

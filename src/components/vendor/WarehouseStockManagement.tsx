@@ -282,7 +282,7 @@ export default function WarehouseStockManagement() {
 
   const handleTransfer = async () => {
     if (!transferData.product_id || !transferData.from_warehouse_id || !transferData.to_warehouse_id || transferData.quantity <= 0) {
-      toast({ title: 'Erreur', description: 'Tous les champs sont requis', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('warehouseStockManagement.tousLesChampsSontRequis'), variant: 'destructive' });
       return;
     }
 
@@ -366,7 +366,7 @@ export default function WarehouseStockManagement() {
         if (insertError) throw insertError;
       }
 
-      toast({ title: '✅ Transfert effectué avec succès' });
+      toast({ title: t('warehouseStockManagement.transfertEffectueAvecSucces') });
       setTransferOpen(false);
       setTransferData({ product_id: '', from_warehouse_id: '', to_warehouse_id: '', quantity: 0, notes: '' });
       fetchStocks();
@@ -382,7 +382,7 @@ export default function WarehouseStockManagement() {
 
   const handleAdjustment = async () => {
     if (!adjustmentData.product_id || !adjustmentData.warehouse_id || adjustmentData.quantity_change === 0) {
-      toast({ title: 'Erreur', description: 'Tous les champs sont requis', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('warehouseStockManagement.tousLesChampsSontRequis'), variant: 'destructive' });
       return;
     }
 
@@ -423,7 +423,7 @@ export default function WarehouseStockManagement() {
           });
       }
 
-      toast({ title: '✅ Ajustement effectué' });
+      toast({ title: t('warehouseStockManagement.ajustementEffectue') });
       setAdjustmentOpen(false);
       setAdjustmentData({ product_id: '', warehouse_id: '', quantity_change: 0, notes: '' });
       fetchStocks();
@@ -451,7 +451,7 @@ export default function WarehouseStockManagement() {
         .single();
 
       if (userError || !userData) {
-        toast({ title: 'Utilisateur non trouvé', variant: 'destructive' });
+        toast({ title: t('warehouseStockManagement.utilisateurNonTrouve'), variant: 'destructive' });
         return;
       }
 
@@ -468,7 +468,7 @@ export default function WarehouseStockManagement() {
 
       if (error) throw error;
 
-      toast({ title: '✅ Permission ajoutée' });
+      toast({ title: t('warehouseStockManagement.permissionAjoutee') });
       setPermissionOpen(false);
       setNewPermission({ user_email: '', can_view: true, can_edit: false, can_manage_stock: false, can_transfer: false });
       fetchPermissions();
@@ -485,7 +485,7 @@ export default function WarehouseStockManagement() {
         .eq('id', permissionId);
 
       if (error) throw error;
-      toast({ title: '✅ Permission supprimée' });
+      toast({ title: t('warehouseStockManagement.permissionSupprimee') });
       fetchPermissions();
     } catch (error: any) {
       toast({ title: 'Erreur', description: error.message, variant: 'destructive' });

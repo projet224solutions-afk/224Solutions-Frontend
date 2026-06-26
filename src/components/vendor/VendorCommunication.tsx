@@ -70,7 +70,7 @@ export default function VendorCommunication() {
       console.error('Erreur chargement contacts:', error);
       toast({
         title: "Erreur",
-        description: "Impossible de charger les contacts",
+        description: t('vendorCommunication.impossibleDeChargerLesContacts'),
         variant: "destructive"
       });
     }

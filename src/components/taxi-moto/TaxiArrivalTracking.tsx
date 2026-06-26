@@ -16,6 +16,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Car, MapPin, Clock, Navigation, Radio } from 'lucide-react';
 import { calculateDistance } from '@/hooks/useGeoDistance';
+import { estimateEtaMinutes } from '@/utils/etaConakry';
 import type { LivePosition } from '@/lib/liveLocation';
 
 interface TaxiArrivalTrackingProps {
@@ -27,9 +28,6 @@ interface TaxiArrivalTrackingProps {
   driverPos: LivePosition | null;
   driverName?: string;
 }
-
-/** Vitesse moyenne urbaine pour estimer l'ETA (km/h). */
-const AVG_SPEED_KMH = 22;
 
 export function TaxiArrivalTracking({
   open,
@@ -49,7 +47,7 @@ export function TaxiArrivalTracking({
 
   const etaMin =
     distanceKm !== null && Number.isFinite(distanceKm)
-      ? Math.max(1, Math.round((distanceKm / AVG_SPEED_KMH) * 60))
+      ? estimateEtaMinutes({ distanceKm })
       : null;
 
   const arrived = distanceKm !== null && distanceKm <= 0.05; // ~50 m

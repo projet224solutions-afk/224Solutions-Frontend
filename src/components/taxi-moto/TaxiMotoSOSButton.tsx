@@ -116,7 +116,7 @@ export function TaxiMotoSOSButton({
         setActiveSOSId(result.sos_id);
         startCooldownTimer();
         toast.success(t('taxiMotoSOSButton.sosEnvoyeEnregistrementDemarre'), {
-          description: 'Audio & vidéo enregistrés. Envoi automatique au bureau dans 60s.',
+          description: t('taxiMotoSOSButton.audioVideoEnregistresEnvoiAutomatique'),
           duration: 8000
         });
       } else {

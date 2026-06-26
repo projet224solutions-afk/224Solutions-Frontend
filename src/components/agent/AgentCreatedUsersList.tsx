@@ -47,8 +47,8 @@ interface AgentCreatedUsersListProps {
 }
 
 const roleConfig: Record<string, { label: string; icon: React.ReactNode; color: string }> = {
-  client: { label: 'Client', icon: <User className="w-3 h-3" />, color: 'bg-blue-100 text-blue-700' },
-  vendeur: { label: 'Vendeur', icon: <ShoppingBag className="w-3 h-3" />, color: 'bg-orange-100 text-[#ff4000]' },
+  client: { label: "Client", icon: <User className="w-3 h-3" />, color: 'bg-blue-100 text-blue-700' },
+  vendeur: { label: "Vendeur", icon: <ShoppingBag className="w-3 h-3" />, color: 'bg-orange-100 text-[#ff4000]' },
   livreur: { label: 'Livreur', icon: <Truck className="w-3 h-3" />, color: 'bg-orange-100 text-[#ff4000]' },
   taxi: { label: 'Taxi', icon: <Car className="w-3 h-3" />, color: 'bg-blue-100 text-[#04439e]' },
   syndicat: { label: 'Syndicat', icon: <Building2 className="w-3 h-3" />, color: 'bg-orange-100 text-[#ff4000]' },

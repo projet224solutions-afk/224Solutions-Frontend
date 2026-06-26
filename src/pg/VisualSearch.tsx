@@ -1,7 +1,7 @@
 ﻿import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Camera, Upload, ArrowLeft, Search, Loader2, X, ImageIcon, _Zap, Tag } from "lucide-react";
+import { Camera, Upload, ArrowLeft, Search, Loader2, X, ImageIcon, Sparkles, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -106,6 +106,26 @@ export default function VisualSearch() {
     reader.readAsDataURL(file);
   };
 
+  // ✅ Compression canvas : réduit l'image à 800px max, qualité 0.72
+  // Résultat : ~280 Ko au lieu de 5-8 Mo → 5s au lieu de 2min sur 3G
+  const compressImage = (dataUrl: string): Promise<string> =>
+    new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX   = 800;
+        const ratio = Math.min(MAX / img.width, MAX / img.height, 1);
+        const canvas = document.createElement('canvas');
+        canvas.width  = Math.round(img.width  * ratio);
+        canvas.height = Math.round(img.height * ratio);
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { resolve(dataUrl); return; }
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.72));
+      };
+      img.onerror = () => resolve(dataUrl); // fallback si erreur
+      img.src = dataUrl;
+    });
+
   const searchByImage = async () => {
     if (!capturedImage) {
       toast.error(t('visualSearch.veuillezDAbordCapturerOu'));
@@ -117,9 +137,12 @@ export default function VisualSearch() {
     setKeywords([]);
 
     try {
+      // ✅ Compresser avant envoi : 5-8 Mo → ~280 Ko (réseau 3G Conakry)
+      const compressed = await compressImage(capturedImage);
+
       // Appeler l'edge function pour analyser l'image avec l'IA
       const { data, error } = await supabase.functions.invoke('visual-search', {
-        body: { imageBase64: capturedImage }
+        body: { imageBase64: compressed }
       });
 
       if (error) throw error;

@@ -28,7 +28,8 @@ import {
   ShieldAlert,
   Ticket,
   ShoppingBag,
-  Headphones
+  Headphones,
+  DollarSign
 } from 'lucide-react';
 import { BureauWalletDisplay } from '@/components/wallet/BureauWalletDisplay';
 
@@ -72,7 +73,7 @@ export function BureauLayout({
   const navItems: NavItem[] = [
     {
       id: 'overview',
-      label: 'Tableau de bord',
+      label: t('bureauLayout.tableauDeBord'),
       icon: <LayoutDashboard className="w-5 h-5" />
     },
     {
@@ -82,12 +83,12 @@ export function BureauLayout({
     },
     {
       id: 'motos',
-      label: 'Véhicules',
+      label: t('bureauLayout.vehicules'),
       icon: <Bike className="w-5 h-5" />
     },
     {
       id: 'security',
-      label: 'Sécurité Vol',
+      label: t('bureauLayout.securiteVol'),
       icon: <ShieldAlert className="w-5 h-5 text-[#ff4000]" />
     },
     {
@@ -99,6 +100,11 @@ export function BureauLayout({
       id: 'tickets',
       label: 'Tickets Transport',
       icon: <Ticket className="w-5 h-5 text-[#ff4000]" />
+    },
+    {
+      id: 'cotisations',
+      label: 'Cotisations',
+      icon: <DollarSign className="w-5 h-5 text-green-600" />
     },
     {
       id: 'my-purchases',
@@ -133,7 +139,7 @@ export function BureauLayout({
     },
     {
       id: 'settings',
-      label: 'Paramètres',
+      label: t('bureauLayout.parametres'),
       icon: <Settings className="w-5 h-5" />
     }
   ];
@@ -237,7 +243,7 @@ export function BureauLayout({
 
           {/* Bureau Info */}
           {!sidebarCollapsed && (
-            <div className="p-4 bg-[#ff4000]/5 mx-3 mt-3 rounded-xl">
+            <div className="p-4 mx-3 mt-3 rounded-xl">
               <div className="flex items-center gap-3">
                 <Avatar className="h-12 w-12 ring-2 ring-white shadow">
                   <AvatarFallback className="bg-[#ff4000] text-white font-semibold">

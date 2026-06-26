@@ -250,8 +250,8 @@ export default function Auth() {
 
     if (!isRetry && now - lastAttempt < 20000 && oauthAttempts.google >= 3) {
       toast({
-        title: "Trop de tentatives",
-        description: "Veuillez patienter 20 secondes avant de réessayer.",
+        title: t('auth.tropDeTentatives'),
+        description: t('auth.veuillezPatienter20SecondesAvant'),
         variant: "destructive",
       });
       return;
@@ -298,7 +298,7 @@ export default function Auth() {
 
       // ✨ Toast de démarrage
       toast({
-        title: "Connexion Google",
+        title: t('auth.connexionGoogle'),
         description: "Redirection vers Google en cours...",
       });
 
@@ -319,7 +319,7 @@ export default function Auth() {
       trackOAuthEvent('google', 'success');
 
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erreur de connexion Google';
+      const message = err instanceof Error ? err.message: t('auth.erreurDeConnexionGoogle');
       setError(message);
       console.error('✕ Erreur Google OAuth:', err);
 
@@ -328,7 +328,7 @@ export default function Auth() {
 
       // 🔄 Toast d'erreur avec option retry
       toast({
-        title: "Erreur de connexion",
+        title: t('auth.erreurDeConnexion'),
         description: message + " • Cliquez sur le bouton Google pour réessayer.",
         variant: "destructive",
       });
@@ -346,8 +346,8 @@ export default function Auth() {
 
     if (!isRetry && now - lastAttempt < 20000 && oauthAttempts.facebook >= 3) {
       toast({
-        title: "Trop de tentatives",
-        description: "Veuillez patienter 20 secondes avant de réessayer.",
+        title: t('auth.tropDeTentatives'),
+        description: t('auth.veuillezPatienter20SecondesAvant'),
         variant: "destructive",
       });
       return;
@@ -390,7 +390,7 @@ export default function Auth() {
 
       // ✨ Toast de démarrage
       toast({
-        title: "Connexion Facebook",
+        title: t('auth.connexionFacebook'),
         description: "Redirection vers Facebook en cours...",
       });
 
@@ -407,7 +407,7 @@ export default function Auth() {
       trackOAuthEvent('facebook', 'success');
 
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erreur de connexion Facebook';
+      const message = err instanceof Error ? err.message: t('auth.erreurDeConnexionFacebook');
       setError(message);
       console.error('✕ Erreur Facebook OAuth:', err);
 
@@ -416,7 +416,7 @@ export default function Auth() {
 
       // 🔄 Toast d'erreur avec option retry
       toast({
-        title: "Erreur de connexion",
+        title: t('auth.erreurDeConnexion'),
         description: message + " • Cliquez sur le bouton Facebook pour réessayer.",
         variant: "destructive",
       });
@@ -539,7 +539,7 @@ export default function Auth() {
             console.log(`🚀 [Auth] Redirection vers ${targetRoute} (rôle effectif: ${effectiveRole}, DB: ${profile?.role})`);
 
             toast({
-              title: "Connexion réussie",
+              title: t('auth.connexionReussie'),
               description: `Bienvenue ! Redirection vers votre espace ${effectiveRole}...`,
             });
 
@@ -912,7 +912,7 @@ export default function Auth() {
           setPhoneSignupPhone(sendData.phone || normalizedSignupPhone);
           setPhoneSignupOtpSent(true);
           setPhoneSignupResendCooldown(60);
-          toast({ title: 'Code envoyé', description: `SMS envoyé au ${sendData.phone || normalizedSignupPhone}` });
+          toast({ title: t('auth.codeEnvoye'), description: `SMS envoyé au ${sendData.phone || normalizedSignupPhone}` });
           return;
         }
 
@@ -980,7 +980,7 @@ export default function Auth() {
             });
             if (fo.success) {
               setSuccess('Compte créé en mode secours (service momentanément indisponible). Vous pourrez vous connecter dans quelques instants.');
-              toast({ title: 'Compte créé (mode secours)', description: 'Connexion disponible dès le rétablissement du service.' });
+              toast({ title: t('auth.compteCreeModeSecours'), description: t('auth.connexionDisponibleDesLeRetablissement') });
               setLoading(false);
               return;
             }
@@ -1072,7 +1072,7 @@ export default function Auth() {
             if (vendorError) {
               console.error('✕ Erreur création profil vendeur:', vendorError);
               toast({
-                title: "Erreur de création du profil vendeur",
+                title: t('auth.erreurDeCreationDuProfil'),
                 description: vendorError.message || "Impossible de créer le profil vendeur. Contactez le support.",
                 variant: "destructive"
               });
@@ -1135,7 +1135,7 @@ export default function Auth() {
                 } else {
                   console.error('✕ Erreur création professional_service:', professionalServiceError);
                   toast({
-                    title: "Erreur de création du service professionnel",
+                    title: t('auth.erreurDeCreationDuService'),
                     description: professionalServiceError.message || "Le service n'a pas pu être créé.",
                     variant: "destructive"
                   });
@@ -1189,7 +1189,7 @@ export default function Auth() {
             } else {
               console.log('✓ [Affiliation] Parrainage enregistré avec succès');
               toast({
-                title: "Parrainage enregistré !",
+                title: t('auth.parrainageEnregistre'),
                 description: `Vous avez été parrainé par ${affiliateData.agentName || 'un agent'}.`,
               });
             }
@@ -1294,7 +1294,7 @@ export default function Auth() {
           setLoginFormattedPhone(sendData.phone);
           setLoginPhoneOtpSent(true);
           setLoginResendCooldown(60);
-          toast({ title: 'Code envoyé', description: `SMS envoyé au ${sendData.phone}` });
+          toast({ title: t('auth.codeEnvoye'), description: `SMS envoyé au ${sendData.phone}` });
           return;
         }
 
@@ -1593,7 +1593,7 @@ export default function Auth() {
         setResetFormattedPhone(storedPhone);
         setResetOtpSent(true);
         setResetResendCooldown(60);
-        toast({ title: "Code envoyé", description: `Code SMS envoyé au ${storedPhone}` });
+        toast({ title: t('auth.codeEnvoye'), description: `Code SMS envoyé au ${storedPhone}` });
       } else {
         const emailSchema = z.string().email("Adresse email invalide");
         emailSchema.parse(identifier);
@@ -1656,9 +1656,9 @@ export default function Auth() {
       });
       if (error || !data?.success) throw new Error('Impossible de renvoyer le code');
       setLoginResendCooldown(60);
-      toast({ title: 'Code renvoyé', description: `Nouveau SMS envoyé au ${loginFormattedPhone}` });
+      toast({ title: t('auth.codeRenvoye'), description: `Nouveau SMS envoyé au ${loginFormattedPhone}` });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors du renvoi');
+      setError(err instanceof Error ? err.message: t('auth.erreurLorsDuRenvoi'));
     } finally {
       setLoading(false);
     }
@@ -1674,9 +1674,9 @@ export default function Auth() {
       });
       if (error || !data?.success) throw new Error('Impossible de renvoyer le code');
       setResetResendCooldown(60);
-      toast({ title: 'Code renvoyé', description: `Nouveau SMS envoyé au ${resetFormattedPhone}` });
+      toast({ title: t('auth.codeRenvoye'), description: `Nouveau SMS envoyé au ${resetFormattedPhone}` });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors du renvoi');
+      setError(err instanceof Error ? err.message: t('auth.erreurLorsDuRenvoi'));
     } finally {
       setLoading(false);
     }
@@ -1692,9 +1692,9 @@ export default function Auth() {
       });
       if (error || !data?.success) throw new Error('Impossible de renvoyer le code');
       setPhoneSignupResendCooldown(60);
-      toast({ title: 'Code renvoyé', description: `Nouveau SMS envoyé au ${phoneSignupPhone}` });
+      toast({ title: t('auth.codeRenvoye'), description: `Nouveau SMS envoyé au ${phoneSignupPhone}` });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors du renvoi');
+      setError(err instanceof Error ? err.message: t('auth.erreurLorsDuRenvoi'));
     } finally {
       setLoading(false);
     }
@@ -1851,7 +1851,7 @@ export default function Auth() {
       }, 2500);
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Code invalide ou erreur serveur');
+      setError(err instanceof Error ? err.message: t('auth.codeInvalideOuErreurServeur'));
     } finally {
       setLoading(false);
       setIsAuthenticating(false);
@@ -1886,7 +1886,7 @@ export default function Auth() {
       });
       if (sessionError) throw sessionError;
 
-      toast({ title: 'Connexion réussie', description: 'Bienvenue !' });
+      toast({ title: t('auth.connexionReussie'), description: 'Bienvenue !' });
 
       if (data.user) {
         let profileData = null;
@@ -2326,7 +2326,7 @@ export default function Auth() {
               <>
                 <div className="mb-4 p-4 bg-primary/10 border border-primary/20 rounded-xl shadow-sm">
                   <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
                       <Zap className="h-5 w-5 text-primary" />
                     </div>
                     <div>
@@ -2355,8 +2355,8 @@ export default function Auth() {
 
                 <div className="bg-muted/10 border border-border/50 rounded-2xl p-6 shadow-sm">
                   <div className="text-center mb-5">
-                    <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                      <Store className="h-7 w-7 text-primary" />
+                    <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
+                      <span className="text-4xl leading-none select-none" style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.28))' }} role="img" aria-label="Boutique">🏪</span>
                     </div>
                     <h3 className="text-base font-bold text-foreground mb-1">{t('auth.classicSeller')}</h3>
                     <p className="text-xs text-muted-foreground">{t('auth.whatProductsToSell')}</p>
@@ -2376,8 +2376,8 @@ export default function Auth() {
                       }}
                       className="group flex flex-col items-center text-center gap-2 sm:gap-3 p-3 sm:p-5 rounded-xl border-2 border-border/60 bg-background hover:border-primary hover:bg-primary/5 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200"
                     >
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 group-hover:bg-primary flex items-center justify-center shrink-0 transition-colors">
-                        <ShoppingBag className="h-6 w-6 sm:h-7 sm:w-7 text-primary group-hover:text-white transition-colors" />
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shrink-0">
+                        <span className="text-3xl sm:text-4xl leading-none select-none" style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.28))' }} role="img" aria-label="E-commerce">🛍️</span>
                       </div>
                       <div className="min-w-0">
                         <span className="text-xs sm:text-sm font-bold text-foreground block mb-0.5 sm:mb-1">E-commerce</span>
@@ -2398,8 +2398,8 @@ export default function Auth() {
                       }}
                       className="group flex flex-col items-center text-center gap-2 sm:gap-3 p-3 sm:p-5 rounded-xl border-2 border-border/60 bg-background hover:border-[#04439e] hover:bg-blue-50/60 hover:shadow-lg hover:shadow-[#04439e]/10 transition-all duration-200"
                     >
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-blue-100 group-hover:bg-[#04439e] flex items-center justify-center shrink-0 transition-colors">
-                        <Laptop className="h-6 w-6 sm:h-7 sm:w-7 text-[#04439e] group-hover:text-white transition-colors" />
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shrink-0">
+                        <span className="text-3xl sm:text-4xl leading-none select-none" style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.28))' }} role="img" aria-label="Digitaux">💻</span>
                       </div>
                       <div className="min-w-0">
                         <span className="text-xs sm:text-sm font-bold text-foreground block mb-0.5 sm:mb-1">Digitaux</span>
@@ -2465,10 +2465,8 @@ export default function Auth() {
                         : 'bg-background border-border/60 hover:border-primary/50 hover:bg-primary/5'
                     }`}
                   >
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
-                      selectedRole === 'vendeur' && !selectedServiceType ? 'bg-white/20' : 'bg-primary/10 group-hover:bg-primary/20'
-                    }`}>
-                      <Store className={`h-6 w-6 ${selectedRole === 'vendeur' && !selectedServiceType ? 'text-white' : 'text-primary'}`} />
+                    <div className="w-12 h-12 flex items-center justify-center">
+                      <span className="text-3xl leading-none select-none" style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.28))' }} role="img" aria-label="Vendeur">🏪</span>
                     </div>
                     <span className={`text-sm font-semibold ${selectedRole === 'vendeur' && !selectedServiceType ? 'text-white' : 'text-foreground'}`}>
                       Vendeur classique
@@ -2488,10 +2486,8 @@ export default function Auth() {
                         : 'bg-background border-border/60 hover:border-orange-300 hover:bg-orange-50/50'
                     }`}
                   >
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
-                      selectedRole === 'prestataire' ? 'bg-white/20' : 'bg-orange-100 group-hover:bg-orange-200'
-                    }`}>
-                      <Briefcase className={`h-6 w-6 ${selectedRole === 'prestataire' ? 'text-white' : 'text-[#ff4000]'}`} />
+                    <div className="w-12 h-12 flex items-center justify-center">
+                      <span className="text-3xl leading-none select-none" style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.28))' }} role="img" aria-label="Service">💼</span>
                     </div>
                     <span className={`text-sm font-semibold ${selectedRole === 'prestataire' ? 'text-white' : 'text-foreground'}`}>
                       Service
@@ -2887,9 +2883,9 @@ export default function Auth() {
                         handleInputChange('country', data.countryName || 'Guinée');
                         handleInputChange('city', data.city || 'Conakry');
                         handleInputChange('address', [data.region, data.city, data.countryName].filter(Boolean).join(', '));
-                        toast({ title: "Position détectée", description: `${data.city || 'Conakry'}, ${data.countryName || 'Guinée'}` });
+                        toast({ title: t('auth.positionDetectee'), description: `${data.city || 'Conakry'}, ${data.countryName || 'Guinée'}` });
                       } catch {
-                        toast({ title: "Erreur", description: "Impossible de détecter la position", variant: "destructive" });
+                        toast({ title: "Erreur", description: t('auth.impossibleDeDetecterLaPosition'), variant: "destructive" });
                       } finally {
                         setLoading(false);
                       }

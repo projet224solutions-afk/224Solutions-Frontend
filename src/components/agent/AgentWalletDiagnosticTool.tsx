@@ -32,7 +32,7 @@ export default function AgentWalletDiagnosticTool({ agentId }: AgentWalletDiagno
       diagnosticResults.push({
         test: 'Connexion Supabase',
         status: 'success',
-        message: 'Client Supabase initialisé'
+        message: t('agentWalletDiagnosticTool.clientSupabaseInitialise')
       });
 
       // Test 2: Vérifier que l'agentId est valide
@@ -40,7 +40,7 @@ export default function AgentWalletDiagnosticTool({ agentId }: AgentWalletDiagno
         diagnosticResults.push({
           test: 'Agent ID',
           status: 'error',
-          message: 'Agent ID manquant ou invalide',
+          message: t('agentWalletDiagnosticTool.agentIdManquantOuInvalide'),
           details: { agentId }
         });
       } else {
@@ -99,7 +99,7 @@ export default function AgentWalletDiagnosticTool({ agentId }: AgentWalletDiagno
         diagnosticResults.push({
           test: 'Wallet existant',
           status: 'warning',
-          message: 'Aucun wallet trouvé - Doit être créé',
+          message: t('agentWalletDiagnosticTool.aucunWalletTrouveDoitEtre'),
           details: null
         });
 
@@ -121,7 +121,7 @@ export default function AgentWalletDiagnosticTool({ agentId }: AgentWalletDiagno
               diagnosticResults.push({
                 test: 'Permissions RLS',
                 status: 'error',
-                message: 'Erreur de permissions - RLS bloque l\'insertion',
+                message: t('agentWalletDiagnosticTool.erreurDePermissionsRlsBloque'),
                 details: 'Vérifiez les politiques Row Level Security sur agent_wallets'
               });
             }

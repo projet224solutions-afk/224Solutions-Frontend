@@ -108,7 +108,7 @@ export function GoOnlineButton({
 
       {/* Subscription warning - plus compact */}
       {!hasSubscription && (
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#ff4000]/10 border border-[#ff4000]/20 text-[#ff4000] text-[11px]">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#ff4000]/20 text-[#ff4000] text-[11px]">
           <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
           <span>Abonnement requis</span>
         </div>

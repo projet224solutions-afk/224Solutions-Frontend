@@ -328,6 +328,26 @@ export function POSReceipt({ open, onClose, orderData }: POSReceiptProps) {
               )}
             </div>
 
+            {/* QR Code de vérification — pointe vers la commande en ligne.
+                Dans receiptRef → présent à l'écran, à l'impression et dans le PDF.
+                crossOrigin requis pour que html2canvas (PDF) capture l'image externe. */}
+            {orderData.orderNumber && (
+              <div className="flex flex-col items-center mt-3 pt-3 border-t border-dashed border-muted-foreground/30">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(
+                    `https://224solutions.com/commande/${orderData.orderNumber}`
+                  )}`}
+                  alt={`QR code commande ${orderData.orderNumber}`}
+                  crossOrigin="anonymous"
+                  className="w-24 h-24"
+                  loading="lazy"
+                />
+                <p className="text-[10px] text-muted-foreground mt-1 text-center">
+                  Scannez pour vérifier votre commande
+                </p>
+              </div>
+            )}
+
             {/* Pied de page */}
             <div className="text-center mt-4 pt-3 border-t border-dashed border-muted-foreground/30">
               <p className="text-xs text-muted-foreground">

@@ -29,15 +29,11 @@ export class PaymentsService {
     console.log('[PaymentsService] Initiating payment', request);
 
     try {
-      const { data, error } = await supabase.functions.invoke('taxi-payment', {
-        body: {
-          rideId: request.rideId,
-          paymentMethod: request.paymentMethod,
-          idempotencyKey: request.idempotencyKey || `${request.rideId}-${Date.now()}`
-        }
-      });
-
-      if (error) throw error;
+      // ✅ Point d'entrée unique : backend Node.js (fallback Edge si indispo, idempotent)
+      const idem = request.idempotencyKey || `${request.rideId}-${Date.now()}`;
+      const body = { rideId: request.rideId, paymentMethod: request.paymentMethod, idempotencyKey: idem };
+      const { payViaBackend } = await import('@/services/payments/payViaBackend');
+      const data = await payViaBackend('/api/v2/payments/taxi', 'taxi-payment', body, body, idem);
 
       console.log('[PaymentsService] Payment initiated', data);
       return data;

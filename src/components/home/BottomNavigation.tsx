@@ -7,7 +7,12 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, MapPin, User, ShoppingCart, LucideIcon } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+
+// Routes nécessitant une authentification
+const PROTECTED_ROUTES = ['/my-purchases', '/tracking', '/profil'];
 
 interface NavItem {
   id: string;
@@ -24,6 +29,19 @@ export function BottomNavigation({ className }: BottomNavigationProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
+  const { user } = useAuth();
+
+  // ✅ Guard auth : route protégée + non connecté → invite à se connecter
+  const handleNav = (path: string | (() => string)) => {
+    const actualPath = typeof path === 'function' ? path() : path;
+    if (!user && PROTECTED_ROUTES.some(r => actualPath.startsWith(r))) {
+      toast.info('Connectez-vous pour accéder à cette section', {
+        action: { label: 'Se connecter', onClick: () => navigate('/auth') },
+      });
+      return;
+    }
+    navigate(actualPath);
+  };
 
   const navItems: NavItem[] = [
     { id: 'home', icon: Home, labelKey: 'nav.home', path: '/home' },
@@ -61,13 +79,12 @@ export function BottomNavigation({ className }: BottomNavigationProps) {
         <div className="grid grid-cols-5 max-w-lg mx-auto">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const itemPath = typeof item.path === 'function' ? item.path() : item.path;
             const active = isActive(item.path);
 
             return (
               <button
                 key={item.id}
-                onClick={() => navigate(itemPath)}
+                onClick={() => handleNav(item.path)}
                 className={cn(
                   'relative flex flex-col items-center justify-center gap-0.5 py-2 px-1.5 mx-1 my-1 rounded-xl no-hover-effect',
                   'transition-all duration-200',

@@ -15,6 +15,10 @@ import { Badge } from '@/components/ui/badge';
 import { _Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -266,6 +270,9 @@ export default function MultiWarehouseManagement() {
   const [selectedLocation, setSelectedLocation] = useState<VendorLocation | null>(null);
   const [selectedTransfer, setSelectedTransfer] = useState<StockTransfer | null>(null);
   const [locationStock, setLocationStock] = useState<any[]>([]);
+  // ✅ Remplacent la confirmation native (bloquée sur Android/WebView)
+  const [shipConfirm, setShipConfirm] = useState<{ transfer: StockTransfer } | null>(null);
+  const [deleteLocationConfirm, setDeleteLocationConfirm] = useState<{ id: string; name: string } | null>(null);
 
   // Form states
   const [newLocation, setNewLocation] = useState<CreateLocationInput>({
@@ -356,10 +363,8 @@ export default function MultiWarehouseManagement() {
   };
 
   // Expédier un transfert
-  const handleShipTransfer = async (transfer: StockTransfer) => {
-    if (window.confirm(`${t('multiWarehouse.shipConfirm1')} ${transfer.transfer_number} ?\n\n${t('multiWarehouse.shipConfirm2')}`)) {
-      await shipTransfer(transfer.id);
-    }
+  const handleShipTransfer = (transfer: StockTransfer) => {
+    setShipConfirm({ transfer });
   };
 
   // Confirmer réception
@@ -591,11 +596,7 @@ export default function MultiWarehouseManagement() {
                     });
                     setShowCreateDialog(true);
                   }}
-                  onDelete={() => {
-                    if (window.confirm(`${t('multiWarehouse.deleteConfirm')} "${location.name}" ?`)) {
-                      deleteLocation(location.id);
-                    }
-                  }}
+                  onDelete={() => setDeleteLocationConfirm({ id: location.id, name: location.name })}
                   onSetDefault={() => setDefaultLocation(location.id)}
                   onViewStock={() => handleViewStock(location)}
                 />
@@ -1036,6 +1037,46 @@ export default function MultiWarehouseManagement() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* AlertDialog : Confirmer expédition transfert (remplace la confirmation native) */}
+      <AlertDialog open={!!shipConfirm} onOpenChange={(o) => { if (!o) setShipConfirm(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('multiWarehouse.shipConfirm1')} {shipConfirm?.transfer.transfer_number} ?</AlertDialogTitle>
+            <AlertDialogDescription>{t('multiWarehouse.shipConfirm2')}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('multiWarehouse.cancel')}</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-[#04439e] hover:bg-[#04439e]/90"
+              onClick={() => { const tr = shipConfirm!.transfer; setShipConfirm(null); shipTransfer(tr.id); }}
+            >
+              {t('multiWarehouse.ship')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* AlertDialog : Supprimer entrepôt (remplace la confirmation native) */}
+      <AlertDialog open={!!deleteLocationConfirm} onOpenChange={(o) => { if (!o) setDeleteLocationConfirm(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('multiWarehouse.deleteConfirm')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              « {deleteLocationConfirm?.name} » — {t('multiWarehouse.irreversible')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('multiWarehouse.cancel')}</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 hover:bg-red-700"
+              onClick={() => { const id = deleteLocationConfirm!.id; setDeleteLocationConfirm(null); deleteLocation(id); }}
+            >
+              {t('multiWarehouse.delete')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

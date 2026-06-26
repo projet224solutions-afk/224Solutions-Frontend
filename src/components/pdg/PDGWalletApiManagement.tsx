@@ -75,13 +75,13 @@ export default function PDGWalletApiManagement() {
 
       const rate = parseFloat(commissionRate);
       if (isNaN(rate) || rate < 0 || rate > 100) {
-        toast({ title: 'Taux de commission invalide', variant: 'destructive' });
+        toast({ title: t('pDGWalletApiManagement.tauxDeCommissionInvalide'), variant: 'destructive' });
         return;
       }
 
       const success = await WalletApiService.approveRequest(request.id, user.id, rate);
       if (success) {
-        toast({ title: '✅ Demande approuvée', description: 'Les clés API ont été générées' });
+        toast({ title: t('pDGWalletApiManagement.demandeApprouvee'), description: t('pDGWalletApiManagement.lesClesApiOntEte') });
         fetchData();
       } else {
         toast({ title: 'Erreur', variant: 'destructive' });
@@ -95,7 +95,7 @@ export default function PDGWalletApiManagement() {
 
   const handleReject = async () => {
     if (!selectedRequest || !rejectionReason.trim()) {
-      toast({ title: 'Indiquez la raison du refus', variant: 'destructive' });
+      toast({ title: t('pDGWalletApiManagement.indiquezLaRaisonDuRefus'), variant: 'destructive' });
       return;
     }
     try {
@@ -105,7 +105,7 @@ export default function PDGWalletApiManagement() {
 
       const success = await WalletApiService.rejectRequest(selectedRequest.id, user.id, rejectionReason);
       if (success) {
-        toast({ title: 'Demande refusée' });
+        toast({ title: t('pDGWalletApiManagement.demandeRefusee') });
         setShowRejectDialog(false);
         setRejectionReason('');
         fetchData();
@@ -218,10 +218,10 @@ export default function PDGWalletApiManagement() {
           {/* Filtres */}
           <div className="flex gap-2">
             {[
-              { value: 'all', label: 'Toutes', count: requests.length },
+              { value: 'all', label: t('pDGWalletApiManagement.toutes'), count: requests.length },
               { value: 'pending', label: 'En attente', count: requests.filter(r => r.status === 'pending').length },
-              { value: 'approved', label: 'Approuvées', count: requests.filter(r => r.status === 'approved').length },
-              { value: 'rejected', label: 'Refusées', count: requests.filter(r => r.status === 'rejected').length },
+              { value: 'approved', label: t('pDGWalletApiManagement.approuvees'), count: requests.filter(r => r.status === 'approved').length },
+              { value: 'rejected', label: t('pDGWalletApiManagement.refusees'), count: requests.filter(r => r.status === 'rejected').length },
             ].map(f => (
               <Button
                 key={f.value}

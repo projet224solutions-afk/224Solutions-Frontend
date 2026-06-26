@@ -138,7 +138,7 @@ export default function CreditSalesForm() {
     if (!vendorId) {
       toast({
         title: "Erreur",
-        description: "ID vendeur manquant",
+        description: t('creditSalesForm.idVendeurManquant'),
         variant: "destructive"
       });
       return;
@@ -147,7 +147,7 @@ export default function CreditSalesForm() {
     if (!formData.customer_name.trim()) {
       toast({
         title: "Erreur",
-        description: "Veuillez entrer le nom du client",
+        description: t('creditSalesForm.veuillezEntrerLeNomDu'),
         variant: "destructive"
       });
       return;
@@ -156,7 +156,7 @@ export default function CreditSalesForm() {
     if (formData.items.length === 0 || !formData.items[0].product_name) {
       toast({
         title: "Erreur",
-        description: "Veuillez ajouter au moins un article",
+        description: t('creditSalesForm.veuillezAjouterAuMoinsUn'),
         variant: "destructive"
       });
       return;
@@ -165,7 +165,7 @@ export default function CreditSalesForm() {
     if (!formData.due_date) {
       toast({
         title: "Erreur",
-        description: "Veuillez sélectionner une date d'échéance",
+        description: t('creditSalesForm.veuillezSelectionnerUneDateD'),
         variant: "destructive"
       });
       return;
@@ -174,7 +174,7 @@ export default function CreditSalesForm() {
     // Pour l'instant, juste afficher un message - la table n'existe pas encore
     toast({
       title: "Information",
-      description: "La fonctionnalité de vente à crédit sera bientôt disponible",
+      description: t('creditSalesForm.laFonctionnaliteDeVenteA'),
     });
 
     setIsDialogOpen(false);
@@ -186,7 +186,7 @@ export default function CreditSalesForm() {
 
     toast({
       title: "Information",
-      description: "La fonctionnalité de paiement sera bientôt disponible",
+      description: t('creditSalesForm.laFonctionnaliteDePaiementSera'),
     });
   };
 

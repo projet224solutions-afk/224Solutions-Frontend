@@ -127,7 +127,7 @@ export function VendorSidebar() {
 
     // Afficher "Produits Numériques" seulement si le vendeur en a créé
     if (hasDigitalProducts) {
-      items.push({ title: "Produits Numériques", icon: Laptop, path: "digital-products" });
+      items.push({ title: t('vendorSidebar.produitsNumeriques'), icon: Laptop, path: "digital-products" });
     }
 
     items.push(
@@ -149,7 +149,7 @@ export function VendorSidebar() {
         { title: t('sidebar.dashboard'), icon: BarChart3, path: "dashboard" },
         { title: t('sidebar.analytics'), icon: TrendingUp, path: "analytics" },
         { title: t('sidebar.pos'), icon: Store, path: "pos", isPOS: true },
-        { title: "Module Métier", icon: Briefcase, path: "service-module" },
+        { title: t('vendorSidebar.moduleMetier'), icon: Briefcase, path: "service-module" },
       ]
     },
     {
@@ -179,8 +179,8 @@ export function VendorSidebar() {
         { title: t('sidebar.payments'), icon: CreditCard, path: "payments" },
         { title: "Escrow & Litiges", icon: ShieldCheck, path: "escrow" },
         { title: "Retours", icon: Undo2, path: "returns" },
-        { title: "Paiements Échelonnés", icon: CreditCard, path: "installments" },
-        { title: "Ventes Avancées", icon: ShoppingCart, path: "advanced-sales" },
+        { title: t('vendorSidebar.paiementsEchelonnes'), icon: CreditCard, path: "installments" },
+        { title: t('vendorSidebar.ventesAvancees'), icon: ShoppingCart, path: "advanced-sales" },
         { title: t('sidebar.paymentLinks'), icon: DollarSign, path: "payment-links" },
         { title: t('sidebar.expenses'), icon: Receipt, path: "expenses" },
         { title: t('sidebar.debts'), icon: AlertTriangle, path: "debts" },

@@ -76,6 +76,11 @@ const PROTECTED_ROUTE_RULES: Array<{ prefix: string; roles: string[] }> = [
   { prefix: '/agent/change-password', roles: ['agent', 'admin'] },
   { prefix: '/agent-dashboard', roles: ['agent', 'admin'] },
   { prefix: '/agent', roles: ['agent', 'admin'] },
+  // Prestataires de service — AJOUTS (CRITIQUE 3 : manquaient → redirection vers le
+  // fallback au lieu du dashboard prestataire renvoyé par resolvePostAuthRoute).
+  { prefix: '/dashboard/service', roles: ['prestataire', 'admin'] },
+  { prefix: '/service-selection', roles: ['prestataire', 'admin'] },
+  { prefix: '/client/dashboard', roles: ['client', 'admin'] },
   { prefix: '/admin/migrate-ids', roles: ['admin'] },
   { prefix: '/admin', roles: ['admin', 'pdg', 'ceo'] },
   { prefix: '/pdg224solutionssoulbah', roles: ['admin', 'pdg', 'ceo'] },
@@ -268,7 +273,8 @@ export async function resolvePostAuthRoute(opts: PostAuthRouteOptions): Promise<
 export function resolvePostAuthRouteSync(role: string): string {
   const r = role.toLowerCase();
   if (r === 'vendeur') return '/vendeur';
-  if (r === 'vendeur_digital') return '/vendeur-digital';
+  // Note: 'vendeur_digital' n'est PAS un rôle Profile (cas mort retiré). Le sous-type
+  // digital vit dans vendors.business_type et est résolu par resolvePostAuthRoute (async).
   if (r === 'client') return '/client';
   if (r === 'livreur') return '/livreur';
   if (r === 'pdg' || r === 'admin') return '/pdg';

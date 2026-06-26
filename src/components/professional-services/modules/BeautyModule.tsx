@@ -23,6 +23,8 @@ import {
   TrendingUp, Settings, Image as ImageIcon, BarChart3
 } from 'lucide-react';
 import { useServiceBeautyStats } from '@/hooks/useServiceBeautyStats';
+import { useBeautyAppointmentsAll } from '@/hooks/useBeauty';
+import { Money } from '@/components/Money';
 import { formatDistanceToNow, format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
@@ -35,11 +37,11 @@ interface BeautyModuleProps {
 // formatCurrency is now handled via useFormatCurrency hook inside the component
 
 const statusColors: Record<string, string> = {
-  pending: 'bg-orange-100 text-[#ff4000]',
-  confirmed: 'bg-blue-100 text-blue-800',
-  completed: 'bg-orange-100 text-[#ff4000]',
-  cancelled: 'bg-orange-100 text-[#ff4000]',
-  no_show: 'bg-gray-100 text-gray-800',
+  pending: 'bg-amber-100 text-amber-700',
+  confirmed: 'bg-[#04439e]/10 text-[#04439e]',
+  completed: 'bg-[#16a34a]/10 text-[#16a34a]',  // vert = terminé ✓
+  cancelled: 'bg-red-100 text-red-600',           // rouge = annulé ✗
+  no_show: 'bg-slate-100 text-slate-500',
 };
 
 const statusLabels: Record<string, string> = {
@@ -54,6 +56,8 @@ export function BeautyModule({ serviceId, businessName }: BeautyModuleProps) {
   const { t } = useTranslation();
   const formatCurrency = useFormatCurrency();
   const { stats, recentAppointments, loading, error, refresh } = useServiceBeautyStats(serviceId);
+  // Données complètes pour les commissions (CA réel par prestataire, pas un sous-ensemble récent)
+  const { appointments: allAppts } = useBeautyAppointmentsAll(serviceId);
   const [activeTab, setActiveTab] = useState('overview');
   const navigate = useNavigate();
   const tabsRef = useRef<HTMLDivElement>(null);
@@ -196,12 +200,13 @@ export function BeautyModule({ serviceId, businessName }: BeautyModuleProps) {
       {/* Tabs */}
       <div ref={tabsRef} className="scroll-mt-20">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 lg:w-auto lg:inline-grid">
+        <TabsList className="grid w-full grid-cols-3 md:grid-cols-8 lg:w-auto lg:inline-grid">
           <TabsTrigger value="appointments"><Calendar className="w-4 h-4 mr-1 hidden md:block" />Agenda</TabsTrigger>
           <TabsTrigger value="services"><Crown className="w-4 h-4 mr-1 hidden md:block" />{t('beautyModule.services')}</TabsTrigger>
           <TabsTrigger value="clients"><Users className="w-4 h-4 mr-1 hidden md:block" />Clients</TabsTrigger>
           <TabsTrigger value="gallery"><ImageIcon className="w-4 h-4 mr-1 hidden md:block" />Galerie</TabsTrigger>
           <TabsTrigger value="analytics"><BarChart3 className="w-4 h-4 mr-1 hidden md:block" />Analytics</TabsTrigger>
+          <TabsTrigger value="commissions"><DollarSign className="w-4 h-4 mr-1 hidden md:block" />Commissions</TabsTrigger>
           <TabsTrigger value="settings"><Settings className="w-4 h-4 mr-1 hidden md:block" />{t('beautyModule.reglages')}</TabsTrigger>
           <TabsTrigger value="overview"><DollarSign className="w-4 h-4 mr-1 hidden md:block" />{t('beautyModule.resume')}</TabsTrigger>
         </TabsList>
@@ -309,6 +314,55 @@ export function BeautyModule({ serviceId, businessName }: BeautyModuleProps) {
 
         <TabsContent value="settings" className="mt-4">
           <BeautySettings serviceId={serviceId} />
+        </TabsContent>
+
+        {/* Commissions — style Fresha Team Plan (données complètes, CA réel par prestataire) */}
+        <TabsContent value="commissions" className="mt-4 space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            <Card className="border-0 bg-[#04439e] text-white">
+              <CardContent className="p-4">
+                <p className="text-xs opacity-70">{t('beautyModule.caTotalTermine')}</p>
+                <p className="text-2xl font-bold">
+                  <Money amount={allAppts.filter(a => a.status === 'completed').reduce((s, a) => s + (a.total_price || 0), 0)} />
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="border-0 bg-[#ff4000] text-white">
+              <CardContent className="p-4">
+                <p className="text-xs opacity-70">Commissions (30%)</p>
+                <p className="text-2xl font-bold">
+                  <Money amount={allAppts.filter(a => a.status === 'completed').reduce((s, a) => s + (a.total_price || 0), 0) * 0.3} />
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+          <Card>
+            <CardHeader><CardTitle className="text-sm">Par prestataire — {new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</CardTitle></CardHeader>
+            <CardContent className="space-y-3">
+              {Object.entries(
+                allAppts.filter(a => a.status === 'completed').reduce((acc, a) => {
+                  const k = a.staff_id || 'Non assigné';
+                  if (!acc[k]) acc[k] = { total: 0, count: 0 };
+                  acc[k].total += a.total_price || 0; acc[k].count += 1;
+                  return acc;
+                }, {} as Record<string, { total: number; count: number }>)
+              ).map(([staff, { total, count }]) => (
+                <div key={staff} className="flex items-center justify-between border-b py-2 last:border-0">
+                  <div>
+                    <p className="text-sm font-medium">{staff === 'Non assigné' ? 'Non assigné' : `Coiffeur ${staff.slice(0, 6)}…`}</p>
+                    <p className="text-xs text-muted-foreground">{count} prestation{count > 1 ? 's' : ''}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-semibold"><Money amount={total} /></p>
+                    <p className="text-xs text-muted-foreground">→ <Money amount={total * 0.3} /> commission</p>
+                  </div>
+                </div>
+              ))}
+              {allAppts.filter(a => a.status === 'completed').length === 0 && (
+                <p className="py-4 text-center text-sm text-muted-foreground">{t('beautyModule.aucunePrestationTermineePourLe')}</p>
+              )}
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
       </div>

@@ -110,7 +110,7 @@ export default function AgentActivation() {
 
     } catch (error) {
       console.error('Erreur activation:', error);
-      toast.error(error instanceof Error ? error.message : 'Erreur lors de l\'activation');
+      toast.error(error instanceof Error ? error.message: t('agentActivation.erreurLorsDeLActivation'));
     } finally {
       setValidating(false);
     }

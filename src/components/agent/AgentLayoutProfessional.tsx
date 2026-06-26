@@ -222,13 +222,13 @@ export function AgentLayoutProfessional({
   const navItems: NavItem[] = [
     {
       id: 'overview',
-      label: 'Tableau de Bord',
+      label: t('agentLayoutProfessional.tableauDeBord'),
       icon: <LayoutDashboard className="w-5 h-5" />,
       gradient: ''
     },
     {
       id: 'wallet',
-      label: 'Portefeuille',
+      label: t('agentLayoutProfessional.portefeuille'),
       icon: <Wallet className="w-5 h-5" />,
       gradient: ''
     },
@@ -242,14 +242,14 @@ export function AgentLayoutProfessional({
     },
     {
       id: 'banking',
-      label: 'Système Bancaire',
+      label: t('agentLayoutProfessional.systemeBancaire'),
       icon: <Shield className="w-5 h-5" />,
       gradient: '',
       permission: 'view_banking'
     },
     {
       id: 'kyc-management',
-      label: 'Gestion KYC',
+      label: t('agentLayoutProfessional.gestionKyc'),
       icon: <FileCheck className="w-5 h-5" />,
       gradient: '',
       permission: 'view_kyc'
@@ -277,14 +277,14 @@ export function AgentLayoutProfessional({
     },
     {
       id: 'orders-management',
-      label: 'Commandes',
+      label: t('agentLayoutProfessional.commandes'),
       icon: <ArrowUpRight className="w-5 h-5" />,
       gradient: '',
       permission: 'view_orders'
     },
     {
       id: 'service-subscriptions',
-      label: 'Abonnements Services',
+      label: t('agentLayoutProfessional.abonnementsServices'),
       icon: <Sparkles className="w-5 h-5" />,
       gradient: '',
       permission: 'view_service_subscriptions',
@@ -297,7 +297,7 @@ export function AgentLayoutProfessional({
     ...(Object.values(unifiedPermissions).some((v) => v === true)
       ? ([{
           id: 'pdg-access',
-          label: 'Mes accès PDG',
+          label: t('agentLayoutProfessional.mesAccesPdg'),
           icon: <Shield className="w-5 h-5" />,
           gradient: '',
           external: '/pdg',
@@ -306,7 +306,7 @@ export function AgentLayoutProfessional({
       : []),
     {
       id: 'create-user',
-      label: 'Créer Utilisateur',
+      label: t('agentLayoutProfessional.creerUtilisateur'),
       icon: <UserPlus className="w-5 h-5" />,
       gradient: '',
       permission: 'create_users'
@@ -355,7 +355,7 @@ export function AgentLayoutProfessional({
     },
     {
       id: 'settings',
-      label: 'Paramètres',
+      label: t('agentLayoutProfessional.parametres'),
       icon: <Settings className="w-5 h-5" />,
       gradient: ''
     }

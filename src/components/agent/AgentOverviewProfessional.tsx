@@ -68,8 +68,8 @@ export function AgentOverviewProfessional({
   const quickActions = [
     {
       icon: <UserPlus className="w-5 h-5" />,
-      label: 'Créer Utilisateur',
-      description: 'Ajouter un nouveau client',
+      label: t('agentOverviewProfessional.creerUtilisateur'),
+      description: t('agentOverviewProfessional.ajouterUnNouveauClient'),
       gradient: '',
       shadowColor: 'shadow-blue-500/25',
       tab: 'create-user'
@@ -77,15 +77,15 @@ export function AgentOverviewProfessional({
     {
       icon: <Link2 className="w-5 h-5" />,
       label: 'Affiliation',
-      description: 'Gérer vos liens',
+      description: t('agentOverviewProfessional.gererVosLiens'),
       gradient: '',
       shadowColor: 'shadow-[#ff4000]/25',
       tab: 'affiliate'
     },
     {
       icon: <Wallet className="w-5 h-5" />,
-      label: 'Portefeuille',
-      description: 'Gérer vos fonds',
+      label: t('agentOverviewProfessional.portefeuille'),
+      description: t('agentOverviewProfessional.gererVosFonds'),
       gradient: '',
       shadowColor: 'shadow-[#ff4000]/25',
       tab: 'wallet'
@@ -93,15 +93,15 @@ export function AgentOverviewProfessional({
     {
       icon: <BarChart3 className="w-5 h-5" />,
       label: 'Analytics',
-      description: 'Voir les rapports',
+      description: t('agentOverviewProfessional.voirLesRapports'),
       gradient: '',
       shadowColor: 'shadow-[#04439e]/25',
       tab: 'reports'
     },
     {
       icon: <Users className="w-5 h-5" />,
-      label: 'Équipe',
-      description: 'Gérer sous-agents',
+      label: t('agentOverviewProfessional.equipe'),
+      description: t('agentOverviewProfessional.gererSousAgents'),
       gradient: '',
       shadowColor: 'shadow-orange-500/25',
       tab: 'sub-agents'
@@ -182,11 +182,11 @@ export function AgentOverviewProfessional({
         <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
           <CardContent className="p-5">
             <div className="flex items-start justify-between mb-3">
-              <div className="p-2.5 bg-blue-50 rounded-xl">
+              <div className="p-2.5 rounded-xl">
                 <Users className="w-5 h-5 text-blue-600" />
               </div>
               {(stats.usersThisMonth || 0) > 0 && (
-                <Badge className="bg-orange-100 text-[#ff4000] border-0 text-xs">
+                <Badge className="text-[#ff4000] border-0 text-xs">
                   +{stats.usersThisMonth}
                 </Badge>
               )}
@@ -202,10 +202,10 @@ export function AgentOverviewProfessional({
         <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
           <CardContent className="p-5">
             <div className="flex items-start justify-between mb-3">
-              <div className="p-2.5 bg-blue-50 rounded-xl">
+              <div className="p-2.5 rounded-xl">
                 <DollarSign className="w-5 h-5 text-[#04439e]" />
               </div>
-              <Badge className="bg-blue-100 text-[#04439e] border-0 text-xs">
+              <Badge className="text-[#04439e] border-0 text-xs">
                 {agent.commission_rate}%
               </Badge>
             </div>
@@ -220,11 +220,11 @@ export function AgentOverviewProfessional({
         <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
           <CardContent className="p-5">
             <div className="flex items-start justify-between mb-3">
-              <div className="p-2.5 bg-orange-50 rounded-xl">
+              <div className="p-2.5 rounded-xl">
                 <Activity className="w-5 h-5 text-orange-600" />
               </div>
               {(stats.activeSubAgentsCount || 0) > 0 && (
-                <Badge className="bg-orange-100 text-orange-700 border-0 text-xs">
+                <Badge className="text-orange-700 border-0 text-xs">
                   {stats.activeSubAgentsCount} actifs
                 </Badge>
               )}

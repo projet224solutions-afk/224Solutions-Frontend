@@ -68,7 +68,7 @@ export function VendorDisputeDialog({
       await disputeEscrow(escrowId, fullReason);
 
       toast.success(t('vendorDisputeDialog.litigeOuvertAvecSucces'), {
-        description: 'Un administrateur examinera votre demande.'
+        description: t('vendorDisputeDialog.unAdministrateurExamineraVotreDemande')
       });
 
       // Reset form

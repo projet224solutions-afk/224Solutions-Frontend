@@ -187,9 +187,9 @@ export const ProfessionalVirtualCard = () => {
   const getStatusConfig = (status: string) => {
     const configs: Record<string, { color: string; icon: React.ReactNode; label: string }> = {
       active: { color: 'bg-[#ff4000]', icon: <CheckCircle2 className="w-3 h-3" />, label: 'Active' },
-      inactive: { color: 'bg-blue-500', icon: <Snowflake className="w-3 h-3" />, label: 'Gelée' },
-      frozen: { color: 'bg-blue-500', icon: <Snowflake className="w-3 h-3" />, label: 'Gelée' },
-      blocked: { color: 'bg-[#ff4000]', icon: <AlertTriangle className="w-3 h-3" />, label: 'Bloquée' }
+      inactive: { color: 'bg-blue-500', icon: <Snowflake className="w-3 h-3" />, label: t('professionalVirtualCard.gelee') },
+      frozen: { color: 'bg-blue-500', icon: <Snowflake className="w-3 h-3" />, label: t('professionalVirtualCard.gelee') },
+      blocked: { color: 'bg-[#ff4000]', icon: <AlertTriangle className="w-3 h-3" />, label: t('professionalVirtualCard.bloquee') }
     };
     return configs[status] || configs.active;
   };

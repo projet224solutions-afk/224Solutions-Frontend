@@ -45,7 +45,7 @@ export function VendorSubscriptionInfo() {
 
       if (success) {
         toast.success(t('vendorSubscriptionInfo.abonnementAnnuleAvecSucces'), {
-          description: "Votre abonnement restera actif jusqu'à la date de fin prévue."
+          description: t('vendorSubscriptionInfo.votreAbonnementResteraActifJusqu')
         });
         await refresh();
       } else {

@@ -36,6 +36,8 @@ export function BureauRealtimeDashboard({ bureauId, bureauName }: BureauRealtime
   const { t } = useTranslation();
   const { stats, onlineDrivers, recentActivity, loading, error, refresh } = useBureauRealtimeStats(bureauId);
   const [lastUpdate, setLastUpdate] = useState(new Date());
+  const [showMap, setShowMap] = useState(false);
+  const hasPositions = onlineDrivers.some((d) => d.last_lat && d.last_lng);
 
   useEffect(() => {
     setLastUpdate(new Date());
@@ -135,11 +137,17 @@ export function BureauRealtimeDashboard({ bureauId, bureauName }: BureauRealtime
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Online Drivers */}
         <Card>
-          <CardHeader className="pb-3">
+          <CardHeader className="pb-3 flex flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2 text-lg">
               <Wifi className="h-5 w-5 text-[#ff4000]" />
               Chauffeurs en Ligne ({onlineDrivers.length})
             </CardTitle>
+            {hasPositions && (
+              <Button variant="outline" size="sm" onClick={() => setShowMap(p => !p)}>
+                <MapPin className="h-4 w-4 mr-1.5 text-[#04439e]" />
+                {showMap ? 'Masquer la carte' : 'Voir la carte'}
+              </Button>
+            )}
           </CardHeader>
           <CardContent>
             <ScrollArea className="h-[300px]">
@@ -151,11 +159,51 @@ export function BureauRealtimeDashboard({ bureauId, bureauName }: BureauRealtime
               ) : (
                 <div className="space-y-3">
                   {onlineDrivers.map(driver => (
-                    <DriverCard key={driver.id} driver={driver} />
+                    <DriverCard key={driver.id} driver={driver} onLocate={() => setShowMap(true)} />
                   ))}
                 </div>
               )}
             </ScrollArea>
+
+            {showMap && hasPositions && (
+              <div className="mt-3 rounded-xl overflow-hidden border bg-blue-50">
+                <div className="px-3 py-2 text-xs font-semibold text-[#04439e] border-b bg-white flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5" />
+                  Positions en ligne — Conakry
+                </div>
+                <div className="relative h-44">
+                  <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    {[20,40,60,80].map(v => (
+                      <g key={v}>
+                        <line x1={v} y1="0" x2={v} y2="100" stroke="#3B82F6" strokeWidth="0.3"/>
+                        <line x1="0" y1={v} x2="100" y2={v} stroke="#3B82F6" strokeWidth="0.3"/>
+                      </g>
+                    ))}
+                  </svg>
+                  {onlineDrivers.filter(d => d.last_lat && d.last_lng).map(d => {
+                    const x = ((Number(d.last_lng) - (-13.85)) / 0.35) * 100;
+                    const y = ((9.70 - Number(d.last_lat)) / 0.25) * 100;
+                    return (
+                      <div key={d.id} title={`${d.vehicle_plate || 'Chauffeur'} — ${d.status}`}
+                        className="absolute w-3 h-3 rounded-full border-2 border-white shadow-sm cursor-pointer hover:scale-150 transition-transform z-10"
+                        style={{ left: `${Math.min(96,Math.max(2,x))}%`, top: `${Math.min(96,Math.max(2,y))}%`,
+                          backgroundColor: d.status === 'on_trip' ? '#ff4000' : '#16a34a',
+                          transform: 'translate(-50%,-50%)' }}
+                      />
+                    );
+                  })}
+                  <div className="absolute bottom-2 right-2 bg-white/80 rounded-lg px-2 py-1 flex flex-col gap-0.5">
+                    <div className="flex items-center gap-1 text-[9px]">
+                      <span className="w-2 h-2 rounded-full bg-green-600 border border-white"/>Disponible
+                    </div>
+                    <div className="flex items-center gap-1 text-[9px]">
+                      <span className="w-2 h-2 rounded-full bg-[#ff4000] border border-white"/>En course
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -246,7 +294,7 @@ function StatCard({ title, value, icon, color, badge, urgent, isText }: StatCard
   );
 }
 
-function DriverCard({ driver }: { driver: OnlineDriver }) {
+function DriverCard({ driver, onLocate }: { driver: OnlineDriver; onLocate?: () => void }) {
   const { t } = useTranslation();
   const statusColors = {
     available: 'bg-[#ff4000]',
@@ -257,10 +305,10 @@ function DriverCard({ driver }: { driver: OnlineDriver }) {
   const driverLabel = driver.vehicle_plate || driver.vehicle_type || 'Chauffeur';
 
   return (
-    <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted transition-colors">
       <div className="flex items-center gap-3">
         <div className="relative">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full flex items-center justify-center">
             <Users className="h-5 w-5 text-primary" />
           </div>
           <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-background ${statusColors[driver.status as keyof typeof statusColors] || 'bg-gray-500'}`} />
@@ -285,8 +333,9 @@ function DriverCard({ driver }: { driver: OnlineDriver }) {
       </div>
       <div className="flex items-center gap-2">
         {driver.last_lat && driver.last_lng && (
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <MapPin className="h-4 w-4" />
+          <Button variant="ghost" size="icon" className="h-8 w-8"
+            onClick={onLocate} title="Voir sur la carte">
+            <MapPin className="h-4 w-4 text-[#04439e]" />
           </Button>
         )}
         <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -308,7 +357,7 @@ function ActivityItem({ activity }: { activity: RecentActivity }) {
 
   return (
     <div className="flex items-start gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
-      <div className="p-2 rounded-full bg-muted">
+      <div className="p-2 rounded-full">
         {typeIcons[activity.type]}
       </div>
       <div className="flex-1 min-w-0">

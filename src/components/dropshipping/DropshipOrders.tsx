@@ -115,15 +115,15 @@ export function DropshipOrders({ orders, loading, onUpdateStatus }: DropshipOrde
     const configs: Record<string, { label: string; icon: any; color: string }> = {
       pending: { label: 'En attente', icon: Clock, color: 'text-gray-500' },
       awaiting_supplier: { label: 'Attente fournisseur', icon: Clock, color: 'text-orange-500' },
-      ordered_from_supplier: { label: 'Commandé', icon: Package, color: 'text-blue-500' },
-      supplier_confirmed: { label: 'Confirmé', icon: CheckCircle, color: 'text-blue-600' },
-      supplier_processing: { label: 'En préparation', icon: Package, color: 'text-[#04439e]' },
-      shipped_by_supplier: { label: 'Expédié', icon: Truck, color: 'text-[#04439e]' },
+      ordered_from_supplier: { label: t('dropshipOrders.commande'), icon: Package, color: 'text-blue-500' },
+      supplier_confirmed: { label: t('dropshipOrders.confirme'), icon: CheckCircle, color: 'text-blue-600' },
+      supplier_processing: { label: t('dropshipOrders.enPreparation'), icon: Package, color: 'text-[#04439e]' },
+      shipped_by_supplier: { label: t('dropshipOrders.expedie'), icon: Truck, color: 'text-[#04439e]' },
       in_transit: { label: 'En transit', icon: Truck, color: 'text-[#04439e]' },
-      delivered_to_customer: { label: 'Livré', icon: CheckCircle, color: 'text-[#ff4000]' },
-      completed: { label: 'Terminé', icon: CheckCircle, color: 'text-[#ff4000]' },
-      cancelled: { label: 'Annulé', icon: XCircle, color: 'text-[#ff4000]' },
-      refunded: { label: 'Remboursé', icon: XCircle, color: 'text-[#ff4000]' },
+      delivered_to_customer: { label: t('dropshipOrders.livre'), icon: CheckCircle, color: 'text-[#ff4000]' },
+      completed: { label: t('dropshipOrders.termine'), icon: CheckCircle, color: 'text-[#ff4000]' },
+      cancelled: { label: t('dropshipOrders.annule'), icon: XCircle, color: 'text-[#ff4000]' },
+      refunded: { label: t('dropshipOrders.rembourse'), icon: XCircle, color: 'text-[#ff4000]' },
       disputed: { label: 'Litige', icon: AlertTriangle, color: 'text-[#ff4000]' }
     };
     return configs[status] || { label: status, icon: Clock, color: 'text-gray-500' };

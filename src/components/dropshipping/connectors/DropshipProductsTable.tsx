@@ -107,7 +107,7 @@ function SyncStatusBadge({ status, lastSync }: { status: string; lastSync: strin
   const getStatusConfig = () => {
     switch (status) {
       case 'synced':
-        return { icon: CheckCircle, label: 'Synchronisé', variant: 'default' as const, className: 'bg-[#ff4000]' };
+        return { icon: CheckCircle, label: t('dropshipProductsTable.synchronise'), variant: 'default' as const, className: 'bg-[#ff4000]' };
       case 'pending':
         return { icon: Loader2, label: 'En cours', variant: 'secondary' as const, className: 'animate-spin' };
       case 'error':

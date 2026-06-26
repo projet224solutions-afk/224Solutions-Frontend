@@ -28,8 +28,8 @@ interface TransferLimit {
 const LIMIT_CONFIG: Omit<TransferLimit, 'value'>[] = [
   {
     key: 'min_transfer_amount',
-    label: 'Montant Minimum par Transfert',
-    description: 'En GNF — converti automatiquement dans la devise de l\'expéditeur',
+    label: "Montant Minimum par Transfert",
+    description: "En GNF — converti automatiquement dans la devise de l'expéditeur",
     icon: <ArrowUpDown className="w-5 h-5" />,
     defaultValue: 100,
     category: 'amount',
@@ -37,8 +37,8 @@ const LIMIT_CONFIG: Omit<TransferLimit, 'value'>[] = [
   },
   {
     key: 'max_transfer_amount',
-    label: 'Montant Maximum par Transfert',
-    description: 'En GNF — converti automatiquement dans la devise de l\'expéditeur',
+    label: "Montant Maximum par Transfert",
+    description: "En GNF — converti automatiquement dans la devise de l'expéditeur",
     icon: <Banknote className="w-5 h-5" />,
     defaultValue: 50_000_000,
     category: 'amount',
@@ -47,7 +47,7 @@ const LIMIT_CONFIG: Omit<TransferLimit, 'value'>[] = [
   {
     key: 'max_daily_transfer_amount',
     label: 'Limite Quotidienne Globale',
-    description: 'En GNF — montant cumulé max par jour, converti par devise',
+    description: "En GNF — montant cumulé max par jour, converti par devise",
     icon: <TrendingUp className="w-5 h-5" />,
     defaultValue: 50_000_000,
     category: 'daily',
@@ -56,7 +56,7 @@ const LIMIT_CONFIG: Omit<TransferLimit, 'value'>[] = [
   {
     key: 'min_international_transfer_amount',
     label: 'Minimum par Transfert International',
-    description: 'En GNF — converti dans la devise de l\'expéditeur au taux du jour',
+    description: "En GNF — converti dans la devise de l'expéditeur au taux du jour",
     icon: <Globe className="w-5 h-5" />,
     defaultValue: 500,
     category: 'daily',
@@ -65,7 +65,7 @@ const LIMIT_CONFIG: Omit<TransferLimit, 'value'>[] = [
   {
     key: 'max_international_transfer_amount',
     label: 'Maximum par Transfert International',
-    description: 'En GNF — converti dans la devise de l\'expéditeur au taux du jour',
+    description: "En GNF — converti dans la devise de l'expéditeur au taux du jour",
     icon: <Globe className="w-5 h-5" />,
     defaultValue: 50_000_000,
     category: 'daily',

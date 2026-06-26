@@ -52,13 +52,13 @@ interface DeliveryOrder {
 
 const statusLabels: Record<string, { label: string; color: string }> = {
   pending: { label: 'En attente', color: 'bg-[#ff4000]' },
-  assigned: { label: 'Livreur assigné', color: 'bg-blue-500' },
+  assigned: { label: "Livreur assigné", color: 'bg-blue-500' },
   driver_on_way_to_vendor: { label: 'Livreur en route', color: 'bg-[#04439e]' },
-  driver_arrived_vendor: { label: 'Livreur arrivé', color: 'bg-[#04439e]' },
-  picked_up: { label: 'Colis récupéré', color: 'bg-[#04439e]' },
-  in_transit: { label: 'En livraison', color: 'bg-orange-500' },
-  delivered: { label: 'Livré', color: 'bg-[#ff4000]' },
-  cancelled: { label: 'Annulé', color: 'bg-[#ff4000]' }
+  driver_arrived_vendor: { label: "Livreur arrivé", color: 'bg-[#04439e]' },
+  picked_up: { label: "Colis récupéré", color: 'bg-[#04439e]' },
+  in_transit: { label: "En livraison", color: 'bg-orange-500' },
+  delivered: { label: "Livré", color: 'bg-[#ff4000]' },
+  cancelled: { label: "Annulé", color: 'bg-[#ff4000]' }
 };
 
 export function VendorDeliveryManagement() {

@@ -9,6 +9,7 @@ import { Money } from '@/components/Money';
 import {
   Navigation,
   Phone,
+  MessageCircle,
   MapPin,
   Clock,
   ArrowRight,
@@ -25,6 +26,15 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { TaxiMotoGeolocationService } from "@/services/taxi/TaxiMotoGeolocationService";
+
+// ✅ Templates WhatsApp — évite les appels au volant (sécurité routière)
+const QUICK_MESSAGES = [
+  { label: 'Je suis en route', text: 'Bonjour, je suis en route vers vous. J\'arrive bientôt !' },
+  { label: 'Je suis arrivé', text: 'Je suis arrivé à votre point de rendez-vous. Je vous attends !' },
+  { label: 'Encore 2 minutes', text: 'Encore 2 minutes, je suis tout proche !' },
+  { label: 'Je cherche l\'adresse', text: 'J\'ai du mal à trouver l\'adresse exacte. Pouvez-vous m\'appeler ou m\'envoyer un repère ?' },
+  { label: 'Patientez svp', text: 'Je suis bloqué dans le trafic. Merci de patienter encore quelques minutes.' },
+];
 
 interface ActiveRide {
   id: string;
@@ -64,6 +74,18 @@ export function ActiveRideNavigationPanel({
   const [distance, setDistance] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [_isCalculating, setIsCalculating] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
+
+  // ✅ Envoi d'un message WhatsApp pré-rempli au client
+  const sendWhatsAppMessage = (text: string) => {
+    if (!activeRide?.customerPhone) {
+      toast.error('Numéro du client non disponible');
+      return;
+    }
+    const phone = activeRide.customerPhone.replace(/[\s\-+()]/g, '');
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+    setShowMessages(false);
+  };
 
   // Calculer la route
   const calculateRoute = useCallback(async () => {
@@ -162,7 +184,7 @@ export function ActiveRideNavigationPanel({
     switch (activeRide.status) {
       case 'accepted':
         return {
-          label: 'En route vers client',
+          label: t('activeRideNavigationPanel.enRouteVersClient'),
           color: 'bg-[#ff4000]',
           nextAction: 'arriving',
           nextLabel: "Je suis arrivé",
@@ -170,7 +192,7 @@ export function ActiveRideNavigationPanel({
         };
       case 'arriving':
         return {
-          label: 'Arrivé au point',
+          label: t('activeRideNavigationPanel.arriveAuPoint'),
           color: 'bg-blue-500',
           nextAction: 'started',
           nextLabel: "Client à bord",
@@ -278,13 +300,45 @@ export function ActiveRideNavigationPanel({
                 <p className="text-gray-400 text-sm">{activeRide.customerPhone}</p>
               </div>
             </div>
-            <Button
-              onClick={() => onContactCustomer(activeRide.customerPhone)}
-              className="bg-[#ff4000] hover:bg-[#ff4000] text-white rounded-full w-12 h-12"
-              size="icon"
-            >
-              <Phone className="w-5 h-5" />
-            </Button>
+            <div className="flex items-center gap-2">
+              {/* ✅ Messages rapides WhatsApp */}
+              <div className="relative">
+                <Button
+                  onClick={() => setShowMessages(p => !p)}
+                  variant="outline"
+                  className="rounded-full w-12 h-12 border-gray-600 text-gray-300"
+                  size="icon"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                </Button>
+                {showMessages && (
+                  <div className="absolute bottom-full right-0 mb-2 z-20 w-64 bg-gray-800 border border-gray-700 rounded-xl shadow-xl overflow-hidden">
+                    {QUICK_MESSAGES.map(msg => (
+                      <button
+                        key={msg.label}
+                        onClick={() => sendWhatsAppMessage(msg.text)}
+                        className="w-full text-left px-3 py-2.5 text-xs text-gray-200 hover:bg-gray-700 border-b border-gray-700 last:border-b-0 transition-colors"
+                      >
+                        {msg.label}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => setShowMessages(false)}
+                      className="w-full px-3 py-2 text-xs text-gray-500 hover:bg-gray-700"
+                    >
+                      Fermer
+                    </button>
+                  </div>
+                )}
+              </div>
+              <Button
+                onClick={() => onContactCustomer(activeRide.customerPhone)}
+                className="bg-[#ff4000] hover:bg-[#ff4000] text-white rounded-full w-12 h-12"
+                size="icon"
+              >
+                <Phone className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -295,7 +349,7 @@ export function ActiveRideNavigationPanel({
           {/* Point de départ */}
           <div className={cn(
             "p-4 border-l-4 flex items-start gap-3",
-            currentTarget === 'pickup' ? 'border-[#ff4000] bg-[#ff4000]/10' : 'border-gray-600'
+            currentTarget === 'pickup' ? 'border-[#ff4000]' : 'border-gray-600'
           )}>
             <div className={cn(
               "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
@@ -327,7 +381,7 @@ export function ActiveRideNavigationPanel({
           {/* Destination */}
           <div className={cn(
             "p-4 border-l-4 flex items-start gap-3",
-            currentTarget === 'destination' ? 'border-[#ff4000] bg-[#ff4000]/10' : 'border-gray-600'
+            currentTarget === 'destination' ? 'border-[#ff4000]' : 'border-gray-600'
           )}>
             <div className={cn(
               "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",

@@ -11,11 +11,11 @@ import { Loader2 } from 'lucide-react';
 const PROJECT_TYPES = [
   { value: 'maison', label: '🏠 Maison' },
   { value: 'immeuble', label: '🏢 Immeuble' },
-  { value: 'renovation', label: '🔧 Rénovation' },
+  { value: 'renovation', label: "🔧 Rénovation" },
   { value: 'route', label: '🛣️ Route' },
   { value: 'pont', label: '🌉 Pont' },
   { value: 'bureau', label: '🏬 Bureau' },
-  { value: 'entrepot', label: '🏭 Entrepôt' },
+  { value: 'entrepot', label: "🏭 Entrepôt" },
   { value: 'autre', label: '📐 Autre' },
 ];
 

@@ -65,7 +65,7 @@ interface DashboardStats {
 const mockProducts: DropshipProduct[] = [
   {
     id: '1',
-    title: 'Écouteurs Bluetooth TWS Pro',
+    title: "Écouteurs Bluetooth TWS Pro",
     thumbnail: 'https://placehold.co/100x100',
     sourceConnector: 'ALIEXPRESS',
     sourceProductId: '1005004123456',
@@ -87,7 +87,7 @@ const mockProducts: DropshipProduct[] = [
   },
   {
     id: '2',
-    title: 'Montre Connectée Sport 2024',
+    title: "Montre Connectée Sport 2024",
     thumbnail: 'https://placehold.co/100x100',
     sourceConnector: 'ALIBABA',
     sourceProductId: '62845123456',
@@ -109,7 +109,7 @@ const mockProducts: DropshipProduct[] = [
   },
   {
     id: '3',
-    title: 'Support Téléphone Voiture Magnétique',
+    title: "Support Téléphone Voiture Magnétique",
     thumbnail: 'https://placehold.co/100x100',
     sourceConnector: '1688',
     sourceProductId: '678901234567',
@@ -180,7 +180,7 @@ const mockOrders: SupplierOrder[] = [
       events: [
         {
           status: 'in_transit',
-          description: 'Colis arrivé au centre de tri de destination',
+          description: "Colis arrivé au centre de tri de destination",
           timestamp: new Date(Date.now() - 86400000),
           location: 'Conakry, Guinée'
         },
@@ -192,7 +192,7 @@ const mockOrders: SupplierOrder[] = [
         },
         {
           status: 'shipped',
-          description: 'Colis expédié',
+          description: "Colis expédié",
           timestamp: new Date(Date.now() - 432000000),
           location: 'Shenzhen, Chine'
         }

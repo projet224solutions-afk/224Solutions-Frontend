@@ -157,6 +157,25 @@ export function useWebRTCAudioCall() {
   const callModeRef = useRef<CallMode>('audio');
   const iceServersRef = useRef<RTCIceServer[]>(buildIceServers());
 
+  // ✅ Recharger les ICE servers quand les credentials TURN arrivent dans
+  // sessionStorage (injectTurnCredentials s'exécute de façon asynchrone après
+  // le montage du hook). Sinon seul STUN est utilisé → appels KO sur 4G.
+  useEffect(() => {
+    const refreshIceServers = () => {
+      const fresh = buildIceServers();
+      iceServersRef.current = fresh;
+      console.log('🔄 ICE servers rechargés:', fresh.length, 'serveur(s)');
+    };
+    // storage event (cross-tab + déclenché manuellement par injectTurnCredentials)
+    window.addEventListener('storage', refreshIceServers);
+    // filet de sécurité même onglet : re-vérifier 3s après le montage
+    const t = setTimeout(refreshIceServers, 3000);
+    return () => {
+      window.removeEventListener('storage', refreshIceServers);
+      clearTimeout(t);
+    };
+  }, []);
+
   // Ref pour le canal de signalisation personnel (persistant)
   const myChannelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
   // Canaux d'envoi persistants par destinataire (réutilisés pendant tout l'appel)

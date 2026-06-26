@@ -136,14 +136,14 @@ export function SupportTickets() {
         priority: 'medium',
       });
       toast({
-        title: 'Ticket créé',
-        description: 'Votre demande de support a été créée avec succès.',
+        title: t('supportTickets.ticketCree'),
+        description: t('supportTickets.votreDemandeDeSupportA'),
       });
     },
     onError: () => {
       toast({
         title: 'Erreur',
-        description: 'Impossible de créer le ticket.',
+        description: t('supportTickets.impossibleDeCreerLeTicket'),
         variant: 'destructive',
       });
     },
@@ -166,14 +166,14 @@ export function SupportTickets() {
       queryClient.invalidateQueries({ queryKey: ['ticket-messages'] });
       setNewMessage('');
       toast({
-        title: 'Message envoyé',
-        description: 'Votre message a été envoyé avec succès.',
+        title: t('supportTickets.messageEnvoye'),
+        description: t('supportTickets.votreMessageAEteEnvoye'),
       });
     },
     onError: () => {
       toast({
         title: 'Erreur',
-        description: 'Impossible d\'envoyer le message.',
+        description: t('supportTickets.impossibleDEnvoyerLeMessage'),
         variant: 'destructive',
       });
     },
@@ -183,7 +183,7 @@ export function SupportTickets() {
     if (!newTicket.subject || !newTicket.description) {
       toast({
         title: 'Erreur',
-        description: 'Veuillez remplir tous les champs requis.',
+        description: t('supportTickets.veuillezRemplirTousLesChamps'),
         variant: 'destructive',
       });
       return;

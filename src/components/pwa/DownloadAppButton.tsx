@@ -93,7 +93,7 @@ export function DownloadAppButton({ variant = 'default', className = '' }: Downl
         const url = new URL(window.location.href);
         url.searchParams.set('pwa', '1');
         toast.info(t('downloadAppButton.activationDeLInstallation'), {
-          description: 'Recharge en cours pour activer le mode PWA (une seule fois).',
+          description: t('downloadAppButton.rechargeEnCoursPourActiver'),
           duration: 4000,
         });
         window.location.replace(url.toString());
@@ -105,7 +105,7 @@ export function DownloadAppButton({ variant = 'default', className = '' }: Downl
         const success = await promptInstall();
         if (success) {
           toast.success(t('downloadAppButton.applicationInstallee'), {
-            description: "224Solutions est maintenant sur votre écran d'accueil.",
+            description: t('downloadAppButton.t224solutionsEstMaintenantSurVotre'),
           });
           setShowDialog(false);
           return;
@@ -117,17 +117,17 @@ export function DownloadAppButton({ variant = 'default', className = '' }: Downl
 
       if (isIOS) {
         toast.info('Installation sur iPhone/iPad', {
-          description: "Appuyez sur Partager (↑) puis 'Sur l'écran d'accueil'.",
+          description: t('downloadAppButton.appuyezSurPartagerPuisSur'),
           duration: 8000,
         });
       } else if (isMobile) {
         toast.info(t('downloadAppButton.installationSurAndroid'), {
-          description: "Menu (⋮) → 'Installer l'application' ou 'Ajouter à l'écran d'accueil'.",
+          description: t('downloadAppButton.menuInstallerLApplicationOu'),
           duration: 8000,
         });
       } else {
         toast.info(t('downloadAppButton.installationSurOrdinateur'), {
-          description: "Cliquez sur l'icône d'installation dans la barre d'adresse.",
+          description: t('downloadAppButton.cliquezSurLIconeD'),
           duration: 8000,
         });
       }

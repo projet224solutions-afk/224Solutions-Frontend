@@ -172,7 +172,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
       description: `${stats.totalAgents || 0} agents au total`
     },
     {
-      title: 'Commandes',
+      title: t('pDGDashboardHome.commandes'),
       value: (stats.totalOrders || 0).toLocaleString(),
       change: `${(stats.ordersGrowth || 0) >= 0 ? '+' : ''}${stats.ordersGrowth || 0}%`,
       trend: (stats.ordersGrowth || 0) >= 0 ? 'up' : 'down',
@@ -181,7 +181,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
       description: `${stats.ordersThisMonth || 0} ce mois`
     },
     {
-      title: 'Taux de Conversion',
+      title: t('pDGDashboardHome.tauxDeConversion'),
       value: `${stats.conversionRate || 0}%`,
       change: `${(stats.conversionGrowth || 0) >= 0 ? '+' : ''}${stats.conversionGrowth || 0}%`,
       trend: (stats.conversionGrowth || 0) >= 0 ? 'up' : 'down',
@@ -408,7 +408,7 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
                 count: stats.totalRevenue || '0 GNF',
               },
               {
-                label: 'Sécurité',
+                label: t('pDGDashboardHome.securite'),
                 labelFull: 'Vérifier Sécurité',
                 icon: AlertCircle,
                 color: '',

@@ -26,14 +26,14 @@ import type { ArtisanService } from '@/lib/artisan/calculator';
 
 const TRADES: { code: ArtisanService; name: string; logo: string; hint: string }[] = [
   { code: 'plomberie', name: 'Plomberie', logo: '/service-icons/logo-plomberie.svg', hint: 'Fuite, robinet, chauffe-eau, WC…' },
-  { code: 'vitrerie', name: 'Vitrerie', logo: '/service-icons/logo-vitrerie.svg', hint: 'Vitre cassée, miroir, double vitrage…' },
+  { code: 'vitrerie', name: 'Vitrerie', logo: '/service-icons/logo-vitrerie.svg', hint: "Vitre cassée, miroir, double vitrage…" },
   { code: 'menuiserie', name: 'Menuiserie', logo: '/service-icons/logo-menuiserie.svg', hint: 'Porte, placard, cuisine, parquet…' },
   { code: 'soudure', name: 'Soudure & Métallerie', logo: '/service-icons/logo-soudure.svg', hint: 'Portail, grille, garde-corps…' },
 ];
 const URGENCIES: { code: 'normal' | 'urgent' | 'immediate'; label: string; desc: string }[] = [
   { code: 'normal', label: 'Normal', desc: 'Sous quelques jours' },
   { code: 'urgent', label: 'Urgent', desc: 'Dans les 24-48h' },
-  { code: 'immediate', label: 'Immédiat', desc: 'Aujourd\'hui (intervention d\'urgence)' },
+  { code: 'immediate', label: "Immédiat", desc: 'Aujourd\'hui (intervention d\'urgence)' },
 ];
 
 export default function ArtisanRequest() {

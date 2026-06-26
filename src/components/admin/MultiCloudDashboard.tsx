@@ -19,8 +19,8 @@ import type { ServiceStatus, CloudProvider, CloudServiceCheck } from '@/services
 import { cn } from '@/lib/utils';
 
 const statusConfig: Record<ServiceStatus, { color: string; bgColor: string; icon: typeof CheckCircle; label: string; textColor: string }> = {
-  operational: { color: 'bg-[#ff4000]', bgColor: 'bg-[#ff4000]/10', icon: CheckCircle, label: 'Opérationnel', textColor: 'text-[#ff4000]' },
-  degraded: { color: 'bg-[#ff4000]', bgColor: 'bg-[#ff4000]/10', icon: AlertTriangle, label: 'Dégradé', textColor: 'text-[#ff4000]' },
+  operational: { color: 'bg-[#ff4000]', bgColor: 'bg-[#ff4000]/10', icon: CheckCircle, label: "Opérationnel", textColor: 'text-[#ff4000]' },
+  degraded: { color: 'bg-[#ff4000]', bgColor: 'bg-[#ff4000]/10', icon: AlertTriangle, label: "Dégradé", textColor: 'text-[#ff4000]' },
   outage: { color: 'bg-[#ff4000]', bgColor: 'bg-[#ff4000]/10', icon: XCircle, label: 'Panne', textColor: 'text-[#ff4000]' },
   unknown: { color: 'bg-slate-400', bgColor: 'bg-slate-400/10', icon: HelpCircle, label: 'Inconnu', textColor: 'text-slate-500' }
 };

@@ -26,12 +26,12 @@ function PrescThumb({ prescriptionId, hasPhotos, className }: { prescriptionId: 
 }
 
 const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
-  pending: { label: 'À vérifier', cls: 'bg-red-100 text-red-700' },
+  pending: { label: t('pharmacyPrescriptionValidation.aVerifier'), cls: 'bg-red-100 text-red-700' },
   reviewing: { label: 'En cours', cls: 'bg-orange-100 text-orange-700' },
-  quoted: { label: 'Devis envoyé', cls: 'bg-blue-100 text-blue-700' },
-  validated: { label: 'Validée', cls: 'bg-emerald-100 text-emerald-700' },
-  refused: { label: 'Refusée', cls: 'bg-gray-200 text-gray-600' },
-  expired: { label: 'Expirée', cls: 'bg-gray-200 text-gray-600' },
+  quoted: { label: t('pharmacyPrescriptionValidation.devisEnvoye'), cls: 'bg-blue-100 text-blue-700' },
+  validated: { label: t('pharmacyPrescriptionValidation.validee'), cls: 'bg-emerald-100 text-emerald-700' },
+  refused: { label: t('pharmacyPrescriptionValidation.refusee'), cls: 'bg-gray-200 text-gray-600' },
+  expired: { label: t('pharmacyPrescriptionValidation.expiree'), cls: 'bg-gray-200 text-gray-600' },
 };
 
 export function PharmacyPrescriptionValidation({ serviceId }: { serviceId: string }) {

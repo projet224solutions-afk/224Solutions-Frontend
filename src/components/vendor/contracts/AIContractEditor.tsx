@@ -80,8 +80,8 @@ export default function AIContractEditor({ contract, onSaved, onClose }: AIContr
       if (error) throw error;
 
       toast({
-        title: 'Contrat enregistré',
-        description: 'Les modifications ont été enregistrées avec succès',
+        title: t('aIContractEditor.contratEnregistre'),
+        description: t('aIContractEditor.lesModificationsOntEteEnregistrees'),
       });
 
       setIsEditing(false);
@@ -112,8 +112,8 @@ export default function AIContractEditor({ contract, onSaved, onClose }: AIContr
       if (error) throw error;
 
       toast({
-        title: 'Contrat finalisé',
-        description: 'Le contrat est maintenant final et prêt à être envoyé',
+        title: t('aIContractEditor.contratFinalise'),
+        description: t('aIContractEditor.leContratEstMaintenantFinal'),
       });
 
       onSaved();
@@ -139,8 +139,8 @@ export default function AIContractEditor({ contract, onSaved, onClose }: AIContr
       if (error) throw error;
 
       toast({
-        title: 'PDF généré',
-        description: 'Le PDF du contrat a été généré',
+        title: t('aIContractEditor.pdfGenere'),
+        description: t('aIContractEditor.lePdfDuContratA'),
       });
 
       if (data.html) {
@@ -164,7 +164,7 @@ export default function AIContractEditor({ contract, onSaved, onClose }: AIContr
       setLoading(true);
 
       toast({
-        title: 'Signature enregistrée',
+        title: t('aIContractEditor.signatureEnregistree'),
         description: `La signature ${signatureType === 'vendor' ? 'du vendeur' : 'du client'} a été ajoutée`,
       });
 
@@ -223,7 +223,7 @@ export default function AIContractEditor({ contract, onSaved, onClose }: AIContr
       }
 
       toast({
-        title: 'Contrat envoyé',
+        title: t('aIContractEditor.contratEnvoye'),
         description: method === 'link'
           ? 'Lien de signature copié dans le presse-papier'
           : 'Lien de signature généré — message prêt à envoyer au client.',

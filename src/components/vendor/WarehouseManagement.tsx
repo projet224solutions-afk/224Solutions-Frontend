@@ -58,15 +58,15 @@ export default function WarehouseManagement() {
 
       await createWarehouse(warehouseData);
       toast({
-        title: "Entrepôt créé",
-        description: "L'entrepôt a été ajouté avec succès"
+        title: t('warehouseManagement.entrepotCree'),
+        description: t('warehouseManagement.lEntrepotAEteAjoute')
       });
       setIsCreateDialogOpen(false);
       setNewWarehouse({ name: '', address: '', contact_person: '', contact_phone: '' });
     } catch (_error) {
       toast({
         title: "Erreur",
-        description: "Impossible de créer l'entrepôt",
+        description: t('warehouseManagement.impossibleDeCreerLEntrepot'),
         variant: "destructive"
       });
     }
@@ -84,15 +84,15 @@ export default function WarehouseManagement() {
         transferData.notes
       );
       toast({
-        title: "Transfert effectué",
-        description: "Le stock a été transféré avec succès"
+        title: t('warehouseManagement.transfertEffectue'),
+        description: t('warehouseManagement.leStockAEteTransfere')
       });
       setIsTransferDialogOpen(false);
       setTransferData({ product_id: '', from_warehouse_id: '', to_warehouse_id: '', quantity: '', notes: '' });
     } catch (_error) {
       toast({
         title: "Erreur",
-        description: "Impossible d'effectuer le transfert",
+        description: t('warehouseManagement.impossibleDEffectuerLeTransfert'),
         variant: "destructive"
       });
     }
@@ -104,13 +104,13 @@ export default function WarehouseManagement() {
     try {
       await deleteWarehouse(warehouseId);
       toast({
-        title: "Entrepôt supprimé",
-        description: "L'entrepôt a été supprimé avec succès"
+        title: t('warehouseManagement.entrepotSupprime'),
+        description: t('warehouseManagement.lEntrepotAEteSupprime')
       });
     } catch (_error) {
       toast({
         title: "Erreur",
-        description: "Impossible de supprimer l'entrepôt",
+        description: t('warehouseManagement.impossibleDeSupprimerLEntrepot'),
         variant: "destructive"
       });
     }

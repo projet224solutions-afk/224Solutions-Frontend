@@ -127,7 +127,7 @@ export default function InstallmentPlansManager() {
 
   const createPlan = async () => {
     if (!vendorId || !newPlan.customer_name || !newPlan.total_amount || !newPlan.start_date) {
-      toast({ title: 'Veuillez remplir tous les champs', variant: 'destructive' });
+      toast({ title: t('installmentPlansManager.veuillezRemplirTousLesChamps'), variant: 'destructive' });
       return;
     }
 
@@ -179,7 +179,7 @@ export default function InstallmentPlansManager() {
 
       if (installmentsError) throw installmentsError;
 
-      toast({ title: '✅ Plan de paiement créé' });
+      toast({ title: t('installmentPlansManager.planDePaiementCree') });
       setIsCreateOpen(false);
       setNewPlan({ customer_name: '', total_amount: '', number_of_installments: '3', start_date: '' });
       loadData();

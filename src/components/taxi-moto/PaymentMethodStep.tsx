@@ -46,7 +46,7 @@ export const paymentMethods: PaymentMethodOption[] = [
         id: 'wallet',
         name: 'Wallet 224Solutions',
         icon: Wallet,
-        description: 'Payez avec votre portefeuille',
+        description: "Payez avec votre portefeuille",
         color: 'bg-[#ff4000]'
     },
     {
@@ -60,7 +60,7 @@ export const paymentMethods: PaymentMethodOption[] = [
         id: 'orange_money',
         name: 'Orange Money',
         icon: Smartphone,
-        description: 'Paiement mobile Orange',
+        description: "Paiement mobile Orange",
         color: 'bg-orange-500',
         requiresPhone: true
     },

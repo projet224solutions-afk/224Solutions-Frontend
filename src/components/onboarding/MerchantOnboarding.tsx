@@ -193,7 +193,7 @@ export default function MerchantOnboarding() {
       // Rediriger vers le dashboard vendeur pour voir le module
       window.location.reload();
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Erreur lors de l'enregistrement";
+      const msg = e instanceof Error ? e.message: t('merchantOnboarding.erreurLorsDeLEnregistrement');
       toast.error(msg);
     } finally {
       setSubmitting(false);

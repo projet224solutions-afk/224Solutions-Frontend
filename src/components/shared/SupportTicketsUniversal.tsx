@@ -135,10 +135,10 @@ export function SupportTicketsUniversal() {
       queryClient.invalidateQueries({ queryKey: ['support-tickets-universal'] });
       setShowForm(false);
       setForm({ subject: '', description: '', category: 'general', priority: 'medium' });
-      toast({ title: 'Ticket créé', description: 'Votre demande a été transmise au support.' });
+      toast({ title: t('supportTicketsUniversal.ticketCree'), description: t('supportTicketsUniversal.votreDemandeAEteTransmise') });
     },
     onError: () => {
-      toast({ title: 'Erreur', description: 'Impossible de créer le ticket.', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('supportTicketsUniversal.impossibleDeCreerLeTicket'), variant: 'destructive' });
     },
   });
 
@@ -154,13 +154,13 @@ export function SupportTicketsUniversal() {
       setNewMessage('');
     },
     onError: () => {
-      toast({ title: 'Erreur', description: "Impossible d'envoyer le message.", variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('supportTicketsUniversal.impossibleDEnvoyerLeMessage'), variant: 'destructive' });
     },
   });
 
   const handleCreate = () => {
     if (!form.subject.trim() || !form.description.trim()) {
-      toast({ title: 'Champs requis', description: 'Sujet et description sont obligatoires.', variant: 'destructive' });
+      toast({ title: 'Champs requis', description: t('supportTicketsUniversal.sujetEtDescriptionSontObligatoires'), variant: 'destructive' });
       return;
     }
     createMutation.mutate();

@@ -82,13 +82,13 @@ const _SEARCH_ID_REGEX = /^[A-Z]{3}\d{3,}$/; // Plus permissif pour la recherche
 const VALID_PREFIXES = ['VND', 'CLT', 'AGT', 'DRV', 'BUR', 'BST', 'ADM', 'PDG', 'TAX', 'LIV', 'TRS', 'SAG', 'VAG', 'WRK', 'MBR', 'USR'];
 
 const REASONS_MAP: Record<string, { label: string; color: string }> = {
-  'duplicate_detected': { label: 'Doublon détecté', color: '#ff4000' },
+  'duplicate_detected': { label: "Doublon détecté", color: '#ff4000' },
   'format_invalid': { label: 'Format invalide', color: '#ff4000' },
-  'sequence_gap': { label: 'Gap de séquence', color: '#04439e' },
-  'counter_mismatch': { label: 'Compteur désynchronisé', color: '#04439e' },
+  'sequence_gap': { label: "Gap de séquence", color: '#04439e' },
+  'counter_mismatch': { label: "Compteur désynchronisé", color: '#04439e' },
   'manual_override': { label: 'Correction manuelle', color: '#ff4000' },
-  'collision_resolved': { label: 'Collision résolue', color: '#ff4000' },
-  'prefix_mismatch': { label: 'Préfixe incorrect', color: '#F97316' },
+  'collision_resolved': { label: "Collision résolue", color: '#ff4000' },
+  'prefix_mismatch': { label: "Préfixe incorrect", color: '#F97316' },
   'migration_fix': { label: 'Correction migration', color: '#04439e' },
 };
 

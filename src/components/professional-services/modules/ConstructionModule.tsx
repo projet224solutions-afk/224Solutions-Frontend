@@ -22,8 +22,8 @@ const STATUS: Record<string, { label: string; color: string }> = {
   planning: { label: 'Planification', color: 'bg-slate-100 text-slate-700' },
   in_progress: { label: 'En cours', color: 'bg-blue-100 text-blue-700' },
   late: { label: 'En retard', color: 'bg-red-100 text-red-700' },
-  completed: { label: 'Terminé', color: 'bg-green-100 text-green-700' },
-  cancelled: { label: 'Annulé', color: 'bg-slate-100 text-slate-500' },
+  completed: { label: "Terminé", color: 'bg-green-100 text-green-700' },
+  cancelled: { label: "Annulé", color: 'bg-slate-100 text-slate-500' },
 };
 
 export function ConstructionModule({ serviceId, businessName }: { serviceId: string; businessName?: string }) {

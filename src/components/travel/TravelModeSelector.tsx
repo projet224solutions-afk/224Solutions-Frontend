@@ -26,8 +26,8 @@ interface TravelModeSelectorProps {
 const modes = [
   {
     id: 'api' as TravelMode,
-    title: 'API de Réservation',
-    description: 'Recherche en temps réel avec APIs (Amadeus, Booking)',
+    title: "API de Réservation",
+    description: "Recherche en temps réel avec APIs (Amadeus, Booking)",
     icon: <Search className="w-6 h-6" />,
     gradient: '',
     features: [
@@ -41,8 +41,8 @@ const modes = [
   },
   {
     id: 'affiliate' as TravelMode,
-    title: 'Affiliation Avancée',
-    description: 'Système complet pour affiliés avec suivi commissions',
+    title: "Affiliation Avancée",
+    description: "Système complet pour affiliés avec suivi commissions",
     icon: <Users className="w-6 h-6" />,
     gradient: '',
     features: [
@@ -57,7 +57,7 @@ const modes = [
   {
     id: 'simple' as TravelMode,
     title: 'Affiliation Simple',
-    description: 'Structure catégorisée avec liens affiliés',
+    description: "Structure catégorisée avec liens affiliés",
     icon: <Briefcase className="w-6 h-6" />,
     gradient: '',
     features: [

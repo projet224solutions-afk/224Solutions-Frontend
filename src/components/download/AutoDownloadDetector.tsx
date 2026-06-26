@@ -133,7 +133,7 @@ export default function AutoDownloadDetector() {
                 platform: 'android',
                 name: 'Android APK',
                 icon: <Smartphone className="w-6 h-6 text-[#ff4000]" />,
-                description: 'Application native Android avec toutes les fonctionnalités',
+                description: t('autoDownloadDetector.applicationNativeAndroidAvecToutes'),
                 fileSize: '25 MB',
                 downloadUrl: 'https://github.com/projet224solutions-afk/vista-flows/releases/latest/download/224solutions-android.apk',
                 installInstructions: [
@@ -160,7 +160,7 @@ export default function AutoDownloadDetector() {
                 platform: 'ios',
                 name: 'iOS IPA',
                 icon: <Apple className="w-6 h-6 text-blue-600" />,
-                description: 'Application native iOS optimisée pour iPhone et iPad',
+                description: t('autoDownloadDetector.applicationNativeIosOptimiseePour'),
                 fileSize: '30 MB',
                 downloadUrl: 'https://testflight.apple.com/join/224solutions',
                 installInstructions: [
@@ -189,7 +189,7 @@ export default function AutoDownloadDetector() {
                 platform: 'windows',
                 name: 'Windows EXE',
                 icon: <Monitor className="w-6 h-6 text-blue-500" />,
-                description: 'Application desktop Windows avec interface complète',
+                description: t('autoDownloadDetector.applicationDesktopWindowsAvecInterface'),
                 fileSize: '85 MB',
                 downloadUrl: 'https://github.com/projet224solutions-afk/vista-flows/releases/latest/download/224solutions-windows.exe',
                 installInstructions: [
@@ -218,7 +218,7 @@ export default function AutoDownloadDetector() {
                 platform: 'macos',
                 name: 'macOS DMG',
                 icon: <Apple className="w-6 h-6 text-gray-600" />,
-                description: 'Application macOS optimisée pour Mac',
+                description: t('autoDownloadDetector.applicationMacosOptimiseePourMac'),
                 fileSize: '90 MB',
                 downloadUrl: 'https://github.com/projet224solutions-afk/vista-flows/releases/latest/download/224solutions-macos.dmg',
                 installInstructions: [
@@ -247,7 +247,7 @@ export default function AutoDownloadDetector() {
                 platform: 'web',
                 name: 'Application Web',
                 icon: <Globe className="w-6 h-6 text-[#04439e]" />,
-                description: 'Accès direct via navigateur, aucune installation requise',
+                description: t('autoDownloadDetector.accesDirectViaNavigateurAucune'),
                 fileSize: 'Streaming',
                 downloadUrl: window.location.origin,
                 installInstructions: [
@@ -288,7 +288,7 @@ export default function AutoDownloadDetector() {
     const startDownload = (download: DownloadOption) => {
         if (!isOnline && download.platform !== 'web') {
             toast.error(t('autoDownloadDetector.connexionInternetRequise'), {
-                description: 'Veuillez vous connecter à Internet pour télécharger'
+                description: t('autoDownloadDetector.veuillezVousConnecterAInternet')
             });
             return;
         }
@@ -304,7 +304,7 @@ export default function AutoDownloadDetector() {
         // Afficher les instructions
         setTimeout(() => {
             toast.success(t('autoDownloadDetector.telechargementDemarre'), {
-                description: 'Consultez les instructions d\'installation ci-dessous',
+                description: t('autoDownloadDetector.consultezLesInstructionsDInstallation'),
                 duration: 10000
             });
         }, 1000);

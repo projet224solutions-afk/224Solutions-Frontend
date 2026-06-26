@@ -32,12 +32,12 @@ export function DropshipDashboard({ stats, recentOrders }: DropshipDashboardProp
     const statusConfig: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
       pending: { label: 'En attente', variant: 'secondary' },
       awaiting_supplier: { label: 'Attente fournisseur', variant: 'outline' },
-      ordered_from_supplier: { label: 'Commandé', variant: 'default' },
-      shipped_by_supplier: { label: 'Expédié', variant: 'default' },
+      ordered_from_supplier: { label: t('dropshipDashboard.commande'), variant: 'default' },
+      shipped_by_supplier: { label: t('dropshipDashboard.expedie'), variant: 'default' },
       in_transit: { label: 'En transit', variant: 'default' },
-      delivered_to_customer: { label: 'Livré', variant: 'default' },
-      completed: { label: 'Terminé', variant: 'default' },
-      cancelled: { label: 'Annulé', variant: 'destructive' }
+      delivered_to_customer: { label: t('dropshipDashboard.livre'), variant: 'default' },
+      completed: { label: t('dropshipDashboard.termine'), variant: 'default' },
+      cancelled: { label: t('dropshipDashboard.annule'), variant: 'destructive' }
     };
     const config = statusConfig[status] || { label: status, variant: 'secondary' as const };
     return <Badge variant={config.variant}>{config.label}</Badge>;

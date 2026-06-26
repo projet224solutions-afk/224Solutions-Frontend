@@ -93,7 +93,7 @@ export default function AIReviewResponseCard({
     const sentimentConfig: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
       positive: { label: '😊 Positif', variant: 'default' },
       neutral: { label: '😐 Neutre', variant: 'secondary' },
-      negative: { label: '😟 Négatif', variant: 'outline' },
+      negative: { label: t('aIReviewResponseCard.negatif'), variant: 'outline' },
       critical: { label: '😠 Critique', variant: 'destructive' }
     };
 

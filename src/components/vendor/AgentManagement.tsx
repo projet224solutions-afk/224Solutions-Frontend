@@ -6,6 +6,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -28,6 +32,8 @@ export default function AgentManagement() {
     toggleAgentStatus
   } = useVendorAgentsData();
   const { toast } = useToast();
+  // ✅ Remplace la confirmation native (bloquée sur Android/WebView)
+  const [deleteAgentConfirm, setDeleteAgentConfirm] = useState<{ id: string; name: string } | null>(null);
 
   // Définir les permissions par défaut selon le type d'agent
   const getDefaultPermissionsByType = (agentType: string) => {
@@ -292,7 +298,7 @@ export default function AgentManagement() {
     if (!formData.name || !formData.email || !formData.phone) {
       toast({
         title: "❌ Champs manquants",
-        description: "Veuillez remplir tous les champs obligatoires",
+        description: t('agentManagement.veuillezRemplirTousLesChamps'),
         variant: "destructive"
       });
       return;
@@ -302,8 +308,8 @@ export default function AgentManagement() {
     const newAgentPassword = !editingAgent ? agentPasswordRef.current.trim() : '';
     if (!editingAgent && newAgentPassword.length > 0 && newAgentPassword.length < 8) {
       toast({
-        title: "❌ Mot de passe trop court",
-        description: "Le mot de passe doit contenir au moins 8 caractères",
+        title: t('agentManagement.motDePasseTropCourt'),
+        description: t('agentManagement.leMotDePasseDoit'),
         variant: "destructive"
       });
       return;
@@ -404,8 +410,8 @@ export default function AgentManagement() {
     const agentLink = `${window.location.origin}/vendor-agent/${accessToken}`;
     navigator.clipboard.writeText(agentLink);
     toast({
-      title: "✅ Lien copié",
-      description: "Le lien d'accès de l'agent a été copié dans le presse-papiers"
+      title: t('agentManagement.lienCopie'),
+      description: t('agentManagement.leLienDAccesDe')
     });
   };
 
@@ -545,7 +551,7 @@ export default function AgentManagement() {
                           permissions: newPermissions
                         });
                         toast({
-                          title: "✅ Permissions mises à jour",
+                          title: t('agentManagement.permissionsMisesAJour'),
                           description: `Les permissions par défaut pour un agent ${value} ont été appliquées. Vous pouvez les personnaliser.`
                         });
                       }}
@@ -1099,11 +1105,7 @@ export default function AgentManagement() {
                               <Button
                                 size="sm"
                                 variant="destructive"
-                                onClick={() => {
-                                  if (window.confirm(t('agentManagement.etesVousSurDeVouloir'))) {
-                                    deleteAgent(agent.id);
-                                  }
-                                }}
+                                onClick={() => setDeleteAgentConfirm({ id: agent.id, name: agent.name || 'cet agent' })}
                                 className="hover:shadow-glow transition-all duration-300"
                               >
                                 Supprimer
@@ -1137,6 +1139,27 @@ export default function AgentManagement() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* AlertDialog : Supprimer un agent (remplace la confirmation native) */}
+      <AlertDialog open={!!deleteAgentConfirm} onOpenChange={(o) => { if (!o) setDeleteAgentConfirm(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('agentManagement.etesVousSurDeVouloir')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              « {deleteAgentConfirm?.name} »
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('agentManagement.annuler')}</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 hover:bg-red-700"
+              onClick={() => { const id = deleteAgentConfirm!.id; setDeleteAgentConfirm(null); deleteAgent(id); }}
+            >
+              {t('agentManagement.supprimer')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

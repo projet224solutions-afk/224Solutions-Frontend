@@ -130,7 +130,7 @@ export function AgentPermissionDiagnostic({ agentId }: PermissionDiagnosticProps
       result.checks.push({
         name: 'Test Edge Function',
         status: 'success',
-        message: 'Test à effectuer manuellement',
+        message: t('agentPermissionDiagnostic.testAEffectuerManuellement'),
         details: 'Essayez de créer un utilisateur pour tester'
       });
 

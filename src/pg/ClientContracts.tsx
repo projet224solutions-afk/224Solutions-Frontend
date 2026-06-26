@@ -161,7 +161,7 @@ export default function ClientContracts() {
       if (!hasPixels) {
         toast({
           title: 'Signature requise',
-          description: 'Veuillez signer avant de valider',
+          description: t('clientContracts.veuillezSignerAvantDeValider'),
           variant: 'destructive',
         });
         return;
@@ -180,8 +180,8 @@ export default function ClientContracts() {
       if (error) throw error;
 
       toast({
-        title: 'Contrat signé',
-        description: 'Votre signature a été enregistrée avec succès',
+        title: t('clientContracts.contratSigne'),
+        description: t('clientContracts.votreSignatureAEteEnregistree'),
       });
 
       setSelectedContract(null);

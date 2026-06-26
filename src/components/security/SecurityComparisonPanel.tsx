@@ -17,21 +17,21 @@ export const SecurityComparisonPanel = () => {
       items: [
         {
           name: 'Row Level Security (RLS)',
-          us: { score: 100, note: 'Activé sur toutes les tables' },
+          us: { score: 100, note: t('securityComparisonPanel.activeSurToutesLesTables') },
           amazon: { score: 100, note: 'Complet' },
           alibaba: { score: 60, note: 'Partiel' },
-          odoo: { score: 40, note: 'Limité' }
+          odoo: { score: 40, note: t('securityComparisonPanel.limite') }
         },
         {
           name: 'Chiffrement E2E',
-          us: { score: 90, note: 'Données sensibles' },
+          us: { score: 90, note: t('securityComparisonPanel.donneesSensibles') },
           amazon: { score: 100, note: 'Total' },
           alibaba: { score: 70, note: 'Partiel' },
           odoo: { score: 50, note: 'Basique' }
         },
         {
           name: 'Isolation Données Multi-Tenant',
-          us: { score: 100, note: 'Complet avec RLS' },
+          us: { score: 100, note: t('securityComparisonPanel.completAvecRls') },
           amazon: { score: 100, note: 'Complet' },
           alibaba: { score: 80, note: 'Bon' },
           odoo: { score: 60, note: 'Moyen' }
@@ -44,29 +44,29 @@ export const SecurityComparisonPanel = () => {
       items: [
         {
           name: 'ML Fraud Detection',
-          us: { score: 85, note: 'Temps réel, 6 critères' },
+          us: { score: 85, note: t('securityComparisonPanel.tempsReel6Criteres') },
           amazon: { score: 100, note: 'Advanced ML' },
           alibaba: { score: 70, note: 'Basique' },
           odoo: { score: 0, note: 'Non disponible' }
         },
         {
           name: 'Rate Limiting',
-          us: { score: 95, note: 'DB + Client-side' },
+          us: { score: 95, note: t('securityComparisonPanel.dbClientSide') },
           amazon: { score: 100, note: 'Multi-niveaux' },
           alibaba: { score: 90, note: 'Standard' },
           odoo: { score: 60, note: 'Partiel' }
         },
         {
           name: 'Blocage IP Automatique',
-          us: { score: 90, note: 'Intégré avec ML' },
-          amazon: { score: 95, note: 'Avancé' },
+          us: { score: 90, note: t('securityComparisonPanel.integreAvecMl') },
+          amazon: { score: 95, note: t('securityComparisonPanel.avance') },
           alibaba: { score: 80, note: 'Standard' },
           odoo: { score: 40, note: 'Manuel' }
         },
         {
           name: 'MFA pour Transactions Sensibles',
           us: { score: 85, note: '> 1M GNF' },
-          amazon: { score: 100, note: 'Toutes transactions' },
+          amazon: { score: 100, note: t('securityComparisonPanel.toutesTransactions') },
           alibaba: { score: 75, note: 'Optionnel' },
           odoo: { score: 50, note: 'Basique' }
         }
@@ -79,30 +79,30 @@ export const SecurityComparisonPanel = () => {
         {
           name: 'GDPR Compliance',
           us: { score: 80, note: 'En cours certification' },
-          amazon: { score: 100, note: 'Certifié' },
+          amazon: { score: 100, note: t('securityComparisonPanel.certifie') },
           alibaba: { score: 60, note: 'Partiel' },
           odoo: { score: 70, note: 'Standard' }
         },
         {
           name: 'PCI DSS',
           us: { score: 75, note: 'Level 2 en cours' },
-          amazon: { score: 100, note: 'Level 1 certifié' },
-          alibaba: { score: 80, note: 'Certifié' },
-          odoo: { score: 50, note: 'Non certifié' }
+          amazon: { score: 100, note: t('securityComparisonPanel.level1Certifie') },
+          alibaba: { score: 80, note: t('securityComparisonPanel.certifie') },
+          odoo: { score: 50, note: t('securityComparisonPanel.nonCertifie') }
         },
         {
           name: 'Audit Logs Complets',
-          us: { score: 95, note: 'Tous événements tracés' },
+          us: { score: 95, note: t('securityComparisonPanel.tousEvenementsTraces') },
           amazon: { score: 100, note: 'CloudTrail' },
           alibaba: { score: 85, note: 'Standard' },
-          odoo: { score: 60, note: 'Limité' }
+          odoo: { score: 60, note: t('securityComparisonPanel.limite') }
         },
         {
           name: 'ISO 27001',
           us: { score: 0, note: 'Roadmap 6 mois' },
-          amazon: { score: 100, note: 'Certifié' },
-          alibaba: { score: 90, note: 'Certifié' },
-          odoo: { score: 50, note: 'Partenaires certifiés' }
+          amazon: { score: 100, note: t('securityComparisonPanel.certifie') },
+          alibaba: { score: 90, note: t('securityComparisonPanel.certifie') },
+          odoo: { score: 50, note: t('securityComparisonPanel.partenairesCertifies') }
         }
       ]
     },
@@ -127,9 +127,9 @@ export const SecurityComparisonPanel = () => {
         {
           name: 'Disaster Recovery',
           us: { score: 85, note: 'Multi-AZ Supabase' },
-          amazon: { score: 100, note: 'Multi-région' },
-          alibaba: { score: 90, note: 'Multi-région' },
-          odoo: { score: 70, note: 'Selon hébergement' }
+          amazon: { score: 100, note: t('securityComparisonPanel.multiRegion') },
+          alibaba: { score: 90, note: t('securityComparisonPanel.multiRegion') },
+          odoo: { score: 70, note: t('securityComparisonPanel.selonHebergement') }
         },
         {
           name: 'CDN Global',
@@ -149,11 +149,11 @@ export const SecurityComparisonPanel = () => {
           us: { score: 90, note: 'Supabase + Cloudflare' },
           amazon: { score: 100, note: 'AWS Shield' },
           alibaba: { score: 95, note: 'Anti-DDoS Pro' },
-          odoo: { score: 70, note: 'Selon hébergement' }
+          odoo: { score: 70, note: t('securityComparisonPanel.selonHebergement') }
         },
         {
           name: 'WAF (Web Application Firewall)',
-          us: { score: 85, note: 'Supabase intégré' },
+          us: { score: 85, note: t('securityComparisonPanel.supabaseIntegre') },
           amazon: { score: 100, note: 'AWS WAF' },
           alibaba: { score: 90, note: 'Alibaba Cloud WAF' },
           odoo: { score: 60, note: 'Optionnel' }
@@ -163,7 +163,7 @@ export const SecurityComparisonPanel = () => {
           us: { score: 100, note: 'Zod + Parameterized' },
           amazon: { score: 100, note: 'Multi-niveaux' },
           alibaba: { score: 95, note: 'Standard' },
-          odoo: { score: 85, note: 'ORM protégé' }
+          odoo: { score: 85, note: t('securityComparisonPanel.ormProtege') }
         },
         {
           name: 'XSS Protection',

@@ -94,7 +94,7 @@ export function SubscriptionRenewalPage() {
       console.error('Error loading data:', error);
       toast({
         title: "Erreur",
-        description: "Impossible de charger les données",
+        description: t('subscriptionRenewalPage.impossibleDeChargerLesDonnees'),
         variant: "destructive"
       });
     } finally {
@@ -108,8 +108,8 @@ export function SubscriptionRenewalPage() {
     // Verify wallet balance if paying with wallet
     if (paymentMethod === 'wallet' && walletBalance < subscription.plans.price_gnf) {
       toast({
-        title: "Solde insuffisant",
-        description: "Votre solde wallet est insuffisant pour ce renouvellement",
+        title: t('subscriptionRenewalPage.soldeInsuffisant'),
+        description: t('subscriptionRenewalPage.votreSoldeWalletEstInsuffisant'),
         variant: "destructive"
       });
       return;
@@ -130,8 +130,8 @@ export function SubscriptionRenewalPage() {
 
       if (data.success) {
         toast({
-          title: "Succès !",
-          description: "Votre abonnement a été renouvelé avec succès",
+          title: t('subscriptionRenewalPage.succes'),
+          description: t('subscriptionRenewalPage.votreAbonnementAEteRenouvele'),
         });
 
         // Reload data
@@ -148,8 +148,8 @@ export function SubscriptionRenewalPage() {
     } catch (error) {
       console.error('Renewal error:', error);
       toast({
-        title: "Erreur de renouvellement",
-        description: error instanceof Error ? error.message : "Une erreur est survenue",
+        title: t('subscriptionRenewalPage.erreurDeRenouvellement'),
+        description: error instanceof Error ? error.message: t('subscriptionRenewalPage.uneErreurEstSurvenue'),
         variant: "destructive"
       });
     } finally {

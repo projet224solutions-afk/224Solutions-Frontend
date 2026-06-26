@@ -80,7 +80,7 @@ export default function PaymentManagement() {
   // Export CSV des paiements affichés (respecte le filtre + la recherche en cours).
   const exportCsv = () => {
     if (filteredLinks.length === 0) {
-      toast({ title: "Rien à exporter", description: "Aucun paiement dans la sélection." });
+      toast({ title: t('paymentManagement.rienAExporter'), description: t('paymentManagement.aucunPaiementDansLaSelection') });
       return;
     }
     const esc = (v: unknown) => `"${String(v ?? '').replace(/"/g, '""')}"`;
@@ -99,7 +99,7 @@ export default function PaymentManagement() {
     a.download = `paiements-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-    toast({ title: "Export généré", description: `${filteredLinks.length} paiement(s) exporté(s).` });
+    toast({ title: t('paymentManagement.exportGenere'), description: `${filteredLinks.length} paiement(s) exporté(s).` });
   };
 
   if (loading) {

@@ -247,7 +247,7 @@ export default function NearbyLivraison() {
       setDrivers(sorted);
     } catch (err) {
       console.error('Error loading drivers:', err);
-      setError(err instanceof Error ? err.message : 'Erreur lors du chargement');
+      setError(err instanceof Error ? err.message: t('nearbyLivraison.erreurLorsDuChargement'));
     } finally {
       setLoading(false);
     }

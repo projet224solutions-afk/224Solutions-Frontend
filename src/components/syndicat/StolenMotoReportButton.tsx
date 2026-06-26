@@ -81,7 +81,7 @@ export default function StolenMotoReportButton({ moto, bureauName, bureauLocatio
         console.log('✅ Véhicule déclaré volé via RPC:', result);
 
         toast.success(t('stolenMotoReportButton.alerteDeVolEnregistree'), {
-          description: 'Tous les bureaux ont été notifiés. Le véhicule est bloqué.'
+          description: t('stolenMotoReportButton.tousLesBureauxOntEte')
         });
       } else {
         // Stockage hors ligne - garder la structure pour sync ultérieure
@@ -97,7 +97,7 @@ export default function StolenMotoReportButton({ moto, bureauName, bureauLocatio
         await storeOfflineEvent('security_alert', alertData);
 
         toast.success(t('stolenMotoReportButton.alerteEnregistreeLocalement'), {
-          description: 'Elle sera synchronisée à la reconnexion'
+          description: t('stolenMotoReportButton.elleSeraSynchroniseeALa')
         });
       }
 

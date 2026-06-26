@@ -83,7 +83,7 @@ function VoteChoiceBadge({ choice }: { choice: 'yes' | 'no' | 'abstain' | null |
   const { t } = useTranslation();
   if (!choice) return <Badge variant="outline" className="text-xs">{t('actionnaireDashboard.nonVote')}</Badge>;
   const map = {
-    yes:     { label: 'Pour',      cls: 'bg-orange-100 text-[#ff4000]' },
+    yes:     { label: t('actionnaireDashboard.pour'),      cls: 'bg-orange-100 text-[#ff4000]' },
     no:      { label: 'Contre',    cls: 'bg-orange-100 text-[#ff4000]' },
     abstain: { label: 'Abstention', cls: 'bg-gray-100 text-gray-600' },
   };
@@ -465,10 +465,10 @@ function PaymentsTab({ payments }: { payments: ReturnType<typeof useShareholderD
 // ============================================================================
 const SUB_STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   active:    { label: 'Actif',           className: 'bg-orange-100 text-[#ff4000]' },
-  expired:   { label: 'Expiré',          className: 'bg-orange-100 text-orange-800' },
-  cancelled: { label: 'Annulé',          className: 'bg-orange-100 text-[#ff4000]' },
+  expired:   { label: t('actionnaireDashboard.expire'),          className: 'bg-orange-100 text-orange-800' },
+  cancelled: { label: t('actionnaireDashboard.annule'),          className: 'bg-orange-100 text-[#ff4000]' },
   pending:   { label: 'En attente',      className: 'bg-orange-100 text-[#ff4000]' },
-  none:      { label: 'Sans abonnement', className: 'bg-gray-100 text-gray-500' },
+  none:      { label: t('actionnaireDashboard.sansAbonnement'), className: 'bg-gray-100 text-gray-500' },
 };
 
 const COUNTRY_NAMES: Record<string, string> = {
@@ -790,12 +790,12 @@ const FILTER_CONFIG: Record<FilterKey, {
   ring: string;
   textColor: string;
 }> = {
-  payant:  { label: 'Abonnements payants actifs',   description: 'Vendeurs avec abonnement payant actif',       selectedBg: 'bg-orange-100',  ring: 'ring-[#ff4000]',  textColor: 'text-[#ff4000]'  },
-  offert:  { label: 'Offerts par le PDG',           description: 'Tous les abonnements offerts par le PDG (actifs + expirés)',  selectedBg: 'bg-blue-100', ring: 'ring-[#04439e]', textColor: 'text-[#04439e]' },
-  gratuit: { label: 'Comptes sur plan gratuit',     description: 'Vendeurs inscrits sur le plan gratuit',       selectedBg: 'bg-blue-100',   ring: 'ring-blue-500',   textColor: 'text-blue-700'   },
-  expire:  { label: 'Abonnements expirés',          description: 'Vendeurs avec au moins un abonnement expiré', selectedBg: 'bg-orange-100', ring: 'ring-orange-500', textColor: 'text-orange-700' },
-  annule:  { label: 'Abonnements annulés',          description: 'Vendeurs avec au moins un abonnement annulé', selectedBg: 'bg-orange-100',    ring: 'ring-[#ff4000]',    textColor: 'text-[#ff4000]'    },
-  total:   { label: 'Tous les vendeurs',            description: 'Vue complète de tous les vendeurs du pays',   selectedBg: 'bg-orange-100',   ring: 'ring-[#ff4000]',   textColor: 'text-[#ff4000]'   },
+  payant:  { label: 'Abonnements payants actifs',   description: t('actionnaireDashboard.vendeursAvecAbonnementPayantActif'),       selectedBg: 'bg-orange-100',  ring: 'ring-[#ff4000]',  textColor: 'text-[#ff4000]'  },
+  offert:  { label: t('actionnaireDashboard.offertsParLePdg'),           description: t('actionnaireDashboard.tousLesAbonnementsOffertsPar'),  selectedBg: 'bg-blue-100', ring: 'ring-[#04439e]', textColor: 'text-[#04439e]' },
+  gratuit: { label: t('actionnaireDashboard.comptesSurPlanGratuit'),     description: t('actionnaireDashboard.vendeursInscritsSurLePlan'),       selectedBg: 'bg-blue-100',   ring: 'ring-blue-500',   textColor: 'text-blue-700'   },
+  expire:  { label: t('actionnaireDashboard.abonnementsExpires'),          description: t('actionnaireDashboard.vendeursAvecAuMoinsUn'), selectedBg: 'bg-orange-100', ring: 'ring-orange-500', textColor: 'text-orange-700' },
+  annule:  { label: t('actionnaireDashboard.abonnementsAnnules'),          description: t('actionnaireDashboard.vendeursAvecAuMoinsUn2'), selectedBg: 'bg-orange-100',    ring: 'ring-[#ff4000]',    textColor: 'text-[#ff4000]'    },
+  total:   { label: t('actionnaireDashboard.tousLesVendeurs'),            description: t('actionnaireDashboard.vueCompleteDeTousLes'),   selectedBg: 'bg-orange-100',   ring: 'ring-[#ff4000]',   textColor: 'text-[#ff4000]'   },
 };
 
 // ============================================================================

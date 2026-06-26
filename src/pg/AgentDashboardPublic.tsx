@@ -571,12 +571,12 @@ export default function AgentDashboardPublic() {
                       <Label className="text-base font-semibold mb-3 block">Permissions</Label>
                       <div className="grid grid-cols-2 gap-3">
                         {[
-                          { key: 'create_users', label: 'Créer utilisateurs' },
+                          { key: 'create_users', label: t('agentDashboardPublic.creerUtilisateurs') },
                           { key: 'view_reports', label: 'Voir rapports' },
-                          { key: 'manage_commissions', label: 'Gérer commissions' },
-                          { key: 'manage_users', label: 'Gérer utilisateurs' },
-                          { key: 'manage_products', label: 'Gérer produits' },
-                          { key: 'create_sub_agents', label: 'Créer sous-agents' }
+                          { key: 'manage_commissions', label: t('agentDashboardPublic.gererCommissions') },
+                          { key: 'manage_users', label: t('agentDashboardPublic.gererUtilisateurs') },
+                          { key: 'manage_products', label: t('agentDashboardPublic.gererProduits') },
+                          { key: 'create_sub_agents', label: t('agentDashboardPublic.creerSousAgents') }
                         ].map(({ key, label }) => {
                           const permKey = key as keyof typeof subAgentFormData.permissions;
                           return (

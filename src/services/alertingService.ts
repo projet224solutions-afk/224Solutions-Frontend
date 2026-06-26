@@ -361,7 +361,7 @@ class AlertingService {
       });
 
       return true; // TOUJOURS retourner true = 100% de succès
-    } catch (_error) {
+    } catch (error) {
       // Même en cas d'erreur, on tente une dernière correction
       console.error('⚠️ Erreur dans auto-fix, application de la stratégie de secours...');
 

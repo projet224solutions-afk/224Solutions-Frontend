@@ -175,7 +175,7 @@ export default function PaymentProcessor() {
     } catch (_error) {
       toast({
         title: "Erreur",
-        description: "Impossible de charger les transactions.",
+        description: t('paymentProcessor.impossibleDeChargerLesTransactions'),
         variant: "destructive"
       });
     } finally {
@@ -244,11 +244,11 @@ export default function PaymentProcessor() {
 
       setShowPaymentDialog(false);
       setPaymentData({ amount: '', method: '', customer_email: '', notes: '' });
-      toast({ title: "Paiement initié", description: "Le traitement du paiement a été initié." });
+      toast({ title: t('paymentProcessor.paiementInitie'), description: t('paymentProcessor.leTraitementDuPaiementA') });
     } catch (_error) {
       toast({
         title: "Erreur",
-        description: "Impossible de traiter le paiement.",
+        description: t('paymentProcessor.impossibleDeTraiterLePaiement'),
         variant: "destructive"
       });
     }
@@ -262,11 +262,11 @@ export default function PaymentProcessor() {
         .eq('id', transactionId);
       if (error) throw error;
       setTransactions(prev => prev.map(t => t.id === transactionId ? { ...t, status: 'processing' } : t));
-      toast({ title: "Nouvelle tentative", description: "Une nouvelle tentative de paiement a été initiée." });
+      toast({ title: t('paymentProcessor.nouvelleTentative'), description: t('paymentProcessor.uneNouvelleTentativeDePaiement') });
     } catch (_error) {
       toast({
         title: "Erreur",
-        description: "Impossible de relancer le paiement.",
+        description: t('paymentProcessor.impossibleDeRelancerLePaiement'),
         variant: "destructive"
       });
     }
@@ -280,11 +280,11 @@ export default function PaymentProcessor() {
         .eq('id', transactionId);
       if (error) throw error;
       setTransactions(prev => prev.map(t => t.id === transactionId ? { ...t, status: 'refunded' } : t));
-      toast({ title: "Remboursement effectué", description: "Le remboursement a été traité avec succès." });
+      toast({ title: t('paymentProcessor.remboursementEffectue'), description: t('paymentProcessor.leRemboursementAEteTraite') });
     } catch (_error) {
       toast({
         title: "Erreur",
-        description: "Impossible de traiter le remboursement.",
+        description: t('paymentProcessor.impossibleDeTraiterLeRemboursement'),
         variant: "destructive"
       });
     }

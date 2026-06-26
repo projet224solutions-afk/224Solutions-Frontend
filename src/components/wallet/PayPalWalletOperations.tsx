@@ -58,7 +58,7 @@ export default function PayPalWalletOperations({ userId, walletId, onSuccess }: 
       window.open(approveUrl, "_blank", "width=500,height=700,noopener,noreferrer");
 
       toast.info(t('payPalWalletOperations.approuvezLePaiementDansPaypal'), {
-        description: "Une fenêtre PayPal s'est ouverte. Validez le paiement puis cliquez sur Confirmer.",
+        description: t('payPalWalletOperations.uneFenetrePaypalSEst'),
         duration: 15000,
       });
     } catch (err) {

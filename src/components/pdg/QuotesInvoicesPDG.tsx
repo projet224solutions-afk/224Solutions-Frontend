@@ -130,9 +130,9 @@ export default function QuotesInvoicesPDG() {
   const getQuoteStatusBadge = (status: string) => {
     const config = {
       pending: { label: 'En attente', variant: 'secondary' as const, icon: Clock },
-      accepted: { label: 'Accepté', variant: 'default' as const, icon: CheckCircle },
-      rejected: { label: 'Refusé', variant: 'destructive' as const, icon: XCircle },
-      expired: { label: 'Expiré', variant: 'outline' as const, icon: Clock }
+      accepted: { label: t('quotesInvoicesPDG.accepte'), variant: 'default' as const, icon: CheckCircle },
+      rejected: { label: t('quotesInvoicesPDG.refuse'), variant: 'destructive' as const, icon: XCircle },
+      expired: { label: t('quotesInvoicesPDG.expire'), variant: 'outline' as const, icon: Clock }
     };
 
     const { label, variant, icon: Icon } = config[status as keyof typeof config] || config.pending;
@@ -148,8 +148,8 @@ export default function QuotesInvoicesPDG() {
   const getInvoiceStatusBadge = (status: string) => {
     const config = {
       pending: { label: 'En attente', variant: 'secondary' as const, icon: Clock },
-      paid: { label: 'Payée', variant: 'default' as const, icon: CheckCircle },
-      cancelled: { label: 'Annulée', variant: 'destructive' as const, icon: XCircle },
+      paid: { label: t('quotesInvoicesPDG.payee'), variant: 'default' as const, icon: CheckCircle },
+      cancelled: { label: t('quotesInvoicesPDG.annulee'), variant: 'destructive' as const, icon: XCircle },
       overdue: { label: 'En retard', variant: 'destructive' as const, icon: Clock }
     };
 

@@ -29,9 +29,9 @@ import { EscrowDisputeThread } from '@/components/disputes/EscrowDisputeThread';
 
 const statusConfig: Record<string, { label: string; className: string; icon: any }> = {
   pending: { label: 'En attente', className: 'bg-orange-100 text-[#ff4000]', icon: Clock },
-  held: { label: 'Bloqué', className: 'bg-orange-100 text-orange-800', icon: AlertCircle },
-  released: { label: 'Libéré', className: 'bg-green-100 text-green-700', icon: CheckCircle },
-  refunded: { label: 'Remboursé', className: 'bg-blue-100 text-blue-800', icon: XCircle },
+  held: { label: "Bloqué", className: 'bg-orange-100 text-orange-800', icon: AlertCircle },
+  released: { label: "Libéré", className: 'bg-green-100 text-green-700', icon: CheckCircle },
+  refunded: { label: "Remboursé", className: 'bg-blue-100 text-blue-800', icon: XCircle },
   dispute: { label: 'Litige', className: 'bg-red-100 text-red-700', icon: AlertCircle },
 };
 

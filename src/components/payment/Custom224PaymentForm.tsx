@@ -131,7 +131,7 @@ export function Custom224PaymentForm({
       }
     } catch (err) {
       console.error('Payment error:', err);
-      const message = err instanceof Error ? err.message : 'Erreur lors du paiement';
+      const message = err instanceof Error ? err.message: t('custom224PaymentForm.erreurLorsDuPaiement');
       setErrorMessage(message);
       onError(message);
       toast.error(message);

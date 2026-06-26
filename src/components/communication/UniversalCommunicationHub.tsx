@@ -276,7 +276,7 @@ export default function UniversalCommunicationHub({
       });
 
       toast({
-        title: 'Erreur de chargement',
+        title: t('universalCommunicationHub.erreurDeChargement'),
         description: errorMessage.includes('timeout')
           ? 'Temps d\'attente dépassé. Vérifiez votre connexion.'
           : `Impossible de charger les messages: ${errorMessage}`,
@@ -306,7 +306,7 @@ export default function UniversalCommunicationHub({
       console.error('[Hub] ❌ Impossible d\'envoyer: pas de conversation ou utilisateur');
       toast({
         title: 'Erreur',
-        description: 'Sélectionnez une conversation et connectez-vous',
+        description: t('universalCommunicationHub.selectionnezUneConversationEtConnectez'),
         variant: 'destructive'
       });
       return;
@@ -412,7 +412,7 @@ export default function UniversalCommunicationHub({
     if (!selectedConversation) {
       toast({
         title: 'Erreur',
-        description: 'Veuillez sélectionner une conversation',
+        description: t('universalCommunicationHub.veuillezSelectionnerUneConversation'),
         variant: 'destructive'
       });
       return;
@@ -421,7 +421,7 @@ export default function UniversalCommunicationHub({
     if (!user?.id) {
       toast({
         title: 'Erreur',
-        description: 'Vous devez être connecté pour passer un appel',
+        description: t('universalCommunicationHub.vousDevezEtreConnectePour'),
         variant: 'destructive'
       });
       return;
@@ -436,7 +436,7 @@ export default function UniversalCommunicationHub({
     if (!otherParticipant) {
       toast({
         title: 'Erreur',
-        description: 'Aucun participant trouvé dans cette conversation',
+        description: t('universalCommunicationHub.aucunParticipantTrouveDansCette'),
         variant: 'destructive'
       });
       return;
@@ -454,13 +454,13 @@ export default function UniversalCommunicationHub({
       setCallType(type);
       toast({
         title: type === 'video' ? '📹 Appel vidéo' : '📞 Appel audio',
-        description: 'Connexion en cours...'
+        description: t('universalCommunicationHub.connexionEnCours')
       });
     } catch (error) {
       console.error('📞 Erreur startCall:', error);
       toast({
         title: 'Erreur',
-        description: 'Impossible de démarrer l\'appel',
+        description: t('universalCommunicationHub.impossibleDeDemarrerLAppel'),
         variant: 'destructive'
       });
     }
@@ -491,7 +491,7 @@ export default function UniversalCommunicationHub({
   const handleSearchById = async () => {
     const customId = userIdSearch.trim().toUpperCase();
     if (!customId) {
-      toast({ title: "Erreur", description: "Veuillez entrer un ID", variant: "destructive" });
+      toast({ title: "Erreur", description: t('universalCommunicationHub.veuillezEntrerUnId'), variant: "destructive" });
       return;
     }
 
@@ -505,7 +505,7 @@ export default function UniversalCommunicationHub({
       }
 
       if (profile.id === user?.id) {
-        toast({ title: "Erreur", description: "Vous ne pouvez pas vous contacter", variant: "destructive" });
+        toast({ title: "Erreur", description: t('universalCommunicationHub.vousNePouvezPasVous'), variant: "destructive" });
         return;
       }
 
@@ -514,7 +514,7 @@ export default function UniversalCommunicationHub({
       setUserIdSearch('');
     } catch (error) {
       console.error('Erreur recherche par ID:', error);
-      toast({ title: "Erreur", description: "Impossible de contacter cet utilisateur", variant: "destructive" });
+      toast({ title: "Erreur", description: t('universalCommunicationHub.impossibleDeContacterCetUtilisateur'), variant: "destructive" });
     }
   };
 
@@ -530,9 +530,9 @@ export default function UniversalCommunicationHub({
       setSelectedConversation(conversation);
       setShowNewConversation(false);
       setShowMobileChat(true);
-      toast({ title: 'Conversation créée', description: 'Vous pouvez maintenant discuter' });
+      toast({ title: t('universalCommunicationHub.conversationCreee'), description: t('universalCommunicationHub.vousPouvezMaintenantDiscuter') });
     } catch (_error) {
-      toast({ title: 'Erreur', description: 'Impossible de créer la conversation', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('universalCommunicationHub.impossibleDeCreerLaConversation'), variant: 'destructive' });
     }
   };
 

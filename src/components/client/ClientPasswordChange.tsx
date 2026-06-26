@@ -73,12 +73,12 @@ const ClientPasswordChange: React.FC = () => {
       else messages.push('Un caractère spécial');
 
       const strengthMap: Record<number, { message: string; color: string }> = {
-        0: { message: 'Très faible', color: 'text-destructive' },
+        0: { message: t('clientPasswordChange.tresFaible'), color: 'text-destructive' },
         1: { message: 'Faible', color: 'text-destructive' },
         2: { message: 'Moyen', color: 'text-muted-foreground' },
         3: { message: 'Bon', color: 'text-primary' },
         4: { message: 'Fort', color: 'text-primary' },
-        5: { message: 'Très fort', color: 'text-primary' },
+        5: { message: t('clientPasswordChange.tresFort'), color: 'text-primary' },
         6: { message: 'Excellent', color: 'text-primary' }
       };
 

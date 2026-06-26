@@ -356,9 +356,9 @@ export default function ProductManagement() {
     const isPremium = await checkPremiumStatus();
     if (!isPremium) {
       toast.error(t('productManagement.fonctionnalitePremiumUniquement'), {
-        description: 'Passez à un abonnement Premium pour télécharger des vidéos publicitaires',
+        description: t('productManagement.passezAUnAbonnementPremium'),
         action: {
-          label: 'Voir les offres',
+          label: t('productManagement.voirLesOffres'),
           onClick: () => navigate('/vendeur/subscription')
         }
       });
@@ -1741,7 +1741,7 @@ export default function ProductManagement() {
                         toast.error(t('productManagement.fonctionnalitePremiumUniquement'), {
                           description: 'Passez à un abonnement Premium/Pro/Business pour ajouter des vidéos',
                           action: {
-                            label: 'Voir les offres',
+                            label: t('productManagement.voirLesOffres'),
                             onClick: () => navigate('/vendeur/subscription')
                           }
                         });

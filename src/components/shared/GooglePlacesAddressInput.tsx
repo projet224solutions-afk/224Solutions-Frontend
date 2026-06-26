@@ -46,6 +46,8 @@ interface GooglePlacesAddressInputProps {
   value?: string;
   onChange?: (address: ValidatedAddress | null) => void;
   onValidChange?: (isValid: boolean) => void;
+  /** Texte brut tapé (utile pour des suggestions locales en parallèle de Google) */
+  onInputChange?: (raw: string) => void;
   userLocation?: { latitude: number; longitude: number } | null;
   showCurrentLocationButton?: boolean;
   required?: boolean;
@@ -71,6 +73,7 @@ export function GooglePlacesAddressInput({
   value: initialValue = '',
   onChange,
   onValidChange,
+  onInputChange,
   userLocation,
   showCurrentLocationButton = true,
   required = false,
@@ -145,6 +148,7 @@ export function GooglePlacesAddressInput({
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
+    onInputChange?.(value); // expose le texte brut (suggestions locales)
 
     // Invalider l'adresse précédente
     if (selectedAddress) {
@@ -162,7 +166,7 @@ export function GooglePlacesAddressInput({
     debounceRef.current = setTimeout(() => {
       searchAddresses(value);
     }, 300);
-  }, [selectedAddress, searchAddresses, onChange, onValidChange]);
+  }, [selectedAddress, searchAddresses, onChange, onValidChange, onInputChange]);
 
   /**
    * Sélection d'une suggestion

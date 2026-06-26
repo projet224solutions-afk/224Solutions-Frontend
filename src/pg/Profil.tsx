@@ -79,20 +79,20 @@ const userTypes = {
 const menuItems = [
   {
     id: 'orders',
-    title: 'Mes commandes',
-    description: 'Voir toutes mes commandes',
+    title: "Mes commandes",
+    description: "Voir toutes mes commandes",
     icon: ShoppingBag
   },
   {
     id: 'history',
     title: 'Historique',
-    description: 'Historique des transactions',
+    description: "Historique des transactions",
     icon: History
   },
   {
     id: 'settings',
-    title: 'Paramètres',
-    description: 'Gérer mon compte',
+    title: "Paramètres",
+    description: "Gérer mon compte",
     icon: Settings
   }
 ];

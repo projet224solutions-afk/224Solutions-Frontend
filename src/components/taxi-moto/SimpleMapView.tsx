@@ -22,9 +22,9 @@ export function SimpleMapView({
 }: SimpleMapViewProps) {
   const { t } = useTranslation();
   const locations = [
-    driverLocation && { ...driverLocation, label: 'Vous', color: 'blue' },
-    pickupLocation && { ...pickupLocation, label: 'Départ', color: 'green' },
-    destinationLocation && { ...destinationLocation, label: 'Arrivée', color: 'red' }
+    driverLocation && { ...driverLocation, label: t('simpleMapView.vous'), color: 'blue' },
+    pickupLocation && { ...pickupLocation, label: t('simpleMapView.depart'), color: 'green' },
+    destinationLocation && { ...destinationLocation, label: t('simpleMapView.arrivee'), color: 'red' }
   ].filter(Boolean);
 
   return (

@@ -102,6 +102,7 @@ interface GPSTracking {
     accuracy: number | null;
     speed: number | null;
     created_at: string;
+    source?: 'syndicat' | 'taxi';
 }
 
 interface Props {
@@ -228,7 +229,7 @@ export default function StolenVehicleManagement({ bureauId }: Props) {
                 loadData();
                 if (payload.eventType === 'INSERT') {
                     toast.error(t('stolenVehicleManagement.nouvelleActiviteSuspecteDetectee'), {
-                        description: 'Une activité a été détectée sur un véhicule volé',
+                        description: t('stolenVehicleManagement.uneActiviteAEteDetectee'),
                         duration: 10000
                     });
                 }
@@ -264,7 +265,7 @@ export default function StolenVehicleManagement({ bureauId }: Props) {
 
             if (result.success) {
                 toast.success(t('stolenVehicleManagement.motoDeclareeVolee'), {
-                    description: 'Blocage global activé. Tous les bureaux sont alertés.',
+                    description: t('stolenVehicleManagement.blocageGlobalActiveTousLes'),
                     duration: 8000
                 });
                 setShowDeclareDialog(false);
@@ -304,7 +305,7 @@ export default function StolenVehicleManagement({ bureauId }: Props) {
 
             if (result.success) {
                 toast.success(t('stolenVehicleManagement.vehiculeReactive'), {
-                    description: 'Le blocage a été levé et le véhicule est de nouveau opérationnel.',
+                    description: t('stolenVehicleManagement.leBlocageAEteLeve'),
                     duration: 6000
                 });
                 setShowRecoveryDialog(false);
@@ -323,6 +324,28 @@ export default function StolenVehicleManagement({ bureauId }: Props) {
 
     const loadGPSHistory = async (vehicleId: string) => {
         try {
+            // ✅ GPS unifié (positions syndicat + positions taxi) via RPC.
+            // Repli sur la requête directe si le RPC n'est pas encore déployé.
+            const { data: rpcData, error: rpcError } = await supabase.rpc(
+                'get_vehicle_unified_gps' as any,
+                { p_vehicle_id: vehicleId, p_limit: 50 }
+            );
+
+            if (!rpcError && Array.isArray(rpcData)) {
+                setGpsTrackings((rpcData as any[]).map((r) => ({
+                    id: crypto.randomUUID(),
+                    vehicle_id: vehicleId,
+                    latitude: Number(r.latitude),
+                    longitude: Number(r.longitude),
+                    accuracy: r.accuracy != null ? Number(r.accuracy) : null,
+                    speed: r.speed != null ? Number(r.speed) : null,
+                    created_at: r.created_at,
+                    source: r.source as 'syndicat' | 'taxi' | undefined,
+                })));
+                return;
+            }
+
+            // Repli : ancienne requête directe sur la table syndicat
             const { data, error } = await supabase
                 .from('vehicle_gps_tracking')
                 .select('*')

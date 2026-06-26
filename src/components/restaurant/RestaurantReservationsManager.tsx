@@ -100,13 +100,13 @@ export function RestaurantReservationsManager({ serviceId }: RestaurantReservati
       case 'pending':
         return { label: 'En attente', color: 'bg-[#ff4000]', icon: Clock };
       case 'confirmed':
-        return { label: 'Confirmée', color: 'bg-blue-500', icon: CheckCircle };
+        return { label: t('restaurantReservationsManager.confirmee'), color: 'bg-blue-500', icon: CheckCircle };
       case 'seated':
-        return { label: 'À table', color: 'bg-[#04439e]', icon: Users };
+        return { label: t('restaurantReservationsManager.aTable'), color: 'bg-[#04439e]', icon: Users };
       case 'completed':
-        return { label: 'Terminée', color: 'bg-[#ff4000]', icon: CheckCircle };
+        return { label: t('restaurantReservationsManager.terminee'), color: 'bg-[#ff4000]', icon: CheckCircle };
       case 'cancelled':
-        return { label: 'Annulée', color: 'bg-[#ff4000]', icon: XCircle };
+        return { label: t('restaurantReservationsManager.annulee'), color: 'bg-[#ff4000]', icon: XCircle };
       case 'no_show':
         return { label: 'Absent', color: 'bg-gray-500', icon: XCircle };
       default:

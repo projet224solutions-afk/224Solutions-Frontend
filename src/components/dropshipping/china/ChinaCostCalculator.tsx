@@ -64,8 +64,8 @@ export function ChinaCostCalculator() {
 
   const transportOptions = [
     { value: 'express', label: 'Express (15-20j)', icon: Plane, description: 'DHL, FedEx, UPS' },
-    { value: 'air', label: 'Aérien standard (20-30j)', icon: Plane, description: 'Fret aérien' },
-    { value: 'sea', label: 'Maritime (45-60j)', icon: Ship, description: 'Économique' },
+    { value: 'air', label: t('chinaCostCalculator.aerienStandard2030j'), icon: Plane, description: t('chinaCostCalculator.fretAerien') },
+    { value: 'sea', label: 'Maritime (45-60j)', icon: Ship, description: t('chinaCostCalculator.economique') },
     { value: 'economy', label: 'Economy (25-40j)', icon: Truck, description: 'Mixte' }
   ];
 

@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent } from '@/components/ui/card';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
 import { Users, Bike, AlertCircle, Wallet, Building2, TrendingUp } from 'lucide-react';
@@ -28,50 +29,57 @@ export function BureauStatsCards({
   walletBalance = 0,
   currency = 'GNF'
 }: BureauStatsCardsProps) {
+  const { t } = useTranslation();
   const formatAmount = useFormatCurrency();
 
+  // Performance réelle calculée depuis les adhérents (pas de valeur hardcodée)
+  const performanceScore = membersCount === 0
+    ? 0
+    : Math.min(Math.round((membersCount / 100) * 100), 100);
+
+  // NB: `gradient` porte désormais une couleur SOLIDE (charte 224: pas de dégradés).
   const statCards: StatCard[] = [
     {
       title: 'Membres Bureau',
       value: workersCount,
       subtitle: 'Membres actifs',
       icon: <Building2 className="w-6 h-6 text-white" />,
-      gradient: ''
+      gradient: 'bg-[#04439e]'
     },
     {
-      title: 'Adhérents',
+      title: t('bureauStatsCards.adherents'),
       value: membersCount,
       subtitle: 'Total membres',
       icon: <Users className="w-6 h-6 text-white" />,
-      gradient: ''
+      gradient: 'bg-[#023a8a]'
     },
     {
-      title: 'Véhicules',
+      title: t('bureauStatsCards.vehicules'),
       value: motosCount,
-      subtitle: 'Enregistrés',
+      subtitle: t('bureauStatsCards.enregistres'),
       icon: <Bike className="w-6 h-6 text-white" />,
-      gradient: ''
+      gradient: 'bg-[#ff4000]'
     },
     {
       title: 'Alertes',
       value: alertsCount,
-      subtitle: 'Non lues',
+      subtitle: alertsCount > 0 ? 'Non lues — action requise' : 'Aucune alerte',
       icon: <AlertCircle className="w-6 h-6 text-white" />,
-      gradient: alertsCount > 0 ? '' : ''
+      gradient: alertsCount > 0 ? 'bg-red-600' : 'bg-slate-600'
     },
     {
-      title: 'Solde Wallet',
+      title: t('bureauStatsCards.soldeWallet'),
       value: formatAmount(walletBalance, currency),
       subtitle: currency,
       icon: <Wallet className="w-6 h-6 text-white" />,
-      gradient: ''
+      gradient: 'bg-[#16a34a]'
     },
     {
       title: 'Performance',
-      value: '100%',
-      subtitle: 'Objectif atteint',
+      value: `${performanceScore}%`,
+      subtitle: performanceScore >= 100 ? 'Objectif mensuel atteint 🎯' : `${membersCount} / 100 adhérents`,
       icon: <TrendingUp className="w-6 h-6 text-white" />,
-      gradient: ''
+      gradient: performanceScore >= 80 ? 'bg-[#16a34a]' : 'bg-[#04439e]'
     }
   ];
 
@@ -84,7 +92,7 @@ export function BureauStatsCards({
         >
           <CardContent className="p-0">
             <div className={cn(
-              "bg-gradient-to-r p-4 lg:p-5",
+              "p-4 lg:p-5",
               stat.gradient
             )}>
               <div className="flex items-center justify-between">
@@ -97,7 +105,7 @@ export function BureauStatsCards({
                   </div>
                   <p className="text-xs text-white/70">{stat.subtitle}</p>
                 </div>
-                <div className="p-3 rounded-xl bg-white/20 backdrop-blur-sm">
+                <div className="p-3 rounded-xl">
                   {stat.icon}
                 </div>
               </div>

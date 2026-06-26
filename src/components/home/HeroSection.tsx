@@ -4,48 +4,14 @@
  * Inspired by Uber, Deliveroo, Glovo
  */
 
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Store, Utensils, Truck, Car, ChevronRight, Package, GraduationCap } from 'lucide-react';
+import { Store, GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import { AvailableServicesModal } from '@/components/professional-services/AvailableServicesModal';
-
-interface QuickAction {
-  id: string;
-  icon: ReactNode;
-  label: string;
-  gradient: string;
-}
-
-const getQuickActions = (t: (key: string) => string): QuickAction[] => [
-  {
-    id: 'restaurant',
-    icon: <Utensils className="w-5 h-5" />,
-    label: t('home.restaurant'),
-    gradient: 'bg-vendeur-secondary'
-  },
-  {
-    id: 'boutique',
-    icon: <Store className="w-5 h-5" />,
-    label: t('home.boutique'),
-    gradient: ''
-  },
-  {
-    id: 'livraison',
-    icon: <Truck className="w-5 h-5" />,
-    label: t('home.delivery'),
-    gradient: ''
-  },
-  {
-    id: 'transport',
-    icon: <Car className="w-5 h-5" />,
-    label: t('home.transport'),
-    gradient: ''
-  },
-];
 
 interface HeroSectionProps {
   className?: string;
@@ -55,21 +21,10 @@ export function HeroSection({ className }: HeroSectionProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { user } = useAuth();
-  const _quickActions = getQuickActions(t);
 
   const [showServicesModal, setShowServicesModal] = useState(false);
 
   const handleStartNowClick = () => {
-    if (user) {
-      // User is logged in - show available services modal
-      setShowServicesModal(true);
-    } else {
-      // User is not logged in - navigate to auth page
-      navigate('/auth');
-    }
-  };
-
-  const _handleQuickActionClick = (_actionId: string) => {
     if (user) {
       // User is logged in - show available services modal
       setShowServicesModal(true);

@@ -36,7 +36,7 @@ const MAX_ITEMS = 20;
 export function ServiceMediaManager({ serviceId, readonly = false, isPremium: isPremiumProp }: ServiceMediaManagerProps) {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const { uploadFile } = useStorageUpload();
+  const { uploadAndPersist } = useStorageUpload();
   const imageInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
 
@@ -135,36 +135,42 @@ export function ServiceMediaManager({ serviceId, readonly = false, isPremium: is
       return;
     }
     if (!file.type.startsWith('image/')) {
-      toast({ title: 'Format invalide', description: 'Seules les images sont acceptées ici', variant: 'destructive' });
+      toast({ title: 'Format invalide', description: t('serviceMediaManager.seulesLesImagesSontAcceptees'), variant: 'destructive' });
       return;
     }
 
     setUploading(true);
     setUploadProgress('Upload de l\'image...');
     try {
-      const result = await uploadFile(file, { folder: 'products', subfolder: `service-gallery/${serviceId}` });
-      if (!result.success || !result.publicUrl) throw new Error(result.error);
-      const publicUrl = result.publicUrl;
-
       // Première image de la galerie → couverture automatique
       const isFirstImage = items.filter(i => i.media_type === 'image').length === 0;
 
-      const { error: dbErr } = await supabase.from('service_gallery_images').insert({
-        professional_service_id: serviceId,
-        media_type: 'image',
-        image_url: publicUrl,
-        display_order: items.length,
-        is_cover: isFirstImage,
-      });
-      if (dbErr) throw dbErr;
+      // ✅ ATOMIQUE : fichier + ligne service_gallery_images tout-ou-rien.
+      // Bucket dédié service-gallery (était product-images par erreur via folder 'products').
+      const atomic = await uploadAndPersist(
+        file,
+        { folder: 'service-gallery', subfolder: serviceId },
+        async (up) => {
+          const { error: dbErr } = await supabase.from('service_gallery_images').insert({
+            professional_service_id: serviceId,
+            media_type: 'image',
+            image_url: up.publicUrl!,
+            display_order: items.length,
+            is_cover: isFirstImage,
+          });
+          if (dbErr) throw dbErr;
+          return up.publicUrl!;
+        },
+      );
+      if (!atomic.success) throw new Error(atomic.error || 'Upload échoué');
+      const publicUrl = atomic.data!;
 
-      // Synchroniser cover_image_url dans professional_services
-      // pour que l'image apparaisse immédiatement sur le marketplace
+      // Synchroniser cover_image_url (secondaire, hors transaction atomique).
       if (isFirstImage) {
         await syncCoverToService(publicUrl);
       }
 
-      toast({ title: '✅ Image ajoutée', description: 'Votre photo est maintenant visible sur le marketplace' });
+      toast({ title: t('serviceMediaManager.imageAjoutee'), description: t('serviceMediaManager.votrePhotoEstMaintenantVisible') });
       loadMedia();
     } catch (err: any) {
       console.error(err);
@@ -184,33 +190,39 @@ export function ServiceMediaManager({ serviceId, readonly = false, isPremium: is
       return;
     }
     if (file.size > MAX_VIDEO_SIZE) {
-      toast({ title: 'Vidéo trop volumineuse', description: 'Maximum 100 MB par vidéo', variant: 'destructive' });
+      toast({ title: t('serviceMediaManager.videoTropVolumineuse'), description: t('serviceMediaManager.maximum100MbParVideo'), variant: 'destructive' });
       return;
     }
     if (!file.type.startsWith('video/')) {
-      toast({ title: 'Format invalide', description: 'Seules les vidéos sont acceptées ici', variant: 'destructive' });
+      toast({ title: 'Format invalide', description: t('serviceMediaManager.seulesLesVideosSontAcceptees'), variant: 'destructive' });
       return;
     }
 
     setUploading(true);
     setUploadProgress('Upload de la vidéo (peut prendre quelques secondes)...');
     try {
-      const result = await uploadFile(file, { folder: 'videos', subfolder: `service-gallery/${serviceId}` });
-      if (!result.success || !result.publicUrl) throw new Error(result.error);
-      const publicUrl = result.publicUrl;
+      // ✅ ATOMIQUE : fichier + ligne service_gallery_images tout-ou-rien.
+      // Bucket dédié service-gallery-videos (était communication-files via folder 'videos').
+      const atomic = await uploadAndPersist(
+        file,
+        { folder: 'service-gallery-videos', subfolder: serviceId },
+        async (up) => {
+          // image_url null pour les vidéos (colonne nullable depuis migration 20260518010000)
+          const { error: dbErr } = await supabase.from('service_gallery_images').insert({
+            professional_service_id: serviceId,
+            media_type: 'video',
+            image_url: null,
+            video_url: up.publicUrl!,
+            display_order: items.length,
+            is_cover: false,
+          });
+          if (dbErr) throw dbErr;
+          return up.publicUrl!;
+        },
+      );
+      if (!atomic.success) throw new Error(atomic.error || 'Upload échoué');
 
-      // image_url laissé null pour les vidéos (colonne nullable depuis migration 20260518010000)
-      const { error: dbErr } = await supabase.from('service_gallery_images').insert({
-        professional_service_id: serviceId,
-        media_type: 'video',
-        image_url: null,
-        video_url: publicUrl,
-        display_order: items.length,
-        is_cover: false,
-      });
-      if (dbErr) throw dbErr;
-
-      toast({ title: '✅ Vidéo ajoutée', description: 'Votre vidéo est maintenant visible' });
+      toast({ title: t('serviceMediaManager.videoAjoutee'), description: t('serviceMediaManager.votreVideoEstMaintenantVisible') });
       loadMedia();
     } catch (err: any) {
       console.error(err);
@@ -273,7 +285,7 @@ export function ServiceMediaManager({ serviceId, readonly = false, isPremium: is
         }
       }
 
-      toast({ title: 'Média supprimé' });
+      toast({ title: t('serviceMediaManager.mediaSupprime') });
       loadMedia();
     } catch (err: any) {
       toast({ title: 'Erreur suppression', description: err.message, variant: 'destructive' });
@@ -288,7 +300,7 @@ export function ServiceMediaManager({ serviceId, readonly = false, isPremium: is
       await supabase.from('service_gallery_images').update({ is_cover: true }).eq('id', item.id);
       // Mettre à jour aussi cover_image_url du service
       await supabase.from('professional_services').update({ cover_image_url: item.image_url }).eq('id', serviceId);
-      toast({ title: '⭐ Image de couverture définie', description: 'Cette image sera affichée sur le marketplace' });
+      toast({ title: t('serviceMediaManager.imageDeCouvertureDefinie'), description: t('serviceMediaManager.cetteImageSeraAfficheeSur') });
       loadMedia();
     } catch (err: any) {
       toast({ title: 'Erreur', description: err.message, variant: 'destructive' });

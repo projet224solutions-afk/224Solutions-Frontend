@@ -45,7 +45,7 @@ export default function SystemConfiguration() {
       icon: Map,
       status: 'testing',
       required: true,
-      description: 'Géolocalisation, Geocoding, Directions',
+      description: t('systemConfiguration.geolocalisationGeocodingDirections'),
       secretName: 'GOOGLE_CLOUD_API_KEY',
       testEndpoint: 'test-google-cloud-api',
       documentation: 'https://console.cloud.google.com'
@@ -55,7 +55,7 @@ export default function SystemConfiguration() {
       icon: Database,
       status: 'testing',
       required: true,
-      description: 'Base de données pour synchronisation offline',
+      description: t('systemConfiguration.baseDeDonneesPourSynchronisation'),
       secretName: 'FIREBASE_WEB_API_KEY',
       documentation: 'https://console.firebase.google.com'
     },
@@ -64,7 +64,7 @@ export default function SystemConfiguration() {
       icon: Sparkles,
       status: 'testing',
       required: true,
-      description: 'IA Gemini pour assistant intelligent',
+      description: t('systemConfiguration.iaGeminiPourAssistantIntelligent'),
       secretName: 'LOVABLE_API_KEY',
       documentation: 'https://ai.google.dev/'
     },
@@ -73,7 +73,7 @@ export default function SystemConfiguration() {
       icon: Brain,
       status: 'testing',
       required: false,
-      description: 'Génération IA de descriptions produits',
+      description: t('systemConfiguration.generationIaDeDescriptionsProduits'),
       secretName: 'OPENAI_API_KEY',
       documentation: 'https://platform.openai.com'
     },
@@ -82,7 +82,7 @@ export default function SystemConfiguration() {
       icon: CreditCard,
       status: 'testing',
       required: true,
-      description: 'Paiements par carte bancaire',
+      description: t('systemConfiguration.paiementsParCarteBancaire'),
       secretName: 'STRIPE_SECRET_KEY',
       documentation: 'https://dashboard.stripe.com'
     },
@@ -91,7 +91,7 @@ export default function SystemConfiguration() {
       icon: Video,
       status: 'testing',
       required: false,
-      description: 'Appels vidéo et audio',
+      description: t('systemConfiguration.appelsVideoEtAudio'),
       secretName: 'AGORA_APP_ID',
       documentation: 'https://console.agora.io'
     },
@@ -100,7 +100,7 @@ export default function SystemConfiguration() {
       icon: Smartphone,
       status: 'testing',
       required: false,
-      description: 'Paiements mobile money',
+      description: t('systemConfiguration.paiementsMobileMoney'),
       secretName: 'ORANGE_MONEY_API_KEY',
       documentation: 'https://developer.orange.com'
     }

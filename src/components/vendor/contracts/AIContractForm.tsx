@@ -15,11 +15,11 @@ interface AIContractFormProps {
 }
 
 const CONTRACT_TYPES = [
-  { value: 'vente', label: 'Contrat de vente', description: 'Produit, prix, livraison, garantie' },
-  { value: 'livraison', label: 'Contrat de livraison', description: 'Délais, transport, assurance' },
-  { value: 'prestation', label: 'Contrat de prestation', description: 'Service, durée, obligations' },
+  { value: 'vente', label: "Contrat de vente", description: "Produit, prix, livraison, garantie" },
+  { value: 'livraison', label: "Contrat de livraison", description: "Délais, transport, assurance" },
+  { value: 'prestation', label: "Contrat de prestation", description: "Service, durée, obligations" },
   { value: 'agent', label: 'Contrat agent', description: 'Mission, commissions, reporting' },
-  { value: 'partenariat', label: 'Entreprise partenaire', description: 'Collaboration, objectifs, paiement' },
+  { value: 'partenariat', label: 'Entreprise partenaire', description: "Collaboration, objectifs, paiement" },
 ];
 
 interface RecentClient {
@@ -83,8 +83,8 @@ export default function AIContractForm({ onSuccess }: AIContractFormProps) {
           setClientName(data.name || '');
           setClientAddress(data.address || '');
           toast({
-            title: 'Client trouvé',
-            description: 'Les informations ont été automatiquement remplies',
+            title: t('aIContractForm.clientTrouve'),
+            description: t('aIContractForm.lesInformationsOntEteAutomatiquement'),
           });
         }
       } catch (_error) {
@@ -107,7 +107,7 @@ export default function AIContractForm({ onSuccess }: AIContractFormProps) {
     if (!contractType) {
       toast({
         title: 'Erreur',
-        description: 'Veuillez sélectionner un type de contrat',
+        description: t('aIContractForm.veuillezSelectionnerUnTypeDe'),
         variant: 'destructive',
       });
       return;
@@ -116,7 +116,7 @@ export default function AIContractForm({ onSuccess }: AIContractFormProps) {
     if (!clientName || !clientPhone || !clientAddress) {
       toast({
         title: 'Erreur',
-        description: 'Veuillez remplir tous les champs',
+        description: t('aIContractForm.veuillezRemplirTousLesChamps'),
         variant: 'destructive',
       });
       return;
@@ -138,8 +138,8 @@ export default function AIContractForm({ onSuccess }: AIContractFormProps) {
 
       if (data?.success && data?.contract?.id) {
         toast({
-          title: 'Contrat généré avec succès',
-          description: 'Le contrat a été créé et peut maintenant être modifié',
+          title: t('aIContractForm.contratGenereAvecSucces'),
+          description: t('aIContractForm.leContratAEteCree'),
         });
 
         // Reset form

@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
+import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFormatCurrency } from "@/hooks/useFormatCurrency";
 import { Button } from "@/components/ui/button";
@@ -52,6 +53,10 @@ interface TaxiMotoHistoryProps {
 export default function TaxiMotoHistory({ userId }: TaxiMotoHistoryProps) {
     const { t } = useTranslation();
     const fc = useFormatCurrency();
+    // ✅ Repli sur l'utilisateur du contexte auth + on attend la fin du chargement
+    // auth avant de crier « Identifiant manquant » (sinon erreur au montage).
+    const { user, loading: authLoading } = useAuth();
+    const effectiveUserId = userId || user?.id;
     const [rides, setRides] = useState<RideHistory[]>([]);
     const [filteredRides, setFilteredRides] = useState<RideHistory[]>([]);
     const [loading, setLoading] = useState(true);
@@ -60,11 +65,12 @@ export default function TaxiMotoHistory({ userId }: TaxiMotoHistoryProps) {
     const [statusFilter, setStatusFilter] = useState<'all' | 'completed' | 'cancelled'>('all');
     const [dateFilter, setDateFilter] = useState<'all' | 'week' | 'month' | 'year'>('all');
 
-    // Charger l'historique des courses
+    // Charger l'historique des courses (on attend que l'auth soit prête)
     useEffect(() => {
+        if (authLoading) return; // l'utilisateur arrive de façon asynchrone
         loadRideHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userId]);
+    }, [effectiveUserId, authLoading]);
 
     // Filtrer les courses
     useEffect(() => {
@@ -79,17 +85,24 @@ export default function TaxiMotoHistory({ userId }: TaxiMotoHistoryProps) {
         setLoading(true);
         setError(null);
         try {
-            if (!userId) {
-                setError('Identifiant utilisateur manquant');
+            // ✅ Repli ULTIME : lire directement la session Supabase si le contexte
+            // n'a pas (encore) peuplé l'utilisateur (course d'init / route non protégée).
+            let uid = effectiveUserId;
+            if (!uid) {
+                const { data: { user: sessionUser } } = await supabase.auth.getUser();
+                uid = sessionUser?.id;
+            }
+            if (!uid) {
+                setError('Connectez-vous pour voir votre historique');
                 return;
             }
 
-            console.log('[TaxiMotoHistory] Loading ride history for user:', userId);
+            console.log('[TaxiMotoHistory] Loading ride history for user:', uid);
 
             const { data: trips, error: tripsError } = await supabase
                 .from('taxi_trips')
                 .select('*')
-                .eq('customer_id', userId)
+                .eq('customer_id', uid)
                 .in('status', ['completed', 'cancelled'])
                 .order('requested_at', { ascending: false })
                 .limit(50);

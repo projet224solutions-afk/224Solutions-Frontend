@@ -20,12 +20,14 @@ interface ServiceStats {
 interface NearbyServicesSectionProps {
   stats: ServiceStats;
   onServiceClick: (serviceId: string) => void;
+  loading?: boolean;
   className?: string;
 }
 
 export function NearbyServicesSection({
   stats,
   onServiceClick,
+  loading = false,
   className,
 }: NearbyServicesSectionProps) {
   const { t } = useTranslation();
@@ -102,7 +104,17 @@ export function NearbyServicesSection({
         </div>
       </div>
 
+      {/* Skeleton pendant le chargement des stats (plus de "0" affiché) */}
+      {loading && (
+        <div className="grid grid-cols-2 gap-3">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-24 rounded-2xl bg-muted/40 animate-pulse" />
+          ))}
+        </div>
+      )}
+
       {/* Services Grid - 2x2 Layout */}
+      {!loading && (
       <div className="grid grid-cols-2 gap-3">
         {services.map((service, index) => (
           <div
@@ -125,6 +137,7 @@ export function NearbyServicesSection({
           </div>
         ))}
       </div>
+      )}
     </section>
   );
 }

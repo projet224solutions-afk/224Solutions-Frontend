@@ -899,8 +899,8 @@ function VoteStatusBadge({ status }: { status: ShareholderVote['status'] }) {
   const map: Record<string, { label: string; className: string }> = {
     draft:     { label: 'Brouillon', className: 'bg-gray-100 text-gray-700' },
     open:      { label: 'Ouvert',    className: 'bg-orange-100 text-[#ff4000]' },
-    closed:    { label: 'Clôturé',   className: 'bg-blue-100 text-blue-800' },
-    cancelled: { label: 'Annulé',    className: 'bg-orange-100 text-[#ff4000]' },
+    closed:    { label: t('pDGShareholderManagement.cloture'),   className: 'bg-blue-100 text-blue-800' },
+    cancelled: { label: t('pDGShareholderManagement.annule'),    className: 'bg-orange-100 text-[#ff4000]' },
   };
   const cfg = map[status] ?? map.draft;
   return <Badge className={cn('text-xs', cfg.className)} variant="secondary">{cfg.label}</Badge>;
@@ -1155,8 +1155,8 @@ function VotesTabPDG({
         {[
           { label: 'Ouverts',     count: openVotes.length,      color: 'text-[#ff4000]',  bg: 'bg-orange-50' },
           { label: 'Brouillons',  count: draftVotes.length,     color: 'text-gray-600',   bg: 'bg-gray-50' },
-          { label: 'Clôturés',    count: closedVotes.length,    color: 'text-blue-700',   bg: 'bg-blue-50' },
-          { label: 'Annulés',     count: cancelledVotes.length, color: 'text-[#ff4000]',    bg: 'bg-orange-50' },
+          { label: t('pDGShareholderManagement.clotures'),    count: closedVotes.length,    color: 'text-blue-700',   bg: 'bg-blue-50' },
+          { label: t('pDGShareholderManagement.annules'),     count: cancelledVotes.length, color: 'text-[#ff4000]',    bg: 'bg-orange-50' },
         ].map(s => (
           <Card key={s.label} className={cn('border-0 shadow-sm', s.bg)}>
             <CardContent className="pt-3 pb-3 text-center">

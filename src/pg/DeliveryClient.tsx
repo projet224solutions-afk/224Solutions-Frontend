@@ -242,11 +242,11 @@ export default function DeliveryClient() {
   const getStatusBadge = (status: string) => {
     const statusConfig = {
       pending: { label: 'En attente', variant: 'secondary' as const },
-      assigned: { label: 'Assignée', variant: 'default' as const },
-      picked_up: { label: 'Récupérée', variant: 'default' as const },
+      assigned: { label: t('deliveryClient.assignee'), variant: 'default' as const },
+      picked_up: { label: t('deliveryClient.recuperee'), variant: 'default' as const },
       in_transit: { label: 'En cours', variant: 'default' as const },
-      delivered: { label: 'Livrée', variant: 'default' as const },
-      cancelled: { label: 'Annulée', variant: 'destructive' as const }
+      delivered: { label: t('deliveryClient.livree'), variant: 'default' as const },
+      cancelled: { label: t('deliveryClient.annulee'), variant: 'destructive' as const }
     };
 
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;

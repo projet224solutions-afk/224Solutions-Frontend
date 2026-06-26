@@ -92,7 +92,13 @@ export function useProximityStats() {
     try {
       setLoading(true);
 
-      const [vendorsRes, proServicesRes, driversRes, taxiDriversRes, productsRes, categoriesRes, vendorGpsRes] = await Promise.all([
+      // ✅ 5 requêtes au lieu de 7 :
+      //    - categories (standalone) supprimée : inutilisée (les noms de catégorie
+      //      viennent du JOIN products.categories, pas de cette requête séparée)
+      //    - vendors GPS cross-reference (req 7) supprimée : redondante avec la req 1
+      //      qui contient déjà user_id/latitude/longitude → on filtre son résultat.
+      //    products est CONSERVÉ : il alimente mode/électronique/maison (cf. plus bas).
+      const [vendorsRes, proServicesRes, driversRes, taxiDriversRes, productsRes] = await Promise.all([
         supabase
           .from('vendors')
           .select('id, business_type, service_type, latitude, longitude, user_id')
@@ -129,18 +135,6 @@ export function useProximityStats() {
             categories (id, name)
           `)
           .eq('is_active', true),
-
-        supabase
-          .from('categories')
-          .select('id, name')
-          .eq('is_active', true),
-
-        // GPS cross-reference: vendors avec GPS pour enrichir les services sans GPS
-        supabase
-          .from('vendors')
-          .select('user_id, latitude, longitude')
-          .not('latitude', 'is', null)
-          .not('longitude', 'is', null),
       ]);
 
       if (vendorsRes.error) throw vendorsRes.error;
@@ -148,7 +142,6 @@ export function useProximityStats() {
       if (driversRes.error) throw driversRes.error;
       if (taxiDriversRes.error) throw taxiDriversRes.error;
       if (productsRes.error) throw productsRes.error;
-      if (categoriesRes.error) throw categoriesRes.error;
 
       const vendors = vendorsRes.data ?? [];
       const professionalServices = proServicesRes.data ?? [];
@@ -156,11 +149,12 @@ export function useProximityStats() {
       const taxiDrivers = taxiDriversRes.data ?? [];
       const products = productsRes.data ?? [];
 
-      // Construire une map user_id -> GPS depuis les vendors
+      // ✅ GPS cross-reference : on filtre la requête vendors existante (req 1)
+      // au lieu d'une 2ᵉ requête vendors redondante.
       const vendorGpsMap = new Map<string, { lat: number; lng: number }>();
-      (vendorGpsRes.data ?? []).forEach((v: any) => {
+      vendors.forEach((v: any) => {
         if (v.user_id && v.latitude != null && v.longitude != null) {
-          vendorGpsMap.set(v.user_id, { lat: v.latitude, lng: v.longitude });
+          vendorGpsMap.set(v.user_id, { lat: Number(v.latitude), lng: Number(v.longitude) });
         }
       });
 

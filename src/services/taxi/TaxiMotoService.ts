@@ -28,16 +28,24 @@ export interface NearbyDriver {
 export type TaxiRide = TaxiTrip;
 
 export interface FareCalculation {
-  base_fare: number;
-  distance_cost: number;
-  time_cost: number;
-  subtotal: number;
-  surge_multiplier: number;
-  surge_amount: number;
+  // Champs réels retournés par la RPC calculate_taxi_fare
   total: number;
-  commission: number;
-  driver_earnings: number;
-  currency: string;
+  base_fare: number;
+  distance_fee: number;   // ✅ nom exact de la RPC
+  time_fee: number;       // ✅ nom exact de la RPC
+  platform_fee: number;   // ✅ nom exact de la RPC
+  driver_share: number;   // ✅ nom exact de la RPC
+  surge_multiplier: number;
+
+  // Alias / champs optionnels conservés pour compatibilité (pas de breaking change)
+  distance_cost?: number;   // alias → distance_fee
+  time_cost?: number;       // alias → time_fee
+  commission?: number;      // alias → platform_fee
+  driver_earnings?: number; // alias → driver_share
+  surge_amount?: number;
+  subtotal?: number;
+  currency?: string;
+  total_fare?: number;      // certains appels utilisent total_fare
 }
 
 export interface TrackingPoint {
@@ -153,6 +161,38 @@ export class TaxiMotoService {
     return data as any;
   }
 
+  // ✅ Cache de la config plateforme (commission), rechargée au plus 1×/heure
+  private static _platformConfig: { driverShareRate: number; platformFeeRate: number } | null = null;
+  private static _platformConfigAt = 0;
+
+  static async getPlatformConfig(retries = 2): Promise<{ driverShareRate: number; platformFeeRate: number }> {
+    const TTL = 3_600_000; // 1 heure
+    if (this._platformConfig && Date.now() - this._platformConfigAt < TTL) {
+      return this._platformConfig;
+    }
+    // ✅ Retry + backoff (réseau 3G Conakry) ; clamp anti-valeurs aberrantes
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      try {
+        const { data, error } = await supabase.rpc('get_taxi_platform_config' as any);
+        if (!error && data) {
+          const cfg = data as any;
+          this._platformConfig = {
+            driverShareRate: Math.min(0.99, Math.max(0.50, Number(cfg.driver_share_rate ?? 0.85))),
+            platformFeeRate: Math.min(0.50, Math.max(0.01, Number(cfg.platform_fee_rate ?? 0.15))),
+          };
+          this._platformConfigAt = Date.now();
+          return this._platformConfig;
+        }
+      } catch (err) {
+        console.warn(`[TaxiMotoService] Config commission tentative ${attempt + 1} échouée:`, err);
+      }
+      if (attempt < retries) {
+        await new Promise(r => setTimeout(r, 500 * Math.pow(2, attempt))); // 500ms, 1000ms
+      }
+    }
+    return { driverShareRate: 0.85, platformFeeRate: 0.15 }; // fallback sûr
+  }
+
   /**
    * Créer une demande de course
    */
@@ -177,8 +217,9 @@ export class TaxiMotoService {
       p_prefix: 'TMR'
     });
 
-    // Calculer driver_share (85%) et platform_fee (15%)
-    const driverShare = Math.round(params.estimatedPrice * 0.85);
+    // ✅ Commission lue depuis la config serveur (plus de 85% hardcodé)
+    const config = await TaxiMotoService.getPlatformConfig();
+    const driverShare = Math.round(params.estimatedPrice * config.driverShareRate);
     const platformFee = params.estimatedPrice - driverShare;
 
     const { data, error } = await supabase
@@ -219,27 +260,25 @@ export class TaxiMotoService {
     const notifiedDrivers = drivers.slice(0, 10);
     console.log(`[TaxiMotoService] 📢 Notification de ${notifiedDrivers.length} chauffeurs...`);
 
-    for (const driver of notifiedDrivers) {
-      try {
-        console.log(`[TaxiMotoService] 📲 Envoi notification à ${driver.full_name} (${driver.id})`);
-        const { data: _notifData, error: notifError } = await supabase.rpc('create_taxi_notification' as any, {
+    // ✅ Notifications en PARALLÈLE (Promise.all) au lieu d'une boucle séquentielle
+    // qui bloquait la création de course 5-10s. Non-bloquant : la course existe
+    // même si certaines notifications échouent.
+    const notifResults = await Promise.allSettled(
+      notifiedDrivers.map(driver =>
+        supabase.rpc('create_taxi_notification' as any, {
           p_user_id: driver.id,
           p_ride_id: data.id,
           p_type: 'ride_request',
           p_title: 'Nouvelle course disponible',
           p_body: `Course de ${params.pickupAddress} à ${params.dropoffAddress} - ${params.estimatedPrice} GNF`,
           p_data: { distance_km: params.distanceKm, price_total: params.estimatedPrice, driver_share: driverShare }
-        });
-
-        if (notifError) {
-          console.error(`[TaxiMotoService] ❌ Erreur notification pour ${driver.id}:`, notifError);
-        } else {
-          console.log(`[TaxiMotoService] ✅ Notification envoyée à ${driver.full_name}`);
-        }
-      } catch (err) {
-        console.error(`[TaxiMotoService] ❌ Erreur lors de l'envoi notification:`, err);
-      }
-    }
+        })
+      )
+    );
+    const notifiedOk = notifResults.filter(
+      r => r.status === 'fulfilled' && !(r.value as any)?.error
+    ).length;
+    console.log(`[TaxiMotoService] ✅ ${notifiedOk}/${notifiedDrivers.length} chauffeurs notifiés (parallèle)`);
 
     console.log(`[TaxiMotoService] ✅ Course créée avec succès: ${data.ride_code} (ID: ${data.id})`);
 
@@ -309,46 +348,35 @@ export class TaxiMotoService {
   static async updateRideStatus(
     rideId: string,
     status: string,
+    actorType: 'driver' | 'customer' = 'driver',
     additionalData?: Partial<TaxiRide>
   ): Promise<void> {
-    const updateData: any = { status, ...additionalData };
+    // ✅ RPC IDOR-proof : ownership + whitelist de champs vérifiés CÔTÉ SERVEUR.
+    // Le chauffeur/le client ne peut modifier QUE sa propre course ; les champs
+    // financiers (driver_share/platform_fee/price_total/payment_status) sont
+    // intouchables ; les timestamps sont posés côté serveur.
+    const { data, error } = await supabase.rpc('update_taxi_trip_status' as any, {
+      p_ride_id:    rideId,
+      p_new_status: status,
+      p_actor_type: actorType,
+      p_extra_data: additionalData ? JSON.stringify(additionalData) : '{}',
+    });
 
-    // Mettre à jour les timestamps selon le statut
-    if (status === 'accepted') {
-      updateData.accepted_at = new Date().toISOString();
-    } else if (status === 'arriving') {
-      updateData.arriving_at = new Date().toISOString();
-    } else if (status === 'started') {
-      updateData.started_at = new Date().toISOString();
-    } else if (status === 'in_progress') {
-      updateData.in_progress_at = new Date().toISOString();
-    } else if (status === 'completed') {
-      updateData.completed_at = new Date().toISOString();
-    } else if (status.includes('cancelled')) {
-      updateData.cancelled_at = updateData.cancelled_at || new Date().toISOString();
+    if (error) {
+      console.error('[TaxiMotoService] updateRideStatus error:', error);
+      throw new Error(error.message || 'Erreur mise à jour statut');
+    }
+    const result = data as any;
+    if (!result?.success) {
+      throw new Error(result?.error || 'Mise à jour refusée par le serveur');
     }
 
-    await supabaseCall(
-      async () => {
-        const { data, error } = await supabase
-          .from('taxi_trips')
-          .update(updateData)
-          .eq('id', rideId);
-        return { data, error };
-      },
-      {
-        context: 'Mise à jour du statut',
-        timeout: 15000,
-        maxRetries: 2
-      }
-    );
-
-    // Logger l'action
+    // Logger l'action (non-bloquant)
     try {
       await supabase.rpc('log_taxi_action' as any, {
         p_action_type: `ride_status_${status}`,
         p_actor_id: (await supabase.auth.getUser()).data.user?.id,
-        p_actor_type: 'driver',
+        p_actor_type: actorType,
         p_resource_type: 'ride',
         p_resource_id: rideId,
         p_details: { status, ...additionalData }
@@ -477,20 +505,16 @@ export class TaxiMotoService {
     paymentMethod: string,
     idempotencyKey?: string
   ): Promise<any> {
-    const { data, error } = await supabase.functions.invoke('taxi-payment', {
-      body: {
-        rideId,
-        paymentMethod,
-        idempotencyKey: idempotencyKey || `${rideId}-${Date.now()}`
-      }
-    });
-
-    if (error) {
+    // ✅ Point d'entrée unique : backend Node.js (fallback Edge si indispo, idempotent)
+    const idem = idempotencyKey || `${rideId}-${Date.now()}`;
+    const body = { rideId, paymentMethod, idempotencyKey: idem };
+    const { payViaBackend } = await import('@/services/payments/payViaBackend');
+    try {
+      return await payViaBackend('/api/v2/payments/taxi', 'taxi-payment', body, body, idem);
+    } catch (error) {
       console.error('[TaxiMotoService] Error processing payment:', error);
       throw error;
     }
-
-    return data;
   }
 
   /**

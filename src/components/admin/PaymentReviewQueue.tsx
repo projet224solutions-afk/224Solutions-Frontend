@@ -165,7 +165,7 @@ export function PaymentReviewQueue() {
       if (response.error) throw response.error;
 
       toast.success(t('paymentReviewQueue.paiementRejeteEtRemboursementInitie'), {
-        description: 'L\'acheteur sera remboursé sous 5-10 jours',
+        description: t('paymentReviewQueue.lAcheteurSeraRembourseSous'),
       });
 
       setShowRejectDialog(false);

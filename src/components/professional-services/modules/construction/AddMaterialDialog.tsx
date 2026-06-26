@@ -14,7 +14,7 @@ const CATEGORIES = [
   { value: 'fer', label: '🔩 Fer / Acier' },
   { value: 'peinture', label: '🎨 Peinture' },
   { value: 'bois', label: '🪵 Bois' },
-  { value: 'electricite', label: '⚡ Matériel électrique' },
+  { value: 'electricite', label: "⚡ Matériel électrique" },
   { value: 'plomberie', label: '🔧 Plomberie' },
   { value: 'carrelage', label: '🔲 Carrelage' },
   { value: 'toiture', label: '🏠 Toiture' },

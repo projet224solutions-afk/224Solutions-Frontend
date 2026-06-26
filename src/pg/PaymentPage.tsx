@@ -80,7 +80,7 @@ export default function PaymentPage() {
       console.error('Erreur chargement paiement:', error);
       toast({
         title: "Erreur",
-        description: "Impossible de charger les détails du paiement",
+        description: t('paymentPage.impossibleDeChargerLesDetails'),
         variant: "destructive"
       });
       navigate('/');
@@ -93,7 +93,7 @@ export default function PaymentPage() {
     if (!paymentMethod) {
       toast({
         title: "Erreur",
-        description: "Veuillez sélectionner un moyen de paiement",
+        description: t('paymentPage.veuillezSelectionnerUnMoyenDe'),
         variant: "destructive"
       });
       return;
@@ -102,7 +102,7 @@ export default function PaymentPage() {
     if (!clientInfo.name || !clientInfo.email) {
       toast({
         title: "Erreur",
-        description: "Veuillez remplir vos informations",
+        description: t('paymentPage.veuillezRemplirVosInformations'),
         variant: "destructive"
       });
       return;
@@ -130,8 +130,8 @@ export default function PaymentPage() {
       if (response.ok) {
         const _data = await response.json();
         toast({
-          title: "Paiement réussi !",
-          description: "Votre paiement a été traité avec succès",
+          title: t('paymentPage.paiementReussi'),
+          description: t('paymentPage.votrePaiementAEteTraite'),
         });
 
         // Rediriger vers une page de confirmation
@@ -143,7 +143,7 @@ export default function PaymentPage() {
     } catch (error: any) {
       console.error('Erreur paiement:', error);
       toast({
-        title: "Erreur de paiement",
+        title: t('paymentPage.erreurDePaiement'),
         description: error.message || "Impossible de traiter le paiement",
         variant: "destructive"
       });

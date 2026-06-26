@@ -8,6 +8,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { subscribeLivePosition, driverPositionTopic, ridePositionTopic } from '@/lib/realtime/livePositions';
+import { estimateEtaMinutes } from '@/utils/etaConakry';
 
 export interface DriverPosition {
   latitude: number;
@@ -29,9 +30,9 @@ function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): nu
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-/** ETA en minutes à 30 km/h (0.5 km/min) */
+/** ETA en minutes — vitesse adaptative selon l'heure (trafic Conakry). */
 function calcEta(distKm: number): number {
-  return Math.max(1, Math.ceil(distKm / 0.5));
+  return estimateEtaMinutes({ distanceKm: distKm });
 }
 
 /**
@@ -57,6 +58,8 @@ export function useDriverTracking(
   const notified2min = useRef(false);
   const notified1min = useRef(false);
   const initialPositionRef = useRef<{ lat: number; lng: number } | null>(null);
+  // ✅ Horodatage de la dernière position reçue (détection de péremption)
+  const lastUpdateRef = useRef<number>(0);
 
   // Réinitialiser quand la course change
   useEffect(() => {
@@ -65,9 +68,25 @@ export function useDriverTracking(
     notified2min.current = false;
     notified1min.current = false;
     initialPositionRef.current = null;
+    lastUpdateRef.current = 0;
     setDriverPosition(null);
     setEtaMinutes(null);
     setIsMoving(false);
+  }, [rideId, driverId]); // ✅ efface aussi quand le conducteur change/disparaît
+
+  // ✅ Péremption : si le conducteur n'a plus envoyé de position depuis 45s
+  // (hors ligne / ne vient plus), on efface le marqueur — sinon la dernière
+  // position resterait affichée indéfiniment alors qu'aucun taxi ne vient.
+  useEffect(() => {
+    if (!rideId) return;
+    const STALE_MS = 45_000;
+    const id = setInterval(() => {
+      if (lastUpdateRef.current && Date.now() - lastUpdateRef.current > STALE_MS) {
+        setDriverPosition(null);
+        setIsMoving(false);
+      }
+    }, 5_000);
+    return () => clearInterval(id);
   }, [rideId]);
 
   const processPosition = useCallback(
@@ -83,6 +102,7 @@ export function useDriverTracking(
       };
 
       setDriverPosition(position);
+      lastUpdateRef.current = Date.now(); // ✅ position fraîche
 
       // Stocker la position initiale
       if (!initialPositionRef.current) {

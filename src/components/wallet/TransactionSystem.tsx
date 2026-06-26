@@ -46,7 +46,7 @@ export const TransactionSystem = () => {
     if (!receiverEmail || !amount) {
       toast({
         title: "Erreur",
-        description: "Veuillez remplir tous les champs requis",
+        description: t('transactionSystem.veuillezRemplirTousLesChamps'),
         variant: "destructive"
       });
       return;
@@ -113,8 +113,8 @@ export const TransactionSystem = () => {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast({
-      title: "Copié",
-      description: "ID de transaction copié dans le presse-papiers",
+      title: t('transactionSystem.copie'),
+      description: t('transactionSystem.idDeTransactionCopieDans'),
     });
   };
 

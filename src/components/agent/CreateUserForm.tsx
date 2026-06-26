@@ -18,7 +18,10 @@ import {
   MapPin,
   Lock,
   Eye,
-  EyeOff
+  EyeOff,
+  Copy,
+  MessageCircle,
+  CheckCircle2
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAgentActions, CreateUserData } from '@/hooks/useAgentActions';
@@ -53,28 +56,28 @@ const COUNTRY_OPTIONS = [
 ];
 
 const USER_ROLES = [
-  { value: 'client', label: 'Client', icon: Users, description: 'Utilisateur acheteur', color: 'text-[#ff4000]' },
-  { value: 'vendeur', label: 'Vendeur', icon: ShoppingBag, description: 'Boutique/Commerce', color: 'text-blue-600' },
-  { value: 'livreur', label: 'Livreur', icon: Truck, description: 'Livraison de colis', color: 'text-[#ff4000]' },
-  { value: 'taxi', label: 'Taxi', icon: Car, description: 'Transport de personnes', color: 'text-[#04439e]' },
+  { value: 'client', label: "Client", icon: Users, description: 'Utilisateur acheteur', color: 'text-[#ff4000]' },
+  { value: 'vendeur', label: "Vendeur", icon: ShoppingBag, description: 'Boutique/Commerce', color: 'text-blue-600' },
+  { value: 'livreur', label: 'Livreur', icon: Truck, description: "Livraison de colis", color: 'text-[#ff4000]' },
+  { value: 'taxi', label: 'Taxi', icon: Car, description: "Transport de personnes", color: 'text-[#04439e]' },
   { value: 'transitaire', label: 'Transitaire', icon: Ship, description: 'Logistique internationale', color: 'text-orange-600' },
   { value: 'syndicat', label: 'Syndicat', icon: Building2, description: 'Organisation syndicale', color: 'text-[#ff4000]' },
-  { value: 'prestataire', label: 'Prestataire', icon: Building2, description: 'Service de proximité', color: 'text-[#ff4000]' },
+  { value: 'prestataire', label: 'Prestataire', icon: Building2, description: "Service de proximité", color: 'text-[#ff4000]' },
 ];
 
 // Codes synchronisés avec service_types en BDD
 const VENDOR_SERVICE_TYPES = [
   { value: 'ecommerce', label: 'Boutique / E-commerce' },
   { value: 'restaurant', label: 'Restaurant / Alimentation' },
-  { value: 'beaute', label: 'Beauté & Bien-être' },
+  { value: 'beaute', label: "Beauté & Bien-être" },
   { value: 'reparation', label: 'Réparation / Mécanique' },
-  { value: 'location', label: 'Location Immobilière' },
-  { value: 'freelance', label: 'Services Professionnels' },
+  { value: 'location', label: "Location Immobilière" },
+  { value: 'freelance', label: "Services Professionnels" },
   { value: 'media', label: 'Photographe / Vidéaste' },
   { value: 'education', label: 'Éducation / Formation' },
-  { value: 'sante', label: 'Santé & Bien-être' },
+  { value: 'sante', label: "Santé & Bien-être" },
   { value: 'voyage', label: 'Voyage / Tourisme' },
-  { value: 'menage', label: 'Ménage & Entretien' },
+  { value: 'menage', label: "Ménage & Entretien" },
   { value: 'informatique', label: 'Informatique / Tech' },
   { value: 'construction', label: 'Construction / BTP' },
   { value: 'agriculture', label: 'Agriculture' },
@@ -93,7 +96,30 @@ export function CreateUserForm({ agentId, agentCode, accessToken, onUserCreated 
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { createUser } = useAgentActions({ onUserCreated });
+  // ✅ State récapitulatif affiché après création réussie
+  const [createdUser, setCreatedUser] = useState<{
+    email: string;
+    password: string;
+    role: string;
+    publicId?: string;
+  } | null>(null);
+  const [showRecap, setShowRecap] = useState(false);
+  const [copied,    setCopied]    = useState(false);
+
+  const { createUser } = useAgentActions({
+    onUserCreated: (info) => {
+      // ✅ Stocker les infos pour le récapitulatif
+      setCreatedUser({
+        email:    info.email,
+        password: formData.password, // mot de passe saisi par l'agent
+        role:     info.role,
+        publicId: info.publicId,
+      });
+      setShowRecap(true);
+      // ✅ Conserver le callback parent (rafraîchissement de la liste, etc.)
+      onUserCreated?.();
+    }
+  });
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -176,50 +202,32 @@ export function CreateUserForm({ agentId, agentCode, accessToken, onUserCreated 
       }
 
       // Appeler le hook
-      console.log('🔄 [CreateUserForm] Tentative création utilisateur:', {
-        agentId,
-        agentCode,
-        role: userData.role,
-        email: userData.email,
-        hasAccessToken: !!accessToken
-      });
-
       const result = await createUser(userData, agentId, agentCode, accessToken);
 
-      console.log('📥 [CreateUserForm] Résultat:', result);
-
       if (result.success) {
-        toast.success(t('createUserForm.utilisateurCreeAvecSucces'));
-        // Reset form
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          password: '',
-          role: 'client',
-          country_code: 'GN',
-          city: '',
-          bureau_code: '',
-          prefecture: '',
-          commune: '',
-          full_location: '',
-          business_name: '',
-          business_description: '',
-          business_address: '',
-          service_type: '',
-          license_number: '',
-          vehicle_type: 'moto',
-          vehicle_brand: '',
-          vehicle_model: '',
-          vehicle_year: '',
-          vehicle_plate: '',
-        });
-        setShowPassword(false);
+        // ✅ Toast de succès émis par le hook (source unique) — pas de doublon ici.
+        // ✅ Fermer le dialog du formulaire : démonte le DialogContent Radix → supprime
+        // le focus-trap, le récap (showRecap) devient le seul overlay, pleinement
+        // accessible (souris, tactile ET clavier). Le récap reste affiché car il dépend
+        // de showRecap && createdUser, indépendamment de isOpen.
         setIsOpen(false);
+        // Le reset du formulaire se fait quand l'agent ferme le récapitulatif (closeRecap).
       } else {
-        console.error('❌ [CreateUserForm] Erreur:', result.error);
-        toast.error(result.error || 'Erreur lors de la création');
+        // ✅ Message d'erreur adapté selon le type
+        const errorMsg = result.error || 'Erreur lors de la création';
+        const isEmailDuplicate =
+          errorMsg.toLowerCase().includes('existe déjà') ||
+          errorMsg.toLowerCase().includes('email_exists') ||
+          errorMsg.toLowerCase().includes('already registered');
+
+        if (isEmailDuplicate) {
+          toast.error(
+            `❌ Cet email est déjà enregistré dans le système. Vérifiez avec l'utilisateur s'il a déjà un compte.`,
+            { duration: 6000 }
+          );
+        } else {
+          toast.error(errorMsg, { duration: 4000 });
+        }
       }
     } catch (error: any) {
       console.error('Erreur création utilisateur:', error);
@@ -227,6 +235,56 @@ export function CreateUserForm({ agentId, agentCode, accessToken, onUserCreated 
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const closeRecap = () => {
+    setShowRecap(false);
+    setCreatedUser(null);
+    setCopied(false);
+    // Reset du formulaire après que l'agent a noté les identifiants
+    setFormData({
+      firstName: '', lastName: '', email: '', phone: '', password: '',
+      role: 'client', country_code: 'GN', city: '',
+      bureau_code: '', prefecture: '', commune: '', full_location: '',
+      business_name: '', business_description: '', business_address: '',
+      service_type: '', license_number: '', vehicle_type: 'moto',
+      vehicle_brand: '', vehicle_model: '', vehicle_year: '', vehicle_plate: '',
+    });
+    setShowPassword(false);
+    setIsOpen(false);
+  };
+
+  const copyCredentials = async () => {
+    if (!createdUser) return;
+    const text = [
+      `📱 Compte 224Solutions créé`,
+      `Email : ${createdUser.email}`,
+      `Mot de passe : ${createdUser.password}`,
+      `Rôle : ${createdUser.role}`,
+      createdUser.publicId ? `ID : ${createdUser.publicId}` : '',
+      `Téléchargez l'app : www.224solution.net`,
+    ].filter(Boolean).join('\n');
+
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      toast.success('Identifiants copiés !');
+      setTimeout(() => setCopied(false), 3000);
+    } catch {
+      toast.error('Impossible de copier');
+    }
+  };
+
+  const shareViaWhatsApp = () => {
+    if (!createdUser) return;
+    const msg = encodeURIComponent([
+      `Bonjour, votre compte 224Solutions a été créé.`,
+      `📧 Email : ${createdUser.email}`,
+      `🔑 Mot de passe : ${createdUser.password}`,
+      `📱 Téléchargez l'app sur www.224solution.net`,
+      `Connectez-vous et changez votre mot de passe.`,
+    ].join('\n'));
+    window.open(`https://wa.me/?text=${msg}`, '_blank');
   };
 
   const selectedRole = USER_ROLES.find(r => r.value === formData.role);
@@ -711,6 +769,99 @@ export function CreateUserForm({ agentId, agentCode, accessToken, onUserCreated 
           </Button>
         </div>
       </DialogContent>
+
+      {/* ✅ Dialog récapitulatif identifiants — affiché après création */}
+      {showRecap && createdUser && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
+          <div className="w-full max-w-sm bg-background rounded-2xl shadow-2xl overflow-hidden">
+            {/* Header */}
+            <div className="bg-green-600 p-5 text-center">
+              <CheckCircle2 className="w-12 h-12 text-white mx-auto mb-2" />
+              <h3 className="text-lg font-bold text-white">
+                Compte créé avec succès !
+              </h3>
+              <p className="text-green-100 text-sm mt-1">
+                Communiquez ces identifiants à l'utilisateur
+              </p>
+            </div>
+
+            {/* Contenu */}
+            <div className="p-5 space-y-4">
+              {/* Rôle */}
+              <div className="flex items-center justify-between py-2 border-b">
+                <span className="text-sm text-muted-foreground">Rôle</span>
+                <span className="text-sm font-semibold capitalize text-[#04439e]">
+                  {createdUser.role}
+                </span>
+              </div>
+
+              {/* Email */}
+              <div className="flex items-center justify-between py-2 border-b">
+                <span className="text-sm text-muted-foreground">Email</span>
+                <span className="text-sm font-mono font-semibold">
+                  {createdUser.email}
+                </span>
+              </div>
+
+              {/* Mot de passe */}
+              <div className="flex items-center justify-between py-2 border-b">
+                <span className="text-sm text-muted-foreground">Mot de passe</span>
+                <span className="text-sm font-mono font-bold text-[#ff4000] bg-red-50 px-2 py-0.5 rounded">
+                  {createdUser.password}
+                </span>
+              </div>
+
+              {/* ID public */}
+              {createdUser.publicId && (
+                <div className="flex items-center justify-between py-2 border-b">
+                  <span className="text-sm text-muted-foreground">ID public</span>
+                  <span className="text-xs font-mono text-muted-foreground">
+                    {createdUser.publicId}
+                  </span>
+                </div>
+              )}
+
+              <p className="text-xs text-amber-700 bg-amber-50 rounded-lg p-3">
+                ⚠️ Notez ce mot de passe maintenant. Il ne sera plus affiché.
+                L'utilisateur pourra le modifier depuis son profil.
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="px-5 pb-5 flex flex-col gap-2">
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={copyCredentials}
+                >
+                  {copied
+                    ? <CheckCircle2 className="w-4 h-4 text-green-600" />
+                    : <Copy className="w-4 h-4" />
+                  }
+                  {copied ? 'Copié !' : 'Copier'}
+                </Button>
+
+                <Button
+                  className="gap-2 bg-green-600 hover:bg-green-700 text-white"
+                  onClick={shareViaWhatsApp}
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp
+                </Button>
+              </div>
+
+              <Button
+                variant="ghost"
+                className="w-full text-muted-foreground"
+                onClick={closeRecap}
+              >
+                Fermer et créer un autre utilisateur
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </Dialog>
   );
 }

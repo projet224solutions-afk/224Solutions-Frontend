@@ -7,6 +7,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { calculateDistance } from '@/hooks/useGeoDistance';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Money } from '@/components/Money';
 import { toast } from "sonner";
@@ -17,7 +18,7 @@ import { useTaxiNotifications } from "@/hooks/useTaxiNotifications";
 import { useTaxiErrorBoundary } from "@/hooks/useTaxiErrorBoundary";
 import { TaxiMotoService } from "@/services/taxi/TaxiMotoService";
 import { GeolocationService } from "@/services/taxi/GeolocationService";
-import { Car, Star } from "lucide-react";
+import { Car, Star, AlertTriangle } from "lucide-react";
 
 // Hooks modulaires refactorisés
 import { useTaxiDriverProfile } from "@/hooks/useTaxiDriverProfile";
@@ -44,6 +45,12 @@ import MyPurchasesOrdersList from "@/components/shared/MyPurchasesOrdersList";
 
 const ONLINE_SINCE_KEY = 'taxi_driver_online_since';
 
+// ✅ Throttle GPS adaptatif — économie batterie (téléphones d'entrée de gamme en Guinée)
+const GPS_INTERVAL_ACTIVE = 5_000;    // 5s pendant une course (précision maximale)
+const GPS_INTERVAL_IDLE = 30_000;     // 30s en attente (économie batterie ~80%)
+const TRACK_INTERVAL_ACTIVE = 10_000; // 10s tracking pendant course
+const TRACK_INTERVAL_IDLE = 60_000;   // 60s tracking en attente (minimal)
+
 export default function TaxiMotoDriver() {
     const { t } = useTranslation();
     const { user, profile, signOut } = useAuth();
@@ -57,11 +64,18 @@ export default function TaxiMotoDriver() {
         stopWatching,
     } = useGPSLocation({
         enableHighAccuracy: true,
-        watchPosition: false,
+        watchPosition: true,  // ✅ Suivi GPS continu (throttle 5s/10s géré ci-dessous)
         onLocationChange: (loc) => {
             const now = Date.now();
+
+            // ✅ Interval adaptatif : court si course en cours, long en attente (batterie)
+            const hasActiveRide = !!activeRideRef.current &&
+                ['accepted', 'arriving', 'picked_up', 'in_progress'].includes(activeRideRef.current.status);
+            const locationInterval = hasActiveRide ? GPS_INTERVAL_ACTIVE : GPS_INTERVAL_IDLE;
+            const trackingInterval = hasActiveRide ? TRACK_INTERVAL_ACTIVE : TRACK_INTERVAL_IDLE;
+
             if (driverIdRef.current && isOnlineRef.current) {
-                if (now - lastLocationUpdateRef.current >= 5000) {
+                if (now - lastLocationUpdateRef.current >= locationInterval) {
                     lastLocationUpdateRef.current = now;
                     updateDriverLocation(loc.latitude, loc.longitude);
                 }
@@ -69,7 +83,7 @@ export default function TaxiMotoDriver() {
             if (activeRideRef.current) {
                 const ride = activeRideRef.current;
                 if (['accepted', 'arriving', 'picked_up', 'in_progress'].includes(ride.status)) {
-                    if (now - lastTrackingRef.current >= 10000) {
+                    if (now - lastTrackingRef.current >= trackingInterval) {
                         lastTrackingRef.current = now;
                         TaxiMotoService.trackPosition(
                             ride.id,
@@ -154,9 +168,49 @@ export default function TaxiMotoDriver() {
         setNavigationActive,
         updateRideStatus,
         cancelActiveRide,
+        pendingCancelRide,
+        confirmCancelRide,
+        rejectCancelRide,
     } = useTaxiActiveRide(driverId, startNavigation, updateLocalStats);
 
     useEffect(() => { activeRideRef.current = activeRide; }, [activeRide]);
+
+    // ✅ AUTO-TRANSITION par proximité GPS (le conducteur n'a plus à tout cliquer)
+    //   - près du point de prise en charge → « Client à bord » (picked_up)
+    //   - près de la destination → « Arrivé à destination » (in_progress → finalisation)
+    // Seuil 60 m : le « 2 m » demandé est impossible avec la précision GPS réelle
+    // (souvent 5-30 m). Garde anti-doublon par (course, transition).
+    const autoTransitionRef = useRef<string>('');
+    useEffect(() => {
+        if (!location || !activeRide || !isOnline) return;
+        const NEAR_KM = 0.06; // ~60 m
+        const { latitude, longitude } = location;
+        const status = activeRide.status;
+        const pickup = activeRide.pickup?.coords;
+        const dest = activeRide.destination?.coords;
+
+        // Près du client → client à bord
+        if ((status === 'accepted' || status === 'arriving') && pickup) {
+            const d = calculateDistance(latitude, longitude, pickup.latitude, pickup.longitude);
+            const key = `${activeRide.id}:picked_up`;
+            if (d <= NEAR_KM && autoTransitionRef.current !== key) {
+                autoTransitionRef.current = key;
+                toast.info('📍 Arrivé près du client — passage auto à « Client à bord »');
+                updateRideStatus('picked_up');
+            }
+        }
+
+        // Près de la destination → arrivé à destination (révèle la finalisation)
+        if (status === 'picked_up' && dest) {
+            const d = calculateDistance(latitude, longitude, dest.latitude, dest.longitude);
+            const key = `${activeRide.id}:arrived_dest`;
+            if (d <= NEAR_KM && autoTransitionRef.current !== key) {
+                autoTransitionRef.current = key;
+                toast.info('🏁 Arrivé à destination — finalisez la course');
+                updateRideStatus('in_progress');
+            }
+        }
+    }, [location, activeRide, isOnline, updateRideStatus]);
 
     // Hook demandes de courses
     const {
@@ -224,7 +278,7 @@ export default function TaxiMotoDriver() {
         if (!driverId) { toast.error(t('taxiMotoDriver.profilConducteurNonTrouve')); return; }
         if (next && !hasAccess) {
             toast.error('⚠️ Abonnement requis', {
-                description: 'Vous devez avoir un abonnement actif pour recevoir des courses'
+                description: t('taxiMotoDriver.vousDevezAvoirUnAbonnement')
             });
             return;
         }
@@ -254,7 +308,7 @@ export default function TaxiMotoDriver() {
                 });
             } catch (onlineError: unknown) {
                 toast.dismiss('gps-loading');
-                const errMsg = onlineError instanceof Error ? onlineError.message : 'Veuillez réessayer';
+                const errMsg = onlineError instanceof Error ? onlineError.message: t('taxiMotoDriver.veuillezReessayer');
                 capture('network', 'Erreur lors de la mise en ligne', onlineError);
                 toast.error(t('taxiMotoDriver.impossibleDePasserEnLigne'), { description: errMsg });
             } finally {
@@ -269,7 +323,7 @@ export default function TaxiMotoDriver() {
                 clearRideRequests();
                 toast.info(t('taxiMotoDriver.vousEtesMaintenantHorsLigne'));
             } catch (offlineError: unknown) {
-                const errMsg = offlineError instanceof Error ? offlineError.message : 'Veuillez réessayer';
+                const errMsg = offlineError instanceof Error ? offlineError.message: t('taxiMotoDriver.veuillezReessayer');
                 capture('network', 'Erreur lors du changement de statut', offlineError);
                 toast.error(t('taxiMotoDriver.erreurLorsDuChangementDe'), { description: errMsg });
             } finally {
@@ -326,6 +380,39 @@ export default function TaxiMotoDriver() {
                 driverPhone={profile?.phone || ''}
                 onSignOut={handleSignOut}
             />
+
+            {/* ✅ Modal confirmation d'annulation (remplace window.confirm bloqué sur iOS) */}
+            {pendingCancelRide && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+                    <div className="w-full max-w-sm bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl space-y-4">
+                        <div className="text-center space-y-2">
+                            <div className="w-14 h-14 rounded-full bg-red-500/15 flex items-center justify-center mx-auto">
+                                <AlertTriangle className="w-7 h-7 text-red-500" />
+                            </div>
+                            <h3 className="text-base font-semibold text-white">Annuler la course ?</h3>
+                            <p className="text-sm text-gray-400">Le client sera notifié. Une pénalité peut s'appliquer.</p>
+                        </div>
+                        <div className="flex gap-3">
+                            <button onClick={rejectCancelRide} className="flex-1 py-2.5 rounded-xl border border-gray-600 text-gray-200 text-sm font-medium">
+                                Retour
+                            </button>
+                            <button onClick={confirmCancelRide} className="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium">
+                                Confirmer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ✅ Indicateur mode économie batterie GPS */}
+            {isOnline && (
+                <div className="flex items-center justify-center gap-1.5 text-[9px] text-gray-500 py-1">
+                    <span className={`w-1.5 h-1.5 rounded-full ${!activeRide ? 'bg-green-500' : 'bg-[#ff4000] animate-pulse'}`} />
+                    {!activeRide
+                        ? 'GPS économique (30s) — en attente de course'
+                        : 'GPS précis (5s) — course en cours'}
+                </div>
+            )}
 
             {activeTab === 'dashboard' && (
                 <DriverMainDashboard

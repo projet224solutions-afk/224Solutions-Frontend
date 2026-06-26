@@ -210,33 +210,37 @@ export function useTaxiActiveRide(
     }
   }, [activeRide, onStartNavigation]);
 
-  const cancelActiveRide = useCallback(async () => {
+  // ✅ window.confirm est bloqué sur Capacitor iOS → on expose un état au parent
+  // qui affiche un vrai modal. cancelActiveRide() demande la confirmation ;
+  // confirmCancelRide() exécute réellement l'annulation.
+  const [pendingCancelRide, setPendingCancelRide] = useState(false);
+
+  const cancelActiveRide = useCallback(async (skipConfirm = false) => {
     if (!activeRide || !driverId) return;
 
-    const confirmed = window.confirm(
-      '⚠️ Êtes-vous sûr de vouloir annuler cette course ?\n\n' +
-      'Le client sera notifié et vous pourriez recevoir une pénalité.'
-    );
-
-    if (!confirmed) return;
+    if (!skipConfirm) {
+      setPendingCancelRide(true); // le composant parent affiche le modal
+      return;
+    }
 
     try {
-      console.log('❌ Annulation de la course:', activeRide.id);
-
-      await TaxiMotoService.updateRideStatus(activeRide.id, 'cancelled', {
+      await TaxiMotoService.updateRideStatus(activeRide.id, 'cancelled', 'driver', {
         cancel_reason: 'Annulée par le conducteur',
         cancelled_at: new Date().toISOString()
       });
-
       setActiveRide(null);
       setNavigationActive(false);
-
       toast.success('✅ Course annulée avec succès');
     } catch (error) {
       console.error('❌ Erreur lors de l\'annulation:', error);
       toast.error('Impossible d\'annuler la course');
+    } finally {
+      setPendingCancelRide(false);
     }
   }, [activeRide, driverId]);
+
+  const confirmCancelRide = useCallback(() => { cancelActiveRide(true); }, [cancelActiveRide]);
+  const rejectCancelRide = useCallback(() => { setPendingCancelRide(false); }, []);
 
   const completeRide = useCallback(async () => {
     if (!activeRide || !driverId) return;
@@ -244,7 +248,7 @@ export function useTaxiActiveRide(
     try {
       console.log('🏁 Finalisation de la course:', activeRide.id);
 
-      await TaxiMotoService.updateRideStatus(activeRide.id, 'completed', {
+      await TaxiMotoService.updateRideStatus(activeRide.id, 'completed', 'driver', {
         completed_at: new Date().toISOString()
       });
 
@@ -314,6 +318,9 @@ export function useTaxiActiveRide(
     loadActiveRide,
     updateRideStatus,
     cancelActiveRide,
-    completeRide
+    completeRide,
+    pendingCancelRide,   // ✅ true = afficher le modal de confirmation
+    confirmCancelRide,   // ✅ exécuter l'annulation
+    rejectCancelRide,    // ✅ fermer le modal sans annuler
   };
 }

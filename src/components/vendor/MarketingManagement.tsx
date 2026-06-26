@@ -115,7 +115,7 @@ export default function MarketingManagement() {
     } catch (_error) {
       toast({
         title: "Erreur",
-        description: "Impossible de charger les campagnes.",
+        description: t('marketingManagement.impossibleDeChargerLesCampagnes'),
         variant: "destructive"
       });
     } finally {
@@ -133,8 +133,8 @@ export default function MarketingManagement() {
       });
 
       toast({
-        title: "Code promo créé",
-        description: "Le code promotionnel a été créé avec succès."
+        title: t('marketingManagement.codePromoCree'),
+        description: t('marketingManagement.leCodePromotionnelAEte')
       });
 
       setIsPromoDialogOpen(false);
@@ -195,17 +195,17 @@ export default function MarketingManagement() {
           await supabase.from('marketing_campaigns').update({ sent_count: sent, status: 'completed' }).eq('id', data.id);
           setCampaigns(prev => [{ ...data, sent_count: sent, status: 'completed' }, ...prev]);
           toast({
-            title: "Campagne envoyée",
+            title: t('marketingManagement.campagneEnvoyee'),
             description: `${r.email_sent} email(s), ${r.sms_sent} SMS${r.sms_error ? ` — SMS : ${r.sms_error}` : ''}`,
           });
         } catch (sendErr: any) {
           setCampaigns(prev => [data, ...prev]);
-          toast({ title: "Campagne créée, mais envoi échoué", description: sendErr?.message || 'Erreur diffusion', variant: 'destructive' });
+          toast({ title: t('marketingManagement.campagneCreeeMaisEnvoiEchoue'), description: sendErr?.message || 'Erreur diffusion', variant: 'destructive' });
         }
       } else {
         // notification / réseaux sociaux : enregistrés seulement (pas d'envoi auto)
         setCampaigns(prev => [data, ...prev]);
-        toast({ title: "Campagne enregistrée", description: "Envoi automatique disponible pour Email et SMS uniquement." });
+        toast({ title: t('marketingManagement.campagneEnregistree'), description: t('marketingManagement.envoiAutomatiqueDisponiblePourEmail') });
       }
 
       setIsCampaignDialogOpen(false);
@@ -218,7 +218,7 @@ export default function MarketingManagement() {
     } catch (_error) {
       toast({
         title: "Erreur",
-        description: "Impossible de créer la campagne.",
+        description: t('marketingManagement.impossibleDeCreerLaCampagne'),
         variant: "destructive"
       });
     } finally {
@@ -229,8 +229,8 @@ export default function MarketingManagement() {
   const copyPromoCode = (code: string) => {
     navigator.clipboard.writeText(code);
     toast({
-      title: "Code copié",
-      description: "Le code promotionnel a été copié dans le presse-papiers."
+      title: t('marketingManagement.codeCopie'),
+      description: t('marketingManagement.leCodePromotionnelAEte2')
     });
   };
 

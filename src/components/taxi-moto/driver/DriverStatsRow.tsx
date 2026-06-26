@@ -29,7 +29,7 @@ export function DriverStatsRow({
       value: `${(todayEarnings || 0).toLocaleString()}`,
       suffix: "GNF",
       icon: Wallet,
-      iconBg: "bg-[#ff4000]/20",
+      iconBg: "",
       iconColor: "text-[#ff4000]",
       clickable: true,
       onClick: () => onStatClick?.('earnings')
@@ -49,7 +49,7 @@ export function DriverStatsRow({
       value: '🛍️',
       suffix: "ACHATS",
       icon: ShoppingBag,
-      iconBg: "bg-orange-500/20",
+      iconBg: "",
       iconColor: "text-orange-400",
       clickable: true,
       onClick: onGoToMarketplace
@@ -59,7 +59,7 @@ export function DriverStatsRow({
       value: rating > 0 ? rating.toFixed(1) : '—',
       suffix: "NOTE",
       icon: Star,
-      iconBg: "bg-[#ff4000]/20",
+      iconBg: "",
       iconColor: "text-[#ff4000]",
       clickable: true,
       onClick: () => onStatClick?.('rating')

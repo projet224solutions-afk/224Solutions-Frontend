@@ -108,7 +108,7 @@ export default function VendorDigitalProducts() {
         .eq('id', deleteProduct.id)
         .eq('merchant_id', deleteProduct.merchant_id);
       if (error) throw error;
-      toast.success(t('vendorDigitalProducts.produitArchive'), { description: "Le produit reste accessible pour les acheteurs existants." });
+      toast.success(t('vendorDigitalProducts.produitArchive'), { description: t('vendorDigitalProducts.leProduitResteAccessiblePour') });
       refresh();
     } catch (err: unknown) {
       console.error("Erreur archivage:", err);

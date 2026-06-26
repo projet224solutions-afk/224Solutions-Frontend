@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 ﻿import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
@@ -7,6 +8,7 @@ import { Home, ArrowLeft, AlertTriangle, ShoppingBag, MapPin, User } from "lucid
 import { cn } from "@/lib/utils";
 
 const NotFound = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const { user, profile } = useAuth();
@@ -60,11 +62,11 @@ const NotFound = () => {
       label: 'Tracking',
       icon: MapPin,
       path: '/tracking',
-      description: 'Suivi de commandes'
+      description: t('notFound.suiviDeCommandes')
     },
     {
       id: 'profil',
-      label: 'Profil',
+      label: t('notFound.profil'),
       icon: User,
       path: profile ? '/profil' : '/auth',
       description: profile ? 'Mon profil' : 'Connexion'

@@ -223,7 +223,7 @@ export default function PDGStolenVehiclesSupervision() {
                 loadData();
                 if (payload.eventType === 'UPDATE' && (payload.new as any).stolen_status === 'stolen') {
                     toast.error(t('pDGStolenVehiclesSupervision.nouvelleMotoDeclareeVolee'), {
-                        description: 'Un bureau a signalé un vol de moto',
+                        description: t('pDGStolenVehiclesSupervision.unBureauASignaleUn'),
                         duration: 10000
                     });
                 }
@@ -234,7 +234,7 @@ export default function PDGStolenVehiclesSupervision() {
                 table: 'vehicle_fraud_alerts'
             }, (_payload) => {
                 toast.error(t('pDGStolenVehiclesSupervision.alerteDeFraudeDetectee'), {
-                    description: 'Activité suspecte sur un véhicule volé',
+                    description: t('pDGStolenVehiclesSupervision.activiteSuspecteSurUnVehicule'),
                     duration: 10000
                 });
                 loadData();

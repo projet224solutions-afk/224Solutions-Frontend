@@ -122,7 +122,7 @@ export function useTaxiMoto() {
       setLoading(true);
       const { data: _user } = await supabase.auth.getUser();
 
-      await TaxiMotoService.updateRideStatus(rideId, 'cancelled_by_customer', {
+      await TaxiMotoService.updateRideStatus(rideId, 'cancelled_by_customer', 'customer', {
         cancel_reason: reason,
         cancelled_at: new Date().toISOString()
       } as any);

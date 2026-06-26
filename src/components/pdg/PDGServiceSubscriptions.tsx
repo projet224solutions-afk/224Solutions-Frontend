@@ -159,7 +159,7 @@ export default function PDGServiceSubscriptions() {
       setServiceTypes(proximityServices);
     } catch (error) {
       console.error('Error fetching data:', error);
-      toast({ title: 'Erreur', description: 'Impossible de charger les données', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('pDGServiceSubscriptions.impossibleDeChargerLesDonnees'), variant: 'destructive' });
     } finally {
       setLoading(false);
     }
@@ -226,7 +226,7 @@ export default function PDGServiceSubscriptions() {
       if (!user) throw new Error('Non authentifié');
       const success = await ServiceSubscriptionService.changePlanPrice(selectedPlan.id, priceValue, user.id, reason || undefined);
       if (success) {
-        toast({ title: 'Succès', description: `Prix du plan ${selectedPlan.display_name} modifié` });
+        toast({ title: t('pDGServiceSubscriptions.succes'), description: `Prix du plan ${selectedPlan.display_name} modifié` });
         setIsDialogOpen(false);
         fetchData();
       } else throw new Error('Échec');
@@ -267,7 +267,7 @@ export default function PDGServiceSubscriptions() {
         priority_listing: editLimitsForm.priority_listing,
       });
       if (success) {
-        toast({ title: 'Succès', description: `Limites du plan ${selectedPlan.display_name} mises à jour` });
+        toast({ title: t('pDGServiceSubscriptions.succes'), description: `Limites du plan ${selectedPlan.display_name} mises à jour` });
         setIsEditLimitsOpen(false);
         fetchData();
       } else throw new Error('Échec');
@@ -280,7 +280,7 @@ export default function PDGServiceSubscriptions() {
 
   const handleOfferFreeSubscription = async () => {
     if (!freeSubscriptionData.serviceId || !freeSubscriptionData.planId || !freeSubscriptionData.days) {
-      toast({ title: 'Erreur', description: 'Remplissez tous les champs', variant: 'destructive' });
+      toast({ title: 'Erreur', description: t('pDGServiceSubscriptions.remplissezTousLesChamps'), variant: 'destructive' });
       return;
     }
     const days = parseInt(freeSubscriptionData.days);
@@ -300,7 +300,7 @@ export default function PDGServiceSubscriptions() {
         service.id, service.user_id, freeSubscriptionData.planId, days
       );
       if (success) {
-        toast({ title: 'Succès', description: `Abonnement de ${days} jours offert` });
+        toast({ title: t('pDGServiceSubscriptions.succes'), description: `Abonnement de ${days} jours offert` });
         setIsFreeDialogOpen(false);
         setFreeSubscriptionData({ serviceId: '', planId: '', days: '' });
         fetchData();
@@ -315,7 +315,7 @@ export default function PDGServiceSubscriptions() {
   const handleCancelSubscription = async (subscriptionId: string) => {
     if (!confirm(t('pDGServiceSubscriptions.annulerCetAbonnement'))) return;
     const success = await ServiceSubscriptionService.cancelSubscription(subscriptionId);
-    if (success) { toast({ title: 'Abonnement annulé' }); fetchData(); }
+    if (success) { toast({ title: t('pDGServiceSubscriptions.abonnementAnnule') }); fetchData(); }
     else toast({ title: 'Erreur', variant: 'destructive' });
   };
 
@@ -994,7 +994,7 @@ export default function PDGServiceSubscriptions() {
                   { key: 'analytics_access', label: 'Analytics' },
                   { key: 'sms_notifications', label: 'Notifications SMS' },
                   { key: 'email_notifications', label: 'Notifications Email' },
-                  { key: 'custom_branding', label: 'Branding personnalisé' },
+                  { key: 'custom_branding', label: t('pDGServiceSubscriptions.brandingPersonnalise') },
                   { key: 'priority_listing', label: 'Mise en avant prioritaire' },
                 ].map(({ key, label }) => (
                   <div key={key} className="flex items-center justify-between py-1.5 px-3 rounded-lg border border-border bg-muted/30">

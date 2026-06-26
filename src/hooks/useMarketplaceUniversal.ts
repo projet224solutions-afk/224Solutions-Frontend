@@ -109,6 +109,7 @@ interface UseMarketplaceUniversalOptions {
   itemType?: 'all' | 'product' | 'digital_product' | 'professional_service';
   sortBy?: 'popular' | 'price_asc' | 'price_desc' | 'rating' | 'newest' | 'position' | 'visibility';
   autoLoad?: boolean;
+  userPreferredCategories?: string[]; // ✅ catégories préférées (bonus pertinence)
 }
 
 const MARKETPLACE_SOURCE_TIMEOUT_MS = 8000;
@@ -144,7 +145,8 @@ export const useMarketplaceUniversal = (options: UseMarketplaceUniversalOptions 
     city,
     itemType = 'all',
     sortBy = 'newest',
-    autoLoad = true
+    autoLoad = true,
+    userPreferredCategories = [],
   } = options;
 
   const [items, setItems] = useState<MarketplaceItem[]>([]);
@@ -231,6 +233,15 @@ export const useMarketplaceUniversal = (options: UseMarketplaceUniversalOptions 
         const c = sanitizeSearchTerm(city);
         query = query.or(`city.ilike.${c}`, { referencedTable: 'vendors' });
       }
+      // 🌍 Filtre PAYS côté SERVEUR — match EXACT (insensible à la casse), même
+      // mécanisme que la ville. Auparavant filtré côté client APRÈS .limit() →
+      // pagination tronquée (peu de résultats puis hasMore=false). Désormais le
+      // .limit() s'applique aux produits DÉJÀ filtrés par pays. Pas de '%…%'
+      // (éviterait "Guinea" de matcher "Guinea-Bissau").
+      if (country && country !== 'all') {
+        const cc = sanitizeSearchTerm(country);
+        query = query.or(`country.ilike.${cc}`, { referencedTable: 'vendors' });
+      }
       if (minPrice && minPrice > 0) query = query.gte('price', minPrice);
       if (maxPrice && maxPrice > 0) query = query.lte('price', maxPrice);
       if (minRating && minRating > 0) query = query.gte('rating', minRating);
@@ -240,20 +251,9 @@ export const useMarketplaceUniversal = (options: UseMarketplaceUniversalOptions 
         .limit(sourceRowLimit);
       if (error) throw error;
 
-      // Reste : seul le filtre PAYS demeure côté client (correspondance normalisée exacte,
-      // robuste aux variations de casse/espaces). business_type + ville sont déjà filtrés serveur.
-      const filtered = (data || []).filter(product => {
-        const vendor = (product.vendors as any);
-        if (!vendor) return false; // sécurité (jointure inner garantit déjà la présence)
-
-        if (country && country !== 'all') {
-          const vendorCountry = (vendor.country || '').trim().replace(/\s+/g, ' ').toLowerCase();
-          const normalizedCountry = country.trim().replace(/\s+/g, ' ').toLowerCase();
-          if (vendorCountry !== normalizedCountry) return false;
-        }
-
-        return true;
-      });
+      // business_type + ville + pays sont désormais filtrés CÔTÉ SERVEUR (cf. plus haut).
+      // Reste juste la sécurité : ne garder que les produits ayant bien un vendeur joint.
+      const filtered = (data || []).filter(product => !!(product.vendors as any));
 
       // Récupérer les public_id des vendeurs depuis profiles
       const vendorUserIds = filtered
@@ -632,13 +632,24 @@ export const useMarketplaceUniversal = (options: UseMarketplaceUniversalOptions 
             ...(((props.data as any[]) || []).map((r) => ({ r: { ...r, name: r.title }, link: `/bien/${r.id}`, images: propCover(r), cat: 'Immobilier' }))),
             ...(((showcase.data as any[]) || []).map((r) => ({ r: { ...r, name: r.title }, link: `/services-proximite/${r.professional_service_id}`, images: r.image_url ? [r.image_url] : [], video: r.video_url, cat: 'Service' }))),
           ];
-          const psids = [...new Set(rows.map((x) => x.r.professional_service_id).filter(Boolean))];
+          // 🔎 Appliquer la recherche AUSSI aux produits de modules (sinon ils remontaient
+          // quel que soit le terme → la recherche semblait ne rien filtrer). Match
+          // insensible aux accents/casse sur nom + description + catégorie.
+          const svcSearch = sanitizeSearchTerm(searchQuery);
+          const svcNeedle = svcSearch ? stripAccents(svcSearch).toLowerCase() : '';
+          const searchedRows = svcNeedle
+            ? rows.filter((x) => {
+                const hay = stripAccents(`${x.r.name || ''} ${x.r.description || ''} ${x.cat || ''}`).toLowerCase();
+                return hay.includes(svcNeedle);
+              })
+            : rows;
+          const psids = [...new Set(searchedRows.map((x) => x.r.professional_service_id).filter(Boolean))];
           let nameMap = new Map<string, string>();
           if (psids.length) {
             const { data: svcs } = await supabase.from('professional_services').select('id, business_name').in('id', psids);
             nameMap = new Map(((svcs as any[]) || []).map((s) => [s.id, s.business_name as string]));
           }
-          return rows.filter((x) => x.images.length > 0).map((x) => ({
+          return searchedRows.filter((x) => x.images.length > 0).map((x) => ({
             id: x.r.id, name: x.r.name, price: Number(x.r.price) || 0, images: x.images.filter(Boolean),
             description: x.r.description || '', vendor_id: x.r.professional_service_id,
             vendor_name: nameMap.get(x.r.professional_service_id) || x.cat,
@@ -796,6 +807,8 @@ export const useMarketplaceUniversal = (options: UseMarketplaceUniversalOptions 
               itemType,
               country: country || 'all',
               city: city || 'all',
+              // ✅ Catégories préférées (bonus de pertinence personnalisé côté backend)
+              userPreferredCategories: userPreferredCategories || [],
             }),
             null,
             'visibility_ranking',

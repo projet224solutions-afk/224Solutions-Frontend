@@ -424,7 +424,7 @@ const response = await fetch('${window.location.origin}/api/224wallet/pay', {
     amount: 50000,           // Montant en GNF
     currency: 'GNF',
     payer_phone: '+224XXXXXXXXX',
-    description: 'Paiement commande #123',
+    description: t('walletApiPanel.paiementCommande123'),
     reference: 'CMD-123',   // Votre référence unique
   }),
 });

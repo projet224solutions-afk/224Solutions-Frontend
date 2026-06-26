@@ -52,9 +52,9 @@ interface TransferReceptionProps {
 }
 
 const LOSS_REASONS = [
-  { value: 'damaged', label: 'Endommagé' },
+  { value: 'damaged', label: "Endommagé" },
   { value: 'missing', label: 'Manquant' },
-  { value: 'expired', label: 'Expiré' },
+  { value: 'expired', label: "Expiré" },
   { value: 'theft', label: 'Vol' },
   { value: 'wrong_item', label: 'Mauvais article' },
   { value: 'other', label: 'Autre' },

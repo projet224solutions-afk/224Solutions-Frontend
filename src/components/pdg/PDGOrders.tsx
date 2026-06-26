@@ -104,8 +104,8 @@ export default function PDGOrders() {
     const variants: Record<string, { label: string; className: string }> = {
       pending: { label: 'En attente', className: 'bg-[#ff4000]' },
       confirmed: { label: 'En cours', className: 'bg-blue-500' },
-      delivered: { label: 'Livrée', className: 'bg-[#ff4000]' },
-      cancelled: { label: 'Annulée', className: 'bg-[#ff4000]' }
+      delivered: { label: t('pDGOrders.livree'), className: 'bg-[#ff4000]' },
+      cancelled: { label: t('pDGOrders.annulee'), className: 'bg-[#ff4000]' }
     };
 
     const config = variants[status] || { label: status, className: 'bg-gray-500' };

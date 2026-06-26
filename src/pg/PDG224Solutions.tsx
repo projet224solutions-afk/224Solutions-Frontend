@@ -242,7 +242,7 @@ export default function PDG224Solutions() {
         }
       }
     } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : 'Échec de l\'envoi du code MFA';
+      const msg = e instanceof Error ? e.message: t('pDG224Solutions.echecDeLEnvoiDu');
       console.error('MFA send error:', e);
       toast.error(msg);
     } finally {
@@ -275,7 +275,7 @@ export default function PDG224Solutions() {
         toast.error(data?.error || 'Code MFA invalide');
       }
     } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : 'Erreur de vérification MFA';
+      const msg = e instanceof Error ? e.message: t('pDG224Solutions.erreurDeVerificationMfa');
       console.error('MFA verify error:', e);
       toast.error(msg);
     } finally {
@@ -298,7 +298,7 @@ export default function PDG224Solutions() {
       setShowEmailDialog(false);
       setNewEmail('');
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Échec de la mise à jour de l\'email';
+      const msg = err instanceof Error ? err.message: t('pDG224Solutions.echecDeLaMiseA');
       console.error('Email update error:', err);
       toast.error(msg);
     } finally {

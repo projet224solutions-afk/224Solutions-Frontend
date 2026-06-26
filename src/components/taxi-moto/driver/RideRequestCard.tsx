@@ -57,7 +57,7 @@ export function RideRequestCard({
       <div className="absolute top-0 left-0 right-0 h-1 bg-[#ff4000]" />
 
       {/* Glow effect */}
-      <div className="absolute inset-0 bg-[#ff4000]/5 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 to-transparent pointer-events-none" />
 
       {/* Content */}
       <div className="relative p-4 space-y-4">
@@ -76,7 +76,7 @@ export function RideRequestCard({
           </div>
 
           {/* Earnings badge */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#ff4000]/20 border border-[#ff4000]/30">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#ff4000]/30">
             <Zap className="w-4 h-4 text-[#ff4000]" />
             <span className="text-[#ff4000] font-bold text-sm">
               <Money amount={request.estimatedEarnings || 0} from="GNF" />
@@ -88,7 +88,7 @@ export function RideRequestCard({
         <div className="space-y-2">
           {/* Pickup */}
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#ff4000]/20 flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
               <div className="w-2.5 h-2.5 rounded-full bg-[#ff4000]" />
             </div>
             <div className="flex-1 min-w-0">
@@ -106,7 +106,7 @@ export function RideRequestCard({
 
           {/* Destination */}
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
               <MapPin className="w-4 h-4 text-orange-400" />
             </div>
             <div className="flex-1 min-w-0">

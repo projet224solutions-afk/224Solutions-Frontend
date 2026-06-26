@@ -62,7 +62,7 @@ import { NumericKeypadPopup } from './pos/NumericKeypadPopup';
 import { QuantityKeypadPopup } from './pos/QuantityKeypadPopup';
 import { POSReceipt } from './pos/POSReceipt';
 import { BarcodeScannerModal } from './pos/BarcodeScannerModal';
-import { Scan } from 'lucide-react';
+import { Scan, AlertTriangle } from 'lucide-react';
 import { useChapChapPay, type ChapChapPayMethod } from '@/hooks/useChapChapPay';
 import { StripeCardPaymentModal } from '@/components/pos/StripeCardPaymentModal';
 import { collectPosMarketingContact, syncPosSales, createPosOrder } from '@/services/posBackendService';
@@ -98,6 +98,10 @@ interface Customer {
   email?: string;
 }
 
+/** Suffixe unique cryptographiquement sûr (8 hexa) — évite les collisions du
+ *  pseudo-aléatoire entre caisses simultanées à la même milliseconde. */
+const uid8 = () => crypto.randomUUID().replace(/-/g, '').substring(0, 8).toUpperCase();
+
 export function POSSystem() {
   const { t } = useTranslation();
   // Devise unifiée (CurrencyContext synchronisé au profil — fiable, ne retombe pas sur GNF
@@ -129,12 +133,19 @@ export function POSSystem() {
       return;
     }
 
-    if (currentVendorId || agentVendorId) {
-      setVendorId(currentVendorId || agentVendorId);
+    if (agentVendorId) {
+      setVendorId(agentVendorId);
+      return;
+    }
+    // N'accepter currentVendorId QUE si c'est un vrai vendors.id (≠ id auth).
+    // useCurrentVendor retombe sur l'id auth quand la requête `vendors` échoue/renvoie null →
+    // ce mauvais vendor_id ne matche aucun produit (products.vendor_id = vendors.id) → POS vide.
+    if (currentVendorId && currentVendorId !== authUser?.id) {
+      setVendorId(currentVendorId);
       return;
     }
 
-    // Sinon, on cherche le vendor_id via l'utilisateur connecte
+    // Sinon (pas de vendor résolu, ou fallback id auth), on cherche le vrai vendor_id via l'utilisateur
     if (authUser?.id) {
       // ✨ MODE OFFLINE: Utiliser le cache si hors ligne
       if (!navigator.onLine) {
@@ -406,11 +417,27 @@ export function POSSystem() {
 
         // Pas de cache disponible
         toast.error(t('pOSSystem.modeHorsLigneAucunProduit'), {
-          description: 'Visitez le POS une fois avec internet pour charger les produits.',
+          description: t('pOSSystem.visitezLePosUneFois'),
           duration: 5000
         });
         setProductsLoading(false);
         return;
+      }
+
+      // 🛠️ FIX POS vide : si `vendorId` vaut l'id auth (fallback de useCurrentVendor quand la
+      // requête vendors a échoué/renvoyé null), les produits — dont `vendor_id` = vendors.id —
+      // ne matchent jamais. On résout alors le VRAI vendors.id avant de charger.
+      let effectiveVendorId = vendorId;
+      if (user?.id && vendorId === user.id) {
+        const { data: realVendor } = await supabase
+          .from('vendors')
+          .select('id')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        if (realVendor?.id) {
+          effectiveVendorId = realVendor.id;
+          console.log('🛠️ [POS] vendorId corrigé (auth → vendors.id):', effectiveVendorId);
+        }
       }
 
       // MODE ONLINE: Charger depuis Supabase
@@ -433,11 +460,16 @@ export function POSSystem() {
           units_per_carton,
           price_carton
         `)
-        .eq('vendor_id', vendorId)
+        .eq('vendor_id', effectiveVendorId)
         .eq('is_active', true)
         .order('name');
 
-      if (error) throw error;
+      if (error) {
+        // Ne plus avaler silencieusement : remonter le vrai message (RLS, relation, colonne…)
+        console.error('[POS] Erreur requête produits:', error.message, error);
+        toast.error(t('pOSSystem.chargementProduits') + error.message);
+        throw error;
+      }
 
       const formattedProducts = (productsData || []).map((p: any) => ({
         id: p.id,
@@ -608,7 +640,7 @@ export function POSSystem() {
     if (savedState.cart.length > 0) {
       setCart(savedState.cart as CartItem[]);
       toast.success(`🔄 Panier restauré (${savedState.cart.length} article${savedState.cart.length > 1 ? 's' : ''})`, {
-        description: 'Votre session précédente a été récupérée.',
+        description: t('pOSSystem.votreSessionPrecedenteAEte'),
         duration: 3000
       });
     }
@@ -705,6 +737,11 @@ export function POSSystem() {
   const discountLabel = discountMode === 'percent' && discountPercent > 0
     ? `Remise (${discountPercent}%)`
     : 'Remise';
+
+  // Alerte si remise anormalement élevée (> 50% ou > 500 000 GNF) — garde-fou anti-erreur de saisie.
+  const isHighDiscount =
+    (discountMode === 'percent' && discountPercent > 50) ||
+    (discountMode === 'amount' && discountValue > 500000);
 
   // Fonction d'ajout au panier avec calcul automatique (unités)
   const addToCart = (productOrCartItem: Product | CartItem, quantity: number = 1) => {
@@ -1038,7 +1075,7 @@ export function POSSystem() {
 
     if (isOffline) {
       try {
-        const offlineOrderId = `offline_credit_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+        const offlineOrderId = `offline_credit_${Date.now()}_${uid8()}`;
         const offlineOrderNumber = `CR-OFF-${Date.now().toString(36).toUpperCase()}`;
 
         const creditSaleData = {
@@ -1304,7 +1341,7 @@ export function POSSystem() {
     // En mode offline, seuls les paiements en espèces sont autorisés
     if (isOffline && paymentMethod !== 'cash') {
       toast.error(t('pOSSystem.modeHorsLigneSeulsLes'), {
-        description: 'Mobile Money et carte bancaire nécessitent une connexion internet.',
+        description: t('pOSSystem.mobileMoneyEtCarteBancaire'),
         duration: 5000
       });
       setIsProcessingPayment(false);
@@ -1325,7 +1362,7 @@ export function POSSystem() {
         const ok = starts.startsWith('610') || starts.startsWith('611') || starts.startsWith('62');
         if (!ok) {
           toast.error(t('pOSSystem.numeroNonCompatibleOrangeMoney'), {
-            description: 'Orange Money (GN) commence généralement par 610, 611 ou 62.',
+            description: t('pOSSystem.orangeMoneyGnCommenceGeneralement'),
           });
           setIsProcessingPayment(false);
           return;
@@ -1334,7 +1371,7 @@ export function POSSystem() {
       if (mobileMoneyProvider === 'mtn') {
         if (!starts.startsWith('66')) {
           toast.error(t('pOSSystem.numeroNonCompatibleMtnMomo'), {
-            description: 'MTN MoMo (GN) commence généralement par 66.',
+            description: t('pOSSystem.mtnMomoGnCommenceGeneralement'),
           });
           setIsProcessingPayment(false);
           return;
@@ -1362,7 +1399,7 @@ export function POSSystem() {
         }
 
         // Générer un numéro de commande unique
-        const mobileOrderNumber = `POS-MM-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+        const mobileOrderNumber = `POS-MM-${Date.now().toString(36).toUpperCase()}-${uid8()}`;
 
         // Création ATOMIQUE via backend (orders + order_items + stock + taxe server-side)
         const orderResponse = await createPosOrder({
@@ -1461,7 +1498,7 @@ export function POSSystem() {
           } else {
             // Paiement en attente
             toast.warning(t('pOSSystem.paiementEnAttente'), {
-              description: 'Le statut du paiement sera mis à jour via webhook.'
+              description: t('pOSSystem.leStatutDuPaiementSera')
             });
           }
         }
@@ -1482,7 +1519,7 @@ export function POSSystem() {
           }
 
           // Générer un numéro de commande unique
-          const cardOrderNumber = `POS-CB-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+          const cardOrderNumber = `POS-CB-${Date.now().toString(36).toUpperCase()}-${uid8()}`;
 
           // Création ATOMIQUE via backend (orders + order_items + stock + taxe server-side)
           const orderResponse = await createPosOrder({
@@ -1534,7 +1571,7 @@ export function POSSystem() {
       if (isOfflinePayment) {
         try {
           // Générer un ID local unique pour la commande
-          const offlineOrderId = `offline_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+          const offlineOrderId = `offline_${Date.now()}_${uid8()}`;
           const offlineOrderNumber = `POS-OFF-${Date.now().toString(36).toUpperCase()}`;
 
           // Préparer les données de la vente
@@ -1633,7 +1670,7 @@ export function POSSystem() {
       // Mode ONLINE: passer par le backend POS atomique
       console.log('🔄 [POS] Création de vente via backend atomique...');
 
-      const localSaleId = `pos-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      const localSaleId = `pos-${Date.now()}-${uid8()}`;
       const syncResponse = await syncPosSales([
         {
           local_sale_id: localSaleId,
@@ -1722,7 +1759,7 @@ export function POSSystem() {
         }
 
         toast.error(t('pOSSystem.connexionPerdue'), {
-          description: 'Passez en mode hors-ligne pour continuer les ventes en espèces.',
+          description: t('pOSSystem.passezEnModeHorsLigne'),
           duration: 5000
         });
       } else {
@@ -2215,7 +2252,7 @@ export function POSSystem() {
                     </div>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-2 gap-2 p-1 md:p-2">
+                  <div className="grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2 p-1 md:p-2">
                     {sortedProducts.map(product => {
                       const isRecent = recentlySelected.includes(product.id);
 
@@ -2424,7 +2461,7 @@ export function POSSystem() {
         </div>
 
         {/* Section Panier - Interface professionnelle - Responsive optimisé mobile */}
-        <div className={`w-full md:w-80 lg:w-full max-w-[380px] flex-shrink-0 flex flex-col min-w-0 max-w-full ${isMobile ? 'flex-1 min-h-0' : 'md:min-h-0 md:max-h-full'} ${isMobile && mobileTab !== 'cart' ? 'hidden' : ''}`}>
+        <div className={`w-full md:w-80 lg:w-96 max-w-full md:max-w-[400px] flex-shrink-0 flex flex-col min-w-0 ${isMobile ? 'flex-1 min-h-0' : 'md:min-h-0 md:max-h-full'} ${isMobile && mobileTab !== 'cart' ? 'hidden' : ''}`}>
           {/* Panier - Design optimisé mobile */}
           <Card className="shadow-xl border-0 bg-card overflow-hidden flex flex-col max-w-full flex-1">
             {/* En-tête compact */}
@@ -2625,6 +2662,13 @@ export function POSSystem() {
                     </div>
                   )}
 
+                  {isHighDiscount && (
+                    <div className="flex items-center gap-1.5 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-2 py-1">
+                      <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0" />
+                      Remise exceptionnelle — vérifiez avant de valider
+                    </div>
+                  )}
+
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-semibold text-foreground">{t('pOSSystem.totalAPayer')}</span>
                     <div className="text-right">
@@ -2636,7 +2680,7 @@ export function POSSystem() {
                 {/* Mode de paiement - Espèces, Mobile Money, Carte */}
                 <div className="flex gap-1">
                   {[
-                    { id: 'cash', icon: Euro, label: 'Espèces' },
+                    { id: 'cash', icon: Euro, label: t('pOSSystem.especes') },
                     { id: 'mobile_money', icon: Smartphone, label: 'Mobile' },
                     { id: 'card', icon: Shield, label: 'Carte' },
                   ].map((method) => (

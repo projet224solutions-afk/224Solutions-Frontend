@@ -64,9 +64,9 @@ function deriveActions(message: string, service: string): { label: string; to: s
   const m = message.toLowerCase();
   const acts: { label: string; to: string }[] = [];
   if (/(recharg|solde|wallet|argent)/.test(m)) acts.push({ label: 'Recharger mon wallet', to: '/wallet' });
-  if (/(march[ée]|achet|produit|cherch|boutique)/.test(m)) acts.push({ label: 'Ouvrir le marketplace', to: '/marketplace' });
-  if (service === 'beaute' && /(r[ée]serv|rendez|cr[ée]neau|salon)/.test(m)) acts.push({ label: 'Trouver un salon', to: '/beaute' });
-  if (/(mes rendez|mes rdv|mon rendez)/.test(m)) acts.push({ label: 'Mes rendez-vous', to: '/mes-rdv-beaute' });
+  if (/(march[ée]|achet|produit|cherch|boutique)/.test(m)) acts.push({ label: "Ouvrir le marketplace", to: '/marketplace' });
+  if (service === 'beaute' && /(r[ée]serv|rendez|cr[ée]neau|salon)/.test(m)) acts.push({ label: "Trouver un salon", to: '/beaute' });
+  if (/(mes rendez|mes rdv|mon rendez)/.test(m)) acts.push({ label: "Mes rendez-vous", to: '/mes-rdv-beaute' });
   return acts.slice(0, 2);
 }
 

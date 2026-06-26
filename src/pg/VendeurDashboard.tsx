@@ -329,7 +329,7 @@ export default function VendeurDashboard() {
           console.warn('Vendeur de type service sans professional_service associ├®');
           toast({
             title: 'Configuration incompl├¿te',
-            description: 'Votre profil de service n\'est pas encore configur├®. Contactez le support.',
+            description: t('vendeurDashboard.votreProfilDeServiceN'),
             variant: 'destructive',
           });
         }

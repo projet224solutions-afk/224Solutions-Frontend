@@ -12,12 +12,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { Loader2, FileText } from 'lucide-react';
 
 const CONTRACT_TYPES = [
-  { value: 'vente_ai', label: '🤖 Contrat de vente (Généré par IA)', fields: [], isAI: true },
+  { value: 'vente_ai', label: "🤖 Contrat de vente (Généré par IA)", fields: [], isAI: true },
   { value: 'vente_achat', label: 'Contrat vente / achat', fields: ['description', 'amount', 'conditions'] },
-  { value: 'livraison', label: 'Contrat livraison', fields: ['address', 'description', 'amount', 'delivery_date'] },
+  { value: 'livraison', label: "Contrat livraison", fields: ['address', 'description', 'amount', 'delivery_date'] },
   { value: 'prestation', label: 'Contrat prestation', fields: ['description', 'duration', 'amount', 'price_details', 'payment_terms'] },
   { value: 'agent_sous_agent', label: 'Contrat agent / sous-agent', fields: ['description', 'commission', 'zone', 'duration'] },
-  { value: 'service', label: 'Contrat service (abonnement)', fields: ['description', 'amount', 'period', 'duration', 'start_date', 'end_date', 'renewal_terms'] },
+  { value: 'service', label: "Contrat service (abonnement)", fields: ['description', 'amount', 'period', 'duration', 'start_date', 'end_date', 'renewal_terms'] },
   { value: 'entreprise_partenaire', label: 'Contrat entreprise–partenaire', fields: ['description', 'company_commitments', 'partner_commitments', 'duration', 'financial_terms'] },
 ];
 
@@ -55,8 +55,8 @@ export default function ContractForm({ onSuccess }: ContractFormProps) {
       if (error) throw error;
 
       toast({
-        title: 'Contrat créé',
-        description: 'Le contrat a été créé avec succès',
+        title: t('contractForm.contratCree'),
+        description: t('contractForm.leContratAEteCree'),
       });
 
       reset();

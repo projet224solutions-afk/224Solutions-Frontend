@@ -36,7 +36,11 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
         const keys = Object.keys(localStorage);
         const profileKey = keys.find(k => k.startsWith('profile_cache_'));
         if (profileKey) {
-          const cached = JSON.parse(localStorage.getItem(profileKey) || '{}');
+          const raw = JSON.parse(localStorage.getItem(profileKey) || '{}');
+          // Le cache profil est désormais enveloppé { data, cachedAt } (TTL) ;
+          // compat ancien format (profil brut). On ne purge PAS sur TTL ici : en
+          // offline, un rôle périmé vaut mieux que pas de rôle du tout.
+          const cached = raw?.data ?? raw;
           if (cached?.role) {
             console.log('📡 [ProtectedRoute] Mode offline - profil cache trouvé:', cached.role);
             setOfflineProfile(cached);

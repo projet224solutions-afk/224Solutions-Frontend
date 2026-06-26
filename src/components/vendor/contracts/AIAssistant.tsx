@@ -15,9 +15,9 @@ interface AIAssistantProps {
 }
 
 const ASSISTANT_ACTIONS = [
-  { value: 'reformuler', label: 'Reformuler le texte', icon: RefreshCw },
-  { value: 'ameliorer', label: 'Améliorer la rédaction', icon: Zap },
-  { value: 'ajouter_clauses', label: 'Ajouter des clauses', icon: Plus },
+  { value: 'reformuler', label: "Reformuler le texte", icon: RefreshCw },
+  { value: 'ameliorer', label: "Améliorer la rédaction", icon: Zap },
+  { value: 'ajouter_clauses', label: "Ajouter des clauses", icon: Plus },
 ];
 
 export default function AIAssistant({ currentText, contractType, onTextUpdated }: AIAssistantProps) {
@@ -30,8 +30,8 @@ export default function AIAssistant({ currentText, contractType, onTextUpdated }
   const handleAssist = async () => {
     if (!action) {
       toast({
-        title: 'Sélectionnez une action',
-        description: 'Choisissez comment l\'IA doit vous aider',
+        title: t('aIAssistant.selectionnezUneAction'),
+        description: t('aIAssistant.choisissezCommentLIaDoit'),
         variant: 'destructive',
       });
       return;
@@ -61,8 +61,8 @@ export default function AIAssistant({ currentText, contractType, onTextUpdated }
       if (data?.improved_text) {
         onTextUpdated(data.improved_text);
         toast({
-          title: 'Texte amélioré',
-          description: 'Le contrat a été mis à jour par l\'IA',
+          title: t('aIAssistant.texteAmeliore'),
+          description: t('aIAssistant.leContratAEteMis'),
         });
         setCustomPrompt('');
       } else {

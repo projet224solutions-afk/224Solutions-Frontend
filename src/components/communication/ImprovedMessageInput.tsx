@@ -138,7 +138,7 @@ export default function ImprovedMessageInput({
         console.error('[VoiceRecord] MediaRecorder error:', e);
         toast({
           title: "Erreur",
-          description: "Erreur lors de l'enregistrement",
+          description: t('improvedMessageInput.erreurLorsDeLEnregistrement'),
           variant: "destructive"
         });
         cleanupRecording();
@@ -186,7 +186,7 @@ export default function ImprovedMessageInput({
         if (audioFile.size < 1000) {
           toast({
             title: "Enregistrement trop court",
-            description: "L'enregistrement est trop court, veuillez réessayer",
+            description: t('improvedMessageInput.lEnregistrementEstTropCourt'),
             variant: "destructive"
           });
           return;
@@ -197,14 +197,14 @@ export default function ImprovedMessageInput({
         try {
           onSendMessage('🎙️ Message vocal', [audioFile]);
           toast({
-            title: "Message vocal envoyé",
-            description: "Votre message vocal a été envoyé avec succès"
+            title: t('improvedMessageInput.messageVocalEnvoye'),
+            description: t('improvedMessageInput.votreMessageVocalAEte')
           });
         } catch (error: any) {
           console.error('[VoiceRecord] Send error:', error);
           toast({
             title: "Erreur",
-            description: "Impossible d'envoyer le message vocal",
+            description: t('improvedMessageInput.impossibleDEnvoyerLeMessage'),
             variant: "destructive"
           });
         } finally {
@@ -227,27 +227,27 @@ export default function ImprovedMessageInput({
 
       toast({
         title: "Enregistrement en cours",
-        description: "Cliquez à nouveau pour arrêter"
+        description: t('improvedMessageInput.cliquezANouveauPourArreter')
       });
 
     } catch (error: any) {
       console.error('[VoiceRecord] Error:', error);
       if (error.name === 'NotAllowedError') {
         toast({
-          title: "Accès refusé",
-          description: "Veuillez autoriser l'accès au microphone dans les paramètres de votre navigateur",
+          title: t('improvedMessageInput.accesRefuse'),
+          description: t('improvedMessageInput.veuillezAutoriserLAccesAu'),
           variant: "destructive"
         });
       } else if (error.name === 'NotFoundError') {
         toast({
-          title: "Microphone non détecté",
-          description: "Aucun microphone n'a été trouvé sur cet appareil",
+          title: t('improvedMessageInput.microphoneNonDetecte'),
+          description: t('improvedMessageInput.aucunMicrophoneNAEte'),
           variant: "destructive"
         });
       } else {
         toast({
           title: "Erreur",
-          description: "Impossible d'accéder au microphone",
+          description: t('improvedMessageInput.impossibleDAccederAuMicrophone'),
           variant: "destructive"
         });
       }

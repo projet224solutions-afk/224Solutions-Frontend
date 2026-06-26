@@ -38,12 +38,12 @@ const salesModes = {
   direct: {
     id: 'direct',
     title: 'Vente Directe',
-    subtitle: 'Vendez vos propres produits',
+    subtitle: "Vendez vos propres produits",
     icon: Store,
     color: 'blue',
     badgeText: 'Recommandé',
     badgeVariant: 'secondary' as const,
-    description: 'Créez et vendez vos propres produits numériques',
+    description: "Créez et vendez vos propres produits numériques",
     features: [
       { icon: Wallet, text: '100% des revenus' },
       { icon: ShieldCheck, text: 'Contrôle total' },
@@ -56,12 +56,12 @@ const salesModes = {
   affiliate: {
     id: 'affiliate',
     title: 'Affiliation',
-    subtitle: 'Promouvez des partenaires',
+    subtitle: "Promouvez des partenaires",
     icon: Link2,
     color: 'orange',
     badgeText: 'Commission élevée',
     badgeVariant: 'default' as const,
-    description: 'Gagnez des commissions sur les ventes',
+    description: "Gagnez des commissions sur les ventes",
     features: [
       { icon: Percent, text: 'Jusqu\'à 75%' },
       { icon: Zap, text: 'Sans création' },

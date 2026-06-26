@@ -143,8 +143,8 @@ export function EscrowDashboard() {
   const getStatusBadge = (status: string) => {
     const config = {
       pending: { label: "En attente", variant: "secondary" as const, icon: Clock },
-      released: { label: "Libéré", variant: "default" as const, icon: CheckCircle },
-      refunded: { label: "Remboursé", variant: "outline" as const, icon: XCircle },
+      released: { label: t('escrowDashboard.libere'), variant: "default" as const, icon: CheckCircle },
+      refunded: { label: t('escrowDashboard.rembourse'), variant: "outline" as const, icon: XCircle },
       dispute: { label: "Litige", variant: "destructive" as const, icon: AlertTriangle },
     };
     const { label, variant, icon: Icon } = config[status as keyof typeof config] || config.pending;

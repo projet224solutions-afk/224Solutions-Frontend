@@ -116,7 +116,7 @@ export default function TaxiMotoPayment({
             type: 'cash',
             name: 'Espèces',
             icon: Banknote,
-            description: 'Paiement au conducteur',
+            description: t('taxiMotoPayment.paiementAuConducteur'),
             processingFee: 0,
             isAvailable: true,
             estimatedTime: 'À la livraison'

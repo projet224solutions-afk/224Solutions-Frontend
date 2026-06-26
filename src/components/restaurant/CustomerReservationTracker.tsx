@@ -51,37 +51,37 @@ const statusConfig = {
     label: 'En attente',
     icon: Timer,
     color: 'text-[#ff4000] bg-orange-100 dark:bg-[#ff4000]/30',
-    description: 'Votre réservation est en attente de confirmation par le restaurant'
+    description: "Votre réservation est en attente de confirmation par le restaurant"
   },
   confirmed: {
-    label: 'Confirmée',
+    label: "Confirmée",
     icon: CheckCircle2,
     color: 'text-[#ff4000] bg-orange-100 dark:bg-[#ff4000]/30',
-    description: 'Le restaurant a confirmé votre réservation'
+    description: "Le restaurant a confirmé votre réservation"
   },
   seated: {
-    label: 'Installé',
+    label: "Installé",
     icon: Armchair,
     color: 'text-blue-600 bg-blue-100 dark:bg-blue-900/30',
-    description: 'Vous êtes installé à votre table'
+    description: "Vous êtes installé à votre table"
   },
   completed: {
-    label: 'Terminée',
+    label: "Terminée",
     icon: Check,
     color: 'text-gray-600 bg-gray-100 dark:bg-gray-800',
-    description: 'Merci pour votre visite !'
+    description: "Merci pour votre visite !"
   },
   cancelled: {
-    label: 'Annulée',
+    label: "Annulée",
     icon: XCircle,
     color: 'text-[#ff4000] bg-orange-100 dark:bg-[#ff4000]/30',
-    description: 'Cette réservation a été annulée'
+    description: "Cette réservation a été annulée"
   },
   no_show: {
     label: 'Absent',
     icon: X,
     color: 'text-orange-600 bg-orange-100 dark:bg-orange-900/30',
-    description: 'Vous ne vous êtes pas présenté'
+    description: "Vous ne vous êtes pas présenté"
   }
 };
 

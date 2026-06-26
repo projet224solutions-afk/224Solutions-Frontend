@@ -82,7 +82,7 @@ export function PaymentMethodsManager() {
           const defaultMethods: PaymentMethod[] = [{
             id: 'wallet-default',
             type: 'wallet',
-            label: 'Portefeuille 224Solutions',
+            label: t('paymentMethodsManager.portefeuille224solutions'),
             is_default: true,
             is_active: true
           }];
@@ -120,7 +120,7 @@ export function PaymentMethodsManager() {
           const defaultMethods: PaymentMethod[] = [{
             id: 'wallet-default',
             type: 'wallet',
-            label: 'Portefeuille 224Solutions',
+            label: t('paymentMethodsManager.portefeuille224solutions'),
             is_default: true,
             is_active: true
           }];
@@ -137,7 +137,7 @@ export function PaymentMethodsManager() {
       const defaultMethods: PaymentMethod[] = [{
         id: 'wallet-default',
         type: 'wallet',
-        label: 'Portefeuille 224Solutions',
+        label: t('paymentMethodsManager.portefeuille224solutions'),
         is_default: true,
         is_active: true
       }];
@@ -159,7 +159,7 @@ export function PaymentMethodsManager() {
           method_type: 'wallet',
           is_default: true,
           is_active: true,
-          label: 'Portefeuille 224Solutions'
+          label: t('paymentMethodsManager.portefeuille224solutions')
         });
 
       if (error) {

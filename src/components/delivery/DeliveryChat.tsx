@@ -146,8 +146,8 @@ export default function DeliveryChat({
   const getRoleBadge = () => {
     switch (recipientRole) {
       case 'livreur': return { icon: '🚴', label: 'Livreur', variant: 'default' as const };
-      case 'vendeur': return { icon: '🏪', label: 'Vendeur', variant: 'secondary' as const };
-      default: return { icon: '👤', label: 'Client', variant: 'outline' as const };
+      case 'vendeur': return { icon: '🏪', label: t('deliveryChat.vendeur'), variant: 'secondary' as const };
+      default: return { icon: '👤', label: t('deliveryChat.client'), variant: 'outline' as const };
     }
   };
 

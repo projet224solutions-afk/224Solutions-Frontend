@@ -63,13 +63,13 @@ interface ActiveDeliveryPanelProps {
 }
 
 const STATUS_STEPS: { status: DeliveryStatus; label: string; icon: any }[] = [
-  { status: 'assigned', label: 'Acceptée', icon: Check },
-  { status: 'driver_on_way_to_vendor', label: 'En route vers vendeur', icon: Navigation },
-  { status: 'driver_arrived_vendor', label: 'Arrivé chez vendeur', icon: Store },
-  { status: 'package_picked', label: 'Colis récupéré', icon: Package },
-  { status: 'driver_on_way_to_client', label: 'En route vers client', icon: Navigation },
-  { status: 'driver_arrived', label: 'Arrivé chez client', icon: MapPin },
-  { status: 'delivered', label: 'Livré', icon: Check },
+  { status: 'assigned', label: "Acceptée", icon: Check },
+  { status: 'driver_on_way_to_vendor', label: "En route vers vendeur", icon: Navigation },
+  { status: 'driver_arrived_vendor', label: "Arrivé chez vendeur", icon: Store },
+  { status: 'package_picked', label: "Colis récupéré", icon: Package },
+  { status: 'driver_on_way_to_client', label: "En route vers client", icon: Navigation },
+  { status: 'driver_arrived', label: "Arrivé chez client", icon: MapPin },
+  { status: 'delivered', label: "Livré", icon: Check },
 ];
 
 export function ActiveDeliveryPanel({

@@ -21,7 +21,8 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import useCurrentLocation from "@/hooks/useGeolocation";
 import { calculateDistance } from '@/hooks/useGeoDistance';
-import TaxiMotoBooking from "@/components/taxi-moto/TaxiMotoBooking";
+// ✅ Migration V2 : Google Places + adresses validées GPS (mêmes props que V1)
+import TaxiMotoBooking from "@/components/taxi-moto/TaxiMotoBookingV2";
 import { ShareLocationButton } from "@/components/taxi-moto/ShareLocationButton";
 import TaxiMotoTracking from "@/components/taxi-moto/TaxiMotoTracking";
 import TaxiMotoHistory from "@/components/taxi-moto/TaxiMotoHistory";
@@ -137,7 +138,7 @@ export default function TaxiMotoClient() {
   const handleTabChange = (tab: string) => {
     if (currentRide && tab !== 'tracking') {
       toast.warning('Course en cours', {
-        description: 'Terminez ou annulez votre course pour changer d\'onglet.',
+        description: t('taxiMotoClient.terminezOuAnnulezVotreCourse'),
         duration: 3000,
       });
       return;

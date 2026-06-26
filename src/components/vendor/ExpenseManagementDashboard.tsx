@@ -507,7 +507,7 @@ export default function ExpenseManagementDashboard({ className }: ExpenseManagem
                       const amount = Number(amountEl?.value || 0);
                       const category_id = catEl?.value || '';
                       if (!label || !amount || !category_id) {
-                        toast({ title: 'Champs requis', description: 'Libellé, montant et catégorie sont requis', variant: 'destructive' });
+                        toast({ title: 'Champs requis', description: t('expenseManagementDashboard.libelleMontantEtCategorieSont'), variant: 'destructive' });
                         return;
                       }
                       try {
@@ -522,13 +522,13 @@ export default function ExpenseManagementDashboard({ className }: ExpenseManagem
                           currency: 'GNF',
                           status: 'paid',
                         } as any);
-                        toast({ title: 'Dépense ajoutée' });
+                        toast({ title: t('expenseManagementDashboard.depenseAjoutee') });
                         await refetch();
                         if (labelEl) labelEl.value = '';
                         if (amountEl) amountEl.value = '';
                         if (catEl) catEl.value = '';
                       } catch (_e) {
-                        toast({ title: 'Erreur', description: 'Impossible d\'ajouter la dépense', variant: 'destructive' });
+                        toast({ title: 'Erreur', description: t('expenseManagementDashboard.impossibleDAjouterLaDepense'), variant: 'destructive' });
                       }
                     }}
                   >
@@ -575,7 +575,7 @@ export default function ExpenseManagementDashboard({ className }: ExpenseManagem
                               <Button variant="ghost" size="sm" onClick={async () => {
                                 try {
                                   await deleteExpense(e?.id);
-                                  toast({ title: 'Dépense supprimée' });
+                                  toast({ title: t('expenseManagementDashboard.depenseSupprimee') });
                                   await refetch();
                                 } catch (_err) {
                                   toast({ title: 'Erreur suppression', variant: 'destructive' });
@@ -620,12 +620,12 @@ export default function ExpenseManagementDashboard({ className }: ExpenseManagem
                     if (!name) { toast({ title: 'Nom requis', variant: 'destructive' }); return; }
                     try {
                       await createCategory({ vendor_id: userId, name, budget_limit: budget } as any);
-                      toast({ title: 'Catégorie créée' });
+                      toast({ title: t('expenseManagementDashboard.categorieCreee') });
                       await refetch();
                       if (nameEl) nameEl.value = '';
                       if (budgetEl) budgetEl.value = '';
                     } catch (_e) {
-                      toast({ title: 'Erreur', description: 'Impossible de créer la catégorie', variant: 'destructive' });
+                      toast({ title: 'Erreur', description: t('expenseManagementDashboard.impossibleDeCreerLaCategorie'), variant: 'destructive' });
                     }
                   }}>{t('expenseManagementDashboard.creer')}</Button>
                 </div>

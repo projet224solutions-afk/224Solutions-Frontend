@@ -17,6 +17,7 @@ import {
     Clock,
     CreditCard,
     Star,
+    Heart,
     Loader2,
     Calendar,
     Users,
@@ -30,12 +31,22 @@ import { toast } from "sonner";
 import { getVehicleTypeInfo } from "@/services/pricingService";
 import { useAuth } from "@/hooks/useAuth";
 import { TaxiMotoService } from "@/services/taxi/TaxiMotoService";
+import { TaxiMotoPricingService } from "@/services/taxi/TaxiMotoPricingService";
 import { supabase } from "@/integrations/supabase/client";
 import PaymentMethodStep from "./PaymentMethodStep";
 import { PaymentMethod } from "@/services/taxi/paymentsService";
 import DestinationPreview from "./DestinationPreview";
 import GooglePlacesAddressInput, { ValidatedAddress } from "@/components/shared/GooglePlacesAddressInput";
 import { precisionGeoService } from "@/services/gps/PrecisionGeolocationService";
+import { getFavoriteRoutes, saveFavoriteRoute, incrementRouteUsage, type FavoriteRoute } from "@/services/taxi/favoriteRoutesService";
+import { searchLandmarks, getLandmarkIcon, CONAKRY_LANDMARKS, type ConakryLandmark } from "@/data/conakryLandmarks";
+import { searchLocalPlaces, type LocalPlace } from "@/services/taxi/localPlacesService";
+
+// Repères les plus demandés à Conakry — accès rapide toujours visible
+const POPULAR_LANDMARK_IDS = ['madina', 'donka', 'gbessia', 'kaloum', 'ratoma', 'cosa'];
+const POPULAR_LANDMARKS = POPULAR_LANDMARK_IDS
+    .map(id => CONAKRY_LANDMARKS.find(l => l.id === id))
+    .filter((l): l is ConakryLandmark => !!l);
 
 interface LocationCoordinates {
     latitude: number;
@@ -69,6 +80,16 @@ export default function TaxiMotoBooking({
     // États du formulaire - GPS ultra-précis
     const [pickupAddress, setPickupAddress] = useState<ValidatedAddress | null>(null);
     const [destinationAddress, setDestinationAddress] = useState<ValidatedAddress | null>(null);
+
+    // ✅ Destinations favorites
+    const [favoriteRoutes, setFavoriteRoutes] = useState<FavoriteRoute[]>([]);
+    const [savingFavorite, setSavingFavorite] = useState(false);
+    const [showFavorites, setShowFavorites] = useState(false);
+
+    // ✅ Repères locaux Conakry
+    const [landmarkResults, setLandmarkResults] = useState<ConakryLandmark[]>([]);
+    const [localPlaceHits, setLocalPlaceHits] = useState<LocalPlace[]>([]);
+    const [destinationQuery, setDestinationQuery] = useState('');
     const [_selectedVehicleType, _setSelectedVehicleType] = useState<'moto_economique' | 'moto_rapide' | 'moto_premium'>('moto_rapide');
     const [scheduledTime, setScheduledTime] = useState('');
     const [isScheduled, setIsScheduled] = useState(false);
@@ -83,6 +104,12 @@ export default function TaxiMotoBooking({
     const [priceEstimate, setPriceEstimate] = useState<{
         totalPrice: number;
         basePrice: number;
+        distanceFee: number;     // ✅ distance_fee de la RPC
+        timeFee: number;         // ✅ time_fee de la RPC
+        surgeMultiplier: number; // ✅ surge_multiplier de la RPC
+        surgeAmount: number;     // ✅ calculé = total - (base+distance+temps)
+        driverShare: number;     // ✅ driver_share de la RPC
+        platformFee: number;     // ✅ platform_fee de la RPC
         distance: number;
         duration: number;
         currency: string;
@@ -147,24 +174,62 @@ export default function TaxiMotoBooking({
                     duration: route.duration.text,
                 });
 
-                // Calculer le prix via le service backend
+                // ✅ Surge dynamique (ratio demande/offre dans la zone). Non bloquant.
+                let surgeFactor = 1.0;
+                if (pickupAddress) {
+                    try {
+                        surgeFactor = await TaxiMotoPricingService.calculateSurgeMultiplier(
+                            pickupAddress.latitude,
+                            pickupAddress.longitude,
+                            5 // rayon 5 km
+                        );
+                    } catch {
+                        surgeFactor = 1.0; // fallback silencieux
+                    }
+                }
+
+                // Calculer le prix via le service backend (avec le vrai surge)
                 const fareCalculation = await TaxiMotoService.calculateFare(
                     distanceKm,
                     durationMin,
-                    1.0
+                    surgeFactor
                 );
 
                 if (fareCalculation) {
-                    const totalPrice = (fareCalculation as any).total_fare || (fareCalculation as any).total || fareCalculation.total;
-                    const basePrice = (fareCalculation as any).base_fare || 0;
+                    const f = fareCalculation as any;
+                    const totalPrice = Number(f.total_fare ?? f.total ?? 0);
+                    const baseFare = Number(f.base_fare ?? 0);
+                    const distanceFee = Number(f.distance_fee ?? f.distance_cost ?? 0);
+                    const timeFee = Number(f.time_fee ?? f.time_cost ?? 0);
+                    const surgeMultiplier = Number(f.surge_multiplier ?? 1.0);
+                    const driverShare = Number(f.driver_share ?? f.driver_earnings ?? 0);
+                    const platformFee = Number(f.platform_fee ?? f.commission ?? 0);
 
-                    setPriceEstimate({
-                        totalPrice: Math.round(totalPrice),
-                        basePrice: Math.round(basePrice),
-                        distance: distanceKm,
-                        duration: durationMin,
-                        currency: 'GNF'
-                    });
+                    // Montant ajouté par le surge
+                    const subtotalWithoutSurge = baseFare + distanceFee + timeFee;
+                    const surgeAmount = surgeMultiplier > 1
+                        ? Math.round(totalPrice - subtotalWithoutSurge)
+                        : 0;
+
+                    if (totalPrice > 0) {
+                        setPriceEstimate({
+                            totalPrice: Math.round(totalPrice),
+                            basePrice: Math.round(baseFare),
+                            distanceFee: Math.round(distanceFee),
+                            timeFee: Math.round(timeFee),
+                            surgeMultiplier,
+                            surgeAmount: Math.round(surgeAmount),
+                            driverShare: Math.round(driverShare),
+                            platformFee: Math.round(platformFee),
+                            distance: parseFloat(distanceKm.toFixed(2)),
+                            duration: Math.round(durationMin),
+                            currency: 'GNF',
+                        });
+                    } else {
+                        console.error('[TaxiMotoBooking] Prix invalide:', fareCalculation);
+                        setPriceEstimate(null);
+                        toast.error(t('taxiMotoBookingV2.impossibleDeCalculerLItineraire'));
+                    }
                 }
             }
 
@@ -187,6 +252,94 @@ export default function TaxiMotoBooking({
             return () => clearTimeout(timer);
         }
     }, [pickupAddress, destinationAddress, calculateRouteAndPrice]);
+
+    // ✅ Charger les destinations favorites au montage
+    useEffect(() => {
+        getFavoriteRoutes().then(setFavoriteRoutes).catch(() => {});
+    }, []);
+
+    // ✅ Rechercher dans les repères Conakry + les lieux locaux APPRIS dès 2 caractères
+    useEffect(() => {
+        if (destinationQuery.length < 2) {
+            setLandmarkResults([]);
+            setLocalPlaceHits([]);
+            return;
+        }
+        setLandmarkResults(searchLandmarks(destinationQuery));
+        let active = true;
+        searchLocalPlaces(destinationQuery).then(r => { if (active) setLocalPlaceHits(r); });
+        return () => { active = false; };
+    }, [destinationQuery]);
+
+    // Sélectionner un lieu local appris (coordonnées réelles issues des courses)
+    const handleSelectLocalPlace = (lp: LocalPlace) => {
+        setDestinationAddress({
+            formattedAddress: lp.name,
+            latitude: lp.latitude,
+            longitude: lp.longitude,
+            placeId: `local_${lp.id}`,
+        });
+        setLandmarkResults([]);
+        setLocalPlaceHits([]);
+        setDestinationQuery('');
+    };
+
+    // Sélectionner une route favorite (remplit départ + destination, 1 tap)
+    const handleSelectFavorite = async (route: FavoriteRoute) => {
+        setPickupAddress({
+            formattedAddress: route.pickupAddress,
+            latitude: route.pickupLat,
+            longitude: route.pickupLng,
+            placeId: `fav_${route.id}_pickup`,
+        });
+        setDestinationAddress({
+            formattedAddress: route.destinationAddress,
+            latitude: route.destinationLat,
+            longitude: route.destinationLng,
+            placeId: `fav_${route.id}_dest`,
+        });
+        setShowFavorites(false);
+        incrementRouteUsage(route.id).catch(() => {});
+        toast.success(`Route « ${route.name} » chargée`);
+    };
+
+    // Sauvegarder l'itinéraire courant comme favori
+    const handleSaveFavorite = async () => {
+        if (!pickupAddress || !destinationAddress) return;
+        setSavingFavorite(true);
+        try {
+            const name = destinationAddress.formattedAddress.split(',')[0] || 'Ma destination';
+            const result = await saveFavoriteRoute({
+                name,
+                pickupAddress: pickupAddress.formattedAddress,
+                pickupLat: pickupAddress.latitude,
+                pickupLng: pickupAddress.longitude,
+                destinationAddress: destinationAddress.formattedAddress,
+                destinationLat: destinationAddress.latitude,
+                destinationLng: destinationAddress.longitude,
+            });
+            if (result.success) {
+                toast.success('Destination sauvegardée dans vos favoris !');
+                getFavoriteRoutes().then(setFavoriteRoutes);
+            } else {
+                toast.error(result.error || 'Impossible de sauvegarder');
+            }
+        } finally {
+            setSavingFavorite(false);
+        }
+    };
+
+    // Sélectionner un repère local comme destination
+    const handleSelectLandmark = (landmark: ConakryLandmark) => {
+        setDestinationAddress({
+            formattedAddress: `${landmark.name}, ${landmark.commune}, Conakry`,
+            latitude: landmark.latitude,
+            longitude: landmark.longitude,
+            placeId: `landmark_${landmark.id}`,
+        });
+        setLandmarkResults([]);
+        setDestinationQuery('');
+    };
 
     /**
      * Ouvre l'étape de sélection du mode de paiement
@@ -287,6 +440,37 @@ export default function TaxiMotoBooking({
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                    {/* ✅ Destinations favorites — 1 tap pour pré-remplir départ + destination */}
+                    {favoriteRoutes.length > 0 && (
+                        <div className="space-y-2">
+                            <button
+                                onClick={() => setShowFavorites(prev => !prev)}
+                                className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-primary transition-colors"
+                            >
+                                <Star className="w-3.5 h-3.5 text-[#ff4000]" />
+                                Mes destinations ({favoriteRoutes.length})
+                            </button>
+                            {showFavorites && (
+                                <div className="space-y-1.5">
+                                    {favoriteRoutes.map((route) => (
+                                        <button
+                                            key={route.id}
+                                            onClick={() => handleSelectFavorite(route)}
+                                            className="w-full text-left px-3 py-2.5 rounded-xl border bg-card hover:border-primary/40 transition-all flex items-center gap-2.5"
+                                        >
+                                            <Heart className="w-4 h-4 text-[#ff4000] flex-shrink-0" />
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-sm font-medium truncate">{route.name}</p>
+                                                <p className="text-[10px] text-muted-foreground truncate">{route.destinationAddress}</p>
+                                            </div>
+                                            <span className="text-[10px] text-muted-foreground flex-shrink-0">{route.usageCount}×</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     {/* Point de départ - GPS Ultra-Précis */}
                     <GooglePlacesAddressInput
                         label={t('taxiMotoBookingV2.pointDeDepart')}
@@ -313,6 +497,7 @@ export default function TaxiMotoBooking({
                         required={true}
                         variant="destination"
                         onChange={setDestinationAddress}
+                        onInputChange={setDestinationQuery}
                         onValidChange={(valid) => {
                             if (!valid) {
                                 setRouteInfo(null);
@@ -320,6 +505,72 @@ export default function TaxiMotoBooking({
                             }
                         }}
                     />
+
+                    {/* ✅ Repères populaires Conakry — TOUJOURS visibles, 1 tap = destination */}
+                    <div className="space-y-1.5">
+                        <p className="text-[10px] font-medium text-muted-foreground flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-[#ff4000]" />
+                            Repères rapides Conakry
+                        </p>
+                        <div className="flex flex-wrap gap-1.5">
+                            {POPULAR_LANDMARKS.map((lm) => (
+                                <button
+                                    key={lm.id}
+                                    onClick={() => handleSelectLandmark(lm)}
+                                    className="px-2.5 py-1 rounded-full border bg-card text-xs hover:border-[#ff4000]/50 hover:text-[#ff4000] transition-all flex items-center gap-1"
+                                >
+                                    <span>{getLandmarkIcon(lm.category)}</span>
+                                    {lm.name.replace(/^(Marché |Hôpital |CHU |Aéroport |Centre )/, '')}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* ✅ Lieux locaux APPRIS (coordonnées réelles issues des courses) — prioritaires */}
+                    {localPlaceHits.length > 0 && (
+                        <div className="rounded-xl border border-[#16a34a]/30 bg-card overflow-hidden shadow-sm">
+                            <p className="px-3 py-1.5 text-[10px] font-medium text-[#16a34a] bg-[#16a34a]/10 border-b flex items-center gap-1">
+                                <MapPin className="w-3 h-3" />
+                                Lieux connus (GPS vérifié par les courses)
+                            </p>
+                            {localPlaceHits.map((lp) => (
+                                <button
+                                    key={lp.id}
+                                    onClick={() => handleSelectLocalPlace(lp)}
+                                    className="w-full text-left px-3 py-2.5 hover:bg-muted/50 transition-colors border-b last:border-b-0 flex items-center gap-2.5"
+                                >
+                                    <span className="text-base flex-shrink-0">📍</span>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-medium truncate">{lp.name}</p>
+                                        <p className="text-[10px] text-muted-foreground">{lp.usageCount} course{lp.usageCount > 1 ? 's' : ''}</p>
+                                    </div>
+                                    <span className="text-[10px] text-[#16a34a] font-medium">✓ précis</span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* ✅ Repères locaux Conakry — résultats de recherche dès 2 caractères tapés */}
+                    {landmarkResults.length > 0 && (
+                        <div className="rounded-xl border bg-card overflow-hidden shadow-sm">
+                            <p className="px-3 py-1.5 text-[10px] font-medium text-muted-foreground bg-muted/40 border-b">
+                                Repères Conakry
+                            </p>
+                            {landmarkResults.map((lm) => (
+                                <button
+                                    key={lm.id}
+                                    onClick={() => handleSelectLandmark(lm)}
+                                    className="w-full text-left px-3 py-2.5 hover:bg-muted/50 transition-colors border-b last:border-b-0 flex items-center gap-2.5"
+                                >
+                                    <span className="text-base flex-shrink-0">{getLandmarkIcon(lm.category)}</span>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-medium truncate">{lm.name}</p>
+                                        <p className="text-[10px] text-muted-foreground">{lm.commune}</p>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    )}
 
                     {/* Statut de validation GPS */}
                     {(pickupAddress || destinationAddress) && (
@@ -383,6 +634,22 @@ export default function TaxiMotoBooking({
                 />
             )}
 
+            {/* ✅ Sauvegarder l'itinéraire courant en favori */}
+            {pickupAddress && destinationAddress && (
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSaveFavorite}
+                    disabled={savingFavorite}
+                    className="w-full text-xs gap-1.5"
+                >
+                    {savingFavorite
+                        ? <Loader2 className="w-3 h-3 animate-spin" />
+                        : <Heart className="w-3 h-3 text-[#ff4000]" />}
+                    Sauvegarder cette route
+                </Button>
+            )}
+
             {/* Informations d'itinéraire Google Maps */}
             {routeInfo && (
                 <Card className="bg-card border-0 shadow-lg">
@@ -425,27 +692,70 @@ export default function TaxiMotoBooking({
                             Détail du prix
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-3">
+                    <CardContent className="space-y-2.5">
+                        {/* Tarif de base */}
                         <div className="flex justify-between text-sm">
-                            <span>{t('taxiMotoBookingV2.prixDeBase')}</span>
-                            <span><Money amount={priceEstimate.basePrice || 0} from="GNF" /></span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                            <span>Distance ({routeInfo?.distanceText || `${priceEstimate.distance}km`})</span>
-                            <span>Inclus</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                            <span>Temps estimé ({routeInfo?.durationText || `${priceEstimate.duration}min`})</span>
-                            <span>Inclus</span>
+                            <span className="text-muted-foreground">{t('taxiMotoBookingV2.prixDeBase')}</span>
+                            <span className="font-medium"><Money amount={priceEstimate.basePrice || 0} from="GNF" /></span>
                         </div>
 
+                        {/* Distance — montant réel */}
+                        <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">
+                                Distance ({routeInfo?.distanceText || `${priceEstimate.distance} km`})
+                            </span>
+                            <span className="font-medium">
+                                {priceEstimate.distanceFee > 0
+                                    ? <Money amount={priceEstimate.distanceFee} from="GNF" />
+                                    : 'Inclus'}
+                            </span>
+                        </div>
+
+                        {/* Temps — montant réel */}
+                        <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">
+                                Temps ({routeInfo?.durationText || `${priceEstimate.duration} min`})
+                            </span>
+                            <span className="font-medium">
+                                {priceEstimate.timeFee > 0
+                                    ? <Money amount={priceEstimate.timeFee} from="GNF" />
+                                    : 'Inclus'}
+                            </span>
+                        </div>
+
+                        {/* Surge — uniquement si majoration */}
+                        {priceEstimate.surgeMultiplier > 1.0 && (
+                            <>
+                                <Separator />
+                                <div className="flex justify-between text-sm">
+                                    <span className="flex items-center gap-1 text-[#ff4000] font-medium">
+                                        <Zap className="w-3.5 h-3.5" />
+                                        Majoration forte demande (×{priceEstimate.surgeMultiplier.toFixed(2)})
+                                    </span>
+                                    <span className="text-[#ff4000] font-medium">
+                                        +<Money amount={priceEstimate.surgeAmount} from="GNF" />
+                                    </span>
+                                </div>
+                            </>
+                        )}
+
                         <Separator />
-                        <div className="flex justify-between text-lg font-bold">
-                            <span>Total</span>
-                            <span className="text-[#ff4000]">
+
+                        {/* Total */}
+                        <div className="flex justify-between">
+                            <span className="text-base font-bold">Total</span>
+                            <span className="text-lg font-bold text-[#ff4000]">
                                 <Money amount={priceEstimate.totalPrice || 0} from="GNF" />
                             </span>
                         </div>
+
+                        {/* Part chauffeur (informatif) */}
+                        {priceEstimate.driverShare > 0 && (
+                            <div className="flex justify-between text-xs text-muted-foreground pt-1 border-t">
+                                <span>Revenu chauffeur</span>
+                                <span><Money amount={priceEstimate.driverShare} from="GNF" /></span>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             )}
