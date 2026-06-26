@@ -2049,17 +2049,9 @@ export default function Auth() {
                       }}
                       className="group flex flex-col items-center p-3 bg-[#ff4000]/5 rounded-xl border-2 hover:border-[#ff4000] hover:shadow-lg hover:scale-[1.02] transition-all border-orange-200"
                     >
-                      <div className="relative mb-2 h-24 w-full overflow-hidden rounded-xl">
-                        <img src={item.image} alt={item.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-black/5 to-transparent" />
-                        <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-center">
-                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
-                            {item.logoImage ? (
-                              <img src={item.logoImage} alt={item.name} className="h-full w-full object-cover" loading="lazy" />
-                            ) : (
-                              <Icon className="h-6 w-6 text-[#ff4000]" />
-                            )}
-                          </div>
+                      <div className="mb-2 flex h-20 w-full items-center justify-center rounded-xl">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#ff4000]/10">
+                          <Icon className="h-7 w-7 text-[#ff4000]" />
                         </div>
                       </div>
                       <span className="text-sm font-semibold text-foreground">{item.name}</span>
@@ -2088,17 +2080,9 @@ export default function Auth() {
                         selectedServiceType === service.id ? 'border-primary ring-2 ring-primary/30 bg-primary/5' : 'border-slate-200'
                       }`}
                     >
-                      <div className="relative mb-2 h-24 w-full overflow-hidden rounded-xl">
-                        <img src={service.image} alt={service.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/5 to-transparent" />
-                        <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-center">
-                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
-                            {service.logoImage ? (
-                              <img src={service.logoImage} alt={service.name} className="h-full w-full object-cover" loading="lazy" />
-                            ) : (
-                              <Icon className="h-6 w-6 text-primary" />
-                            )}
-                          </div>
+                      <div className="mb-2 flex h-20 w-full items-center justify-center rounded-xl">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+                          <Icon className="h-7 w-7 text-primary" />
                         </div>
                       </div>
                       <span className="text-sm font-semibold text-foreground">{service.name}</span>
@@ -2127,17 +2111,9 @@ export default function Auth() {
                         selectedServiceType === service.id ? 'border-[#04439e] ring-2 ring-[#04439e]/30' : 'border-blue-200'
                       }`}
                     >
-                      <div className="relative mb-2 h-24 w-full overflow-hidden rounded-xl">
-                        <img src={service.image} alt={service.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/5 to-transparent" />
-                        <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-center">
-                          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
-                            {service.logoImage ? (
-                              <img src={service.logoImage} alt={service.name} className="h-full w-full object-cover" loading="lazy" />
-                            ) : (
-                              <Icon className="h-6 w-6 text-[#04439e]" />
-                            )}
-                          </div>
+                      <div className="mb-2 flex h-20 w-full items-center justify-center rounded-xl">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#04439e]/10">
+                          <Icon className="h-7 w-7 text-[#04439e]" />
                         </div>
                       </div>
                       <span className="text-sm font-semibold text-foreground">{service.name}</span>
@@ -2169,12 +2145,8 @@ export default function Auth() {
                           onClick={() => handleHealthSubtypeSelect(service.id)}
                           className="group flex items-center gap-3 rounded-xl border-2 border-blue-200 bg-white p-3 text-left transition-all hover:border-[#04439e] hover:shadow-lg"
                         >
-                          <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm">
-                            {service.logoImage ? (
-                              <img src={service.logoImage} alt={service.name} className="h-full w-full object-cover" loading="lazy" />
-                            ) : (
-                              <Icon className="h-6 w-6 text-[#04439e]" />
-                            )}
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#04439e]/10">
+                            <Icon className="h-6 w-6 text-[#04439e]" />
                           </div>
                           <div>
                             <span className="block text-sm font-semibold text-foreground">{service.name}</span>

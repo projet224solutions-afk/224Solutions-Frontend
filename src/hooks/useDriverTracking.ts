@@ -8,6 +8,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { subscribeLivePosition, driverPositionTopic, ridePositionTopic } from '@/lib/realtime/livePositions';
+import { estimateEtaMinutes } from '@/utils/etaConakry';
 
 export interface DriverPosition {
   latitude: number;
@@ -29,9 +30,9 @@ function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): nu
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-/** ETA en minutes à 30 km/h (0.5 km/min) */
+/** ETA en minutes — vitesse adaptative selon l'heure (trafic Conakry). */
 function calcEta(distKm: number): number {
-  return Math.max(1, Math.ceil(distKm / 0.5));
+  return estimateEtaMinutes({ distanceKm: distKm });
 }
 
 /**
