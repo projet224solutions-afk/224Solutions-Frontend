@@ -205,8 +205,12 @@ export function CreateUserForm({ agentId, agentCode, accessToken, onUserCreated 
       const result = await createUser(userData, agentId, agentCode, accessToken);
 
       if (result.success) {
-        toast.success(t('createUserForm.utilisateurCreeAvecSucces'));
-        // ✅ Ne pas fermer le dialog — showRecap s'affiche à la place.
+        // ✅ Toast de succès émis par le hook (source unique) — pas de doublon ici.
+        // ✅ Fermer le dialog du formulaire : démonte le DialogContent Radix → supprime
+        // le focus-trap, le récap (showRecap) devient le seul overlay, pleinement
+        // accessible (souris, tactile ET clavier). Le récap reste affiché car il dépend
+        // de showRecap && createdUser, indépendamment de isOpen.
+        setIsOpen(false);
         // Le reset du formulaire se fait quand l'agent ferme le récapitulatif (closeRecap).
       } else {
         // ✅ Message d'erreur adapté selon le type
