@@ -2356,7 +2356,7 @@ export default function Auth() {
                 <div className="bg-muted/10 border border-border/50 rounded-2xl p-6 shadow-sm">
                   <div className="text-center mb-5">
                     <div className="w-14 h-14 flex items-center justify-center mx-auto mb-3">
-                      <Store className="h-7 w-7 text-primary" />
+                      <span className="text-4xl leading-none select-none" style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.28))' }} role="img" aria-label="Boutique">🏪</span>
                     </div>
                     <h3 className="text-base font-bold text-foreground mb-1">{t('auth.classicSeller')}</h3>
                     <p className="text-xs text-muted-foreground">{t('auth.whatProductsToSell')}</p>
@@ -2377,7 +2377,7 @@ export default function Auth() {
                       className="group flex flex-col items-center text-center gap-2 sm:gap-3 p-3 sm:p-5 rounded-xl border-2 border-border/60 bg-background hover:border-primary hover:bg-primary/5 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200"
                     >
                       <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shrink-0">
-                        <ShoppingBag className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
+                        <span className="text-3xl sm:text-4xl leading-none select-none" style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.28))' }} role="img" aria-label="E-commerce">🛍️</span>
                       </div>
                       <div className="min-w-0">
                         <span className="text-xs sm:text-sm font-bold text-foreground block mb-0.5 sm:mb-1">E-commerce</span>
@@ -2399,7 +2399,7 @@ export default function Auth() {
                       className="group flex flex-col items-center text-center gap-2 sm:gap-3 p-3 sm:p-5 rounded-xl border-2 border-border/60 bg-background hover:border-[#04439e] hover:bg-blue-50/60 hover:shadow-lg hover:shadow-[#04439e]/10 transition-all duration-200"
                     >
                       <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shrink-0">
-                        <Laptop className="h-6 w-6 sm:h-7 sm:w-7 text-[#04439e]" />
+                        <span className="text-3xl sm:text-4xl leading-none select-none" style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.28))' }} role="img" aria-label="Digitaux">💻</span>
                       </div>
                       <div className="min-w-0">
                         <span className="text-xs sm:text-sm font-bold text-foreground block mb-0.5 sm:mb-1">Digitaux</span>
@@ -2466,7 +2466,7 @@ export default function Auth() {
                     }`}
                   >
                     <div className="w-12 h-12 flex items-center justify-center">
-                      <Store className={`h-6 w-6 ${selectedRole === 'vendeur' && !selectedServiceType ? 'text-white' : 'text-primary'}`} />
+                      <span className="text-3xl leading-none select-none" style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.28))' }} role="img" aria-label="Vendeur">🏪</span>
                     </div>
                     <span className={`text-sm font-semibold ${selectedRole === 'vendeur' && !selectedServiceType ? 'text-white' : 'text-foreground'}`}>
                       Vendeur classique
@@ -2487,7 +2487,7 @@ export default function Auth() {
                     }`}
                   >
                     <div className="w-12 h-12 flex items-center justify-center">
-                      <Briefcase className={`h-6 w-6 ${selectedRole === 'prestataire' ? 'text-white' : 'text-[#ff4000]'}`} />
+                      <span className="text-3xl leading-none select-none" style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.28))' }} role="img" aria-label="Service">💼</span>
                     </div>
                     <span className={`text-sm font-semibold ${selectedRole === 'prestataire' ? 'text-white' : 'text-foreground'}`}>
                       Service
