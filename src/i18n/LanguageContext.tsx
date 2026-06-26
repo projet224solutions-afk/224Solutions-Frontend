@@ -4,8 +4,14 @@
  */
 
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { translations, supportedLanguages, defaultLanguage } from './translations';
+import { supportedLanguages, defaultLanguage, loadTranslations } from './languages';
 import { getLanguageForCountry, isRTLLanguage } from '@/data/countryMappings';
+
+// Précharge la langue par défaut (fr) dès l'import du module : évite un flash de clés
+// brutes au tout premier rendu. Les traductions complètes (21 Mo) ne sont plus dans le
+// bundle initial — chaque langue est un chunk chargé à la volée.
+let defaultTranslationsCache: Record<string, string> = {};
+void loadTranslations(defaultLanguage).then((t) => { defaultTranslationsCache = t; });
 
 
 interface LanguageContextType {
@@ -99,6 +105,20 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   const [userCountry, setUserCountry] = useState<string | null>(null);
   const [hasAutoDetected, setHasAutoDetected] = useState(false);
+
+  // ✅ Traductions de la langue active, chargées dynamiquement (1 chunk par langue).
+  const [activeTranslations, setActiveTranslations] = useState<Record<string, string>>(
+    () => defaultTranslationsCache
+  );
+
+  // Charge dynamiquement les traductions à chaque changement de langue.
+  useEffect(() => {
+    let cancelled = false;
+    loadTranslations(language)
+      .then((trans) => { if (!cancelled) setActiveTranslations(trans); })
+      .catch(() => { /* ne pas bloquer l'UI ; t() retombe sur la clé / le cache fr */ });
+    return () => { cancelled = true; };
+  }, [language]);
 
   // Détection du pays et langue au chargement - SYNCHRO avec useGeoDetection
   useEffect(() => {
@@ -216,9 +236,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   // Fonction de traduction
   const t = useCallback((key: string): string => {
-    const langTranslations = translations[language] || translations[defaultLanguage];
-    return langTranslations[key] || translations[defaultLanguage]?.[key] || key;
-  }, [language]);
+    // Langue active si chargée, sinon repli sur le cache fr préchargé, sinon la clé brute.
+    return activeTranslations[key] || defaultTranslationsCache[key] || key;
+  }, [activeTranslations]);
 
   // Vérifier si RTL - utiliser notre helper centralisé
   const currentIsRTL = isRTLLanguage(language) ||
@@ -244,7 +264,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 const defaultContextValue: LanguageContextType = {
   language: defaultLanguage,
   setLanguage: () => console.warn('LanguageProvider not mounted'),
-  t: (key: string) => translations[defaultLanguage]?.[key] || key,
+  t: (key: string) => defaultTranslationsCache[key] || key,
   userCountry: null,
   isRTL: false,
   supportedLanguages

@@ -125,6 +125,14 @@ export default defineConfig(({ mode }) => {
     build: {
       rollupOptions: {
         output: {
+          // Nomme les chunks de langue pour le debug : assets/locale-fr-[hash].js, etc.
+          // (chaque src/i18n/locales/{code}.ts devient un chunk chargé à la volée).
+          chunkFileNames: (chunkInfo) => {
+            if (chunkInfo.facadeModuleId?.includes('/i18n/locales/')) {
+              return 'assets/locale-[name]-[hash].js';
+            }
+            return 'assets/[name]-[hash].js';
+          },
           // manualChunks DÉSACTIVÉ : le découpage manuel (vendors + code app) créait des
           // dépendances circulaires ENTRE chunks → erreurs runtime au démarrage empêchant
           // React de monter (TDZ « before initialization », « Class extends undefined »,
