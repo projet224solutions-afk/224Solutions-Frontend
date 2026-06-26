@@ -4,6 +4,7 @@ import { HelmetProvider } from "react-helmet-async";
 import App from "./App.tsx";
 import "./index.css";
 import { registerServiceWorker, unregisterServiceWorker, resetPWA } from "./lib/serviceWorkerRegistration";
+import { startVersionCheck } from "@/lib/versionCheck";
 import { initPWAInstallPromptListener } from "./lib/pwaInstallPrompt";
 import { initMonitoring } from "./lib/monitoring";
 import { initializeSecurity } from "./lib/security";
@@ -196,6 +197,11 @@ function initializePwaRuntime() {
 
   runSafeStartupStep('register service worker', () => {
     registerServiceWorker({ force: enablePwaPreview });
+  });
+
+  // Vérification de version (bannière non-bloquante + forçage si version critique)
+  runSafeStartupStep('version check', () => {
+    startVersionCheck();
   });
 }
 
