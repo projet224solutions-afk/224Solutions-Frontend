@@ -14,12 +14,11 @@
  *   const { format } = useMoneyFormat(); format(25000)        // version string (toasts, etc.)
  */
 import { usePriceConverter, useConvertedPrice } from '@/hooks/usePriceConverter';
-
-const NO_DECIMALS = new Set(['GNF', 'XOF', 'XAF', 'JPY', 'KRW', 'VND', 'UGX', 'RWF', 'BIF', 'CDF']);
+import { getCurrencyDecimals } from '@/config/currencyConfig';
 
 function rawFormat(amount: number, currency: string): string {
   const cur = (currency || 'GNF').toUpperCase();
-  const digits = NO_DECIMALS.has(cur) ? 0 : 2;
+  const digits = getCurrencyDecimals(cur);
   return `${Number(amount || 0).toLocaleString('fr-FR', { maximumFractionDigits: digits })} ${cur}`;
 }
 

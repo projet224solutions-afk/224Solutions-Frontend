@@ -10,6 +10,7 @@
  */
 
 import { useMemo, useCallback, useState, useEffect } from 'react';
+import { smartRound } from '@/config/currencyConfig';
 import { useGeoDetection } from './useGeoDetection';
 import { formatCurrency } from '@/lib/formatters';
 import { useCurrency } from '@/contexts/CurrencyContext';
@@ -167,13 +168,8 @@ export function usePriceConverter(): UsePriceConverterResult {
       };
     }
 
-    // Arrondi selon la devise
-    const noDecimalCurrencies = ['GNF', 'XOF', 'XAF', 'JPY', 'KRW', 'VND', 'NGN', 'UGX', 'RWF', 'BIF', 'CDF'];
-    if (noDecimalCurrencies.includes(to)) {
-      convertedAmount = Math.round(convertedAmount);
-    } else {
-      convertedAmount = Math.round(convertedAmount * 100) / 100;
-    }
+    // ✅ Source unique partagée — plus de liste locale divergente
+    convertedAmount = smartRound(convertedAmount, to);
 
     return {
       originalAmount: amount,
