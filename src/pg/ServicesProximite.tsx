@@ -453,8 +453,10 @@ export default function ServicesProximite() {
         </div>
       </section>
 
-      {/* CTA parcours client artisan (demande → devis multiples) */}
-      {["plomberie", "vitrerie", "menuiserie", "soudure"].includes(selectedCategory) && (
+      {/* CTA parcours client artisan (demande → devis multiples).
+          Soudure retiré : il fonctionne comme un service de proximité standard
+          (listing des soudeurs disponibles + profil), pas via demande de devis. */}
+      {["plomberie", "vitrerie", "menuiserie"].includes(selectedCategory) && (
         <section className="px-4 py-3">
           <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-[#ff4000]/30 bg-[#ff4000]/5 p-4">
             <div className="min-w-0">
