@@ -1,17 +1,17 @@
 import { useTranslation } from "@/hooks/useTranslation";
-﻿/**
+/**
  * PAGE MES COMMANDES - Suivi unifié Restaurant + Taxi-Moto
  * Le client voit l'évolution de ses commandes en temps réel
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, UtensilsCrossed, Bike, Clock, RefreshCw, ChefHat, Package, CheckCircle2, XCircle, MapPin, Phone, RotateCcw, Star } from 'lucide-react';
+import { ArrowLeft, UtensilsCrossed, Bike, Clock, RefreshCw, ChefHat, Package, CheckCircle2, XCircle, MapPin, RotateCcw, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Money } from '@/components/Money';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
@@ -20,8 +20,13 @@ import { toast } from 'sonner';
 import { ClientDeliveryTracking } from '@/components/delivery/ClientDeliveryTracking';
 import QuickFooter from '@/components/QuickFooter';
 
-// Status configs
-const restaurantStatusConfig: Record<string, { label: string; color: string; icon: any; step: number }> = {
+// Status configs — fonctions de `t` (t() ne doit PAS être appelé au niveau
+// module : il est undefined hors composant → ReferenceError à l'évaluation, qui
+// faisait planter toute la page « Mes Commandes ».
+type StatusConfig = Record<string, { label: string; color: string; icon: any; step: number }>;
+type TFunc = (k: string) => string;
+
+const getRestaurantStatusConfig = (t: TFunc): StatusConfig => ({
   pending: { label: 'En attente', color: 'bg-[#ff4000]', icon: Clock, step: 1 },
   confirmed: { label: t('mesCommandes.confirmee'), color: 'bg-blue-500', icon: CheckCircle2, step: 2 },
   preparing: { label: t('mesCommandes.enPreparation'), color: 'bg-orange-500', icon: ChefHat, step: 3 },
@@ -29,9 +34,9 @@ const restaurantStatusConfig: Record<string, { label: string; color: string; ico
   delivered: { label: t('mesCommandes.livree'), color: 'bg-[#ff4000]', icon: CheckCircle2, step: 5 },
   completed: { label: t('mesCommandes.terminee'), color: 'bg-primary', icon: CheckCircle2, step: 6 },
   cancelled: { label: t('mesCommandes.annulee'), color: 'bg-destructive', icon: XCircle, step: 0 },
-};
+});
 
-const taxiStatusConfig: Record<string, { label: string; color: string; icon: any; step: number }> = {
+const getTaxiStatusConfig = (t: TFunc): StatusConfig => ({
   requested: { label: 'Recherche chauffeur', color: 'bg-[#ff4000]', icon: Clock, step: 1 },
   accepted: { label: 'Chauffeur en route', color: 'bg-blue-500', icon: Bike, step: 2 },
   arrived: { label: t('mesCommandes.chauffeurArrive'), color: 'bg-[#04439e]', icon: MapPin, step: 3 },
@@ -40,7 +45,7 @@ const taxiStatusConfig: Record<string, { label: string; color: string; icon: any
   cancelled: { label: t('mesCommandes.annulee'), color: 'bg-destructive', icon: XCircle, step: 0 },
   cancelled_by_customer: { label: t('mesCommandes.annulee'), color: 'bg-destructive', icon: XCircle, step: 0 },
   cancelled_by_driver: { label: t('mesCommandes.annuleeParChauffeur'), color: 'bg-destructive', icon: XCircle, step: 0 },
-};
+});
 
 const restaurantSteps = ['En attente', 'Confirmée', 'Préparation', 'Prête', 'Livrée', 'Terminée'];
 const taxiSteps = ['Demandée', 'Acceptée', 'Arrivé', 'En course', 'Terminée'];
@@ -133,6 +138,7 @@ function RestaurantOrderCard({ order }: { order: RestaurantOrderTracking }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const restaurantStatusConfig = getRestaurantStatusConfig(t);
   const config = restaurantStatusConfig[order.status || 'pending'] || restaurantStatusConfig.pending;
   const StatusIcon = config.icon;
   const isCancelled = order.status === 'cancelled';
@@ -289,6 +295,7 @@ function RestaurantOrderCard({ order }: { order: RestaurantOrderTracking }) {
 
 function TaxiTripCard({ trip }: { trip: TaxiTripTracking }) {
   const { t } = useTranslation();
+  const taxiStatusConfig = getTaxiStatusConfig(t);
   const config = taxiStatusConfig[trip.status || 'requested'] || taxiStatusConfig.requested;
   const StatusIcon = config.icon;
   const isCancelled = ['cancelled', 'cancelled_by_customer', 'cancelled_by_driver'].includes(trip.status || '');
