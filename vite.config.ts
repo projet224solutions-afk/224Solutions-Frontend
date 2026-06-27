@@ -14,10 +14,12 @@ import { buildInfoPlugin } from "./vite-plugins/buildInfo";
 const APP_BUILD_VERSION = `v${Date.now()}`;
 
 // Plugin : génère dist/version.json (lu par versionCheck pour la bannière / le forçage MAJ).
-// NB : le remplacement de __SW_VERSION__ dans le SW est DÉJÀ fait par buildInfoPlugin —
-// on ne le duplique pas ici (sinon deux plugins se disputent le même fichier). version.json
-// utilise APP_BUILD_VERSION (v<timestamp>) = même valeur que import.meta.env.VITE_APP_VERSION,
-// indispensable car versionCheck compare des timestamps numériques (isOlder).
+// ✅ SOURCE UNIQUE DE VERSION : APP_BUILD_VERSION est désormais partagée entre :
+//   • le service worker (via buildInfoPlugin(APP_BUILD_VERSION) → __SW_VERSION__)
+//   • version.json (ce plugin)
+//   • VITE_APP_VERSION (import.meta.env, lu par versionCheck)
+// Les trois pointent vers la MÊME valeur "v<timestamp>" → cohérence totale.
+// Le bloc ci-dessous reste comme simple garde-fou (idempotent).
 function appVersionJsonPlugin() {
   return {
     name: 'app-version-json',
@@ -148,7 +150,8 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      buildInfoPlugin(),
+      // ✅ Source unique de version : APP_BUILD_VERSION partagée avec le SW (__SW_VERSION__)
+      buildInfoPlugin(APP_BUILD_VERSION),
       appVersionJsonPlugin(),
       mode === 'development' && componentTagger(),
     ].filter(Boolean),

@@ -13,8 +13,13 @@ function generateBuildId(): string {
   return `VF-${timestamp}-${random}`.toUpperCase();
 }
 
-export function buildInfoPlugin(): Plugin {
-  const buildId = generateBuildId();
+/**
+ * @param sharedVersion Version unique du build (format "v<timestamp>"), partagée avec
+ *   version.json et VITE_APP_VERSION. Si absent, génère un buildId interne (compat rétro).
+ */
+export function buildInfoPlugin(sharedVersion?: string): Plugin {
+  // ✅ Source unique : on utilise la version partagée si fournie (sinon repli buildId interne).
+  const buildId = sharedVersion || generateBuildId();
   const buildDate = new Date().toISOString();
 
   return {
