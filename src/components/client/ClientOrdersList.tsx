@@ -770,6 +770,7 @@ export default function ClientOrdersList() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+            {/* onClick enrobé : confirmDelivery(orderOverride?) ne doit pas recevoir l'event MouseEvent */}
             <AlertDialogAction onClick={() => void confirmDelivery()}>
               {t('orders.confirmReceptionBtn')}
             </AlertDialogAction>

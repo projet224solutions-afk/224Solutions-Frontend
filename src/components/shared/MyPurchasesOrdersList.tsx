@@ -732,6 +732,7 @@ export default function MyPurchasesOrdersList({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t('myPurchasesOrdersList.annuler')}</AlertDialogCancel>
+            {/* onClick enrobé : confirmDelivery(orderOverride?) ne doit pas recevoir l'event MouseEvent */}
             <AlertDialogAction onClick={() => void confirmDelivery()}>Confirmer</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
