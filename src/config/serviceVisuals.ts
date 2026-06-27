@@ -110,7 +110,7 @@ export const SERVICE_VISUALS: Record<string, ServiceVisual> = {
     logoImage: '/service-icons-3d/livraison.png',
   },
   location: {
-    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80',
     accent: '#04439e',
     icon: Building2,
     logoImage: '/service-icons-3d/immobilier.png',
