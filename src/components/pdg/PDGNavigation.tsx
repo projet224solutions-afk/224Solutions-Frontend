@@ -80,7 +80,7 @@ const categories: NavCategory[] = [
       { value: 'vendor-certification', label: 'Certification Vendeurs', icon: Shield, badge: true, permission: 'view_vendor_certification' },
       { value: 'drivers', label: 'Livreurs', icon: Bike, permission: 'view_drivers' },
       { value: 'quotes-invoices', label: 'Devis & Factures', icon: FileText, permission: 'view_quotes_invoices' },
-      { value: 'support-technique', label: 'Support Technique', icon: Headphones, badge: true, permission: 'view_orders' },
+      { value: 'support-technique', label: 'Support Technique', icon: Headphones, badge: true, permission: 'view_support' },
       { value: 'communication', label: 'Communication', icon: MessageSquare, permission: 'access_communication' },
       { value: 'broadcast-center', label: '📢 Diffusion Globale', icon: Megaphone, badge: true, permission: 'view_broadcasts' },
       { value: 'campaign-supervision', label: '📊 Campagnes Vendeurs', icon: Megaphone, permission: 'view_broadcasts' },
