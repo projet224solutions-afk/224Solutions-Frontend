@@ -286,6 +286,17 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/logo-soudure.svg",
     accent: "#ff4000"
+  },
+  {
+    id: "transitaire",
+    title: "Transitaire",
+    icon: Briefcase,
+    description: "Import & export",
+    count: stats.transitaire || 0,
+    path: "/transitaire",
+    image: "https://images.unsplash.com/photo-1605745341112-85968b19335b?auto=format&fit=crop&w=1000&q=85",
+    logoImage: "/service-icons-3d/transitaire.png",
+    accent: "#04439e"
   }
 ];
 
