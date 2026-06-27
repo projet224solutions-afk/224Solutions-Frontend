@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
-import { AlertCircle, Loader2, Store, ArrowLeft, Eye, EyeOff, Search, ChevronDown, Check, RefreshCw, Zap, LogIn, UserPlus, Briefcase, CheckCircle2, Laptop, ShoppingBag, Bike, Truck, Utensils, Scissors, Car, Wrench, Sparkles, Dumbbell, Building2, Camera, Heart, Home, Phone, Lock, Mail, Square, Hammer, Flame, Pill } from "lucide-react";
+import { AlertCircle, Loader2, Store, ArrowLeft, Eye, EyeOff, Search, ChevronDown, Check, RefreshCw, Zap, LogIn, UserPlus, Briefcase, CheckCircle2, Laptop, ShoppingBag, Bike, Truck, Utensils, Scissors, Car, Wrench, Sparkles, Dumbbell, Building2, Camera, Heart, Home, Phone, Lock, Mail, Square, Hammer, Flame, Pill, MapPin } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Separator } from "@/components/ui/separator";
@@ -198,6 +198,9 @@ export default function Auth() {
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
   const [showSignup, setShowSignup] = useState(false);
   const [selectedServiceType, setSelectedServiceType] = useState<string | null>(null);
+  // ✅ Position GPS du commerce (prestataires de proximité) — capturée à l'inscription
+  const [businessLocation, setBusinessLocation] = useState<{ latitude: number; longitude: number; accuracy: number } | null>(null);
+  const [capturingLocation, setCapturingLocation] = useState(false);
   // Sous-menu de la catégorie « Santé & Bien-être » (Pharmacie / Clinique / Soins).
   const [healthDialogOpen, setHealthDialogOpen] = useState(false);
   const [showServiceSelection, setShowServiceSelection] = useState(false);
@@ -241,6 +244,34 @@ export default function Auth() {
       // Ignore storage errors
     }
   }, [selectedRole, showSignup]);
+
+  // ✅ Capture la position GPS du commerce (prestataires). Réutilise PrecisionGeolocationService.
+  const captureBusinessLocation = async (): Promise<{ latitude: number; longitude: number; accuracy: number } | null> => {
+    setCapturingLocation(true);
+    try {
+      const { precisionGeoService } = await import('@/services/gps/PrecisionGeolocationService');
+      const pos = await precisionGeoService.getCurrentPosition(true);
+      const loc = { latitude: pos.latitude, longitude: pos.longitude, accuracy: pos.accuracy || 0 };
+      setBusinessLocation(loc);
+      // ✅ Persister pour le callback OAuth (l'utilisateur revient de Google → state perdu)
+      try {
+        localStorage.setItem('oauth_business_lat', String(loc.latitude));
+        localStorage.setItem('oauth_business_lng', String(loc.longitude));
+        localStorage.setItem('oauth_business_accuracy', String(loc.accuracy));
+      } catch { /* ignore */ }
+      toast({ title: '📍 Position enregistrée', description: `Précision : ${Math.round(loc.accuracy)}m` });
+      return loc;
+    } catch (err) {
+      toast({
+        title: 'Position GPS non disponible',
+        description: "Activez la localisation pour que vos clients vous trouvent. Vous pourrez l'ajouter plus tard dans votre profil.",
+        variant: 'destructive',
+      });
+      return null;
+    } finally {
+      setCapturingLocation(false);
+    }
+  };
 
   const handleGoogleLogin = async (isRetry = false) => {
     // 🛡️ Rate limiting: Max 3 tentatives par minute
@@ -1793,21 +1824,31 @@ export default function Auth() {
 
       if (selectedRole === 'prestataire' && selectedServiceType) {
         try {
-          const { data: serviceType } = await supabase
-            .from('service_types').select('id').eq('code', selectedServiceType).maybeSingle();
-          if (serviceType) {
-            await supabase.from('professional_services').insert({
-              user_id: authUser.id,
-              service_type_id: serviceType.id,
-              business_name: formData.businessName?.trim() || `${formData.firstName} ${formData.lastName}`,
-              address: formData.city,
-              phone: phoneSignupPhone,
-              email: proxyEmail,
-              status: 'active',
-              verification_status: 'unverified',
+          // ✅ RPC atomique avec géolocalisation (tout-ou-rien)
+          const { data: rpcRes, error: rpcErr } = await supabase.rpc('create_proximity_service', {
+            p_user_id:           authUser.id,
+            p_service_type_code: selectedServiceType,
+            p_business_name:     formData.businessName?.trim() || `${formData.firstName} ${formData.lastName}`,
+            p_phone:             phoneSignupPhone,
+            p_email:             proxyEmail,
+            p_city:              formData.city || null,
+            p_address:           formData.city || null,
+            p_latitude:          businessLocation?.latitude ?? null,
+            p_longitude:         businessLocation?.longitude ?? null,
+            p_accuracy:          businessLocation?.accuracy ?? null,
+          });
+
+          if (rpcErr || !(rpcRes as any)?.success) {
+            console.error('❌ Création service prestataire échouée:', rpcErr || (rpcRes as any)?.error);
+            toast({
+              title: 'Service non créé',
+              description: "Votre compte est créé mais le service n'a pas pu être enregistré. Complétez-le depuis votre profil.",
+              variant: 'destructive',
             });
           }
-        } catch (e) { console.error('Erreur sync prestataire:', e); }
+        } catch (e) {
+          console.error('Erreur sync prestataire:', e);
+        }
       }
 
       // Affiliation (backend Node)
@@ -2867,6 +2908,35 @@ export default function Auth() {
                         required
                         className="mt-1"
                       />
+                    </div>
+                  )}
+
+                  {/* ✅ Capture GPS précise du commerce (prestataires de proximité) —
+                      remplit latitude/longitude pour la recherche "près de moi" */}
+                  {selectedRole === 'prestataire' && (
+                    <div className="space-y-2">
+                      <Label>
+                        <MapPin className="inline w-4 h-4 mr-1 text-[#ff4000]" />
+                        Position de votre commerce <span className="text-[#ff4000]">*</span>
+                      </Label>
+                      <Button
+                        type="button"
+                        variant={businessLocation ? 'default' : 'outline'}
+                        onClick={() => captureBusinessLocation()}
+                        disabled={capturingLocation}
+                        className={`w-full gap-2 ${businessLocation ? 'bg-green-600 hover:bg-green-700 text-white' : ''}`}
+                      >
+                        {capturingLocation ? (
+                          <><Loader2 className="w-4 h-4 animate-spin" /> Localisation...</>
+                        ) : businessLocation ? (
+                          <><CheckCircle2 className="w-4 h-4" /> Position enregistrée ({Math.round(businessLocation.accuracy)}m)</>
+                        ) : (
+                          <><MapPin className="w-4 h-4" /> Enregistrer ma position</>
+                        )}
+                      </Button>
+                      <p className="text-xs text-muted-foreground">
+                        Vos clients vous trouveront grâce à votre position. Placez-vous dans votre commerce avant d'enregistrer.
+                      </p>
                     </div>
                   )}
 
