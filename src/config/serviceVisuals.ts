@@ -81,7 +81,7 @@ export const SERVICE_VISUALS: Record<string, ServiceVisual> = {
     logoImage: '/service-icons-3d/soudure.png',
   },
   education: {
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80',
     accent: '#04439e',
     icon: GraduationCap,
   },
