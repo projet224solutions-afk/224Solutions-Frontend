@@ -92,7 +92,7 @@ const serviceTypeVisualMap: Record<string, { image: string; accent?: string; log
     logoImage: '/service-icons-3d/construction.png',
   },
   education: {
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80',
     accent: '#04439e',
   },
   ecommerce: {
@@ -116,7 +116,7 @@ const serviceTypeVisualMap: Record<string, { image: string; accent?: string; log
     logoImage: '/service-icons-3d/livraison.png',
   },
   location: {
-    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80',
     accent: '#04439e',
     logoImage: '/service-icons-3d/immobilier.png',
   },
@@ -136,7 +136,7 @@ const serviceTypeVisualMap: Record<string, { image: string; accent?: string; log
     logoImage: '/service-icons-3d/nettoyage.png',
   },
   reparation: {
-    image: 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&fit=crop&w=800&q=80',
     accent: '#ff4000',
     logoImage: '/service-icons-3d/reparation.png',
   },

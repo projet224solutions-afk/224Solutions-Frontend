@@ -89,7 +89,7 @@ const getPriorityServices = (stats: any, t: TFn): ServiceCardItem[] => [
     count: stats.reparation,
     path: "/services-proximite?type=reparation",
     description: t("proximity.svc.reparation.desc"),
-    image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1000&q=85",
+    image: "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/icon-reparation.png",
     accent: "#ff4000"
   },
@@ -261,7 +261,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.vitrerie.desc"),
     count: stats.vitrerie,
     path: "/services-proximite?type=vitrerie",
-    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1000&q=85",
+    image: "https://images.unsplash.com/photo-1527352774566-e4916e36c645?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/logo-vitrerie.svg",
     accent: "#29A7C4"
   },
@@ -272,7 +272,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.menuiserie.desc"),
     count: stats.menuiserie,
     path: "/services-proximite?type=menuiserie",
-    image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=1000&q=85",
+    image: "https://images.unsplash.com/photo-1497219055242-93359eeed651?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/logo-menuiserie.svg",
     accent: "#B5651D"
   },

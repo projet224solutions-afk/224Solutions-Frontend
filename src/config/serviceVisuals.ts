@@ -63,13 +63,13 @@ export const SERVICE_VISUALS: Record<string, ServiceVisual> = {
     logoImage: '/service-icons-3d/plomberie.png',
   },
   vitrerie: {
-    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1527352774566-e4916e36c645?auto=format&fit=crop&w=800&q=80',
     accent: '#29A7C4',
     icon: Square,
     logoImage: '/service-icons-3d/vitrerie.png',
   },
   menuiserie: {
-    image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1497219055242-93359eeed651?auto=format&fit=crop&w=800&q=80',
     accent: '#B5651D',
     icon: Hammer,
     logoImage: '/service-icons-3d/menuiserie.png',
@@ -134,7 +134,7 @@ export const SERVICE_VISUALS: Record<string, ServiceVisual> = {
     logoImage: '/service-icons-3d/nettoyage.png',
   },
   reparation: {
-    image: 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&fit=crop&w=800&q=80',
     accent: '#ff4000',
     icon: Wrench,
     logoImage: '/service-icons-3d/reparation.png',
