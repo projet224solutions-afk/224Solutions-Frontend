@@ -453,22 +453,10 @@ export default function ServicesProximite() {
         </div>
       </section>
 
-      {/* CTA parcours client artisan (demande → devis multiples).
-          Soudure retiré : il fonctionne comme un service de proximité standard
-          (listing des soudeurs disponibles + profil), pas via demande de devis. */}
-      {["plomberie", "vitrerie", "menuiserie"].includes(selectedCategory) && (
-        <section className="px-4 py-3">
-          <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-[#ff4000]/30 bg-[#ff4000]/5 p-4">
-            <div className="min-w-0">
-              <div className="font-semibold">Besoin d'un artisan ({SERVICE_CATEGORIES.find((c) => c.id === selectedCategory)?.name}) ?</div>
-              <div className="text-sm text-muted-foreground">{t('servicesProximite.publiezVotreDemandeRecevezPlusieurs')}</div>
-            </div>
-            <Button className="ml-auto" onClick={() => navigate(`/services/artisan/demande?type=${selectedCategory}`)}>
-              Demander un devis
-            </Button>
-          </div>
-        </section>
-      )}
+      {/* Tous les métiers artisans (plomberie, vitrerie, menuiserie, soudure) fonctionnent
+          désormais comme des services de proximité standard : listing des prestataires
+          disponibles dans la zone + profil au clic. L'encart « demande de devis » a été
+          retiré de cette page ; la route /services/artisan/demande reste disponible si besoin. */}
 
       {/* Filtre par VILLE (chips défilables) — alimenté par la ville effective des services */}
       {availableCities.length > 0 && (
