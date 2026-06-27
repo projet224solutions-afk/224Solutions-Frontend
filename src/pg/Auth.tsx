@@ -69,7 +69,7 @@ interface ServiceSelectionOption {
 const MOTO_TAXI_COUNTRY_NAMES = ['Guinée', 'Sierra Leone', 'Liberia', 'Mali', 'Burkina Faso', 'Niger', 'Guinée-Bissau'];
 
 const QUICK_ROLE_OPTIONS: QuickRoleOption[] = [
-  { role: 'taxi', name: 'Taxi', desc: 'Conducteur taxi', icon: Bike, image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80', logoImage: '/service-icons-3d/vtc.png' },
+  { role: 'taxi', name: 'Taxi', desc: 'Conducteur taxi', icon: Bike, image: 'https://images.unsplash.com/photo-1556122071-e404eaedb77f?auto=format&fit=crop&w=800&q=80', logoImage: '/service-icons-3d/vtc.png' },
   { role: 'livreur', name: 'Livreur', desc: 'Coursier & livraison', icon: Truck, image: 'https://images.unsplash.com/photo-1648394794449-5dbe63f6a8b5?auto=format&fit=crop&w=800&q=80', logoImage: '/service-icons-3d/livraison.png' },
   { role: 'transitaire', name: 'Transitaire', desc: 'Import & export', icon: Briefcase, image: 'https://images.unsplash.com/photo-1605745341112-85968b19335b?auto=format&fit=crop&w=800&q=80' },
 ];
