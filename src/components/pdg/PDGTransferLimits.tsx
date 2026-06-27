@@ -142,6 +142,14 @@ export default function PDGTransferLimits() {
         if (error) throw error;
       }
 
+      // ✅ Audit trail : tracer le changement de limite/frais sensible (avant → après)
+      const { logPdgAction } = await import('@/utils/auditPdgAction');
+      void logPdgAction('transfer_limit_changed', {
+        targetType: 'pdg_settings',
+        before: { key, value: limits[key] },
+        after:  { key, value: val },
+      });
+
       setLimits(prev => ({ ...prev, [key]: val }));
       toast.success(t('pDGTransferLimits.limiteMiseAJourAvec'));
     } catch (err) {

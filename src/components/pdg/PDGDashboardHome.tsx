@@ -23,11 +23,16 @@ import {
   Wallet,
   Shield,
   Eye,
+  ShieldAlert,
+  Scale,
+  Globe2,
+  Lock,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { usePDGStats } from '@/hooks/usePDGStats';
+import { usePDGHealthCockpit } from '@/hooks/usePDGHealthCockpit';
 import { WalletBalanceDisplay } from '@/components/wallet/WalletBalanceDisplay';
 import { useAuth } from '@/hooks/useAuth';
 import { backendFetch } from '@/services/backendApi';
@@ -51,6 +56,7 @@ interface CoreFeatureRegistryRow {
 export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
   const { t } = useTranslation();
   const stats = usePDGStats();
+  const { data: cockpit } = usePDGHealthCockpit();
   const { user } = useAuth();
   const [coreSummaryLoading, setCoreSummaryLoading] = useState(false);
   const [coreSummary, setCoreSummary] = useState({
@@ -228,6 +234,72 @@ export function PDGDashboardHome({ onNavigate }: PDGDashboardHomeProps) {
 
   return (
     <div className="space-y-4 sm:space-y-6">
+      {/* ✅ Cockpit santé plateforme : alertes opérationnelles consolidées (1 RPC) */}
+      {cockpit && (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {/* KYC en attente */}
+          <button
+            onClick={() => onNavigate?.('vendor-kyc-review')}
+            className={cn(
+              'rounded-xl border p-4 text-left transition hover:shadow-md',
+              cockpit.kyc_pending > 0 ? 'border-amber-300 bg-amber-50' : 'border-border bg-card'
+            )}
+          >
+            <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+              <ShieldAlert className="w-4 h-4" /> KYC en attente
+            </div>
+            <div className={cn('text-2xl font-bold', cockpit.kyc_pending > 0 ? 'text-amber-700' : 'text-foreground')}>
+              {cockpit.kyc_pending}
+            </div>
+          </button>
+
+          {/* Litiges escrow → module escrow-monitor */}
+          <button
+            onClick={() => onNavigate?.('escrow-monitor')}
+            className={cn(
+              'rounded-xl border p-4 text-left transition hover:shadow-md',
+              cockpit.disputes_open > 0 ? 'border-red-300 bg-red-50' : 'border-border bg-card'
+            )}
+          >
+            <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+              <Scale className="w-4 h-4" /> Litiges ouverts
+            </div>
+            <div className={cn('text-2xl font-bold', cockpit.disputes_open > 0 ? 'text-red-700' : 'text-foreground')}>
+              {cockpit.disputes_open}
+            </div>
+          </button>
+
+          {/* Santé BCRG */}
+          <button
+            onClick={() => onNavigate?.('finance')}
+            className={cn(
+              'rounded-xl border p-4 text-left transition hover:shadow-md',
+              cockpit.bcrg_stale ? 'border-red-300 bg-red-50' : 'border-green-200 bg-green-50'
+            )}
+          >
+            <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+              <Globe2 className="w-4 h-4" /> Taux BCRG
+            </div>
+            <div className={cn('text-sm font-bold', cockpit.bcrg_stale ? 'text-red-700' : 'text-green-700')}>
+              {cockpit.bcrg_stale ? `Périmé (${cockpit.bcrg_hours}h)` : 'À jour ✓'}
+            </div>
+          </button>
+
+          {/* Escrow en attente */}
+          <button
+            onClick={() => onNavigate?.('escrow-monitor')}
+            className="rounded-xl border border-border bg-card p-4 text-left transition hover:shadow-md"
+          >
+            <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+              <Lock className="w-4 h-4" /> En séquestre
+            </div>
+            <div className="text-lg font-bold text-foreground">
+              {(cockpit.escrow_pending / 1_000_000).toFixed(1)}M GNF
+            </div>
+          </button>
+        </div>
+      )}
+
       {/* KPIs Grid - 2x2 on mobile, then responsive */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6">
         {kpis.map((kpi) => {
