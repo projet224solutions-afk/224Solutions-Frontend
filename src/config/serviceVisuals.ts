@@ -75,7 +75,7 @@ export const SERVICE_VISUALS: Record<string, ServiceVisual> = {
     logoImage: '/service-icons-3d/menuiserie.png',
   },
   soudure: {
-    image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=800&q=80',
     accent: '#ff4000',
     icon: Flame,
     logoImage: '/service-icons-3d/soudure.png',

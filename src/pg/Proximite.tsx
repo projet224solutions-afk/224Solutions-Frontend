@@ -283,7 +283,7 @@ const getComplementaryServices = (stats: any, t: TFn): ServiceCardItem[] => [
     description: t("proximity.svc.soudure.desc"),
     count: stats.soudure,
     path: "/services-proximite?type=soudure",
-    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1000&q=85",
+    image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1000&q=85",
     logoImage: "/service-icons/logo-soudure.svg",
     accent: "#ff4000"
   }
