@@ -79,17 +79,17 @@ const serviceTypeVisualMap: Record<string, { image: string; accent?: string; log
   agriculture: {
     image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80',
     accent: '#ff4000',
-    logoImage: '/service-icons/icon-agriculture.png',
+    logoImage: '/service-icons-3d/agriculture.png',
   },
   beaute: {
     image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80',
     accent: '#ff4000',
-    logoImage: '/service-icons/icon-beaute.png',
+    logoImage: '/service-icons-3d/beaute.png',
   },
   construction: {
     image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80',
     accent: '#ff4000',
-    logoImage: '/service-icons/logo-construction-btp.jpeg',
+    logoImage: '/service-icons-3d/construction.png',
   },
   education: {
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
@@ -98,67 +98,67 @@ const serviceTypeVisualMap: Record<string, { image: string; accent?: string; log
   ecommerce: {
     image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80',
     accent: BRAND_BLUE,
-    logoImage: '/service-icons/logo-boutique.jpeg',
+    logoImage: '/service-icons-3d/boutique.png',
   },
   freelance: {
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
     accent: '#04439e',
-    logoImage: '/service-icons/icon-administratif.png',
+    logoImage: '/service-icons-3d/freelance.png',
   },
   informatique: {
     image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
     accent: '#04439e',
-    logoImage: '/service-icons/icon-informatique.png',
+    logoImage: '/service-icons-3d/informatique.png',
   },
   livraison: {
     image: 'https://images.unsplash.com/photo-1648394794449-5dbe63f6a8b5?auto=format&fit=crop&w=800&q=80',
     accent: BRAND_ORANGE,
-    logoImage: '/service-icons/icon-livreur.png',
+    logoImage: '/service-icons-3d/livraison.png',
   },
   location: {
     image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
     accent: '#04439e',
-    logoImage: '/service-icons/logo-immobilier.jpeg',
+    logoImage: '/service-icons-3d/immobilier.png',
   },
   maison: {
     image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80',
     accent: '#c2410c',
-    logoImage: '/service-icons/icon-maison.png',
+    logoImage: '/service-icons-3d/maison.png',
   },
   media: {
     image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80',
     accent: '#04439e',
-    logoImage: '/service-icons/icon-photo-video.png',
+    logoImage: '/service-icons-3d/media.png',
   },
   menage: {
     image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80',
     accent: '#04439e',
-    logoImage: '/service-icons/icon-nettoyage.png',
+    logoImage: '/service-icons-3d/nettoyage.png',
   },
   reparation: {
     image: 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=800&q=80',
     accent: '#ff4000',
-    logoImage: '/service-icons/icon-reparation.png',
+    logoImage: '/service-icons-3d/reparation.png',
   },
   restaurant: {
     image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
     accent: '#e85d04',
-    logoImage: '/service-icons/logo-resto.jpeg',
+    logoImage: '/service-icons-3d/restaurant.png',
   },
   sante: {
     image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80',
     accent: '#ff4000',
-    logoImage: '/service-icons/icon-sante.png',
+    logoImage: '/service-icons-3d/sante.png',
   },
   sport: {
     image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
     accent: '#ff4000',
-    logoImage: '/service-icons/icon-sport-fitness.png',
+    logoImage: '/service-icons-3d/sport.png',
   },
   vtc: {
     image: 'https://images.unsplash.com/photo-1601979107535-46367552bc25?auto=format&fit=crop&w=800&q=80',
     accent: '#04439e',
-    logoImage: '/service-icons/icon-taxi-moto.png',
+    logoImage: '/service-icons-3d/vtc.png',
   },
 };
 

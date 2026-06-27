@@ -35,7 +35,7 @@ export function NearbyServicesSection({
   const services = [
     {
       id: 'boutiques',
-      icon: <img src="/service-icons/logo-boutique.jpeg" alt={t('proximity.svc.boutique.title')} className="w-8 h-8 object-cover rounded-lg" loading="lazy" />,
+      icon: <img src="/service-icons-3d/boutique.png" alt={t('proximity.svc.boutique.title')} className="w-8 h-8 object-cover rounded-lg" loading="lazy" />,
       title: t('home.shops'),
       subtitle: t('home.localShops'),
       count: stats.boutiques,
@@ -45,7 +45,7 @@ export function NearbyServicesSection({
     },
     {
       id: 'restaurants',
-      icon: <img src="/service-icons/logo-resto.jpeg" alt="Restaurant" className="w-8 h-8 object-cover rounded-lg" loading="lazy" />,
+      icon: <img src="/service-icons-3d/restaurant.png" alt="Restaurant" className="w-8 h-8 object-cover rounded-lg" loading="lazy" />,
       title: t('home.restaurant'),
       subtitle: t('home.orderFood'),
       count: stats.restaurants,
@@ -55,7 +55,7 @@ export function NearbyServicesSection({
     },
     {
       id: 'taxi',
-      icon: <img src="/service-icons/icon-taxi-moto.png" alt="Taxi" className="w-8 h-8 object-cover rounded-lg" loading="lazy" />,
+      icon: <img src="/service-icons-3d/vtc.png" alt="Taxi" className="w-8 h-8 object-cover rounded-lg" loading="lazy" />,
       title: t('home.taxiMotos'),
       subtitle: t('home.fastTransport'),
       count: stats.taxi,
@@ -65,7 +65,7 @@ export function NearbyServicesSection({
     },
     {
       id: 'livraison',
-      icon: <img src="/service-icons/icon-livreur.png" alt="Livreur" className="w-8 h-8 object-cover rounded-lg" loading="lazy" />,
+      icon: <img src="/service-icons-3d/livraison.png" alt="Livreur" className="w-8 h-8 object-cover rounded-lg" loading="lazy" />,
       title: t('home.delivery'),
       subtitle: t('home.expressDelivery'),
       count: stats.livraison,
