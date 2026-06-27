@@ -10,7 +10,6 @@ import {
   Star,
   MapPin,
   Phone,
-  Clock,
   ArrowRight,
   Briefcase,
   Store

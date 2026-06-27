@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Bell, Lock, Globe, Smartphone, Navigation, Volume2 } from 'lucide-react';
+import { Bell, Lock, Globe, Navigation } from 'lucide-react';
 import { DriverLayout } from '@/components/driver/DriverLayout';
 import { useTheme } from 'next-themes';
 

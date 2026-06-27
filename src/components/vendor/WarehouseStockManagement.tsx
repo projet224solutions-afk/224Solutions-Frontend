@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Package, ArrowRightLeft, Plus, _Minus, Users, _Lock, _Unlock, Eye, Edit2, Trash2, _TrendingUp, AlertCircle } from "lucide-react";
+import { Package, ArrowRightLeft, Plus, Users, Eye, Edit2, Trash2, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 

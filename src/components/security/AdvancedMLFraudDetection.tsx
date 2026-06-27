@@ -11,8 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
-  Brain, Activity, AlertTriangle, TrendingDown, RefreshCw,
-  Zap, Target, BarChart3, Shield, CheckCircle
+  Brain, Activity, AlertTriangle, RefreshCw,
+  Zap, Target, BarChart3, Shield
 } from "lucide-react";
 import { ResponsiveGrid } from "@/components/responsive/ResponsiveContainer";
 import { supabase } from "@/integrations/supabase/client";

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, CheckCircle, Eye, EyeOff } from "lucide-react";
+import { AlertTriangle, CheckCircle, Eye } from "lucide-react";
 import { InventoryAlert } from "@/hooks/useInventoryService";
 import { useTranslation } from "@/hooks/useTranslation";
 

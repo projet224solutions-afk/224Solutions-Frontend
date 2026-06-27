@@ -73,7 +73,7 @@ export default function CurrencyConversionMonitor() {
   const loadLogs = useCallback(async () => {
     setLoading(true);
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       const db = supabase.from('currency_conversion_logs' as any);
       let query = db.select('*').order('created_at', { ascending: false }).limit(100);
 

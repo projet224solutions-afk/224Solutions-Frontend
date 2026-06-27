@@ -14,13 +14,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
-  DialogFooter
+  DialogDescription
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -35,7 +33,6 @@ import {
   Link,
   Loader2,
   Package,
-  DollarSign,
   Truck,
   Clock,
   AlertTriangle,
@@ -53,7 +50,7 @@ import type {
   ChinaProductImport,
   ChinaCostBreakdown
 } from '@/types/china-dropshipping';
-import { CHINA_PLATFORMS, TRANSPORT_METHODS } from '@/types/china-dropshipping';
+import { CHINA_PLATFORMS } from '@/types/china-dropshipping';
 
 // ==================== INTERFACES ====================
 

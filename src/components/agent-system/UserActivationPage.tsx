@@ -11,8 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Smartphone, Monitor, Tablet, Download, CheckCircle,
-  Crown, Shield, _Zap, ArrowRight, ExternalLink,
-  _Mail, _Phone, _User, _Calendar
+  Crown, Shield, ArrowRight, ExternalLink
 } from "lucide-react";
 import { useUserActivation } from "@/hooks/useAgentSystem";
 import { useParams, useNavigate } from "react-router-dom";

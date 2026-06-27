@@ -6,7 +6,6 @@
 import { useState, useRef } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Camera, Check, Upload, X } from 'lucide-react';
 import { toast } from 'sonner';
 import {

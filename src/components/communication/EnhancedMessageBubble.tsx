@@ -30,10 +30,6 @@ import {
   Trash2,
   Copy,
   MoreVertical,
-  Check,
-  CheckCheck,
-  Clock,
-  AlertCircle,
   X,
 } from 'lucide-react';
 import { MessageStatusBadge } from './PresenceIndicator';

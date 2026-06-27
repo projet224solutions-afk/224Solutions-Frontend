@@ -7,10 +7,7 @@ import {} from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import {
   Package,
-  FileText,
-  Upload,
   DollarSign,
-  Clock,
   Shield,
   Users,
   Zap,
@@ -18,14 +15,12 @@ import {
   Download,
   Mail,
   RefreshCw,
-  AlertCircle,
   Share2
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';

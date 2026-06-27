@@ -21,7 +21,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { backendFetch } from '@/services/backendApi';
 import { ServiceSubscriptionService, ServicePlan } from '@/services/serviceSubscriptionService';
 import {
-  Search, Users, MapPin, Star, Phone, Mail, Eye,
+  Search, Users, MapPin, Star, Phone, Mail,
   CheckCircle, Clock, XCircle, AlertTriangle, RefreshCw,
   TrendingUp, ShoppingBag, Store, Globe, Loader2, Gift, Crown, Calendar
 } from 'lucide-react';

@@ -1,5 +1,4 @@
 // SERVICE DE SÉCURITÉ (VERSION SIMPLIFIÉE)
-import { supabase } from '@/integrations/supabase/client';
 
 export interface SecurityToken {
   id: string;

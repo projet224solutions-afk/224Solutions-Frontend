@@ -1,5 +1,5 @@
 import { memo, useCallback } from "react";
-import { MapPin, Star, Store, CheckCircle2 } from "lucide-react";
+import { MapPin, Star, Store } from "lucide-react";
 import { FavoriteButton } from "@/components/ui/FavoriteButton";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";

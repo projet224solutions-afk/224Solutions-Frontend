@@ -7,7 +7,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import {
-  PaymentElement,
   useStripe,
   useElements,
   CardNumberElement,

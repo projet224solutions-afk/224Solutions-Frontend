@@ -14,10 +14,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import {
-  Megaphone, Search, ShieldAlert, Users, Send, XCircle,
-  BarChart3, RefreshCw, AlertTriangle, CheckCircle, Eye,
-  Ban, TrendingUp, Clock
+import { Search, ShieldAlert, Users, Send, RefreshCw, AlertTriangle, Eye,
+  Ban
 } from 'lucide-react';
 import {
   listAllCampaignsAdmin, suspendCampaignAdmin, getCampaignAnalytics,

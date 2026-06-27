@@ -37,7 +37,6 @@ import {
   Loader2
 } from 'lucide-react';
 import { Building2 } from 'lucide-react';
-import _StripeInlineDeposit from './StripeWalletDeposit';
 import StripeWalletTopup from './StripeWalletTopup';
 import PayPalInlineDeposit from './PayPalInlineDeposit';
 import { useVendorCurrency } from '@/hooks/useVendorCurrency';
@@ -188,7 +187,7 @@ export const UniversalWalletTransactions = ({ userId: propUserId, showBalance: _
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [effectiveUserId]);
 
   // Listener wallet-updated (même session — dépôt, retrait, transfert)
@@ -200,7 +199,7 @@ export const UniversalWalletTransactions = ({ userId: propUserId, showBalance: _
       let query = supabase.from('wallets').select('id, balance, currency');
       if (trackedId) {
         // Requêter directement le wallet connu par son ID
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         query = (query as any).eq('id', trackedId) as typeof query;
       } else {
         // Fallback : wallet le plus récemment mis à jour pour cet utilisateur
@@ -215,7 +214,7 @@ export const UniversalWalletTransactions = ({ userId: propUserId, showBalance: _
 
     window.addEventListener('wallet-updated', handleWalletUpdate);
     return () => window.removeEventListener('wallet-updated', handleWalletUpdate);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [effectiveUserId]);
 
   const loadPinStatus = async () => {

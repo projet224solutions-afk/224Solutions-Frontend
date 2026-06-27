@@ -14,7 +14,7 @@ import { formatCurrency } from '@/lib/formatters';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   ShoppingCart, Package, Users, TrendingUp,
-  ArrowUpRight, ArrowDownRight, RefreshCw,
+  ArrowUpRight, RefreshCw,
   Eye, Clock, CheckCircle, XCircle, DollarSign,
   BarChart3, ShoppingBag, AlertTriangle, Zap
 } from 'lucide-react';

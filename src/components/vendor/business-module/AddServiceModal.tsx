@@ -18,20 +18,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
 import {
   Plus, Store, Utensils, Scissors, Car, Heart,
   BookOpen, Camera, Truck, Building2, Dumbbell,
-  Laptop, Leaf, Hammer, Sparkles, ArrowRight,
+  Laptop, Leaf, Hammer, Sparkles,
   Loader2, CheckCircle, AlertCircle, MapPin, Navigation,
   Home, Plane, Briefcase, Wrench, Square, Flame
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
 import { z } from 'zod';
 
 interface ServiceType {

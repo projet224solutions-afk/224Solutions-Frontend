@@ -5,14 +5,12 @@ import { useTranslation } from "@/hooks/useTranslation";
  * 224SOLUTIONS
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Separator } from '@/components/ui/separator';
-import { toast } from 'sonner';
 import { 
   CheckCircle2, 
   XCircle,

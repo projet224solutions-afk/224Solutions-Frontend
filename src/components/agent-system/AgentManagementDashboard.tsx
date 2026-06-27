@@ -17,13 +17,13 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
-  Users, UserPlus, Settings, DollarSign, _TrendingUp,
+  Users, UserPlus, Settings, DollarSign,
   Eye, Edit, Trash2, Mail, Phone, Shield, Crown,
-  BarChart3, PieChart, Activity, _Calendar, RefreshCw,
+  BarChart3, PieChart, Activity, RefreshCw,
   CheckCircle, XCircle, AlertTriangle, Plus, Search,
-  Filter, _Download, _Upload, _MoreVertical, _Star, _MessageSquare
+  Filter
 } from "lucide-react";
-import { useAgentManagement, _usePDGManagement, useCommissionManagement, useAgentSystemOverview } from "@/hooks/useAgentSystem";
+import { useAgentManagement, useCommissionManagement, useAgentSystemOverview } from "@/hooks/useAgentSystem";
 import { toast } from "sonner";
 import ProfessionalMessaging from "@/components/messaging/ProfessionalMessaging";
 

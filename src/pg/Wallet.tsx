@@ -2,7 +2,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import UniversalWalletTransactions from '@/components/wallet/UniversalWalletTransactions';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Wallet as WalletIcon, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 

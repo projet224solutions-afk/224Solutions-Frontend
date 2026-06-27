@@ -4,11 +4,8 @@
  */
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import {
-  TrendingUp, Package, Users, Pill, Activity,
-  ArrowUp, ArrowDown, Clock, CheckCircle, AlertTriangle
+  TrendingUp, Package, Users, Pill, Activity, Clock, CheckCircle, AlertTriangle
 } from 'lucide-react';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
 import { useTranslation } from '@/hooks/useTranslation';

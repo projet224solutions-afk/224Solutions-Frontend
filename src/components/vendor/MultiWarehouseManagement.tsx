@@ -10,9 +10,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { _Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { _Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import {
@@ -22,12 +20,9 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { _Progress } from '@/components/ui/progress';
-import { _Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Warehouse,
-  _Store,
   MapPin,
   Plus,
   ArrowRightLeft,
@@ -37,23 +32,13 @@ import {
   CheckCircle2,
   XCircle,
   Clock,
-  _MoreVertical,
   Edit,
-  _Trash2,
   Star,
   Eye,
-  _Phone,
-  _Mail,
   User,
   TrendingDown,
-  _BarChart3,
   RefreshCw,
-  _Search,
-  _Filter,
-  _ChevronRight,
   Building2,
-  _ShoppingBag,
-  _AlertCircle,
   FileDown
 } from 'lucide-react';
 import { useMultiWarehouse, VendorLocation, StockTransfer, CreateLocationInput, CreateTransferInput } from '@/hooks/useMultiWarehouse';

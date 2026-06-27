@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, Save, Upload, Lock, User, Mail, Phone, MapPin, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Save, Lock, User, Mail, Phone, MapPin, Loader2, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 

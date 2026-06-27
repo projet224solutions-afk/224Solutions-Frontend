@@ -11,8 +11,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import {
   FileSpreadsheet,
-  Download,
-  Plus,
   BarChart3,
   TrendingUp,
   Users,

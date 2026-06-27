@@ -7,9 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { backendFetch } from '@/services/backendApi';
-import { Search, UserCheck, UserX, Lock, Unlock, Shield, Trash2, Store, Package, Eye, _ChevronDown, ChevronUp, Globe, Loader2 } from 'lucide-react';
+import { Search, UserCheck, UserX, Lock, Unlock, Shield, Trash2, Store, Package, Eye, ChevronUp, Globe, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { _Collapsible, _CollapsibleContent, _CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
   Select,
   SelectContent,

@@ -4,10 +4,8 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { translationService, SupportedLanguage, SUPPORTED_LANGUAGES } from '@/services/translationService';
 import { Message } from '@/types/communication.types';
-import { getLanguageForCountry } from '@/data/countryMappings';
 import { useChatLanguage } from '@/hooks/useChatLanguage';
 
 interface UseAutoTranslationOptions {

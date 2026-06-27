@@ -7,7 +7,6 @@
 
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { autoConvertIfNeeded, needsConversionForIOS, isIOS } from '@/services/AudioConversionService';
 import { convertBlobToWav, isProblematicAudio } from '@/services/audioToWav';
 import { audioTranslationService } from '@/services/audioTranslationService';
 import { backendFetch } from '@/services/backendApi';

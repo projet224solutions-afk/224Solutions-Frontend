@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { PdgRevenueService, type RevenueStats, type PdgRevenue, type PdgSetting } from '@/services/pdgRevenueService';
 import { supabase } from '@/lib/supabaseClient';
-import { TrendingUp, DollarSign, Wallet, ShoppingBag, RefreshCw, Settings, Download, Calendar, ArrowDownToLine, ArrowUpFromLine, Globe } from 'lucide-react';
+import { TrendingUp, DollarSign, Wallet, ShoppingBag, RefreshCw, Settings, Download, ArrowDownToLine, ArrowUpFromLine, Globe } from 'lucide-react';
 import { LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { format, subDays } from 'date-fns';
 import { fr } from 'date-fns/locale';

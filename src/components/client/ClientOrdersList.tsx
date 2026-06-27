@@ -21,7 +21,6 @@ import {
   Package, CheckCircle, Clock, Truck, XCircle,
   Shield, AlertCircle, Loader2, ListFilter, Ban, DollarSign, Banknote
 } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AlertDialog,
   AlertDialogAction,

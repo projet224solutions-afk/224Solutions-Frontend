@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Shield, AlertTriangle, CheckCircle, Clock, XCircle, Trophy } from "lucide-react";
+import { Shield, AlertTriangle, CheckCircle, Clock, Trophy } from "lucide-react";
 import { useState } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";

@@ -3,7 +3,7 @@
  * partir de, badges À domicile / Walk-in / Nouveau) + favoris. Tri : note puis récence.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -94,7 +94,7 @@ export function useBeautyFavorites() {
   const toggle = useCallback(async (serviceId: string) => {
     if (!user) { toast.error('Connectez-vous pour ajouter aux favoris'); return; }
     const isFav = favIds.has(serviceId);
-    setFavIds((prev) => { const n = new Set(prev); isFav ? n.delete(serviceId) : n.add(serviceId); return n; });
+    setFavIds((prev) => { const n = new Set(prev); if (isFav) { n.delete(serviceId); } else { n.add(serviceId); } return n; });
     if (isFav) await supabase.from('beauty_favorites').delete().eq('client_user_id', user.id).eq('professional_service_id', serviceId);
     else await supabase.from('beauty_favorites').insert({ client_user_id: user.id, professional_service_id: serviceId });
   }, [user, favIds]);

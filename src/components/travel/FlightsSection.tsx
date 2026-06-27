@@ -5,8 +5,8 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import {
-  Plane, Star, ExternalLink, ArrowRight,
-  Calendar, Users, Clock, Filter
+  Plane, ExternalLink, ArrowRight,
+  Calendar
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
@@ -14,7 +14,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
-import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
 interface Airline {

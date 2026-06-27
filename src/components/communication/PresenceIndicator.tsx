@@ -7,7 +7,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Wifi, WifiOff, Clock, Phone } from 'lucide-react';
 import type { PresenceStatus } from '@/types/communication.types';
 
 interface PresenceIndicatorProps {

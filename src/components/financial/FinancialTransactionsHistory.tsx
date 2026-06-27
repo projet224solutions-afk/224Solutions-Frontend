@@ -3,7 +3,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useFinancialTransactions } from '@/hooks/useFinancialTransactions';
-import { ArrowUpRight, ArrowDownRight, Smartphone, CreditCard, Wallet } from 'lucide-react';
+import { Smartphone, CreditCard, Wallet } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 

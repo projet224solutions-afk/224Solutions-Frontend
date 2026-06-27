@@ -1,5 +1,5 @@
 import { useTranslation } from "@/hooks/useTranslation";
-﻿/**
+/**
  * EMERGENCY PAGE - Page dédiée aux urgences
  * 224Solutions - Page complète de gestion des alertes
  */

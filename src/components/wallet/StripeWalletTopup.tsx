@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CreditCard, ArrowDownCircle, Shield } from "lucide-react";
-import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import StripeCheckoutButton from '@/components/payment/StripeCheckoutButton';
 import { useTranslation } from "@/hooks/useTranslation";

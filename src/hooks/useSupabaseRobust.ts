@@ -7,7 +7,6 @@ import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useRobustQuery, useRobustMutation, RobustQueryOptions } from './useRobustQuery';
 import { retryPresets } from '@/lib/retryWithBackoff';
-import { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
 type _SupabaseTable = keyof (typeof supabase)['from'] extends (table: infer T) => any ? T : never;
 

@@ -6,10 +6,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import {
   audioTranslationService,
-  AudioTranslationResult,
-  AudioMessage
+  AudioTranslationResult
 } from '@/services/audioTranslationService';
-import { SupportedLanguage, SUPPORTED_LANGUAGES } from '@/services/translationService';
+import { SupportedLanguage } from '@/services/translationService';
 import { supabase } from '@/integrations/supabase/client';
 
 interface UseAudioTranslationOptions {

@@ -20,8 +20,7 @@ import {
   Plus,
   Trash2,
   Check,
-  CreditCard,
-  Edit
+  CreditCard
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';

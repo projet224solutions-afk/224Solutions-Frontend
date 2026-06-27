@@ -6,7 +6,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { toast } from 'sonner';
-import dualSyncManager, { SYNC_CONFIGS } from '@/lib/dualSyncManager';
+import dualSyncManager from '@/lib/dualSyncManager';
 
 export interface DualSyncStatus {
   isFirestoreConnected: boolean;

@@ -4,7 +4,6 @@
  * Réduit la charge sur la base de données principale
  */
 
-import { supabase } from '@/integrations/supabase/client';
 
 interface _CacheEntry {
   key: string;

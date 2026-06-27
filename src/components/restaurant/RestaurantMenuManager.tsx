@@ -23,7 +23,6 @@ import {
 } from 'lucide-react';
 import { useRestaurantMenu, MenuCategory, MenuItem } from '@/hooks/useRestaurantMenu';
 import { useServiceSubscription } from '@/hooks/useServiceSubscription';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useStorageUpload } from '@/hooks/useStorageUpload';
 import { cn } from '@/lib/utils';

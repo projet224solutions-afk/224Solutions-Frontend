@@ -6,7 +6,7 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { getSortedCurrencies, getCurrencyByCode, type Currency } from '@/data/currencies';
+import { getSortedCurrencies, getCurrencyByCode } from '@/data/currencies';
 import { useMemo } from 'react';
 
 interface CurrencySelectProps {

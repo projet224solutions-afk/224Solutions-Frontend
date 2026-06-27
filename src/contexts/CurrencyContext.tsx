@@ -5,7 +5,6 @@
  */
 
 import { createContext, useState, useContext, useEffect, useCallback, ReactNode } from "react";
-import { getCurrencyForCountry } from "@/data/countryMappings";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 

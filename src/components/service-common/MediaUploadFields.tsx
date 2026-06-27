@@ -35,7 +35,7 @@ export function MediaUploadFields({ subfolder, imageUrl, videoUrl, onImage, onVi
     const folder = kind === 'video' ? 'videos' : 'restaurant';
     const res = await uploadFile(file, { folder: folder as any, subfolder });
     setBusy(null);
-    if (res.success && res.publicUrl) { kind === 'image' ? onImage(res.publicUrl) : onVideo(res.publicUrl); }
+    if (res.success && res.publicUrl) { if (kind === 'image') { onImage(res.publicUrl); } else { onVideo(res.publicUrl); } }
     else toast.error(res.error || 'Upload échoué');
   };
 

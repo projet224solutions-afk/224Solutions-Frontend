@@ -48,6 +48,7 @@ export class NetworkInterceptor {
     // Original NON-bindé → identité préservée pour la restauration au dispose.
     this.original = this.target.fetch;
 
+    // eslint-disable-next-line @typescript-eslint/no-this-alias -- le trap apply a son propre this
     const self = this;
     this.proxy = new Proxy(this.original, {
       apply(targetFn, thisArg, args: Parameters<FetchLike>) {
@@ -70,6 +71,7 @@ export class NetworkInterceptor {
     if (!XHR) return;
     const origOpen = XHR.prototype.open;
     const origSend = XHR.prototype.send;
+    // eslint-disable-next-line @typescript-eslint/no-this-alias -- les overrides XHR ont leur propre this
     const self = this;
     XHR.prototype.open = function (this: any, method: string, url: string, ...rest: any[]) {
       this.__guard_url = url;

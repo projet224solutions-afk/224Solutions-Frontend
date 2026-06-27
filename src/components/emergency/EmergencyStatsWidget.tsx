@@ -12,9 +12,7 @@ import {
   Activity,
   CheckCircle,
   XCircle,
-  Clock,
-  TrendingUp,
-  TrendingDown
+  Clock
 } from 'lucide-react';
 import { emergencyService } from '@/services/emergencyService';
 import type { EmergencyStats } from '@/types/emergency';

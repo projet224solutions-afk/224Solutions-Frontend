@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Wallet, Banknote, Smartphone, CreditCard, DollarSign, Loader2 } from 'lucide-react';
+import { Wallet, Banknote, Smartphone, CreditCard, Loader2 } from 'lucide-react';
 import { VendorPaymentService } from '@/services/vendor/VendorPaymentService';
 import { toast } from 'sonner';
 

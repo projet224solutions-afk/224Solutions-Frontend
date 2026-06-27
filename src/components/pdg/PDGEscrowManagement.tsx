@@ -14,8 +14,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEscrowTransactions } from '@/hooks/useEscrowTransactions';
 import { useAuth } from '@/hooks/useAuth';
 import {
-  Shield, AlertCircle, CheckCircle, Clock, XCircle, Bell,
-  RefreshCw, Search, Filter, Download, TrendingUp, DollarSign
+  Shield, AlertCircle, CheckCircle, Clock, XCircle,
+  RefreshCw, Search, TrendingUp, DollarSign
 } from 'lucide-react';
 import PDGEscrowDisputes from './PDGEscrowDisputes';
 import {

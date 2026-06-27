@@ -22,13 +22,12 @@ import CallDiagnostics from "@/components/communication/CallDiagnostics";
 const AgoraVideoCall = React.lazy(() => import("@/components/communication/AgoraVideoCall"));
 const AgoraAudioCall = React.lazy(() => import("@/components/communication/AgoraAudioCall"));
 import MessageInput from "@/components/communication/MessageInput";
-import MessageItem from "@/components/communication/MessageItem";
 import { PresenceIndicator, PresenceBadge, TypingIndicator, MessageStatusBadge } from "@/components/communication/PresenceIndicator";
 import { ReplyBar } from "@/components/communication/EnhancedMessageBubble";
 import { usePresence } from "@/hooks/usePresence";
 import { useConversationPresence } from "@/hooks/useConversationPresence";
 import { playNotificationSound } from "@/services/notificationSoundService";
-import type { PresenceStatus, Message as _MessageType } from "@/types/communication.types";
+import type { PresenceStatus } from "@/types/communication.types";
 
 interface Message {
   id: string;

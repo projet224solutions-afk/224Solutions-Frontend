@@ -9,7 +9,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Plane, Plus, ExternalLink,
-  Eye, Star, ShoppingCart
+  Eye, Star
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';

@@ -6,12 +6,10 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import {  AlertCircle, Eye, CheckCircle2, XCircle, AlertTriangle, Download, QrCode, CreditCard } from 'lucide-react';
+import { Eye, CheckCircle2, AlertTriangle, CreditCard } from 'lucide-react';
 import BadgeGenerator from './BadgeGenerator';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
-import _StolenMotoReportButton from './StolenMotoReportButton';
-import _MotoManagementOffline from './MotoManagementOffline';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 

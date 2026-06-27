@@ -21,7 +21,7 @@ import {
   Dialog,
   DialogContent,
 } from '@/components/ui/dialog';
-import { MoreVertical, Trash2, Copy, Reply, Edit, Download, Play, Pause, Volume2, Volume, FileVideo, Image as ImageIcon, Mic, AlertCircle, Smartphone } from 'lucide-react';
+import { MoreVertical, Trash2, Copy, Reply, Edit, Download, Play, Pause, Image as ImageIcon, Mic, AlertCircle, Smartphone } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 

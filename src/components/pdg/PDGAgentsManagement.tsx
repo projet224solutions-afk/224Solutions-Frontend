@@ -370,7 +370,7 @@ export default function PDGAgentsManagement() {
       (agent.permissions || []).forEach(key => { legacyFromAgent[key] = true; });
 
       // Étape 2: lire depuis get_agent_permissions RPC (agent_permissions table)
-      let fromRpc: Record<string, boolean> = {};
+      const fromRpc: Record<string, boolean> = {};
       try {
         const { data, error } = await supabase
           .rpc('get_agent_permissions' as any, { p_agent_id: agent.id });

@@ -9,19 +9,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { _Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, _LineChart, _Line, Area, AreaChart
+  PieChart, Pie, Cell, Area, AreaChart
 } from 'recharts';
 import {
   TrendingUp, TrendingDown, DollarSign, Package, AlertTriangle,
-  _Plus, _Filter, _Download, _Upload, _Eye, _Calendar, _CreditCard,
-  Wallet, Receipt, Target, Activity, Brain, Bell, _Search,
-  _MoreHorizontal, _Edit, Trash2, _Check, _X, _FileText, _Camera, ShoppingCart, Calculator
+  Wallet, Receipt, Target, Activity, Brain, Bell, Trash2, ShoppingCart, Calculator
 } from 'lucide-react';
 import { useExpenseManagement } from '@/hooks/useExpenseManagement';
 import { useCurrentVendor } from '@/hooks/useCurrentVendor';

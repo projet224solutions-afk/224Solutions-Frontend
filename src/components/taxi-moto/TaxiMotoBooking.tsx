@@ -15,15 +15,11 @@ import { Separator } from "@/components/ui/separator";
 import {
     MapPin,
     Navigation,
-    _Clock,
     CreditCard,
     Star,
     Loader2,
-    _Calendar,
     Users,
-    _Zap,
     DollarSign,
-    _Route,
     Search
 } from "lucide-react";
 import { toast } from "sonner";

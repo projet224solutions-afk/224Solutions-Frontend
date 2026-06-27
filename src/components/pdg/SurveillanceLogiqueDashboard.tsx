@@ -38,7 +38,6 @@ import {
   RefreshCw,
   Download,
   Clock,
-  TrendingUp,
   Activity,
   BarChart3,
   LogOut,
@@ -46,7 +45,6 @@ import {
   Shield
 } from 'lucide-react';
 import { useSurveillanceLogic } from '@/hooks/useSurveillanceLogic';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import SystemTestDemo from './SystemTestDemo';
 

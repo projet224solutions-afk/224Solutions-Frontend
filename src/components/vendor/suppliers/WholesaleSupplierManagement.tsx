@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Building2, Package, ShoppingCart, CreditCard, _Star } from 'lucide-react';
+import { Building2, Package, ShoppingCart, CreditCard } from 'lucide-react';
 import { SuppliersList } from './SuppliersList';
 import { SupplierCatalog } from './SupplierCatalog';
 import { SupplierOrders } from './SupplierOrders';

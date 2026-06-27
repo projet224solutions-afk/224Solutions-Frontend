@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { useProspects, Prospect } from "@/hooks/useVendorData";
-import { Plus, Phone, Mail, Calendar, TrendingUp, Target } from "lucide-react";
+import { Plus, Phone, Mail, TrendingUp, Target } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const statusColors = {

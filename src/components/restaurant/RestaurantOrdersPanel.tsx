@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Clock, Check, XCircle, ChefHat, Package, Truck,
-  Phone, MapPin, CreditCard, Wallet, Banknote, RefreshCw,
+  Phone, MapPin, CreditCard, Banknote, RefreshCw,
   Bell, Eye, Utensils
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';

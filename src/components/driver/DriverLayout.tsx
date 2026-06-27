@@ -23,14 +23,12 @@ import {
   HelpCircle,
   LogOut,
   Bell,
-  Navigation as NavigationIcon,
-  Bike
+  Navigation as NavigationIcon
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useDriver } from '@/hooks/useDriver';
 import { useResponsive } from '@/hooks/useResponsive';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
 import CommunicationWidget from '@/components/communication/CommunicationWidget';
 import { DriverSubscriptionButton } from '@/components/driver/DriverSubscriptionButton';
 

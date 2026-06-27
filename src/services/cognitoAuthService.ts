@@ -7,8 +7,6 @@
 import {
   CognitoUserPool,
   CognitoUser,
-  AuthenticationDetails,
-  CognitoUserAttribute,
   CognitoUserSession,
 } from 'amazon-cognito-identity-js';
 import { cognitoConfig, isCognitoConfigured } from '@/config/cognito';

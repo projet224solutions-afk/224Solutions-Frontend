@@ -36,7 +36,6 @@ import { MenuiserieModule } from './MenuiserieModule';
 import { SoudureModule } from './SoudureModule';
 import { DropshippingModule } from './DropshippingModule';
 import { CateringModule } from './stubs';
-import { normalizeServiceCode } from '@/config/serviceTypesConfig';
 
 interface ServiceModuleManagerProps {
   serviceId: string;

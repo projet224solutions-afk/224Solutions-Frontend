@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Card, CardContent, _CardHeader, _CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { usePOSPersistence, clearPOSState, type POSPersistedState } from '@/hooks/usePOSPersistence';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,8 +10,6 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
-import { _Select, _SelectContent, _SelectItem, _SelectTrigger, _SelectValue } from '@/components/ui/select';
-import { _Tabs, _TabsContent, _TabsList, _TabsTrigger } from '@/components/ui/tabs';
 import { useIsMobile } from '@/hooks/use-mobile';
 import {
   ShoppingCart,
@@ -24,22 +22,14 @@ import {
   List,
   Calculator,
   Smartphone,
-  _User,
   CheckSquare,
   Settings,
-  _Building,
-  _Printer,
-  _FileText,
   Clock,
-  _UserX,
-  _StickyNote,
   ShoppingBag,
   Check,
   Euro,
-  _Eye,
   Package,
   Store,
-  _Upload,
   ImageIcon,
   Percent,
   ChevronRight,
@@ -57,7 +47,6 @@ import { useAgent } from '@/contexts/AgentContext';
 import { useCurrentVendor } from '@/hooks/useCurrentVendor';
 import { supabase } from '@/integrations/supabase/client';
 import { useVendorOptimized } from '@/hooks/useVendorOptimized';
-import { _getEdgeFunctionErrorMessage } from '@/utils/supabaseFunctionsError';
 import { NumericKeypadPopup } from './pos/NumericKeypadPopup';
 import { QuantityKeypadPopup } from './pos/QuantityKeypadPopup';
 import { POSReceipt } from './pos/POSReceipt';

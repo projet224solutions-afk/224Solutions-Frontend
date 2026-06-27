@@ -3,7 +3,7 @@
  * 224Solutions - Système de diffusion multicanal
  */
 import { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -21,7 +21,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import {
   Megaphone, Plus, Send, Users, Mail, MessageSquare, Bell,
   Smartphone, BarChart3, Clock, CheckCircle, XCircle, AlertTriangle,
-  Eye, TrendingUp, Filter, Calendar, Pause, RefreshCw, Target
+  Eye, Filter, Calendar, Pause, RefreshCw, Target
 } from 'lucide-react';
 import {
   listCampaigns, createCampaign, sendCampaign, cancelCampaign,

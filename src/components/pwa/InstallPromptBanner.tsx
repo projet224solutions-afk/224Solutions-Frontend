@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from '@/components/ui/button';
-import { X, Download, Share, Smartphone } from 'lucide-react';
+import { X, Share } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import IOSInstallGuide from './IOSInstallGuide';
 

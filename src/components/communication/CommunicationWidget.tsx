@@ -4,11 +4,7 @@
  * Optimisé pour éviter les problèmes INP (Interaction to Next Paint)
  */
 
-import _React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { MessageSquare, Bell } from 'lucide-react';
 import { useUniversalCommunication } from '@/hooks/useUniversalCommunication';
 import { useAuth } from '@/hooks/useAuth';
 

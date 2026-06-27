@@ -1,7 +1,7 @@
 import { useTranslation } from "@/hooks/useTranslation";
-﻿import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef, useCallback } from "react";
-import { ArrowLeft, MapPin, Star, Phone, Mail, MessageCircle, Package, Clock, Store, Truck, AlertTriangle, Laptop, ExternalLink, CheckCircle2, RefreshCw, WifiOff, SearchX, ShieldOff, Plane, ShieldCheck, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, MapPin, Star, Phone, Mail, MessageCircle, Package, Clock, Store, Truck, AlertTriangle, Laptop, ExternalLink, RefreshCw, WifiOff, SearchX, Plane, ShieldCheck, ArrowUpRight } from "lucide-react";
 import { FavoriteButton } from "@/components/ui/FavoriteButton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

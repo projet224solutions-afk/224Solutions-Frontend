@@ -30,7 +30,6 @@ import {
   Minus,
   Trash2,
   Percent,
-  DollarSign,
   AlertTriangle,
   Edit2,
   ShoppingBag,

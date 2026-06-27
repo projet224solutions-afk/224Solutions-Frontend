@@ -44,19 +44,14 @@ import {
   Clock,
   AlertTriangle,
   Bell,
-  Mail,
   Image,
   Link,
   Calendar,
-  BarChart3,
   Eye,
-  CheckCircle,
-  XCircle,
   RefreshCw,
   Megaphone,
   Target,
   Zap,
-  TrendingUp,
   History
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';

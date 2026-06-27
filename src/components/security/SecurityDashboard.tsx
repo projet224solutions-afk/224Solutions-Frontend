@@ -9,23 +9,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { _Alert, _AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
     Shield,
     AlertTriangle,
     Activity,
-    _Lock,
-    _Eye,
     Ban,
-    _Zap,
     TrendingUp,
     TrendingDown,
     Clock,
-    _Globe,
-    _Server,
-    _Database,
     Wifi,
     WifiOff,
     CheckCircle2,
@@ -35,14 +28,10 @@ import {
     Download,
     RefreshCw,
     Settings,
-    _Filter,
-    _Search,
-    _MoreVertical,
     Play,
-    Pause,
-    _Square
+    Pause
 } from "lucide-react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, _BarChart, _Bar, _PieChart, _Pie, _Cell, AreaChart, Area } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import {
     useSecurity,
     useSecurityAlerts,

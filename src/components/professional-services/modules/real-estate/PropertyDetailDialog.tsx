@@ -3,7 +3,7 @@
  */
 import { useState } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -12,8 +12,7 @@ import type { Property } from '@/hooks/useRealEstateData';
 import { PropertyImageUpload } from './PropertyImageUpload';
 import {
   MapPin, Bed, Bath, Maximize, Phone, MessageSquare,
-  Heart, Share2, ChevronLeft, ChevronRight, Building2,
-  Calendar, Eye, CheckCircle
+  Heart, Share2, ChevronLeft, ChevronRight, Building2, Eye
 } from 'lucide-react';
 
 interface PropertyDetailDialogProps {

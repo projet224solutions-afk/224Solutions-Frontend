@@ -59,8 +59,7 @@ import {
   Package,
   TrendingUp,
   TrendingDown,
-  Minus,
-  Filter
+  Minus
 } from 'lucide-react';
 import { formatCurrency, formatRelativeTime } from '@/lib/utils';
 

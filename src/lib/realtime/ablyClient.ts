@@ -10,10 +10,10 @@
 import { supabase } from '@/integrations/supabase/client';
 import { resolveBackendUrl } from '@/config/backend';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 let clientPromise: Promise<any> | null = null;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export function getAblyClient(): Promise<any> {
   if (clientPromise) return clientPromise;
 

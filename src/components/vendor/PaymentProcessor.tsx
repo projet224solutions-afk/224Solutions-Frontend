@@ -13,8 +13,7 @@ import { useCurrentVendor } from "@/hooks/useCurrentVendor";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
-  CreditCard, Smartphone, Building, _Globe, CheckCircle, XCircle,
-  _Clock, AlertTriangle, Plus, _Download, Eye, RefreshCw, Send
+  CreditCard, Smartphone, Building, CheckCircle, XCircle, AlertTriangle, Plus, Eye, RefreshCw, Send
 } from "lucide-react";
 
 interface PaymentMethod {

@@ -19,14 +19,12 @@ import { BeautySettings } from '@/components/professional-services/modules/beaut
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Crown, Users, Calendar, DollarSign, Clock,
-  CheckCircle, XCircle, RefreshCw, Eye, Plus,
+  CheckCircle, XCircle, RefreshCw, Plus,
   TrendingUp, Settings, Image as ImageIcon, BarChart3
 } from 'lucide-react';
 import { useServiceBeautyStats } from '@/hooks/useServiceBeautyStats';
 import { useBeautyAppointmentsAll } from '@/hooks/useBeauty';
 import { Money } from '@/components/Money';
-import { formatDistanceToNow, format } from 'date-fns';
-import { fr } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 
 interface BeautyModuleProps {

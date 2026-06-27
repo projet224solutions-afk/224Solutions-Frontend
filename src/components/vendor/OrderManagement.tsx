@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { useCurrentVendor } from "@/hooks/useCurrentVendor";
@@ -15,12 +15,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { readSectionCache, writeSectionCache, isBrowserOffline } from "@/lib/offline/sectionCache";
 import { updateOrderStatus as updateOrderStatusBackend } from "@/services/orderBackendService";
 import { useToast } from "@/hooks/use-toast";
-import { GeocodedAddress } from "@/components/vendor/GeocodedAddress";
 import CreditSalesForm from "@/components/vendor/CreditSalesForm";
 import {
-  ShoppingCart, Search, Filter, Eye, Package, Clock,
+  ShoppingCart, Search, Filter, Eye, Package,
   CheckCircle, XCircle, Truck, CreditCard, FileText,
-  Calendar, User, MapPin, Download, MoreHorizontal, Shield, RefreshCw, Banknote, Lock
+  Calendar, User, MapPin, Download, Shield, RefreshCw, Banknote, Lock
 } from "lucide-react";
 
 interface Address {
@@ -220,7 +219,7 @@ export default function OrderManagement() {
     setHighlightedOrderId(focusParam);
     const timer = setTimeout(() => setHighlightedOrderId(null), 2600);
     return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [loading, focusParam, onlineParam, orders.length]);
   const [deliveryDialogOrder, setDeliveryDialogOrder] = useState<Order | null>(null);
   const [estimatedDeliveryDays, setEstimatedDeliveryDays] = useState('3');

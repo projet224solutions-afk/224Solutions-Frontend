@@ -15,7 +15,7 @@ import {
   DollarSign, Users, Shield, Settings, Package, Wrench,
   UserCheck, Building2, BarChart3, Brain, MessageSquare, Key, Zap, Cloud,
   ChevronDown, ChevronUp, Sparkles, Percent, Store, Bike, FileText, Landmark,
-  Menu, ChevronRight, Car, Lock, RefreshCw, Megaphone, Headphones, Wallet, Activity, BookOpen
+  Menu, ChevronRight, Car, RefreshCw, Megaphone, Headphones, Wallet, Activity, BookOpen
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';

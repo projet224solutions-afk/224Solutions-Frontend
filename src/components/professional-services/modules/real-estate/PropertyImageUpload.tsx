@@ -3,7 +3,6 @@
  */
 import { useState, useRef } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Button } from '@/components/ui/button';
 import { ImagePlus, X, Loader2, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';

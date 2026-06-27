@@ -8,7 +8,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,12 +28,7 @@ import {
   withdrawFromWallet,
 } from '@/services/walletBackendService';
 import {
-  CreditCard,
   Wallet,
-  Plus,
-  Eye,
-  EyeOff,
-  Copy,
   ArrowDownToLine,
   ArrowUpFromLine,
   Send,

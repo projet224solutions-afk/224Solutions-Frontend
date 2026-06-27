@@ -24,12 +24,10 @@ import {
   Car,
   Package,
   Star,
-  Clock,
   Download,
   RefreshCw,
   Mail,
   Phone,
-  MapPin,
   Calendar,
   Activity,
   TrendingUp,
@@ -52,7 +50,7 @@ import {
   ArrowUpRight,
   ArrowDownLeft
 } from 'lucide-react';
-import { useUserActivityTracker, UserActivitySummary, MessageActivity } from '@/hooks/useUserActivityTracker';
+import { useUserActivityTracker, MessageActivity } from '@/hooks/useUserActivityTracker';
 import { format, formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 

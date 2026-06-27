@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Bike, Users, Plus, AlertCircle, RefreshCw, MessageSquare, Settings, Lock, Mail, Copy, Ticket, Eye, EyeOff, UserPlus, DollarSign } from 'lucide-react';
+import { Users, Plus, AlertCircle, RefreshCw, MessageSquare, Settings, Lock, Mail, Copy, Eye, EyeOff, UserPlus, DollarSign } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from '@/integrations/supabase/client';

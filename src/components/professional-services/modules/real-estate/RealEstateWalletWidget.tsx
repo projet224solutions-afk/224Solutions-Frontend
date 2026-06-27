@@ -4,8 +4,7 @@
 import { WalletBalanceWidget } from '@/components/wallet/WalletBalanceWidget';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Wallet, TrendingUp, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { Wallet, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
 interface RealEstateWalletWidgetProps {
   className?: string;

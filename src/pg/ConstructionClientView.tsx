@@ -36,7 +36,7 @@ export default function ConstructionClientView() {
     const { data } = await (supabase as any).from('construction_projects').select('*').eq('id', projectId).maybeSingle();
     setProject(data); setLoading(false);
   };
-  useEffect(() => { void loadProject(); /* eslint-disable-next-line */ }, [projectId]);
+  useEffect(() => { void loadProject();   }, [projectId]);
 
   const isClient = user && project && project.client_user_id === user.id;
   const unclaimed = project && !project.client_user_id;

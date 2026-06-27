@@ -7,7 +7,7 @@ import { useState, useMemo } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
 import { useRealEstateData } from '@/hooks/useRealEstateData';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -16,8 +16,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Home, Building2, Users, Calendar, MapPin, Phone, Mail,
-  Plus, Search, Eye, Heart, DollarSign, TrendingUp,
-  Loader2, CheckCircle, XCircle, Clock, Map, Wallet, Bot, KeyRound
+  Plus, Eye, DollarSign,
+  Loader2, CheckCircle, XCircle, Map, Wallet, KeyRound
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';

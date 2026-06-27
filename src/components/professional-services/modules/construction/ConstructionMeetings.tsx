@@ -17,7 +17,6 @@ import {
   Plus, Trash2, Loader2, CalendarDays, MapPin, Users,
   FileDown, Lock, CheckCircle2, ListChecks
 } from 'lucide-react';
-import { toast } from 'sonner';
 import {
   useConstructionMeetings,
   type ConstructionMeeting,

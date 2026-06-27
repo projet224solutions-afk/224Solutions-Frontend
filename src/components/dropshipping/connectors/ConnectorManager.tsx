@@ -37,12 +37,9 @@ import {
 import {
   Power,
   PowerOff,
-  RefreshCw,
   Settings,
   Check,
-  AlertTriangle,
   Loader2,
-  ExternalLink,
   Info,
   Zap,
   Globe,

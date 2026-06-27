@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { _Card, _CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Eye, RefreshCw } from 'lucide-react';

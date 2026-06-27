@@ -286,7 +286,7 @@ export function useVendorStats() {
     // Déps = [userId] uniquement : userId est désormais exposé tout de suite par
     // useCurrentVendor (= auth user id), donc plus besoin d'attendre vendorLoading.
     // Inclure vendorLoading provoquerait un second fetch inutile à sa bascule.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [userId]);
 
   return { stats, loading, error };

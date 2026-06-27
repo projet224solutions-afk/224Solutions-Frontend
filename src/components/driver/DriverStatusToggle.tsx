@@ -5,7 +5,6 @@
 
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Power, Pause, Navigation } from 'lucide-react';
 import { useState } from 'react';
 import { useCurrentLocation } from '@/hooks/useGeolocation';

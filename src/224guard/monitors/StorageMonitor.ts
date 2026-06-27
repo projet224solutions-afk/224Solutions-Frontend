@@ -40,6 +40,7 @@ export class StorageMonitor {
   private hookSetItem(): void {
     const storage = this.storage;
     const original = storage.setItem.bind(storage);
+    // eslint-disable-next-line @typescript-eslint/no-this-alias -- l'override setItem a son propre this
     const self = this;
     try {
       storage.setItem = function (key: string, value: string) {

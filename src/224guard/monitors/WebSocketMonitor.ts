@@ -23,6 +23,7 @@ export class WebSocketMonitor {
     const OrigWS = this.target.WebSocket;
     if (typeof OrigWS !== 'function') return; // feature-detect
     this.original = OrigWS;
+    // eslint-disable-next-line @typescript-eslint/no-this-alias -- le trap construct a son propre this
     const self = this;
 
     const proxy = new Proxy(OrigWS, {

@@ -9,7 +9,6 @@ import {
   getVendorProducts,
   getProduct,
   getCategories,
-  getProductsByCategory,
   getCacheStats,
   getFeaturedProducts,
   type CachedProduct,

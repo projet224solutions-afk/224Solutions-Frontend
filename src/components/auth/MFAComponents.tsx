@@ -5,16 +5,15 @@ import { useTranslation } from "@/hooks/useTranslation";
  */
 
 import React, { useState, useEffect } from 'react';
-import { Shield, Smartphone, Mail, Key, QrCode, AlertTriangle, Check, Copy, RefreshCw } from 'lucide-react';
+import { Shield, Smartphone, Mail, Key, QrCode, Check, Copy, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { cn } from '@/lib/utils';
 import useMFA from '@/hooks/useMFA';
 import { MFAMethod, MFAFactor } from '@/services/auth/MFAService';
 import { toast } from 'sonner';

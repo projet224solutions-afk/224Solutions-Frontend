@@ -11,8 +11,7 @@ import { format, addDays, isBefore, startOfDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import {
   Calendar, Clock, Users, Phone, Mail, User, Sparkles, Check, AlertCircle,
-  UtensilsCrossed, CreditCard, ShoppingCart, Plus, Minus, Trash2, ChevronRight,
-  Flame, Leaf, Info, Download, Receipt, Eye, Wallet
+  UtensilsCrossed, CreditCard, ShoppingCart, Plus, Minus, ChevronRight, Receipt, Eye, Wallet
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -23,19 +22,17 @@ import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useRestaurantReservations, TimeSlot, ReservationFormData } from '@/hooks/useRestaurantReservations';
-import { useRestaurantMenu, MenuItem, MenuCategory } from '@/hooks/useRestaurantMenu';
+import { useRestaurantMenu, MenuItem } from '@/hooks/useRestaurantMenu';
 import { useAuth } from '@/hooks/useAuth';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
-import { supabase } from '@/integrations/supabase/client';
 import { StripePaymentWrapper } from '@/components/payment/StripePaymentWrapper';
-import { useFormPersistence, useAppPersistence } from '@/hooks/useAppPersistence';
+import { useAppPersistence } from '@/hooks/useAppPersistence';
 
 interface ReservationModalProps {
   isOpen: boolean;

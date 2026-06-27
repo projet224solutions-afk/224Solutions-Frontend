@@ -12,7 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Shield, Loader2 } from 'lucide-react';
-import { useAgentPermissions, AVAILABLE_PERMISSIONS, PermissionKey } from '@/hooks/useAgentPermissions';
+import { useAgentPermissions, AVAILABLE_PERMISSIONS } from '@/hooks/useAgentPermissions';
 import { Agent } from '@/hooks/usePDGAgentsData';
 import { PERMISSION_CATEGORIES } from '@/constants/agentPermissionCategories';
 

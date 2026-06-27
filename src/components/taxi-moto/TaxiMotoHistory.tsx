@@ -14,16 +14,10 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
     Clock,
-    _MapPin,
     Star,
     Download,
-    _Filter,
     Search,
-    _Calendar,
-    _DollarSign,
-    Navigation,
-    _User,
-    _MoreVertical
+    Navigation
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";

@@ -47,8 +47,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { format, formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { format } from 'date-fns';
 
 interface WalletIssue {
   type: 'critical' | 'warning' | 'info';

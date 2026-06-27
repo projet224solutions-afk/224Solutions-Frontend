@@ -18,7 +18,6 @@ import {
   CalendarDays,
   Calendar,
   CalendarRange,
-  TrendingUp,
   Lock,
   Package
 } from 'lucide-react';

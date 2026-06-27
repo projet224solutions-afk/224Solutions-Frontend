@@ -3,12 +3,14 @@ import globals from 'globals'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import tseslint from 'typescript-eslint'
+import unusedImports from 'eslint-plugin-unused-imports'
 
 const sharedRules = {
   'react/react-in-jsx-scope': 'off',
   'react/jsx-uses-react': 'off',
   '@typescript-eslint/no-explicit-any': 'off',
-  '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }],
+  // Remplacé par unused-imports (réglé dans le bloc global qui enregistre le plugin)
+  '@typescript-eslint/no-unused-vars': 'off',
   '@typescript-eslint/ban-ts-comment': 'off',
   'no-unused-vars': 'off',
   'no-empty': 'off',
@@ -36,6 +38,7 @@ export default [
       'ios/**',
       'backend/uploads/**',
       'supabase/.temp/**',
+      '_*.mjs',
     ],
   },
 
@@ -44,7 +47,14 @@ export default [
 
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
-    rules: sharedRules,
+    plugins: {
+      'unused-imports': unusedImports,
+    },
+    rules: {
+      ...sharedRules,
+      'unused-imports/no-unused-imports': 'warn',
+      'unused-imports/no-unused-vars': ['warn', { args: 'after-used', argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }],
+    },
   },
 
   {

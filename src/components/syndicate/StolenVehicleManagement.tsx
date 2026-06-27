@@ -32,19 +32,16 @@ import {
     MapPin,
     Clock,
     Eye,
-    FileText,
     Download,
     RefreshCw,
     Search,
     Lock,
     Unlock,
     Navigation,
-    Smartphone,
     Activity,
     History,
     AlertCircle,
-    CheckCircle,
-    XCircle
+    CheckCircle
 } from "lucide-react";
 import { toast } from "sonner";
 import { format } from 'date-fns';

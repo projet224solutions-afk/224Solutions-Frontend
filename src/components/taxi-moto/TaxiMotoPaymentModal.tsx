@@ -18,7 +18,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { CreditCard, Smartphone, Wallet, Banknote, Loader2, Shield } from "lucide-react";
-import { PaymentsService, type PaymentMethod } from "@/services/taxi/paymentsService";
+import { type PaymentMethod } from "@/services/taxi/paymentsService";
 import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { UniversalEscrowService } from "@/services/UniversalEscrowService";

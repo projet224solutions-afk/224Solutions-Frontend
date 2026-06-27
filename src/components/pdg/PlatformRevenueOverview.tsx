@@ -11,7 +11,6 @@ import DetailedTransactionsList from './DetailedTransactionsList';
 import {
   Wallet,
   TrendingUp,
-  ShoppingCart,
   Users,
   Truck,
   Package,

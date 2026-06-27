@@ -53,7 +53,7 @@ export function useAgentPermissionsUnified(agentId: string | undefined): Unified
 
       // Étape 2: Fallback SELECT direct sur agent_permissions
       // (fonctionne si la policy "anon_read_agent_permissions" est active)
-      let permissionsFromTable: Record<string, boolean> = {};
+      const permissionsFromTable: Record<string, boolean> = {};
       if (!permissionsFromRpc) {
         const { data } = await supabase
           .from('agent_permissions')

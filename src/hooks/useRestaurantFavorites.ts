@@ -33,7 +33,7 @@ export function useRestaurantFavorites() {
     if (!user?.id) return false;
     const has = favorites.has(serviceId);
     // Optimiste
-    setFavorites((prev) => { const n = new Set(prev); has ? n.delete(serviceId) : n.add(serviceId); return n; });
+    setFavorites((prev) => { const n = new Set(prev); if (has) { n.delete(serviceId); } else { n.add(serviceId); } return n; });
     if (has) {
       const { error } = await supabase.from('restaurant_favorites').delete().eq('user_id', user.id).eq('professional_service_id', serviceId);
       if (error) setFavorites((prev) => new Set(prev).add(serviceId)); // rollback

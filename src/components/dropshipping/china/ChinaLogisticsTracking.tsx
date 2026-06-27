@@ -13,21 +13,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip';
+
+
+
+
 import {
   Package,
   Truck,
@@ -42,11 +32,9 @@ import {
   Building2,
   Home,
   RefreshCw,
-  ExternalLink,
   Copy,
   Info,
-  ShieldAlert,
-  ArrowRight
+  ShieldAlert
 } from 'lucide-react';
 import { format, differenceInDays, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';

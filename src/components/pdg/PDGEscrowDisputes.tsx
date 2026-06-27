@@ -5,18 +5,16 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { EscrowDisputeThread } from '@/components/disputes/EscrowDisputeThread';
 import { Textarea } from '@/components/ui/textarea';
-import { supabase } from '@/integrations/supabase/client';
 import { backendFetch } from '@/services/backendApi';
 import { toast } from 'sonner';
 import { LocalPrice } from '@/components/ui/LocalPrice';
 import {
-  AlertTriangle, CheckCircle, XCircle, User, Phone, Mail,
-  DollarSign, Clock, Shield, RefreshCw
+  AlertTriangle, CheckCircle, XCircle, User, Phone, Mail, Shield, RefreshCw
 } from 'lucide-react';
 import {
   AlertDialog,

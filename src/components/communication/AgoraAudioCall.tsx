@@ -16,7 +16,6 @@ import {
   Mic,
   MicOff,
   PhoneOff,
-  Users,
   Wifi,
   Clock,
   Volume2,

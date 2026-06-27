@@ -6,7 +6,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { backendFetch } from './backendApi';
-import { SupportedLanguage, SUPPORTED_LANGUAGES } from './translationService';
+import { SupportedLanguage } from './translationService';
 
 export interface AudioTranslationResult {
   success: boolean;

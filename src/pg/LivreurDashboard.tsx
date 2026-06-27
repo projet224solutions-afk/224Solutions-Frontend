@@ -10,7 +10,7 @@ import { NotificationBellButton } from '@/components/shared/NotificationBellButt
 import { useTranslation } from "@/hooks/useTranslation";
 import { Money } from '@/components/Money';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -24,7 +24,6 @@ import { useDelivery } from "@/hooks/useDelivery";
 import { useTaxiRides } from "@/hooks/useTaxiRides";
 import { useDriver } from "@/hooks/useDriver";
 import { useResponsive } from "@/hooks/useResponsive";
-import { ErrorBanner } from "@/components/ui/ErrorBanner";
 import { useLivreurErrorBoundary } from "@/hooks/useLivreurErrorBoundary";
 import { useDeliveryActions } from "@/hooks/useDeliveryActions";
 import { useRealtimeDelivery } from "@/hooks/useRealtimeDelivery";

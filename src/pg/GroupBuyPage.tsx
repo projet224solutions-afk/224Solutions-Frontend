@@ -37,7 +37,7 @@ export default function GroupBuyPage() {
     }
   };
 
-  useEffect(() => { void load(); /* eslint-disable-next-line */ }, [id, user?.id]);
+  useEffect(() => { void load();   }, [id, user?.id]);
   useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
   useEffect(() => {
     if (!id) return;

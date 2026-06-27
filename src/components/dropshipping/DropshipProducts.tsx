@@ -30,7 +30,6 @@ import {
   Plus,
   RefreshCw,
   MoreVertical,
-  Edit,
   Trash2,
   ExternalLink,
   Eye,

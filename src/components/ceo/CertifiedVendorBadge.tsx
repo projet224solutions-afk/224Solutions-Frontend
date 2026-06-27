@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, Clock, XCircle, AlertTriangle } from 'lucide-react';
+import { CheckCircle2, Clock, AlertTriangle } from 'lucide-react';
 import { VendorCertificationStatus, getCertificationStatusLabel } from '@/types/vendorCertification';
 
 interface CertifiedVendorBadgeProps {

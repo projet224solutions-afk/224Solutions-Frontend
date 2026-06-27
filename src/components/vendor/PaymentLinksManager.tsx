@@ -6,7 +6,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,7 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
@@ -30,9 +30,9 @@ import {
   Link, Plus, Copy, Share2, RefreshCw,
   DollarSign, CheckCircle, Clock, XCircle, AlertCircle,
   ExternalLink, Calendar, User, Package, Edit, Trash2,
-  CreditCard, FileText, ShoppingCart, Wrench, Eye,
-  QrCode, Ban, MoreVertical, ArrowUpRight, Receipt,
-  Smartphone, Store
+  CreditCard, FileText, ShoppingCart, Wrench,
+  QrCode, Ban, Receipt,
+  Smartphone
 } from 'lucide-react';
 
 const LINK_TYPES: { value: LinkType; label: string; icon: React.ReactNode; desc: string }[] = [

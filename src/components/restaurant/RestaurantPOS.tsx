@@ -5,14 +5,13 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useRestaurantMenu, type MenuItem } from '@/hooks/useRestaurantMenu';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
@@ -23,7 +22,7 @@ import { StripeCardPaymentModal } from '@/components/pos/StripeCardPaymentModal'
 import {
   Search, Plus, Minus, Trash2, ShoppingCart, Receipt,
   UtensilsCrossed, MapPin, Truck, ShoppingBag, Printer,
-  Check, X, Users, Clock, CreditCard, Banknote, Smartphone, Download
+  Check, X, Clock, CreditCard, Banknote, Smartphone, Download
 } from 'lucide-react';
 
 interface RestaurantPOSProps {

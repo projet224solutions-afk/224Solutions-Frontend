@@ -9,7 +9,7 @@ import { AlertTriangle, Check, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { emergencyService, gpsTrackingService } from '@/services/emergencyService';
 import { useAuth } from '@/hooks/useAuth';
-import type { EmergencyAlert, GPSPosition } from '@/types/emergency';
+import type { EmergencyAlert } from '@/types/emergency';
 
 interface EmergencySOSButtonProps {
   driverId?: string;
