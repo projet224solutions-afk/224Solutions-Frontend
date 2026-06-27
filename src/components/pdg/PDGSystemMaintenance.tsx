@@ -4,9 +4,10 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { RefreshCw, Database, Server, HardDrive, AlertTriangle, CheckCircle, Activity, Clock, FileText, Shield } from 'lucide-react';
+import { RefreshCw, Database, Server, HardDrive, AlertTriangle, CheckCircle, Activity, Clock, FileText, MapPin } from 'lucide-react';
 import { usePDGMaintenanceData } from '@/hooks/usePDGMaintenanceData';
 import { useAdminMfa } from '@/hooks/useAdminMfa';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { IdAuditManager } from './IdAuditManager';
 
@@ -28,6 +29,31 @@ export default function PDGSystemMaintenance() {
   const [archiveConfirm, setArchiveConfirm] = useState<{ days: number } | null>(null);
   const [confirmText, setConfirmText] = useState('');
   const [mfaCode, setMfaCode] = useState('');
+
+  // Géocodage rétroactif : remplit les coordonnées GPS manquantes des services
+  // depuis leur ville (RPC backfill_services_geolocation, réservé admin/pdg/ceo).
+  const [geoLoading, setGeoLoading] = useState(false);
+  const geocodeServices = async () => {
+    setGeoLoading(true);
+    try {
+      const { data, error } = await supabase.rpc('backfill_services_geolocation' as any);
+      if (error) throw error;
+      const res = data as any;
+      if (!res?.success) {
+        toast.error(res?.error === 'NOT_AUTHORIZED' ? 'Action réservée admin/PDG' : (res?.error || 'Géocodage refusé'));
+        return;
+      }
+      toast.success(
+        `Géocodage terminé : ${res.professional_services_updated} service(s) + ` +
+        `${res.vendors_updated} boutique(s) positionné(s)`,
+      );
+    } catch (e: any) {
+      console.error('Erreur géocodage:', e);
+      toast.error('Erreur lors du géocodage');
+    } finally {
+      setGeoLoading(false);
+    }
+  };
 
   const handleArchiveRequest = (days: number) => {
     setArchiveConfirm({ days });
@@ -275,6 +301,30 @@ export default function PDGSystemMaintenance() {
               disabled={true}
             >
               Compresser (Pro)
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MapPin className="w-5 h-5" />
+              Géolocalisation
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <p className="text-xs text-muted-foreground">
+              Remplit les coordonnées GPS manquantes des services depuis leur ville
+              (préserve les positions précises existantes).
+            </p>
+            <Button
+              variant="outline"
+              className="w-full gap-2"
+              onClick={geocodeServices}
+              disabled={geoLoading || loading}
+            >
+              <MapPin className={`w-4 h-4 ${geoLoading ? 'animate-pulse' : ''}`} />
+              {geoLoading ? 'Géocodage…' : 'Géocoder les services sans position'}
             </Button>
           </CardContent>
         </Card>

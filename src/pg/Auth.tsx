@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { User } from "@supabase/supabase-js";
 import { AlertCircle, Loader2, Store, ArrowLeft, Eye, EyeOff, Search, ChevronDown, Check, RefreshCw, Zap, LogIn, UserPlus, Briefcase, CheckCircle2, Laptop, ShoppingBag, Bike, Truck, Utensils, Scissors, Car, Wrench, Sparkles, Dumbbell, Building2, Camera, Heart, Home, Phone, Lock, Mail, Square, Hammer, Flame, Pill, MapPin } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
@@ -21,7 +20,7 @@ import LanguageSelector from "@/components/LanguageSelector";
 import { syncCognitoProfile } from "@/services/cognitoSyncService";
 import { getSafeBrowserGeo } from "@/lib/safeGeo";
 import { resolvePostAuthRoute, cleanupOAuthFlags, cleanupAffiliateFlags, getValidatedPostAuthRedirect } from "@/utils/postAuthRoute";
-import { COUNTRY_PHONE_CODES, WORLD_PHONE_CODES, PHONE_VALIDATION_RULES, validatePhoneNumber, getPhoneExample, getPhoneLengthHint } from "@/utils/phoneData";
+import { COUNTRY_PHONE_CODES, WORLD_PHONE_CODES, validatePhoneNumber, getPhoneExample, getPhoneLengthHint } from "@/utils/phoneData";
 
 // Validation schemas avec tous les rôles
 // Password strength: 8+ chars, uppercase, lowercase, digit
@@ -1814,6 +1813,11 @@ export default function Auth() {
             phone: phoneSignupPhone,
             address: formData.city,
             city: formData.city,
+            // ✅ Capturer le GPS au signup (comme le prestataire) : sans coords,
+            // la boutique est invisible en proximité tant que sa ville ne matche
+            // pas la table de référence. businessLocation est déjà saisi au form.
+            latitude: businessLocation?.latitude ?? null,
+            longitude: businessLocation?.longitude ?? null,
             is_verified: false,
             is_active: true,
             service_type: 'general',

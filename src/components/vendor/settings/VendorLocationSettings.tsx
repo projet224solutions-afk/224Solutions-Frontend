@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useTranslation } from '@/hooks/useTranslation';
+import { isInServiceRegion } from '@/lib/cityGeocode';
 import { MapPin, Navigation, Save, Loader2, ChevronDown } from 'lucide-react';
 
 interface VendorLocationSettingsProps {
@@ -233,6 +234,17 @@ export default function VendorLocationSettings({ vendorId }: VendorLocationSetti
         const lng = position.coords.longitude;
         const accuracy = position.coords.accuracy;
 
+        // ✅ Garde-fou : rejeter une position manifestement erronée (hors zone de
+        // service ouest-africaine) — ex. géoloc desktop/IP qui renvoie l'océan.
+        // Sans ça, la boutique est plottée à des milliers de km → invisible.
+        if (!isInServiceRegion(lat, lng)) {
+          setGpsProgress('');
+          toast.error('Position hors zone détectée', {
+            description: `Coordonnées (${lat.toFixed(3)}, ${lng.toFixed(3)}) hors d'Afrique de l'Ouest. Réessayez dehors/avec le GPS activé, ou saisissez la position manuellement.`,
+          });
+          return;
+        }
+
         setLatitude(lat);
         setLongitude(lng);
 
@@ -295,14 +307,25 @@ export default function VendorLocationSettings({ vendorId }: VendorLocationSetti
         ? 'digital'
         : businessType;
 
+      // ✅ Auto-nettoyage : ne jamais enregistrer une position aberrante (hors
+      // zone). On la met à NULL → la proximité retombera sur la ville. Évite de
+      // figer en base une boutique « dans l'océan » comme c'est arrivé.
+      let saveLat = latitude;
+      let saveLng = longitude;
+      if (saveLat != null && saveLng != null && !isInServiceRegion(saveLat, saveLng)) {
+        saveLat = null;
+        saveLng = null;
+        toast.warning('Position GPS hors zone ignorée — recapturez votre position pour être visible.');
+      }
+
       const { error } = await supabase
         .from('vendors')
         .update({
           city,
           neighborhood,
           address,
-          latitude,
-          longitude,
+          latitude: saveLat,
+          longitude: saveLng,
           business_type: finalBusinessType,
           service_type: serviceType
         })

@@ -25,6 +25,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { VendorCard } from '@/components/vendor/VendorCard';
 import { useGeoDistance, calculateDistance as calcDistanceFn } from '@/hooks/useGeoDistance';
+import { getCityCoordinates, resolveItemCoords } from '@/lib/cityGeocode';
 
 // Rayon maximum en km (même logique que la page de proximité)
 const RADIUS_KM = 20;
@@ -108,32 +109,33 @@ export function NearbyVendorsModal({ open, onOpenChange }: NearbyVendorsModalPro
 
         const total = list.length;
 
-        // Distances + filtre rayon - EXCLURE les boutiques sans GPS
+        // Coordonnées effectives : GPS précis si présent, sinon centre-ville
+        // (city_coordinates) → les boutiques de la ville de l'utilisateur entrent
+        // dans le rayon 20 km même sans GPS précis.
+        const cityMap = await getCityCoordinates();
         const withDistance = list.map((v) => {
-          if (v.latitude === null || v.latitude === undefined || v.longitude === null || v.longitude === undefined) {
-            return { ...v, distance: null };
-          }
-          const distance = calcDistanceFn(origin.latitude, origin.longitude, Number(v.latitude), Number(v.longitude));
+          const coords = resolveItemCoords(v, cityMap);
+          if (!coords) return { ...v, distance: null };
+          const distance = calcDistanceFn(origin.latitude, origin.longitude, coords.lat, coords.lng);
           return { ...v, distance };
         });
 
-        const withoutGps = withDistance.filter((v) => v.distance === null).length;
+        const withoutCoords = withDistance.filter((v) => v.distance === null).length;
         const outOfRadius = withDistance.filter((v) => v.distance !== null && v.distance > RADIUS_KM).length;
 
-        list = withDistance.filter((v) => v.distance !== null && v.distance <= RADIUS_KM);
+        // Strict 20 km : seules les boutiques réellement à proximité. Tri par distance.
+        list = withDistance
+          .filter((v) => v.distance !== null && v.distance <= RADIUS_KM)
+          .sort((a, b) => {
+            if (a.distance === null && b.distance === null) return (b.rating || 0) - (a.rating || 0);
+            if (a.distance === null) return 1;
+            if (b.distance === null) return -1;
+            return (a.distance ?? 0) - (b.distance ?? 0);
+          });
 
-        // Tri: plus proches d'abord
-        list.sort((a, b) => {
-          if (a.distance === null && b.distance === null) return (b.rating || 0) - (a.rating || 0);
-          if (a.distance === null) return 1;
-          if (b.distance === null) return -1;
-          return (a.distance ?? 0) - (b.distance ?? 0);
-        });
-
-        // Debug (pour comprendre si des boutiques passent le filtre)
         console.debug('[NearbyVendorsModal] origin=', origin, {
           total,
-          withoutGps,
+          withoutCoords,
           outOfRadius,
           inRadius: list.length,
           radiusKm: RADIUS_KM,

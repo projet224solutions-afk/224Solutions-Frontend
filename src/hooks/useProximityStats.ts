@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useGeoDistance, calculateDistance as calcDistanceFn } from '@/hooks/useGeoDistance';
+import { getCityCoordinates, resolveItemCoords } from '@/lib/cityGeocode';
 
 interface ProximityStats {
   boutiques: number;
@@ -101,7 +102,7 @@ export function useProximityStats() {
       const [vendorsRes, proServicesRes, driversRes, taxiDriversRes, productsRes] = await Promise.all([
         supabase
           .from('vendors')
-          .select('id, business_type, service_type, latitude, longitude, user_id')
+          .select('id, business_type, service_type, latitude, longitude, city, user_id')
           .eq('is_active', true),
 
         supabase
@@ -110,6 +111,7 @@ export function useProximityStats() {
             id,
             latitude,
             longitude,
+            city,
             service_type_id,
             user_id,
             service_types (code, name)
@@ -149,24 +151,34 @@ export function useProximityStats() {
       const taxiDrivers = taxiDriversRes.data ?? [];
       const products = productsRes.data ?? [];
 
-      // ✅ GPS cross-reference : on filtre la requête vendors existante (req 1)
-      // au lieu d'une 2ᵉ requête vendors redondante.
-      const vendorGpsMap = new Map<string, { lat: number; lng: number }>();
+      // Table de référence ville → coords (centre-ville), pour combler les items
+      // sans GPS précis mais avec une ville (cohérent avec les pages Nearby*).
+      const cityMap = await getCityCoordinates();
+
+      // Index vendeur par user_id : GPS + ville (pour enrichir les services liés).
+      const vendorByUser = new Map<string, { lat: number | null; lng: number | null; city: string | null }>();
       vendors.forEach((v: any) => {
-        if (v.user_id && v.latitude != null && v.longitude != null) {
-          vendorGpsMap.set(v.user_id, { lat: Number(v.latitude), lng: Number(v.longitude) });
+        if (v.user_id) {
+          vendorByUser.set(v.user_id, {
+            lat: v.latitude != null ? Number(v.latitude) : null,
+            lng: v.longitude != null ? Number(v.longitude) : null,
+            city: v.city ?? null,
+          });
         }
       });
 
-      // Enrichir les services sans GPS avec les données vendor
+      // Enrichir les services : coords = GPS service → GPS du vendeur lié →
+      // (sinon résolu par ville plus bas). Ville effective = service.city sinon vendor.city.
       const enrichedServices = professionalServices.map((s: any) => {
-        if (s.latitude == null || s.longitude == null) {
-          const vendorGps = vendorGpsMap.get(s.user_id);
-          if (vendorGps) {
-            return { ...s, latitude: vendorGps.lat, longitude: vendorGps.lng };
-          }
+        const vend = vendorByUser.get(s.user_id);
+        let latitude = s.latitude;
+        let longitude = s.longitude;
+        if ((latitude == null || longitude == null) && vend?.lat != null && vend?.lng != null) {
+          latitude = vend.lat;
+          longitude = vend.lng;
         }
-        return s;
+        const _city = s.city ?? vend?.city ?? null;
+        return { ...s, latitude, longitude, _city };
       });
 
       const newStats: ProximityStats = {
@@ -206,16 +218,15 @@ export function useProximityStats() {
         usingRealGps: usingRealLocation,
       };
 
-      // 1) Boutiques (vendors) — strict GPS + rayon
+      // 1) Boutiques (vendors) — GPS précis sinon centre-ville, puis rayon
       vendors.forEach((vendor: any) => {
-        const lat = vendor?.latitude;
-        const lng = vendor?.longitude;
-        if (lat === null || lat === undefined || lng === null || lng === undefined) {
+        const coords = resolveItemCoords(vendor, cityMap);
+        if (!coords) {
           dbg.vendors.noGps++;
           return;
         }
 
-        const distance = calcDistanceFn(position.latitude, position.longitude, Number(lat), Number(lng));
+        const distance = calcDistanceFn(position.latitude, position.longitude, coords.lat, coords.lng);
         if (!Number.isFinite(distance) || distance > RADIUS_KM) {
           dbg.vendors.outOfRadius++;
           return;
@@ -279,26 +290,20 @@ export function useProximityStats() {
         newStats.livraison++;
       });
 
-      // 4) Services pro — strict GPS + rayon (cohérent avec ServicesProximite.tsx)
+      // 4) Services pro — GPS précis sinon centre-ville (ville effective), puis rayon
+      //    (cohérent avec ServicesProximite.tsx et les pages Nearby*).
       const serviceTypeCounts: Record<string, number> = {};
       enrichedServices.forEach((service: any) => {
-        const lat = service?.latitude;
-        const lng = service?.longitude;
-        const hasGps = lat !== null && lat !== undefined && lng !== null && lng !== undefined;
-
-        if (!hasGps) {
+        const coords = resolveItemCoords(
+          { latitude: service.latitude, longitude: service.longitude, city: service._city },
+          cityMap,
+        );
+        if (!coords) {
           dbg.services.noGps++;
-          return; // ❌ Pas de GPS = pas visible en proximité
+          return; // Ni GPS ni ville exploitable = non géolocalisable
         }
 
-        const lat_val = Number(lat);
-        const lng_val = Number(lng);
-        if (!Number.isFinite(lat_val) || !Number.isFinite(lng_val) || (lat_val === 0 && lng_val === 0)) {
-          dbg.services.noGps++;
-          return; // ❌ Coordonnées invalides
-        }
-
-        const distance = calcDistanceFn(position.latitude, position.longitude, lat_val, lng_val);
+        const distance = calcDistanceFn(position.latitude, position.longitude, coords.lat, coords.lng);
         if (!Number.isFinite(distance) || distance > RADIUS_KM) {
           dbg.services.outOfRadius++;
           return; // Hors rayon = exclu
@@ -318,7 +323,8 @@ export function useProximityStats() {
       newStats.immobilier = serviceTypeCounts['location'] || serviceTypeCounts['immobilier'] || 0;
       newStats.formation = serviceTypeCounts['education'] || serviceTypeCounts['formation'] || 0;
       newStats.media = serviceTypeCounts['media'] || serviceTypeCounts['photo-video'] || 0;
-      newStats.sante = serviceTypeCounts['sante'] || 0;
+      // Santé & Bien-être = services santé + pharmacies (code 'pharmacie' réel en base)
+      newStats.sante = (serviceTypeCounts['sante'] || 0) + (serviceTypeCounts['pharmacie'] || 0);
       newStats.sport = serviceTypeCounts['sport'] || 0;
       // Stats additionnelles
       newStats.informatique = serviceTypeCounts['informatique'] || serviceTypeCounts['tech'] || 0;
