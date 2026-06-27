@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import { RefreshCw, Database, Server, HardDrive, AlertTriangle, CheckCircle, Activity, Clock, FileText, Shield } from 'lucide-react';
 import { usePDGMaintenanceData } from '@/hooks/usePDGMaintenanceData';
+import { useAdminMfa } from '@/hooks/useAdminMfa';
+import { toast } from 'sonner';
 import { IdAuditManager } from './IdAuditManager';
 
 export default function PDGSystemMaintenance() {
@@ -14,10 +18,32 @@ export default function PDGSystemMaintenance() {
     logs,
     loading,
     checkServicesStatus,
-    cleanupOldData,
-    optimizeDatabase,
+    archiveOldData,
+    refreshDatabaseStats,
     createBackup
   } = usePDGMaintenanceData();
+  const { stepUp } = useAdminMfa();
+
+  // ✅ Archivage audit_logs : confirmation forte (taper ARCHIVER) + MFA step-up serveur
+  const [archiveConfirm, setArchiveConfirm] = useState<{ days: number } | null>(null);
+  const [confirmText, setConfirmText] = useState('');
+  const [mfaCode, setMfaCode] = useState('');
+
+  const handleArchiveRequest = (days: number) => {
+    setArchiveConfirm({ days });
+    setConfirmText('');
+    setMfaCode('');
+  };
+
+  const confirmArchive = async () => {
+    if (confirmText !== 'ARCHIVER') { toast.error('Tapez ARCHIVER pour confirmer'); return; }
+    if (!mfaCode || mfaCode.length < 6) { toast.error('Code MFA requis (6 chiffres)'); return; }
+    // Vérification MFA step-up côté serveur (TOTP) avant l'archivage
+    const res = await stepUp(mfaCode);
+    if (!res.ok) { toast.error(`MFA invalide : ${res.error || 'code refusé'}`); return; }
+    await archiveOldData(archiveConfirm!.days, mfaCode);
+    setArchiveConfirm(null);
+  };
 
 
   const getStatusIcon = (status: string) => {
@@ -161,18 +187,18 @@ export default function PDGSystemMaintenance() {
             <Button
               variant="outline"
               className="w-full"
-              onClick={() => cleanupOldData(30)}
+              onClick={() => handleArchiveRequest(90)}
               disabled={loading}
             >
-              Nettoyage (30j)
+              Archiver logs (90j+)
             </Button>
             <Button
               variant="outline"
               className="w-full"
-              onClick={optimizeDatabase}
+              onClick={refreshDatabaseStats}
               disabled={loading}
             >
-              Optimisation
+              Rafraîchir stats
             </Button>
             <Button
               variant="outline"
@@ -180,7 +206,7 @@ export default function PDGSystemMaintenance() {
               onClick={createBackup}
               disabled={loading}
             >
-              Sauvegarde
+              Info sauvegardes
             </Button>
           </CardContent>
         </Card>
@@ -204,7 +230,7 @@ export default function PDGSystemMaintenance() {
             <Button
               variant="outline"
               className="w-full"
-              onClick={optimizeDatabase}
+              onClick={refreshDatabaseStats}
               disabled={loading}
             >
               Rafraîchir Stats
@@ -230,18 +256,18 @@ export default function PDGSystemMaintenance() {
             <Button
               variant="outline"
               className="w-full"
-              onClick={() => cleanupOldData(60)}
+              onClick={() => handleArchiveRequest(90)}
               disabled={loading}
             >
-              Nettoyer (60j)
+              Archiver logs (90j+)
             </Button>
             <Button
               variant="outline"
               className="w-full"
-              onClick={optimizeDatabase}
+              onClick={refreshDatabaseStats}
               disabled={loading}
             >
-              Analyser DB
+              Rafraîchir stats
             </Button>
             <Button
               variant="outline"
@@ -283,6 +309,46 @@ export default function PDGSystemMaintenance() {
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {/* ✅ Dialog confirmation forte + MFA pour l'archivage des audit_logs */}
+      {archiveConfirm && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-md bg-background rounded-xl p-6 space-y-4 border">
+            <div className="flex items-center gap-2 text-amber-600">
+              <AlertTriangle className="w-6 h-6" />
+              <h3 className="font-bold text-lg">Archiver les logs d'audit</h3>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Les logs de plus de <strong>{archiveConfirm.days} jours</strong> seront
+              DÉPLACÉS vers l'archive froide (jamais supprimés). Cette action est
+              journalisée et nécessite une vérification MFA.
+            </p>
+            <p className="text-sm">Tapez <strong>ARCHIVER</strong> pour confirmer :</p>
+            <Input
+              value={confirmText}
+              onChange={(e) => setConfirmText(e.target.value)}
+              placeholder="ARCHIVER"
+            />
+            <p className="text-sm">Code MFA (authentificateur) :</p>
+            <Input
+              value={mfaCode}
+              onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
+              placeholder="123456"
+              inputMode="numeric"
+            />
+            <div className="flex gap-2 justify-end">
+              <Button variant="ghost" onClick={() => setArchiveConfirm(null)}>Annuler</Button>
+              <Button
+                variant="destructive"
+                onClick={confirmArchive}
+                disabled={confirmText !== 'ARCHIVER' || mfaCode.length < 6 || loading}
+              >
+                Confirmer l'archivage
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

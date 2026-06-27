@@ -152,70 +152,68 @@ export function usePDGMaintenanceData() {
     }
   };
 
-  // Nettoyer les anciennes données
-  const cleanupOldData = async (daysOld: number = 30) => {
+  // ✅ Archive les vieux audit_logs (NE SUPPRIME PLUS — preuve légale/conformité).
+  // Exige MFA (token d'une vérification step-up récente) + rétention min 90j.
+  const archiveOldData = async (daysOld: number, mfaToken: string | null) => {
+    if (!mfaToken) {
+      toast.error('Vérification MFA requise pour archiver les logs');
+      return { success: false };
+    }
+    if (daysOld < 90) {
+      toast.error('Rétention minimale : 90 jours');
+      return { success: false };
+    }
+
     setLoading(true);
     try {
-      const cutoffDate = new Date();
-      cutoffDate.setDate(cutoffDate.getDate() - daysOld);
-
-      // Nettoyer les logs d'audit anciens
-      const { error } = await supabase
-        .from('audit_logs')
-        .delete()
-        .lt('created_at', cutoffDate.toISOString());
+      const { data, error } = await supabase.rpc('archive_old_audit_logs', {
+        p_days_old: daysOld,
+        p_mfa_token: mfaToken,
+      });
 
       if (error) throw error;
+      const res = data as any;
+      if (!res?.success) {
+        toast.error(`Archivage refusé : ${res?.error || 'erreur inconnue'}`);
+        return { success: false };
+      }
 
-      toast.success(`Données de plus de ${daysOld} jours supprimées`);
+      toast.success(`${res.archived} logs archivés (déplacés, non supprimés)`);
       await loadMaintenanceLogs();
-    } catch (error) {
-      console.error('Erreur nettoyage:', error);
-      toast.error('Erreur lors du nettoyage des données');
+      return { success: true, archived: res.archived };
+    } catch (e: any) {
+      console.error('Erreur archivage:', e);
+      toast.error("Erreur lors de l'archivage des logs");
+      return { success: false };
     } finally {
       setLoading(false);
     }
   };
 
-  // Optimiser la base de données
-  const optimizeDatabase = async () => {
+  // ✅ Rafraîchit les statistiques (PAS un VACUUM). Nom honnête vs l'ancien
+  // "optimizeDatabase" qui prétendait optimiser sans rien faire de tel.
+  const refreshDatabaseStats = async () => {
     setLoading(true);
     try {
-      // Vérifier la connectivité et rafraîchir les statistiques
       await checkServicesStatus();
       await loadDatabaseStats();
-
-      toast.success('Optimisation de la base de données effectuée');
+      toast.success('Statistiques rafraîchies');
     } catch (error) {
-      console.error('Erreur optimisation:', error);
-      toast.error('Erreur lors de l\'optimisation');
+      console.error('Erreur rafraîchissement:', error);
+      toast.error('Erreur lors du rafraîchissement');
     } finally {
       setLoading(false);
     }
   };
 
-  // Créer un backup (simulation)
+  // ✅ Backups gérés automatiquement par Supabase — message honnête (l'ancienne
+  // version simulait un backup et affichait "créé avec succès" sans rien faire).
   const createBackup = async () => {
-    setLoading(true);
-    try {
-      // Dans un système réel, cela déclencherait une sauvegarde via l'API Supabase
-      toast.info('Backup en cours de création...');
-
-      // Simuler un délai
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      setDbStats(prev => ({
-        ...prev,
-        lastBackup: new Date().toLocaleString('fr-FR')
-      }));
-
-      toast.success('Backup créé avec succès');
-    } catch (error) {
-      console.error('Erreur backup:', error);
-      toast.error('Erreur lors de la création du backup');
-    } finally {
-      setLoading(false);
-    }
+    toast.info(
+      "Les sauvegardes sont gérées automatiquement par Supabase (quotidiennes). " +
+      "Pour un backup manuel, utilisez le dashboard Supabase → Database → Backups.",
+      { duration: 7000 }
+    );
   };
 
   // Charger les données au montage
@@ -232,8 +230,8 @@ export function usePDGMaintenanceData() {
     loading,
     checkServicesStatus,
     loadDatabaseStats,
-    cleanupOldData,
-    optimizeDatabase,
+    archiveOldData,
+    refreshDatabaseStats,
     createBackup
   };
 }
