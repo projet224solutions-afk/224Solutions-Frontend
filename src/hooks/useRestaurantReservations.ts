@@ -6,6 +6,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export interface RestaurantReservation {
   id: string;
@@ -76,30 +77,44 @@ export function useRestaurantReservations(serviceId: string) {
   // Créer une nouvelle réservation
   const createReservation = async (data: ReservationFormData): Promise<RestaurantReservation | null> => {
     try {
-      const { data: newReservation, error } = await supabase
-        .from('restaurant_reservations')
-        .insert([{
-          professional_service_id: serviceId,
-          customer_name: data.customer_name,
-          customer_phone: data.customer_phone || null,
-          customer_email: data.customer_email || null,
-          party_size: data.party_size,
+      // ✅ RPC atomique : vérifie la capacité ET insère sous verrou (anti double-booking).
+      // La colonne DB est `special_requests` → on la passe sous la clé 'notes' du jsonb.
+      const { data: rpcRes, error } = await supabase.rpc('create_restaurant_reservation_atomic' as any, {
+        p_service_id: serviceId,
+        p_reservation: {
+          customer_name:    data.customer_name,
+          customer_phone:   data.customer_phone || null,
+          customer_email:   data.customer_email || null,
           reservation_date: data.reservation_date,
           reservation_time: data.reservation_time,
-          special_requests: data.special_requests || null,
-          status: 'confirmed', // Auto-confirmé pour les réservations en ligne
-        }])
-        .select()
-        .single();
+          party_size:       data.party_size ?? 2,
+          notes:            data.special_requests || null,
+        },
+      });
 
       if (error) throw error;
+      const res = rpcRes as any;
+      if (!res?.success) {
+        if (res?.error === 'CRENEAU_COMPLET') {
+          toast.error(`Créneau complet (${res.booked}/${res.capacity} places). Choisissez un autre horaire.`);
+        } else {
+          toast.error(res?.error || 'Réservation impossible');
+        }
+        return null;
+      }
 
-      setReservations(prev => [...prev, newReservation as RestaurantReservation]);
-      return newReservation as RestaurantReservation;
+      await loadReservations(); // rafraîchir la liste
+      const { data: created } = await supabase
+        .from('restaurant_reservations')
+        .select('*')
+        .eq('id', res.reservation_id)
+        .single();
+      return created as RestaurantReservation;
 
     } catch (err: any) {
       console.error('Erreur création réservation:', err);
-      throw err;
+      toast.error('Erreur lors de la réservation');
+      return null;
     }
   };
 

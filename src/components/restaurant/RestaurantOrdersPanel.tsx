@@ -14,7 +14,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Clock, Check, XCircle, ChefHat, Package, Truck,
   Phone, MapPin, CreditCard, Banknote, RefreshCw,
-  Bell, Eye, Utensils
+  Bell, Eye, Utensils, FileText
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -78,6 +78,27 @@ export function RestaurantOrdersPanel({ serviceId }: RestaurantOrdersPanelProps)
   const [selectedOrder, setSelectedOrder] = useState<RestaurantOrder | null>(null);
   const [activeTab, setActiveTab] = useState<'pending' | 'active' | 'completed'>('pending');
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Clôture de caisse du jour (RPC restaurant_daily_closeout)
+  const [closeout, setCloseout] = useState<any>(null);
+  const [closeoutOpen, setCloseoutOpen] = useState(false);
+  const [closeoutLoading, setCloseoutLoading] = useState(false);
+
+  const loadCloseout = async () => {
+    setCloseoutLoading(true);
+    setCloseoutOpen(true);
+    const { data, error } = await supabase.rpc('restaurant_daily_closeout' as any, {
+      p_service_id: serviceId,
+      p_date: new Date().toISOString().slice(0, 10),
+    });
+    setCloseoutLoading(false);
+    if (error || !(data as any)?.success) {
+      toast.error('Impossible de charger la clôture du jour');
+      setCloseoutOpen(false);
+      return;
+    }
+    setCloseout(data);
+  };
 
   const loadOrders = useCallback(async () => {
     if (!serviceId) return;
@@ -363,15 +384,21 @@ export function RestaurantOrdersPanel({ serviceId }: RestaurantOrdersPanelProps)
             <Badge className="bg-[#ff4000] animate-pulse">{pendingOrders.length} nouvelle(s)</Badge>
           )}
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={loadOrders}
-          disabled={isRefreshing}
-        >
-          <RefreshCw className={cn("w-4 h-4 mr-1", isRefreshing && "animate-spin")} />
-          Actualiser
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={loadCloseout}>
+            <FileText className="w-4 h-4 mr-1" />
+            Clôture du jour
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={loadOrders}
+            disabled={isRefreshing}
+          >
+            <RefreshCw className={cn("w-4 h-4 mr-1", isRefreshing && "animate-spin")} />
+            Actualiser
+          </Button>
+        </div>
       </div>
 
       {/* Tabs */}
@@ -520,6 +547,69 @@ export function RestaurantOrdersPanel({ serviceId }: RestaurantOrdersPanelProps)
               )}
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Clôture de caisse du jour */}
+      <Dialog open={closeoutOpen} onOpenChange={setCloseoutOpen}>
+        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="w-5 h-5" />
+              Clôture du jour
+            </DialogTitle>
+          </DialogHeader>
+
+          {closeoutLoading ? (
+            <div className="flex justify-center py-8">
+              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : closeout ? (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <Card><CardContent className="p-4 text-center">
+                  <p className="text-2xl font-bold text-primary">{fc(closeout.total_revenue || 0)}</p>
+                  <p className="text-xs text-muted-foreground">Total encaissé</p>
+                </CardContent></Card>
+                <Card><CardContent className="p-4 text-center">
+                  <p className="text-2xl font-bold">{closeout.order_count || 0}</p>
+                  <p className="text-xs text-muted-foreground">Commandes payées</p>
+                </CardContent></Card>
+              </div>
+
+              <Card>
+                <CardHeader className="pb-2"><CardTitle className="text-sm">Par mode de paiement</CardTitle></CardHeader>
+                <CardContent className="space-y-1">
+                  {Object.entries(closeout.by_payment_method || {}).length === 0 ? (
+                    <p className="text-sm text-muted-foreground">Aucune vente</p>
+                  ) : Object.entries(closeout.by_payment_method || {}).map(([method, amount]) => (
+                    <div key={method} className="flex justify-between text-sm">
+                      <span className="capitalize">{method}</span>
+                      <span className="font-medium">{fc(Number(amount) || 0)}</span>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="pb-2"><CardTitle className="text-sm">Top 5 plats vendus</CardTitle></CardHeader>
+                <CardContent className="space-y-1">
+                  {(closeout.top_items || []).length === 0 ? (
+                    <p className="text-sm text-muted-foreground">Aucun plat vendu</p>
+                  ) : (closeout.top_items || []).map((it: any, i: number) => (
+                    <div key={i} className="flex justify-between text-sm">
+                      <span>{it.name}</span>
+                      <span className="font-medium">×{it.qty}</span>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              <Button variant="outline" className="w-full" onClick={() => window.print()}>
+                Imprimer
+              </Button>
+            </div>
+          ) : null}
         </DialogContent>
       </Dialog>
     </div>

@@ -57,7 +57,7 @@ const PAYMENT_METHODS: { value: PaymentMethod; label: string; icon: React.ReactN
 export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
   const { t } = useTranslation();
   const formatCurrency = useFormatCurrency();
-  const { categories, menuItems, loading, refresh: refreshMenu, decrementLocalStock } = useRestaurantMenu(serviceId);
+  const { categories, menuItems, loading, refresh: refreshMenu, decrementLocalStock, lowStockItems, outOfStockItems } = useRestaurantMenu(serviceId);
 
   // Décrémente le stock des plats vendus (plats suivis uniquement). RLS = le restaurateur ne
   // modifie que ses propres plats. Rafraîchit ensuite le menu (nouveau « restant »).
@@ -318,16 +318,15 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
         })),
       };
 
-      const { data, error } = await supabase
-        .from('restaurant_orders')
-        .insert([orderData])
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      // Si paiement par carte, ouvrir le modal Stripe
+      // ✅ Carte : flux Stripe inchangé (commande 'pending', stock décrémenté
+      // après confirmation Stripe dans handleStripeSuccess). Insert simple ici.
       if (isPendingPayment) {
+        const { data, error } = await supabase
+          .from('restaurant_orders')
+          .insert([orderData])
+          .select()
+          .single();
+        if (error) throw error;
         setPendingCardOrder({ orderId: data.id, amount: subtotal });
         setShowStripeModal(true);
         setIsCheckoutOpen(false);
@@ -335,12 +334,25 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
         return;
       }
 
-      setLastOrder({ ...orderData, id: data.id, created_at: data.created_at });
+      // ✅ Espèces/Mobile : RPC ATOMIQUE (commande + décrément stock en UNE
+      // transaction, verrou FOR UPDATE). Fini l'insert + void consumeStock
+      // séparés et silencieux : plus de vente encaissée sans décrément stock.
+      const { data: rpcRes, error: rpcErr } = await supabase.rpc(
+        'create_restaurant_pos_order_atomic' as any,
+        { p_service_id: serviceId, p_order: orderData }
+      );
+      if (rpcErr || !(rpcRes as any)?.success) {
+        throw new Error(rpcErr?.message || (rpcRes as any)?.error || 'Encaissement échoué');
+      }
+      const newOrderId = (rpcRes as any).order_id as string;
+
+      setLastOrder({ ...orderData, id: newOrderId, created_at: new Date().toISOString() });
       setIsCheckoutOpen(false);
       setIsReceiptOpen(true);
 
-      // Décrémente le stock des plats vendus AVANT de vider le panier.
-      void consumeStock(cart.map(c => ({ menuItemId: c.menuItemId, quantity: c.quantity })));
+      // Le stock a été décrémenté côté serveur dans la RPC → on resynchronise
+      // juste l'affichage local (plus de consumeStock séparé pour le chemin en ligne).
+      await refreshMenu();
 
       // Reset
       setCart([]);
@@ -348,7 +360,7 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
       setTableNumber('');
       setOrderNotes('');
 
-      toast.success(`Commande #${data.id.slice(-6).toUpperCase()} créée !`);
+      toast.success(`Commande #${newOrderId.slice(-6).toUpperCase()} créée !`);
     } catch (error: any) {
       console.error('Erreur création commande:', error);
       toast.error(t('restaurantPOS.erreurLorsDeLaCreation'));
@@ -500,6 +512,17 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
 
   return (
     <div className="flex flex-col gap-3 h-[calc(100vh-200px)] min-h-[500px]">
+      {/* ✅ Alerte stock bas / rupture (plats à stock suivi) */}
+      {(lowStockItems.length > 0 || outOfStockItems.length > 0) && (
+        <div className="flex items-center gap-2 rounded-lg border border-orange-300 bg-orange-50 px-3 py-2 text-sm text-[#ff4000]">
+          <span>⚠️</span>
+          <span>
+            {outOfStockItems.length > 0 && <strong>{outOfStockItems.length} plat(s) épuisé(s). </strong>}
+            {lowStockItems.length > 0 && <>{lowStockItems.length} plat(s) bientôt épuisé(s).</>}
+          </span>
+        </div>
+      )}
+
       {/* Onglets MOBILE (Plats / Panier) — masqués dès md, où le panier passe à droite */}
       <div className="flex gap-2 md:hidden">
         <Button variant={mobileTab === 'products' ? 'default' : 'outline'} size="sm" className="flex-1 gap-1" onClick={() => setMobileTab('products')}>
