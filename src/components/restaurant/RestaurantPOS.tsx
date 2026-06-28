@@ -22,7 +22,7 @@ import { StripeCardPaymentModal } from '@/components/pos/StripeCardPaymentModal'
 import {
   Search, Plus, Minus, Trash2, ShoppingCart, Receipt,
   UtensilsCrossed, MapPin, Truck, ShoppingBag, Printer,
-  Check, X, Clock, CreditCard, Banknote, Smartphone, Download
+  Check, X, Clock, CreditCard, Banknote, Smartphone, Download, ChefHat
 } from 'lucide-react';
 
 interface RestaurantPOSProps {
@@ -30,14 +30,28 @@ interface RestaurantPOSProps {
   businessName?: string;
 }
 
+interface ChosenOption { group: string; name: string; price: number; }
 interface CartItem {
   id: string;
   menuItemId: string;
   name: string;
-  price: number;
+  price: number;            // prix unitaire EFFECTIF (base + options choisies)
   quantity: number;
   notes?: string;
+  selectedOptions?: ChosenOption[];
 }
+
+// Groupe de modificateurs d'un plat — MÊME structure que restaurant_menu_items.variants.groups
+// (éditée dans RestaurantMenuManager). On NE crée PAS de nouvelle colonne : on réutilise variants.
+interface OptionGroup {
+  id: string;
+  name: string;
+  min: number;   // 0 = facultatif ; >0 = obligatoire
+  max: number;   // 1 = choix unique ; >1 = multi
+  options: { id: string; name: string; price: number }[];
+}
+const getOptionGroups = (item: any): OptionGroup[] =>
+  Array.isArray(item?.variants?.groups) ? (item.variants.groups as OptionGroup[]) : [];
 
 type OrderType = 'sur_place' | 'emporter' | 'livraison';
 type PaymentMethod = 'cash' | 'mobile_money' | 'card';
@@ -76,6 +90,9 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
   }, [menuItems, refreshMenu]);
 
   const [cart, setCart] = useState<CartItem[]>([]);
+  // Sélecteur de modificateurs (variants) au POS : plat en cours de configuration + choix.
+  const [variantItem, setVariantItem] = useState<MenuItem | null>(null);
+  const [variantChoices, setVariantChoices] = useState<Record<string, string[]>>({});
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSection, setSelectedSection] = useState<string>('all');
@@ -137,6 +154,12 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
   }, [menuItems, selectedCategory]);
 
   const addToCart = useCallback((item: MenuItem) => {
+    // Plat AVEC modificateurs (variants) → ouvrir le sélecteur au lieu d'ajouter direct.
+    if (getOptionGroups(item).length > 0) {
+      setVariantItem(item);
+      setVariantChoices({});
+      return;
+    }
     // STOCK : si le plat a un stock suivi, on n'ajoute pas au-delà du nombre restant.
     const stock = (item as any).stock_quantity;
     setCart(prev => {
@@ -171,6 +194,54 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
   const removeFromCart = useCallback((id: string) => {
     setCart(prev => prev.filter(c => c.id !== id));
   }, []);
+
+  // Sélection d'une option dans le modal de variants. max<=1 = choix unique (radio),
+  // max>1 = multi (cases à cocher) borné par max.
+  const toggleVariantChoice = (g: OptionGroup, optId: string) => {
+    setVariantChoices(prev => {
+      const cur = prev[g.id] || [];
+      if (g.max <= 1) return { ...prev, [g.id]: [optId] };
+      if (cur.includes(optId)) return { ...prev, [g.id]: cur.filter(x => x !== optId) };
+      if (cur.length >= g.max) { toast.error(`Max ${g.max} pour « ${g.name} »`); return prev; }
+      return { ...prev, [g.id]: [...cur, optId] };
+    });
+  };
+
+  // Valide les groupes obligatoires, calcule le prix (base + options) et ajoute au panier.
+  const confirmVariant = () => {
+    const item = variantItem;
+    if (!item) return;
+    const groups = getOptionGroups(item);
+    for (const g of groups) {
+      if (g.min > 0 && (variantChoices[g.id] || []).length < g.min) {
+        toast.error(`Choisissez : ${g.name}`);
+        return;
+      }
+    }
+    // Stock : total de ce plat déjà au panier + 1 ne doit pas dépasser le restant.
+    const stock = (item as any).stock_quantity;
+    const already = cart.filter(c => c.menuItemId === item.id).reduce((s, c) => s + c.quantity, 0);
+    if (stock != null && already + 1 > stock) {
+      toast.error(stock <= 0 ? `${item.name} : épuisé` : `${item.name} : ${stock} en stock seulement`);
+      return;
+    }
+    const selectedOptions: ChosenOption[] = [];
+    groups.forEach(g => (variantChoices[g.id] || []).forEach(optId => {
+      const opt = g.options.find(o => o.id === optId);
+      if (opt) selectedOptions.push({ group: g.name, name: opt.name, price: Number(opt.price) || 0 });
+    }));
+    const optsTotal = selectedOptions.reduce((s, o) => s + o.price, 0);
+    setCart(prev => [...prev, {
+      id: crypto.randomUUID(),
+      menuItemId: item.id,
+      name: item.name,
+      price: item.price + optsTotal,   // prix unitaire effectif
+      quantity: 1,
+      selectedOptions,
+    }]);
+    setVariantItem(null);
+    setVariantChoices({});
+  };
 
   const subtotal = useMemo(() => cart.reduce((sum, c) => sum + c.price * c.quantity, 0), [cart]);
   const totalItems = useMemo(() => cart.reduce((sum, c) => sum + c.quantity, 0), [cart]);
@@ -226,6 +297,7 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
         quantity: c.quantity,
         subtotal: c.price * c.quantity,
         notes: c.notes || null,
+        selectedOptions: c.selectedOptions || [],
       }));
       try {
         await offlineDB.initDB();
@@ -315,6 +387,7 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
           quantity: c.quantity,
           notes: c.notes,
           subtotal: c.price * c.quantity,
+          selectedOptions: c.selectedOptions || [],
         })),
       };
 
@@ -323,7 +396,7 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
       if (isPendingPayment) {
         const { data, error } = await supabase
           .from('restaurant_orders')
-          .insert([orderData])
+          .insert([orderData as any]) // items jsonb porte selectedOptions (typé Json)
           .select()
           .single();
         if (error) throw error;
@@ -373,11 +446,17 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
     if (!pendingCardOrder) return;
 
     try {
-      // Carte réglée → vente de caisse FINALISÉE et payée (sort de l'état 'pending' transitoire).
-      await supabase
-        .from('restaurant_orders')
-        .update({ payment_status: 'paid', status: 'completed', completed_at: new Date().toISOString() })
-        .eq('id', pendingCardOrder.orderId);
+      // ✅ RPC atomique : passe la commande en payée ET décrémente le stock en UNE
+      // transaction (FOR UPDATE), après confirmation Stripe. Fini le void
+      // consumeStock séparé/silencieux : plus de carte payée sans décrément stock.
+      // Idempotente (already_finalized si rejouée).
+      const { data: rpcRes, error: rpcErr } = await supabase.rpc(
+        'finalize_restaurant_card_order' as any,
+        { p_order_id: pendingCardOrder.orderId }
+      );
+      if (rpcErr || !(rpcRes as any)?.success) {
+        throw new Error(rpcErr?.message || (rpcRes as any)?.error || 'Finalisation échouée');
+      }
 
       const { data: order } = await supabase
         .from('restaurant_orders')
@@ -393,8 +472,8 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
       setPendingCardOrder(null);
       setIsReceiptOpen(true);
 
-      // Décrémente le stock des plats vendus AVANT de vider le panier.
-      void consumeStock(cart.map(c => ({ menuItemId: c.menuItemId, quantity: c.quantity })));
+      // ✅ Stock déjà décrémenté côté serveur dans la RPC → on resynchronise l'affichage.
+      await refreshMenu();
 
       // Reset
       setCart([]);
@@ -492,6 +571,56 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
         iframe.contentWindow?.focus();
         iframe.contentWindow?.print();
       } catch { toast.error(t('restaurantPOS.impossibleDeLancerLImpression')); }
+      setTimeout(() => iframe.remove(), 1000);
+    }, 300);
+  };
+
+  // Imprime un BON DE CUISINE (préparation) : SANS prix, focus plats + quantités
+  // + notes + options/modificateurs (variants choisis). Pour la cuisine ; le reçu
+  // chiffré (printReceipt) va au client.
+  const printKitchenTicket = async (order?: any) => {
+    const src = order || lastOrder;
+    if (!src) return;
+    const esc = (s: any) => String(s ?? '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c] as string));
+    const rows = (src.items || []).map((it: any) => {
+      const opts = it.modifiers || it.selectedOptions || it.options || [];
+      const mods = Array.isArray(opts) && opts.length
+        ? `<div class="mods">${opts.map((m: any) => `+ ${esc(m?.name ?? m?.option_name ?? m)}`).join('<br/>')}</div>`
+        : '';
+      const note = it.notes ? `<div class="note">⚠ ${esc(it.notes)}</div>` : '';
+      return `<tr><td class="q">${it.quantity}×</td><td>${esc(it.name)}${mods}${note}</td></tr>`;
+    }).join('');
+
+    const html = `<!doctype html><html><head><meta charset="utf-8"><title>Cuisine</title><style>
+        @page { size: 80mm auto; margin: 4mm; }
+        body { font-family: 'Courier New', monospace; font-size: 15px; color:#000; }
+        h2 { text-align:center; margin:4px 0; letter-spacing:2px; }
+        .meta { font-size:12px; text-align:center; margin-bottom:6px; }
+        table { width:100%; border-collapse:collapse; }
+        td { padding:5px 0; vertical-align:top; border-bottom:1px dashed #999; }
+        .q { width:38px; font-weight:bold; }
+        .mods { color:#333; font-size:13px; }
+        .note { color:#a00; font-weight:bold; font-size:13px; }
+      </style></head><body>
+        <h2>CUISINE</h2>
+        <div class="meta">
+          ${src.table_number ? `Table ${esc(src.table_number)}` : esc(ORDER_TYPES.find(ty => ty.value === src.order_type)?.label || src.order_type || '')}
+          · ${new Date(src.created_at || Date.now()).toLocaleTimeString('fr-FR')}
+          ${src.customer_name ? `· ${esc(src.customer_name)}` : ''}
+        </div>
+        <table>${rows}</table>
+      </body></html>`;
+
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:fixed;left:-9999px;top:0;width:0;height:0;border:0;';
+    document.body.appendChild(iframe);
+    const doc = iframe.contentWindow?.document;
+    if (!doc) { toast.error('Impression indisponible.'); iframe.remove(); return; }
+    doc.open();
+    doc.write(html);
+    doc.close();
+    setTimeout(() => {
+      try { iframe.contentWindow?.focus(); iframe.contentWindow?.print(); } catch { toast.error("Impossible de lancer l'impression"); }
       setTimeout(() => iframe.remove(), 1000);
     }, 300);
   };
@@ -714,6 +843,11 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
                 <div key={item.id} className="flex items-center gap-2 p-2 rounded-lg bg-muted/50">
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-medium truncate">{item.name}</p>
+                    {item.selectedOptions && item.selectedOptions.length > 0 && (
+                      <p className="text-[10px] text-muted-foreground truncate">
+                        {item.selectedOptions.map(o => o.name).join(', ')}
+                      </p>
+                    )}
                     <p className="text-xs text-primary font-semibold">
                       {formatCurrency(item.price * item.quantity)}
                     </p>
@@ -913,15 +1047,64 @@ export function RestaurantPOS({ serviceId, businessName }: RestaurantPOSProps) {
             </div>
           )}
 
-          <DialogFooter className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <DialogFooter className="grid grid-cols-2 gap-2">
             <Button onClick={printReceipt} className="w-full gap-2 bg-[#04439e] hover:bg-[#04439e]/90">
-              <Printer className="w-4 h-4" /> Imprimer
+              <Printer className="w-4 h-4" /> Reçu client
+            </Button>
+            <Button onClick={() => printKitchenTicket()} className="w-full gap-2 bg-[#ff4000] hover:bg-[#ff4000]/90">
+              <ChefHat className="w-4 h-4" /> Bon cuisine
             </Button>
             <Button onClick={downloadReceipt} variant="secondary" className="w-full gap-2">
               <Download className="w-4 h-4" /> Télécharger
             </Button>
-            <Button variant="outline" onClick={() => setIsReceiptOpen(false)} className="w-full col-span-2 sm:col-span-1">
+            <Button variant="outline" onClick={() => setIsReceiptOpen(false)} className="w-full">
               Fermer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Sélecteur de modificateurs (variants) — à l'ajout d'un plat qui en a */}
+      <Dialog open={!!variantItem} onOpenChange={(o) => { if (!o) { setVariantItem(null); setVariantChoices({}); } }}>
+        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{variantItem?.name}</DialogTitle>
+          </DialogHeader>
+          {variantItem && (
+            <div className="space-y-4">
+              {getOptionGroups(variantItem).map((g) => (
+                <div key={g.id} className="space-y-1.5">
+                  <div className="flex items-center gap-2 text-sm font-medium">
+                    {g.name}
+                    {g.min > 0 && <span className="text-[#ff4000]">*</span>}
+                    {g.max > 1 && <span className="text-xs text-muted-foreground">(jusqu'à {g.max})</span>}
+                  </div>
+                  <div className="space-y-1">
+                    {g.options.map((o) => {
+                      const chosen = (variantChoices[g.id] || []).includes(o.id);
+                      return (
+                        <button
+                          key={o.id}
+                          type="button"
+                          onClick={() => toggleVariantChoice(g, o.id)}
+                          className={`w-full flex items-center justify-between rounded-md border px-3 py-2 text-sm transition-colors ${chosen ? 'border-primary bg-primary/10' : 'border-border hover:bg-muted/50'}`}
+                        >
+                          <span className="flex items-center gap-2">
+                            {chosen && <Check className="w-4 h-4 text-primary" />}
+                            {o.name}
+                          </span>
+                          {o.price > 0 && <span className="text-muted-foreground">+{formatCurrency(o.price)}</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          <DialogFooter>
+            <Button onClick={confirmVariant} className="w-full gap-2">
+              <Plus className="w-4 h-4" /> Ajouter au panier
             </Button>
           </DialogFooter>
         </DialogContent>
