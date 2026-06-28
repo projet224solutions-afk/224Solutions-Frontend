@@ -14,12 +14,14 @@ import { useMoneyFormat } from "@/components/Money";
 import { supabase } from "@/integrations/supabase/client";
 import { readSectionCache, writeSectionCache, isBrowserOffline } from "@/lib/offline/sectionCache";
 import { updateOrderStatus as updateOrderStatusBackend } from "@/services/orderBackendService";
+import { backendFetch } from "@/services/backendApi";
 import { useToast } from "@/hooks/use-toast";
 import CreditSalesForm from "@/components/vendor/CreditSalesForm";
 import {
   ShoppingCart, Search, Filter, Eye, Package,
   CheckCircle, XCircle, Truck, CreditCard, FileText,
-  Calendar, User, MapPin, Download, Shield, RefreshCw, Banknote, Lock
+  Calendar, User, MapPin, Download, Shield, RefreshCw, Banknote, Lock,
+  Camera, Printer
 } from "lucide-react";
 
 interface Address {
@@ -223,6 +225,14 @@ export default function OrderManagement() {
   }, [loading, focusParam, onlineParam, orders.length]);
   const [deliveryDialogOrder, setDeliveryDialogOrder] = useState<Order | null>(null);
   const [estimatedDeliveryDays, setEstimatedDeliveryDays] = useState('3');
+  // PARTIE 3 : compteur de nouvelles commandes + sélection multiple (lot)
+  const [newOrderCount, setNewOrderCount] = useState(0);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  // PARTIE 1.4 : preuve de livraison (photo obligatoire + vidéo courte optionnelle)
+  const [proofOrder, setProofOrder] = useState<Order | null>(null);
+  const [proofPhoto, setProofPhoto] = useState<File | null>(null);
+  const [proofVideo, setProofVideo] = useState<File | null>(null);
+  const [proofUploading, setProofUploading] = useState(false);
 
   useEffect(() => {
     if (!vendorId || vendorLoading) return;
@@ -248,6 +258,18 @@ export default function OrderManagement() {
               title: source === 'pos' ? "🛒 Nouvelle vente POS!" : "🎉 Nouvelle commande!",
               description: `Commande ${(payload.new as any).order_number} reçue`
             });
+            // ✅ Compteur + bip d'alerte (en plus du toast). Le son ne marche
+            // qu'après une 1re interaction utilisateur (politique navigateur) — OK ici.
+            setNewOrderCount((c) => c + 1);
+            try {
+              const Ctx = window.AudioContext || (window as any).webkitAudioContext;
+              const ctx = new Ctx();
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.connect(gain); gain.connect(ctx.destination);
+              osc.frequency.value = 880; gain.gain.value = 0.1;
+              osc.start(); osc.stop(ctx.currentTime + 0.2);
+            } catch { /* audio non dispo, silencieux */ }
           }
         }
       )
@@ -609,6 +631,121 @@ export default function OrderManagement() {
     }
   };
 
+  // ───────── PARTIE 3.1 — Sélection multiple + traitement par lot ─────────
+  const toggleSelect = (id: string) =>
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+
+  const selectAll = (orderIds: string[]) =>
+    setSelectedIds(prev => prev.size === orderIds.length ? new Set() : new Set(orderIds));
+
+  const bulkUpdateStatus = async (newStatus: string) => {
+    const ids = Array.from(selectedIds);
+    let ok = 0, fail = 0;
+    for (const id of ids) {
+      try { await updateOrderStatus(id, newStatus); ok++; } catch { fail++; }
+    }
+    toast({
+      title: `${ok} commande(s) mise(s) à jour`,
+      description: fail ? `${fail} échec(s)` : undefined,
+      variant: fail ? 'destructive' : undefined,
+    });
+    setSelectedIds(new Set());
+    await fetchOrders();
+  };
+
+  // ───────── PARTIE 3.2 — Bordereaux d'expédition imprimables (A6) ─────────
+  const esc = (s: any) => String(s ?? '').replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] as string));
+
+  const printShippingLabels = (list: Order[]) => {
+    if (!list.length) return;
+    const addr = (o: Order) => [
+      (o.shipping_address as any)?.address || (o.shipping_address as any)?.address_line,
+      (o.shipping_address as any)?.neighborhood,
+      (o.shipping_address as any)?.landmark,
+      (o.shipping_address as any)?.city,
+      (o.shipping_address as any)?.country,
+    ].filter(Boolean).join(', ');
+    const name = (o: Order) => o.customers?.profiles?.full_name
+      || `${o.customers?.profiles?.first_name || ''} ${o.customers?.profiles?.last_name || ''}`.trim() || 'Client';
+    const phone = (o: Order) => (o.shipping_address as any)?.cod_phone || o.customers?.profiles?.phone || '';
+
+    const pages = list.map(o => `
+      <div class="label">
+        <h2>BORDEREAU D'EXPÉDITION</h2>
+        <div class="num">Commande ${esc(o.order_number)}</div>
+        <hr/>
+        <div class="addr">
+          <strong>Destinataire :</strong><br/>
+          ${esc(name(o))}<br/>
+          ${esc(addr(o))}<br/>
+          ${esc(phone(o))}
+        </div>
+        <hr/>
+        <table>
+          ${(o.order_items || []).map((it: any) => `<tr><td>${esc(it.quantity)}×</td><td>${esc(it.products?.name || 'Produit')}</td></tr>`).join('')}
+        </table>
+      </div>`).join('<div class="pagebreak"></div>');
+
+    const html = `<html><head><meta charset="utf-8"><style>
+      @page { size: A6; margin: 6mm; }
+      .label { font-family: sans-serif; font-size: 13px; }
+      .pagebreak { page-break-after: always; }
+      h2 { font-size: 15px; text-align:center; margin:4px 0; }
+      .num { text-align:center; font-weight:bold; }
+      table { width:100%; border-collapse:collapse; margin-top:6px; }
+      td { padding:2px 0; border-bottom:1px dashed #ccc; }
+    </style></head><body>${pages}</body></html>`;
+
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+    document.body.appendChild(iframe);
+    const doc = iframe.contentWindow?.document;
+    if (doc) {
+      doc.open(); doc.write(html); doc.close();
+      setTimeout(() => {
+        iframe.contentWindow?.focus(); iframe.contentWindow?.print();
+        setTimeout(() => document.body.removeChild(iframe), 1000);
+      }, 250);
+    }
+  };
+
+  // ───────── PARTIE 1.4 — Upload de la preuve de livraison (vendeur) ─────────
+  const submitDeliveryProof = async () => {
+    if (!proofOrder || !proofPhoto) { toast({ title: 'Photo obligatoire', variant: 'destructive' }); return; }
+    setProofUploading(true);
+    try {
+      const orderId = proofOrder.id;
+      const ext = (f: File) => (f.name.split('.').pop() || 'bin').toLowerCase();
+      const photoPath = `${orderId}/photo_${Date.now()}.${ext(proofPhoto)}`;
+      const { error: pErr } = await supabase.storage.from('delivery-proofs').upload(photoPath, proofPhoto, { upsert: false });
+      if (pErr) { toast({ title: 'Échec upload photo', description: pErr.message, variant: 'destructive' }); return; }
+
+      let videoPath: string | undefined;
+      if (proofVideo) {
+        videoPath = `${orderId}/video_${Date.now()}.${ext(proofVideo)}`;
+        const { error: vErr } = await supabase.storage.from('delivery-proofs').upload(videoPath, proofVideo, { upsert: false });
+        if (vErr) { toast({ title: 'Échec upload vidéo (photo conservée)', variant: 'destructive' }); videoPath = undefined; }
+      }
+
+      const res = await backendFetch(`/api/orders/${orderId}/delivery-proof`, {
+        method: 'POST', body: { photo_path: photoPath, video_path: videoPath },
+      });
+      if (!(res as any)?.success) { toast({ title: 'Échec enregistrement preuve', variant: 'destructive' }); return; }
+
+      toast({ title: 'Preuve de livraison enregistrée', description: 'Le client peut la consulter (supprimée 7j après confirmation de réception).' });
+      setProofOrder(null); setProofPhoto(null); setProofVideo(null);
+    } catch (e: any) {
+      toast({ title: 'Erreur', description: e?.message, variant: 'destructive' });
+    } finally {
+      setProofUploading(false);
+    }
+  };
+
   const openDeliveryDelayDialog = (order: Order) => {
     if (isCashOnDeliveryOrder(order)) {
       void updateOrderStatus(order.id, 'confirmed');
@@ -829,6 +966,16 @@ export default function OrderManagement() {
       return true;
     });
   })();
+
+  // Liste en ligne réellement affichée (période + filtre statut) — réutilisée pour le lot.
+  const visibleOnlineFiltered = onlineVisible.filter(order => {
+    if (onlineStatusFilter === 'all') return true;
+    if (onlineStatusFilter === 'pending') return order.status === 'pending';
+    if (onlineStatusFilter === 'processing') return ['processing', 'preparing', 'ready', 'shipped', 'in_transit', 'confirmed'].includes(order.status);
+    if (onlineStatusFilter === 'delivered') return ['delivered', 'completed'].includes(order.status);
+    return true;
+  });
+  const selectedOrders = visibleOnlineFiltered.filter(o => selectedIds.has(o.id));
 
   // Statistics - Ventes en ligne (sur la période sélectionnée, hors remboursées)
   const totalOnlineOrders = onlineVisible.length;
@@ -1410,6 +1557,47 @@ export default function OrderManagement() {
             </Card>
           </div>
 
+          {/* PARTIE 3.3 — compteur de nouvelles commandes (realtime) */}
+          {newOrderCount > 0 && (
+            <div className="flex items-center justify-between gap-2 mb-3 p-2 rounded-lg bg-blue-100 border border-blue-300">
+              <span className="text-sm font-semibold text-blue-800">
+                🔔 Nouvelles : {newOrderCount}
+              </span>
+              <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setNewOrderCount(0)}>
+                Marquer comme vues
+              </Button>
+            </div>
+          )}
+
+          {/* PARTIE 3.1 + 3.2 — sélection multiple + actions groupées */}
+          {visibleOnlineFiltered.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-8 text-xs"
+                onClick={() => selectAll(visibleOnlineFiltered.map(o => o.id))}
+              >
+                {selectedIds.size === visibleOnlineFiltered.length && visibleOnlineFiltered.length > 0
+                  ? 'Tout désélectionner' : 'Tout sélectionner'}
+              </Button>
+              {selectedIds.size > 0 && (
+                <>
+                  <Badge className="bg-blue-600 text-white">{selectedIds.size} sélectionnée(s)</Badge>
+                  <Button size="sm" variant="outline" className="h-8 text-xs" onClick={() => bulkUpdateStatus('ready')}>
+                    <Package className="w-3.5 h-3.5 mr-1" /> Marquer prêt
+                  </Button>
+                  <Button size="sm" variant="outline" className="h-8 text-xs" onClick={() => bulkUpdateStatus('shipped')}>
+                    <Truck className="w-3.5 h-3.5 mr-1" /> Marquer expédié
+                  </Button>
+                  <Button size="sm" variant="outline" className="h-8 text-xs" onClick={() => printShippingLabels(selectedOrders)}>
+                    <Printer className="w-3.5 h-3.5 mr-1" /> Imprimer les bordereaux
+                  </Button>
+                </>
+              )}
+            </div>
+          )}
+
           {/* Liste des Commandes En Ligne (période + statut, hors remboursées) */}
           <div className="space-y-4">
             {onlineVisible.filter(order => {
@@ -1441,6 +1629,15 @@ export default function OrderManagement() {
                   <div className="space-y-3 mb-4">
                     {/* Order number and ID */}
                     <div className="flex flex-wrap items-center gap-2">
+                      {/* PARTIE 3.1 — case de sélection pour le traitement par lot */}
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 accent-blue-600 cursor-pointer"
+                        checked={selectedIds.has(order.id)}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={() => toggleSelect(order.id)}
+                        aria-label={`Sélectionner ${order.order_number}`}
+                      />
                       <h3 className="font-bold text-base sm:text-xl text-blue-700 break-all">{order.order_number}</h3>
                       <Badge variant="outline" className="text-[10px] sm:text-xs shrink-0">
                         ID: {order.id.slice(0, 8)}
@@ -1667,6 +1864,24 @@ export default function OrderManagement() {
                       <Eye className="w-4 h-4 mr-1" />
                       Détails
                     </Button>
+                    {/* PARTIE 1.4 — joindre une preuve de livraison (photo + vidéo) */}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => { e.stopPropagation(); setProofOrder(order); setProofPhoto(null); setProofVideo(null); }}
+                    >
+                      <Camera className="w-4 h-4 mr-1" />
+                      Preuve
+                    </Button>
+                    {/* PARTIE 3.2 — bordereau d'expédition (unitaire) */}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => { e.stopPropagation(); printShippingLabels([order]); }}
+                    >
+                      <Printer className="w-4 h-4 mr-1" />
+                      Bordereau
+                    </Button>
                   </div>
                 </div>
               ))
@@ -1676,6 +1891,41 @@ export default function OrderManagement() {
       </Card>
       )}
 
+
+      {/* PARTIE 1.4 — Modale d'ajout de preuve de livraison (photo obligatoire + vidéo courte) */}
+      <Dialog open={!!proofOrder} onOpenChange={(open) => { if (!open && !proofUploading) { setProofOrder(null); setProofPhoto(null); setProofVideo(null); } }}>
+        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2"><Camera className="w-5 h-5" /> Preuve de livraison</DialogTitle>
+            <DialogDescription>
+              Photo du colis (obligatoire) + courte vidéo (~15-20s, optionnelle). Le client pourra les consulter ; elles sont supprimées 7 jours après sa confirmation de réception.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="proof-photo">Photo du colis *</Label>
+              <Input id="proof-photo" type="file" accept="image/jpeg,image/png,image/webp"
+                onChange={(e) => setProofPhoto(e.target.files?.[0] || null)} />
+              {proofPhoto && <p className="text-xs text-muted-foreground">📷 {proofPhoto.name}</p>}
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="proof-video">Vidéo courte (optionnelle)</Label>
+              <Input id="proof-video" type="file" accept="video/mp4,video/quicktime,video/webm"
+                onChange={(e) => setProofVideo(e.target.files?.[0] || null)} />
+              {proofVideo && <p className="text-xs text-muted-foreground">🎬 {proofVideo.name}</p>}
+            </div>
+            {proofOrder && <p className="text-xs text-muted-foreground">Commande {proofOrder.order_number}</p>}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" disabled={proofUploading} onClick={() => { setProofOrder(null); setProofPhoto(null); setProofVideo(null); }}>
+              Annuler
+            </Button>
+            <Button disabled={!proofPhoto || proofUploading} onClick={submitDeliveryProof}>
+              {proofUploading ? 'Envoi…' : 'Enregistrer la preuve'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={!!deliveryDialogOrder} onOpenChange={(open) => !open && setDeliveryDialogOrder(null)}>
         <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">

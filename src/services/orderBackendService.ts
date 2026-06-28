@@ -243,6 +243,22 @@ export async function updateOrderStatus(
   return backendFetch<OrderSummary>(`/api/orders/${orderId}/status`, {
     method: 'PATCH',
     body: { status, ...options },
+    idempotencyKey: generateIdempotencyKey(),   // ✅ cohérence anti-rejeu (comme cancel/confirm)
+    signal,
+  });
+}
+
+export interface DeliveryProof {
+  success: boolean;
+  purged: boolean;
+  photo_url: string | null;
+  video_url: string | null;
+}
+
+/** Preuve de livraison (URLs signées 1h) — accessible au client ET au vendeur de la commande. */
+export async function getDeliveryProof(orderId: string, signal?: AbortSignal) {
+  return backendFetch<DeliveryProof>(`/api/orders/${orderId}/delivery-proof`, {
+    method: 'GET',
     signal,
   });
 }
