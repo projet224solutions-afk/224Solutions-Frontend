@@ -50,6 +50,50 @@ export function PharmacyPOS({ serviceId, businessName }: { serviceId: string; bu
   const [submitting, setSubmitting] = useState(false);
   const [lastOrder, setLastOrder] = useState<any>(null);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  // CONFORMITÉ 1.3 — médicaments contrôlés/stupéfiants présents dans le panier
+  const controlledInCart = useMemo(
+    () => cart.filter((c) => {
+      const med = medications.find((m) => m.id === c.medicationId);
+      return med && ['controlled', 'narcotic'].includes((med as any).control_level);
+    }),
+    [cart, medications]
+  );
+  const [dispensationInfo, setDispensationInfo] = useState({
+    patientName: '', patientIdRef: '', prescriptionRef: '', prescriberName: '',
+  });
+  // AMÉLIORATIONS 2.2 (génériques en stock) + 2.3 (pharmacies proches) sur rupture
+  const [altMed, setAltMed] = useState<Medication | null>(null);
+  const [alternatives, setAlternatives] = useState<any[]>([]);
+  const [nearby, setNearby] = useState<any[] | null>(null);
+  const [altLoading, setAltLoading] = useState(false);
+  const [nearbyLoading, setNearbyLoading] = useState(false);
+
+  const openAlternatives = async (m: Medication) => {
+    setAltMed(m); setAlternatives([]); setNearby(null); setAltLoading(true);
+    const { data } = await supabase.rpc('generic_alternatives' as any, { p_medication_id: m.id });
+    setAlternatives((data as any)?.success ? (data as any).alternatives || [] : []);
+    setAltLoading(false);
+  };
+  const searchNearby = () => {
+    if (!altMed || typeof navigator === 'undefined' || !navigator.geolocation) { toast.error('Géolocalisation indisponible'); return; }
+    setNearbyLoading(true); setNearby(null);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { data } = await supabase.rpc('find_medication_nearby' as any, {
+          p_medication_name: altMed.name, p_lat: pos.coords.latitude, p_lng: pos.coords.longitude, p_radius_km: 20,
+        });
+        setNearby((data as any)?.success ? (data as any).pharmacies || [] : []);
+        setNearbyLoading(false);
+      },
+      () => { toast.error('Position indisponible'); setNearbyLoading(false); },
+      { enableHighAccuracy: true, timeout: 10000 },
+    );
+  };
+  const addAlternativeToCart = (altId: string) => {
+    const med = medications.find((m) => m.id === altId);
+    if (med) addToCart(med);
+    setAltMed(null);
+  };
 
   useEffect(() => {
     if (!serviceId) return;
@@ -101,10 +145,43 @@ export function PharmacyPOS({ serviceId, businessName }: { serviceId: string; bu
   const finishSale = (order: any) => {
     setLastOrder(order); setIsCheckoutOpen(false); setIsReceiptOpen(true);
     setCart([]); setCustomerName('');
+    setDispensationInfo({ patientName: '', patientIdRef: '', prescriptionRef: '', prescriberName: '' });
+  };
+
+  // CONFORMITÉ 1.3B — bloque l'encaissement d'un contrôlé sans traçabilité.
+  const validateControlledDispensation = (): boolean => {
+    if (controlledInCart.length === 0) return true;
+    if (!dispensationInfo.patientName.trim() || !dispensationInfo.prescriptionRef.trim()) {
+      toast.error('Médicament contrôlé : nom du patient et référence d\'ordonnance obligatoires');
+      return false;
+    }
+    return true;
+  };
+
+  // CONFORMITÉ 1.3C — consigne chaque contrôlé au registre légal (append-only).
+  const registerControlledDispensations = async (orderId: string | null) => {
+    for (const item of controlledInCart) {
+      try {
+        await supabase.rpc('register_controlled_dispensation' as any, {
+          p_pharmacy_id: serviceId,
+          p_medication_id: item.medicationId,
+          p_quantity: item.quantity,
+          p_patient_name: dispensationInfo.patientName,
+          p_patient_id_ref: dispensationInfo.patientIdRef || null,
+          p_prescription_ref: dispensationInfo.prescriptionRef,
+          p_prescriber_name: dispensationInfo.prescriberName || null,
+          p_order_id: orderId,
+        } as any);
+      } catch (e: any) {
+        // Non bloquant pour la vente, mais on alerte : la traçabilité a échoué.
+        toast.error(`Registre contrôlés : échec pour ${item.name}`, { description: e?.message });
+      }
+    }
   };
 
   const handleSubmit = async () => {
     if (cart.length === 0) return;
+    if (!validateControlledDispensation()) return;   // CONFORMITÉ 1.3B
     setSubmitting(true);
     const createdAt = new Date().toISOString();
     const idem = `PHARMA-OFF-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
@@ -134,7 +211,10 @@ export function PharmacyPOS({ serviceId, businessName }: { serviceId: string; bu
         p_sale: { total: subtotal, payment_method: paymentMethod, customer_name: customerName || 'Client', items: itemsPayload, created_at: createdAt },
       });
       if (error) throw error;
-      finishSale({ ...receipt, id: (data as any)?.order_id || idem });
+      const orderId = (data as any)?.order_id || idem;
+      // CONFORMITÉ 1.3C — enregistrer les contrôlés au registre avant de vider le panier.
+      if (controlledInCart.length > 0) await registerControlledDispensations(orderId);
+      finishSale({ ...receipt, id: orderId });
       reload();
       toast.success(t('pharmacyPOS.venteEnregistree'));
     } catch (e: any) {
@@ -236,6 +316,14 @@ export function PharmacyPOS({ serviceId, businessName }: { serviceId: string; bu
                           {m.requires_prescription && <Badge variant="outline" className="text-[8px] px-1 py-0 border-amber-400 text-amber-700">ord.</Badge>}
                         </div>
                         <div className="mt-1"><span className={`text-[10px] font-semibold ${out ? 'text-red-600' : m.stock <= m.low_stock_threshold ? 'text-orange-600' : 'text-emerald-600'}`}>{out ? 'Épuisé' : `${m.stock} rest.`}</span></div>
+                        {out && (
+                          <button
+                            className="mt-1 w-full rounded bg-blue-50 text-blue-700 text-[10px] font-medium py-0.5 hover:bg-blue-100"
+                            onClick={(e) => { e.stopPropagation(); void openAlternatives(m); }}
+                          >
+                            Alternatives
+                          </button>
+                        )}
                         {inCart && <Badge className="absolute top-1 right-1 text-[10px] px-1.5 py-0">x{inCart.quantity}</Badge>}
                       </CardContent>
                     </Card>
@@ -294,6 +382,33 @@ export function PharmacyPOS({ serviceId, businessName }: { serviceId: string; bu
               <label className="text-xs font-medium mb-1 block">{t('pharmacyPOS.modeDePaiement')}</label>
               <div className="grid grid-cols-3 gap-2">{PAYMENT_METHODS.map((m) => <Button key={m.value} variant={paymentMethod === m.value ? 'default' : 'outline'} size="sm" onClick={() => setPaymentMethod(m.value)} className="gap-1 text-xs">{m.icon} {m.label}</Button>)}</div>
             </div>
+            {/* CONFORMITÉ 1.3D — traçabilité obligatoire pour les médicaments contrôlés */}
+            {controlledInCart.length > 0 && (
+              <div className="space-y-2 rounded-lg border border-red-300 bg-red-50 p-3">
+                <div className="flex items-center gap-2 text-xs font-semibold text-red-800">
+                  <ShieldAlert className="h-4 w-4 shrink-0" />
+                  Médicament contrôlé — la délivrance sera enregistrée au registre légal.
+                </div>
+                <div>
+                  <label className="text-xs font-medium mb-1 block">Nom du patient *</label>
+                  <Input value={dispensationInfo.patientName} onChange={(e) => setDispensationInfo((d) => ({ ...d, patientName: e.target.value }))} placeholder="Nom complet du patient" className="h-9" />
+                </div>
+                <div>
+                  <label className="text-xs font-medium mb-1 block">Référence d'ordonnance *</label>
+                  <Input value={dispensationInfo.prescriptionRef} onChange={(e) => setDispensationInfo((d) => ({ ...d, prescriptionRef: e.target.value }))} placeholder="N° / réf de l'ordonnance" className="h-9" />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs font-medium mb-1 block">Pièce d'identité</label>
+                    <Input value={dispensationInfo.patientIdRef} onChange={(e) => setDispensationInfo((d) => ({ ...d, patientIdRef: e.target.value }))} placeholder="N° pièce" className="h-9" />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium mb-1 block">Médecin</label>
+                    <Input value={dispensationInfo.prescriberName} onChange={(e) => setDispensationInfo((d) => ({ ...d, prescriberName: e.target.value }))} placeholder="Prescripteur" className="h-9" />
+                  </div>
+                </div>
+              </div>
+            )}
             {typeof navigator !== 'undefined' && !navigator.onLine && <div className="flex items-center gap-2 text-xs text-orange-600"><WifiOff className="h-4 w-4" /> {t('pharmacyPOS.horsLigneLaVenteSera')}</div>}
           </div>
           <DialogFooter className="gap-2">
@@ -323,6 +438,70 @@ export function PharmacyPOS({ serviceId, businessName }: { serviceId: string; bu
             <Button onClick={printReceipt} className="w-full gap-2 bg-[#04439e] hover:bg-[#04439e]/90"><Printer className="w-4 h-4" /> Imprimer</Button>
             <Button onClick={downloadReceipt} variant="secondary" className="w-full gap-2"><Download className="w-4 h-4" /> {t('pharmacyPOS.telecharger')}</Button>
             <Button variant="outline" onClick={() => setIsReceiptOpen(false)} className="w-full col-span-2 sm:col-span-1">{t('pharmacyPOS.fermer')}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* AMÉLIORATIONS 2.2 + 2.3 — alternatives sur rupture (générique en stock OU pharmacie proche) */}
+      <Dialog open={!!altMed} onOpenChange={(o) => { if (!o) { setAltMed(null); setNearby(null); } }}>
+        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+          <DialogHeader><DialogTitle className="flex items-center gap-2"><Pill className="w-5 h-5" /> {altMed?.name} — épuisé</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            {/* 2.2 — Équivalents génériques EN STOCK dans cette pharmacie */}
+            <div>
+              <p className="text-sm font-semibold mb-2">Équivalents génériques disponibles ici</p>
+              {altLoading ? (
+                <div className="py-3 text-center text-xs text-muted-foreground">Recherche…</div>
+              ) : alternatives.length === 0 ? (
+                <p className="text-xs text-muted-foreground">Aucun équivalent générique en stock.</p>
+              ) : (
+                <div className="space-y-2">
+                  {alternatives.map((a) => (
+                    <div key={a.id} className="flex items-center gap-2 rounded-lg border p-2">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium truncate">{a.name}</p>
+                        <p className="text-xs text-muted-foreground">{fc(Number(a.price) || 0)} · {a.stock} en stock
+                          {altMed && Number(a.price) < Number(altMed.price || 0) && <span className="ml-1 text-emerald-600 font-semibold">moins cher</span>}
+                        </p>
+                      </div>
+                      <Button size="sm" className="gap-1 shrink-0" onClick={() => addAlternativeToCart(a.id)}><Plus className="w-3.5 h-3.5" /> Ajouter</Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Separator />
+
+            {/* 2.3 — Disponibilité dans une autre pharmacie proche */}
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <p className="text-sm font-semibold">Disponible ailleurs ?</p>
+                <Button size="sm" variant="outline" className="gap-1" disabled={nearbyLoading} onClick={searchNearby}>
+                  <Search className="w-3.5 h-3.5" /> {nearbyLoading ? 'Recherche…' : 'Chercher ailleurs'}
+                </Button>
+              </div>
+              {nearby && nearby.length === 0 && <p className="text-xs text-muted-foreground">Aucune pharmacie proche (20 km) n'a ce médicament en stock.</p>}
+              {nearby && nearby.length > 0 && (
+                <div className="space-y-2">
+                  {nearby.map((p) => (
+                    <div key={p.pharmacy_id} className="rounded-lg border p-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-sm font-medium truncate">{p.pharmacy_name}</p>
+                        <Badge variant="outline" className="text-[10px] shrink-0">{p.distance_km} km</Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{fc(Number(p.price) || 0)} · {p.stock} en stock{p.pharmacy_city ? ` · ${p.pharmacy_city}` : ''}</p>
+                      {p.pharmacy_phone && (
+                        <a href={`tel:${p.pharmacy_phone}`} className="text-xs text-blue-700 font-medium hover:underline">📞 Appeler {p.pharmacy_phone}</a>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setAltMed(null); setNearby(null); }}>{t('pharmacyPOS.fermer')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
