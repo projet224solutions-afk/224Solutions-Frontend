@@ -1,6 +1,7 @@
 // src/i18n/locales/hi.ts — généré depuis translations.ts (découpage par langue).
 // Toutes les clés de la langue hi préservées à l'identique.
 const hi: Record<string, string> = {
+  "pDGServiceProvidersList.rejete": "अस्वीकृत",
   "escrowDashboard.libere": "मुक्त",
   "escrowDashboard.rembourse": "प्रतिदेय",
   "multiCloudDashboard.operationnel": "संचालनरत",

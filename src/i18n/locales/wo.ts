@@ -1,6 +1,7 @@
 // src/i18n/locales/wo.ts — généré depuis translations.ts (découpage par langue).
 // Toutes les clés de la langue wo préservées à l'identique.
 const wo: Record<string, string> = {
+  "pDGServiceProvidersList.rejete": "Dëddu",
   "pWAInstallButton.ouvrez224solutionsDepuisVotreEcran": "Feccal 224Solutions yi ci écran ëndëm bu yu",
   "proximity.searchNoResult": "Amul service bu yokkante ak",
   "proximity.clearSearch": "Nettali ginnaaw bu",

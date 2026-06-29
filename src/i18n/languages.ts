@@ -37,7 +37,11 @@ export const supportedLanguages: LanguageInfo[] = [
   { code: 'bn', name: 'বাংলা', flag: '🇧🇩', dir: 'ltr' },
   { code: 'wo', name: 'Wolof', flag: '🇸🇳', dir: 'ltr' },
   { code: 'ff', name: 'Pulaar / Peul', flag: '🇬🇳', dir: 'ltr' },
-  { code: 'su', name: 'Soussou', flag: '🇬🇳', dir: 'ltr' },
+  // ⚠️ RETIRÉ : le code ISO 639-1 'su' = SOUNDANAIS (Indonésie), et su.ts contenait
+  //    de l'indonésien étiqueté « Soussou » → on n'affiche pas du faux soussou à un
+  //    utilisateur guinéen. À réactiver avec une VRAIE traduction soussou (code 639-3 'sus')
+  //    par un locuteur natif de Conakry. Le fichier su.ts est conservé pour référence.
+  // { code: 'sus', name: 'Soussou', flag: '🇬🇳', dir: 'ltr' },
 ];
 
 export const defaultLanguage = 'fr';
