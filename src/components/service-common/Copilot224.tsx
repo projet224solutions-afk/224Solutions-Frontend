@@ -8,7 +8,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 import { useRef, useState, useEffect, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bot, Send, X, Loader2, Sparkles, ShoppingBag, Volume2, VolumeX, Mic } from 'lucide-react';
+import { Bot, Send, X, Loader2, Sparkles, ShoppingBag, Volume2, VolumeX, Mic, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Money } from '@/components/Money';
@@ -19,7 +19,13 @@ import { useCopilotVoice } from '@/hooks/useCopilotVoice';
 
 interface CopilotProduct { id: string; name: string; price: number; image?: string | null; }
 interface MsgAction { label: string; to?: string; apiPost?: string; confirm?: boolean; }
-interface Msg { role: 'user' | 'assistant'; content: string; products?: CopilotProduct[]; actions?: MsgAction[]; }
+// Découverte de stock unifié — JAMAIS de quantité, seulement `available` (booléen).
+interface SupplyItem {
+  item_id: string; kind: string; name: string; price?: number; available: boolean;
+  seller_name?: string; country?: string; city?: string; address?: string; phone?: string;
+  latitude?: number; longitude?: number; on_marketplace?: boolean; dist?: number | null;
+}
+interface Msg { role: 'user' | 'assistant'; content: string; products?: CopilotProduct[]; actions?: MsgAction[]; image?: string; supply?: SupplyItem[]; }
 
 // Tool-calling — mappe les actions proposées par Claude (backend) en boutons de confirmation.
 // `confirm` = action sensible (commander/réserver/corriger) ; `apiPost` = action PDG (corrige en 1 clic
@@ -154,13 +160,55 @@ export function Copilot224({ service, title, suggestions = [], variant = 'bubble
         } catch { /* best-effort */ }
       }
       if (!actions) { const d = deriveActions(message, service); actions = d.length ? d : undefined; }
-      setMsgs((m) => [...m, { role: 'assistant', content: reply, products, actions }]);
+      const supply: SupplyItem[] | undefined = Array.isArray((res as any).supply) && (res as any).supply.length ? (res as any).supply as SupplyItem[] : undefined;
+      setMsgs((m) => [...m, { role: 'assistant', content: reply, products, actions, supply }]);
       if (voiceOn) voice.speak(reply); // Phase 4 — lecture vocale si activée
     } catch {
       setMsgs((m) => [...m, { role: 'assistant', content: 'Erreur de connexion au Copilot.' }]);
     } finally {
       setLoading(false);
     }
+  };
+
+  // PARTIE 5 — VISION : compresse une image (max 1024px) côté client → dataURL JPEG léger.
+  const compressImage = (file: File): Promise<string> => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 1024;
+        let w = img.width, h = img.height;
+        if (w > max || h > max) { const s = max / Math.max(w, h); w = Math.round(w * s); h = Math.round(h * s); }
+        const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
+        const cx = canvas.getContext('2d'); if (!cx) { reject(new Error('canvas')); return; }
+        cx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.8));
+      };
+      img.onerror = reject; img.src = reader.result as string;
+    };
+    reader.onerror = reject; reader.readAsDataURL(file);
+  });
+
+  // Envoie une PHOTO au copilote → analyse vision + recherche marketplace (backend). Propose, n'achète pas.
+  const sendImage = async (file: File) => {
+    if (loading || !file) return;
+    setLoading(true);
+    try {
+      const dataUrl = await compressImage(file);
+      const message = input.trim() || 'Voici une photo, trouve-moi ce produit sur le marketplace.';
+      const history = msgs.slice(-8);
+      setMsgs((m) => [...m, { role: 'user', content: input.trim() || '📷 Photo envoyée', image: dataUrl }]);
+      setInput('');
+      const res = await backendFetch<{ reply: string; products?: CopilotProduct[]; actions?: any[] }>('/api/v2/copilot', { method: 'POST', body: { service, message, history, context, image: dataUrl } });
+      const reply = res.success ? ((res as any).reply as string) : (res.error || 'Analyse indisponible.');
+      const products: CopilotProduct[] | undefined = Array.isArray((res as any).products) && (res as any).products.length ? (res as any).products as CopilotProduct[] : undefined;
+      const actions = mapBackendActions((res as any).actions);
+      const supply: SupplyItem[] | undefined = Array.isArray((res as any).supply) && (res as any).supply.length ? (res as any).supply as SupplyItem[] : undefined;
+      setMsgs((m) => [...m, { role: 'assistant', content: reply, products, actions, supply }]);
+      if (voiceOn) voice.speak(reply);
+    } catch {
+      setMsgs((m) => [...m, { role: 'assistant', content: "Erreur lors de l'analyse de l'image." }]);
+    } finally { setLoading(false); }
   };
 
   // Exécute une action proposée : apiPost (corriger en 1 clic, PDG) → POST backend ; sinon navigation.
@@ -270,6 +318,7 @@ export function Copilot224({ service, title, suggestions = [], variant = 'bubble
         {msgs.map((m, i) => (
           <div key={i} className="space-y-1.5">
             <div className={`max-w-[85%] whitespace-pre-wrap break-words rounded-xl px-3 py-2 text-sm ${m.role === 'user' ? 'ml-auto bg-[#ff4000] text-white' : 'bg-muted'}`}>
+              {m.image && <img src={m.image} alt="Photo envoyée" className="mb-1 max-h-40 rounded-lg object-cover" />}
               {m.role === 'assistant' ? renderMessageContent(m.content) : m.content}
             </div>
             {m.actions && m.actions.length > 0 && (
@@ -290,12 +339,49 @@ export function Copilot224({ service, title, suggestions = [], variant = 'bubble
                 ))}
               </div>
             )}
+            {/* PARTIE 3.4 — disponibilité chez les vendeurs (JAMAIS de quantité) */}
+            {m.supply && m.supply.length > 0 && (
+              <div className="space-y-1">
+                {m.supply.map((s) => (
+                  <div key={s.item_id} className="rounded-lg border p-2 text-xs">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="truncate font-medium">{s.name}</span>
+                      {typeof s.price === 'number' && s.price > 0 && <span className="font-bold text-[#ff4000]"><Money amount={s.price} /></span>}
+                    </div>
+                    <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground">
+                      <span className="rounded-full bg-green-100 px-1.5 py-0.5 font-medium text-green-700">✓ Disponible</span>
+                      {s.seller_name && <span>· {s.seller_name}</span>}
+                      {(s.city || s.country) && <span>· {[s.city, s.country].filter(Boolean).join(', ')}</span>}
+                      {s.dist != null && <span>· {s.dist} km</span>}
+                    </div>
+                    <div className="mt-1 flex flex-wrap gap-1.5">
+                      {s.on_marketplace ? (
+                        <button onClick={() => navigate(`/marketplace/product/${s.item_id}`)} className="rounded-md border px-2 py-0.5 hover:border-[#ff4000]">Voir / Commander</button>
+                      ) : (
+                        <>
+                          {s.phone && <a href={`tel:${s.phone}`} className="rounded-md border px-2 py-0.5 hover:bg-muted">📞 Appeler</a>}
+                          {(s.address || (s.latitude != null && s.longitude != null)) && (
+                            <a href={s.latitude != null && s.longitude != null ? `https://www.google.com/maps/search/?api=1&query=${s.latitude},${s.longitude}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.address || '')}`} target="_blank" rel="noopener noreferrer" className="rounded-md border px-2 py-0.5 hover:bg-muted">🧭 Itinéraire</a>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
         {loading && <div className="flex items-center gap-1 text-xs text-muted-foreground"><Loader2 className="h-3 w-3 animate-spin" />{t('copilot224.leCopilotReflechit')}</div>}
       </div>
 
       <form onSubmit={(e) => { e.preventDefault(); ask(input); }} className="flex items-center gap-2 border-t p-2">
+        {/* PARTIE 5 — BOUTON PHOTO : caméra (mobile) ou galerie → analyse vision + recherche marketplace */}
+        <label className={`flex h-9 w-9 flex-shrink-0 cursor-pointer items-center justify-center rounded-md border hover:bg-muted ${loading ? 'pointer-events-none opacity-50' : ''}`} aria-label="Envoyer une photo" title="Envoyer une photo">
+          <input type="file" accept="image/*" capture="environment" className="hidden" disabled={loading}
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) void sendImage(f); e.currentTarget.value = ''; }} />
+          <Camera className="h-4 w-4" />
+        </label>
         {voice.sttSupported && (
           <Button type="button" size="icon" variant={voice.listening ? 'default' : 'outline'} className="h-9 w-9 flex-shrink-0"
             onClick={() => voice.listening ? voice.stopListening() : voice.listen((t) => setInput(t))} aria-label="Dicter">
