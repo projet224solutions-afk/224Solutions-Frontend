@@ -19,7 +19,7 @@ import { OrderDisputeThread } from '@/components/disputes/OrderDisputeThread';
 import { ReturnRequestDialog } from '@/components/returns/ReturnRequestDialog';
 import {
   Package, CheckCircle, Clock, Truck, XCircle,
-  Shield, AlertCircle, Loader2, ListFilter, Ban, DollarSign, Banknote, Camera
+  Shield, AlertCircle, Loader2, ListFilter, Ban, DollarSign, Banknote, Camera, Star
 } from 'lucide-react';
 import {
   AlertDialog,
@@ -763,6 +763,27 @@ export default function ClientOrdersList() {
                           J'ai reçu ma commande
                         </>
                       )}
+                    </Button>
+                  )}
+
+                  {/* Noter le produit + la boutique — persistant après livraison (COD inclus), pour
+                      pouvoir laisser un avis à tout moment, pas seulement juste après la confirmation. */}
+                  {(order.status === 'delivered' || order.status === 'completed') && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setRatingOrderData({
+                          orderId: order.id,
+                          vendorId: order.vendor_id,
+                          vendorName: order.vendors?.business_name || 'ce vendeur',
+                        });
+                        setShowRatingDialog(true);
+                      }}
+                      className="w-full"
+                    >
+                      <Star className="w-4 h-4 mr-2" />
+                      Noter le produit et la boutique
                     </Button>
                   )}
                 </div>
