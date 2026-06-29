@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const PDGCopilotDashboard: React.FC = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { profile } = useAuth();
   const { messages, loading, error, sendMessage, analyzeVendor, analyzeCustomer, getFinancialSummary, clearMessages } = usePDGCopilot();
 
   const [inputValue, setInputValue] = useState('');
@@ -28,8 +28,10 @@ const PDGCopilotDashboard: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Vérifier que l'utilisateur est PDG/OWNER
-  if (user?.role !== 'pdg' && user?.role !== 'owner') {
+  // Vérifier que l'utilisateur est PDG/CEO/admin (le rôle est sur PROFILE, pas sur user auth).
+  // Bug corrigé : on lisait user.role (auth Supabase, sans role) → toujours undefined →
+  // accès refusé même au vrai PDG. + 'owner' n'existe pas ; les rôles PDG = pdg/ceo/admin.
+  if (!profile || (profile.role !== 'pdg' && profile.role !== 'ceo' && profile.role !== 'admin')) {
     return (
       <Alert className="m-4 border-[#ff4000]">
         <AlertDescription>
