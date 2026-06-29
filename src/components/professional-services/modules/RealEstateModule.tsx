@@ -17,7 +17,8 @@ import { Textarea } from '@/components/ui/textarea';
 import {
   Home, Building2, Users, Calendar, MapPin, Phone, Mail,
   Plus, Eye, DollarSign,
-  Loader2, CheckCircle, XCircle, Map, Wallet, KeyRound
+  Loader2, CheckCircle, XCircle, Map, Wallet, KeyRound,
+  Briefcase, FileSignature
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -30,6 +31,9 @@ import { RealEstateMapView } from './real-estate/RealEstateMapView';
 import { RealEstateWalletWidget } from './real-estate/RealEstateWalletWidget';
 import { RealEstateCopilot } from './real-estate/RealEstateCopilot';
 import { RealEstateRentals } from './real-estate/RealEstateRentals';
+import { RealEstateCRM } from './real-estate/RealEstateCRM';
+import { RealEstateMandates } from './real-estate/RealEstateMandates';
+import { generateVisitVoucher } from '@/lib/realEstatePdf';
 import type { Property } from '@/hooks/useRealEstateData';
 
 interface RealEstateModuleProps {
@@ -220,9 +224,15 @@ export function RealEstateModule({ serviceId, businessName }: RealEstateModulePr
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-4 sm:grid-cols-8">
           <TabsTrigger value="annonces" className="gap-1 text-xs sm:text-sm">
             <Building2 className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Biens</span>
+          </TabsTrigger>
+          <TabsTrigger value="pipeline" className="gap-1 text-xs sm:text-sm">
+            <Briefcase className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Pipeline</span>
+          </TabsTrigger>
+          <TabsTrigger value="mandats" className="gap-1 text-xs sm:text-sm">
+            <FileSignature className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Mandats</span>
           </TabsTrigger>
           <TabsTrigger value="locations" className="gap-1 text-xs sm:text-sm">
             <KeyRound className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Locations</span>
@@ -240,6 +250,16 @@ export function RealEstateModule({ serviceId, businessName }: RealEstateModulePr
             <Wallet className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Wallet</span>
           </TabsTrigger>
         </TabsList>
+
+        {/* === PIPELINE (CRM) === */}
+        <TabsContent value="pipeline" className="space-y-4">
+          <RealEstateCRM serviceId={serviceId} />
+        </TabsContent>
+
+        {/* === MANDATS === */}
+        <TabsContent value="mandats" className="space-y-4">
+          <RealEstateMandates serviceId={serviceId} properties={properties.map(p => ({ id: p.id, title: p.title, offer_type: (p as any).offer_type }))} agentName={businessName} />
+        </TabsContent>
 
         {/* === BIENS === */}
         <TabsContent value="annonces" className="space-y-4">
@@ -412,16 +432,28 @@ export function RealEstateModule({ serviceId, businessName }: RealEstateModulePr
                         </div>
                         {visit.notes && <p className="text-xs text-muted-foreground mt-1">{visit.notes}</p>}
                       </div>
-                      {visit.status === 'planifiee' && (
-                        <div className="flex gap-1">
-                          <Button size="sm" variant="ghost" onClick={() => updateVisitStatus(visit.id, 'effectuee')}>
-                            <CheckCircle className="h-4 w-4 text-primary" />
-                          </Button>
-                          <Button size="sm" variant="ghost" onClick={() => updateVisitStatus(visit.id, 'annulee')}>
-                            <XCircle className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </div>
-                      )}
+                      <div className="flex gap-1">
+                        {/* Bon de visite PDF (OUTIL 3) */}
+                        <Button size="sm" variant="ghost" title="Bon de visite PDF" onClick={() => generateVisitVoucher({
+                          clientName: visit.client_name,
+                          propertyTitle: properties.find(p => p.id === (visit as any).property_id)?.title || 'Bien',
+                          visitDate: visit.visit_date,
+                          agentName: businessName,
+                          reference: `BV-${String(visit.id).slice(0, 8).toUpperCase()}`,
+                        })}>
+                          <Eye className="h-4 w-4 text-[#04439e]" />
+                        </Button>
+                        {visit.status === 'planifiee' && (
+                          <>
+                            <Button size="sm" variant="ghost" onClick={() => updateVisitStatus(visit.id, 'effectuee')}>
+                              <CheckCircle className="h-4 w-4 text-primary" />
+                            </Button>
+                            <Button size="sm" variant="ghost" onClick={() => updateVisitStatus(visit.id, 'annulee')}>
+                              <XCircle className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>

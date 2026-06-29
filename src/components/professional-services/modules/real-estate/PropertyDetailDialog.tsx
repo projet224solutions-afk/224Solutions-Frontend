@@ -3,6 +3,8 @@
  */
 import { useState } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -43,6 +45,17 @@ export function PropertyDetailDialog({ property, open, onClose, onRefresh, isOwn
   const { t } = useTranslation();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const formatPrice = useFormatCurrency();
+  // OUTIL 5 — rapprochement biens ↔ prospects
+  const [matches, setMatches] = useState<any[] | null>(null);
+  const [matching, setMatching] = useState(false);
+  const findProspects = async () => {
+    if (!property) return;
+    setMatching(true);
+    const { data } = await supabase.rpc('match_prospects_for_property' as any, { p_property_id: property.id });
+    setMatching(false);
+    if ((data as any)?.success) setMatches((data as any).prospects || []);
+    else toast.error((data as any)?.error || 'Erreur');
+  };
 
   if (!property) return null;
 
@@ -214,6 +227,38 @@ export function PropertyDetailDialog({ property, open, onClose, onRefresh, isOwn
                 existingImages={images as any}
                 onImagesChange={onRefresh}
               />
+            </div>
+          )}
+
+          {/* OUTIL 5 — Prospects intéressés (owner) */}
+          {isOwner && (
+            <div>
+              <Separator className="my-4" />
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="font-semibold">Prospects intéressés</h3>
+                <Button size="sm" variant="outline" disabled={matching} onClick={findProspects}>
+                  {matching ? 'Recherche…' : 'Rapprocher mes prospects'}
+                </Button>
+              </div>
+              {matches !== null && (
+                matches.length === 0 ? (
+                  <p className="mt-2 text-sm text-muted-foreground">Aucun prospect compatible (budget + type).</p>
+                ) : (
+                  <div className="mt-2 space-y-2">
+                    {matches.map((p: any) => (
+                      <div key={p.id} className="flex items-center justify-between gap-2 rounded-lg border p-2">
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium truncate">{p.name}</p>
+                          <p className="text-[11px] text-muted-foreground">
+                            Budget {p.budget_min ? formatPrice(p.budget_min) : '—'} – {p.budget_max ? formatPrice(p.budget_max) : '—'}
+                          </p>
+                        </div>
+                        {p.phone && <a href={`tel:${p.phone}`} className="shrink-0"><Button size="sm" variant="outline" className="gap-1"><Phone className="h-4 w-4" /> Contacter</Button></a>}
+                      </div>
+                    ))}
+                  </div>
+                )
+              )}
             </div>
           )}
 

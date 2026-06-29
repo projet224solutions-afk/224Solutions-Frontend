@@ -37,6 +37,14 @@ export function NewPropertyDialog({ open, onClose, onSubmit, saving }: NewProper
     city: '',
     neighborhood: '',
     amenities: [] as string[],
+    // Bonus — fiche enrichie (optionnels)
+    year_built: '',
+    floor_number: '',
+    total_floors: '',
+    charges_amount: '',
+    orientation: '',
+    has_parking: false,
+    furnished: false,
   });
   const [photos, setPhotos] = useState<File[]>([]);
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
@@ -136,6 +144,14 @@ export function NewPropertyDialog({ open, onClose, onSubmit, saving }: NewProper
       bathrooms: parseInt(form.bathrooms) || 0,
       latitude: coords?.lat,
       longitude: coords?.lng,
+      // Bonus — fiche enrichie
+      year_built: form.year_built ? parseInt(form.year_built) : undefined,
+      floor_number: form.floor_number ? parseInt(form.floor_number) : undefined,
+      total_floors: form.total_floors ? parseInt(form.total_floors) : undefined,
+      charges_amount: form.charges_amount ? parseFloat(form.charges_amount) : undefined,
+      orientation: form.orientation || undefined,
+      has_parking: form.has_parking,
+      furnished: form.furnished,
     });
     if (result) {
       // Upload photos after property creation
@@ -148,6 +164,8 @@ export function NewPropertyDialog({ open, onClose, onSubmit, saving }: NewProper
         title: '', description: '', offer_type: '', property_type: '',
         price: '', surface: '', rooms: '', bathrooms: '',
         address: '', city: '', neighborhood: '', amenities: [],
+        year_built: '', floor_number: '', total_floors: '', charges_amount: '',
+        orientation: '', has_parking: false, furnished: false,
       });
       setPhotos([]);
       setPhotoPreviews([]);
@@ -219,6 +237,19 @@ export function NewPropertyDialog({ open, onClose, onSubmit, saving }: NewProper
             <div className="space-y-2">
               <Label>{t('newPropertyDialog.sallesDeBain')}</Label>
               <Input type="number" placeholder="0" value={form.bathrooms} onChange={e => updateField('bathrooms', e.target.value)} />
+            </div>
+          </div>
+
+          {/* Bonus — Caractéristiques (optionnel) */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="space-y-2"><Label>Année de construction</Label><Input type="number" placeholder="ex: 2018" value={form.year_built} onChange={e => updateField('year_built', e.target.value)} /></div>
+            <div className="space-y-2"><Label>Étage</Label><Input type="number" placeholder="0" value={form.floor_number} onChange={e => updateField('floor_number', e.target.value)} /></div>
+            <div className="space-y-2"><Label>Nb d'étages</Label><Input type="number" placeholder="0" value={form.total_floors} onChange={e => updateField('total_floors', e.target.value)} /></div>
+            <div className="space-y-2"><Label>Charges (GNF/mois)</Label><Input type="number" placeholder="0" value={form.charges_amount} onChange={e => updateField('charges_amount', e.target.value)} /></div>
+            <div className="space-y-2"><Label>Exposition</Label><Input placeholder="ex: Sud" value={form.orientation} onChange={e => updateField('orientation', e.target.value)} /></div>
+            <div className="flex items-end gap-3 pb-1">
+              <label className="flex items-center gap-1.5 text-sm"><input type="checkbox" checked={form.has_parking} onChange={e => updateField('has_parking', e.target.checked)} /> Parking</label>
+              <label className="flex items-center gap-1.5 text-sm"><input type="checkbox" checked={form.furnished} onChange={e => updateField('furnished', e.target.checked)} /> Meublé</label>
             </div>
           </div>
 
