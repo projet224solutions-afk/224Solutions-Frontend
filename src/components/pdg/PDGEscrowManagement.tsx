@@ -18,6 +18,7 @@ import {
   RefreshCw, Search, TrendingUp, DollarSign
 } from 'lucide-react';
 import PDGEscrowDisputes from './PDGEscrowDisputes';
+import PDGConstructionDisputes from './PDGConstructionDisputes';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -430,8 +431,9 @@ export default function PDGEscrowManagement() {
         </Card>
         </TabsContent>
 
-        <TabsContent value="disputes">
+        <TabsContent value="disputes" className="space-y-6">
           <PDGEscrowDisputes />
+          <PDGConstructionDisputes />
         </TabsContent>
       </div>
 

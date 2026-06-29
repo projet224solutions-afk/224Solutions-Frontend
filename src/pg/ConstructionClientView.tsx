@@ -15,8 +15,10 @@ import { useConstructionReserves, RESERVE_PRIORITY_LABELS, RESERVE_STATUS_LABELS
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
 import { Money } from '@/components/Money';
-import { ArrowLeft, Wallet, CheckCircle2, Circle, Loader2, Lock, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Wallet, CheckCircle2, Circle, Loader2, Lock, ShieldCheck, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function ConstructionClientView() {
@@ -28,8 +30,20 @@ export default function ConstructionClientView() {
   const [loading, setLoading] = useState(true);
   const [claiming, setClaiming] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
-  const { logs, milestones, fundMilestone, releaseMilestone, reload } = useProjectDetail(projectId);
+  const { logs, milestones, fundMilestone, releaseMilestone, openDispute, reload } = useProjectDetail(projectId);
   const { reserves } = useConstructionReserves(projectId);
+  const [disputeFor, setDisputeFor] = useState<{ id: string; title: string } | null>(null);
+  const [disputeReason, setDisputeReason] = useState('');
+  const [disputeBusy, setDisputeBusy] = useState(false);
+
+  const submitDispute = async () => {
+    if (!disputeFor) return;
+    if (disputeReason.trim().length < 5) { toast.error('Motif trop court (5 caractères min.)'); return; }
+    setDisputeBusy(true);
+    const ok = await openDispute(disputeFor.id, disputeReason.trim());
+    setDisputeBusy(false);
+    if (ok) { setDisputeFor(null); setDisputeReason(''); }
+  };
 
   const loadProject = async () => {
     if (!projectId) return;
@@ -88,6 +102,7 @@ export default function ConstructionClientView() {
             <span className="ml-auto font-bold text-[#ff4000]"><Money amount={m.amount} /></span>
             {isClient && m.status === 'pending' && <Button size="sm" disabled={busy === m.id} onClick={() => act(m.id, () => fundMilestone(m.id))}><Wallet className="h-4 w-4 mr-1" />Financer</Button>}
             {isClient && m.status === 'funded' && <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={busy === m.id} onClick={() => act(m.id, () => releaseMilestone(m.id))}><CheckCircle2 className="h-4 w-4 mr-1" />{t('constructionClientView.valider')}</Button>}
+            {isClient && m.status === 'funded' && <Button size="sm" variant="outline" className="text-amber-700 border-amber-300" onClick={() => { setDisputeFor({ id: m.id, title: m.title }); setDisputeReason(''); }}><AlertTriangle className="h-4 w-4 mr-1" />Litige</Button>}
           </CardContent></Card>
         ))}
         {isClient && <p className="text-[11px] text-muted-foreground">{t('constructionClientView.vosFondsSontConservesSous')}</p>}
@@ -139,6 +154,21 @@ export default function ConstructionClientView() {
           </CardContent></Card>
         ))}
       </div>
+
+      {/* Litige sur un jalon financé */}
+      <Dialog open={!!disputeFor} onOpenChange={(o) => { if (!o && !disputeBusy) { setDisputeFor(null); setDisputeReason(''); } }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle className="flex items-center gap-2"><AlertTriangle className="h-5 w-5 text-amber-600" /> Signaler un litige</DialogTitle></DialogHeader>
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">Jalon : <b>{disputeFor?.title}</b>. Expliquez le désaccord ; un administrateur tranchera (libération ou remboursement). Les fonds restent sous séquestre jusqu'à la décision.</p>
+            <Textarea value={disputeReason} onChange={(e) => setDisputeReason(e.target.value)} placeholder="Motif du litige (5 caractères min.)" rows={4} />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" disabled={disputeBusy} onClick={() => { setDisputeFor(null); setDisputeReason(''); }}>Annuler</Button>
+            <Button className="bg-amber-600 hover:bg-amber-700" disabled={disputeBusy || disputeReason.trim().length < 5} onClick={submitDispute}>{disputeBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Ouvrir le litige'}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

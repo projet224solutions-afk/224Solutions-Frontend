@@ -107,7 +107,14 @@ export function useProjectDetail(projectId?: string) {
     return res.success;
   }, [load]);
 
-  return { logs, milestones, loading, reload: load, addLog, addMilestone, fundMilestone, releaseMilestone };
+  // Litige sur un jalon financé (client OU prestataire) — la résolution est tranchée par un admin/PDG.
+  const openDispute = useCallback(async (id: string, reason: string) => {
+    const res = await backendFetch(`/api/v2/construction/milestone/${id}/dispute`, { method: 'POST', body: { reason } });
+    if (res.success) { toast.success('Litige ouvert — un administrateur va trancher'); await load(); } else toast.error(res.error || 'Erreur');
+    return res.success;
+  }, [load]);
+
+  return { logs, milestones, loading, reload: load, addLog, addMilestone, fundMilestone, releaseMilestone, openDispute };
 }
 
 /** Un journal est verrouillé après 24h (intégrité juridique). */
