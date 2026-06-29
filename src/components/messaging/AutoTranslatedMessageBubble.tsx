@@ -8,6 +8,7 @@ import { Globe, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Message } from '@/types/communication.types';
 import { SUPPORTED_LANGUAGES, SupportedLanguage, translationService } from '@/services/translationService';
+import { getCapability } from '@/services/translationCapabilities';
 import { useTranslation } from '@/hooks/useTranslation';
 
 interface AutoTranslatedMessageBubbleProps {
@@ -139,6 +140,11 @@ export const AutoTranslatedMessageBubble: React.FC<AutoTranslatedMessageBubblePr
             )}
           </button>
         </div>
+      )}
+
+      {/* AMÉLIORATION 5 : confiance pour les langues à faibles ressources */}
+      {isTranslated && !isOwn && !showOriginal && getCapability(userLanguage).quality === 'low' && (
+        <p className="mt-0.5 text-[10px] text-amber-500/90">⚠️ Traduction approximative (langue à ressources limitées)</p>
       )}
     </div>
   );
