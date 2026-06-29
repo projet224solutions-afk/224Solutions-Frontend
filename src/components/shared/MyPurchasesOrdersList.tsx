@@ -565,7 +565,10 @@ export default function MyPurchasesOrdersList({
                   const requiresEscrowRelease = order.payment_method !== 'cash';
                   const _escrowPending = escrow?.status === 'pending' || escrow?.status === 'held';
                   const isDeliveryPending = order.status === 'in_transit' || order.status === 'shipped' || order.status === 'ready';
-                  const isDeliveredAwaitingConfirmation = order.status === 'delivered' && (requiresEscrowRelease ? escrow?.status !== 'released' && escrow?.status !== 'refunded' : true);
+                  // ESCROW (wallet/carte) : en attente tant que l'escrow n'est pas libéré/remboursé.
+                  // COD : une fois 'delivered', la réception EST confirmée (pas d'escrow) → PLUS de bouton
+                  // (sinon « Confirmer la réception » se réaffiche en boucle).
+                  const isDeliveredAwaitingConfirmation = order.status === 'delivered' && (requiresEscrowRelease ? escrow?.status !== 'released' && escrow?.status !== 'refunded' : false);
                   const canConfirmDelivery = order.status !== 'cancelled' && order.status !== 'completed' && (isDeliveryPending || isDeliveredAwaitingConfirmation);
 
                   return (
