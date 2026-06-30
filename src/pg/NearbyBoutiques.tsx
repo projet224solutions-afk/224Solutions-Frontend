@@ -10,6 +10,7 @@ import QuickFooter from "@/components/QuickFooter";
 import { cn } from "@/lib/utils";
 import { useGeoDistance, calculateDistance as calcDistanceFn } from "@/hooks/useGeoDistance";
 import { VendorCard } from "@/components/vendor/VendorCard";
+import { getCityCoordinates, resolveItemCoords } from "@/lib/cityGeocode";
 
 interface Vendor {
   id: string;
@@ -89,36 +90,35 @@ export default function NearbyBoutiques() {
 
       // On utilise la position (réelle ou par défaut) pour calculer les distances
 
-      let list: Vendor[] = (data || []).map((v: any) => ({
+      const list: Vendor[] = (data || []).map((v: any) => ({
         ...v,
         business_type: v.business_type as Vendor["business_type"],
         service_type: v.service_type as Vendor["service_type"],
       }));
 
-      // Distances + filtre rayon - Exclure boutiques sans GPS valide
-      list = list
-        .map((v) => {
-          const lat_val = Number(v.latitude);
-          const lng_val = Number(v.longitude);
-          if (v.latitude == null || v.longitude == null ||
-              !Number.isFinite(lat_val) || !Number.isFinite(lng_val) ||
-              (lat_val === 0 && lng_val === 0)) {
-            return { ...v, distance: null };
-          }
-          const distance = calcDistanceFn(origin.latitude, origin.longitude, lat_val, lng_val);
-          return { ...v, distance };
-        })
-        .filter((v) => v.distance !== null && v.distance <= RADIUS_KM);
-
-      // Tri: plus proches d'abord, sinon par note
-      list.sort((a, b) => {
-        if (a.distance === null && b.distance === null) return (b.rating || 0) - (a.rating || 0);
-        if (a.distance === null) return 1;
-        if (b.distance === null) return -1;
-        return a.distance - b.distance;
+      // Coordonnées effectives : GPS précis si présent, sinon centre-ville
+      // (city_coordinates). Comble le manque de GPS pour que les boutiques de la
+      // ville de l'utilisateur entrent dans le rayon 20 km.
+      const cityMap = await getCityCoordinates();
+      const withDistance = list.map((v) => {
+        const coords = resolveItemCoords(v, cityMap);
+        if (!coords) return { ...v, distance: null };
+        const distance = calcDistanceFn(origin.latitude, origin.longitude, coords.lat, coords.lng);
+        return { ...v, distance };
       });
 
-      setVendors(list);
+      // Strict 20 km : seules les boutiques réellement à proximité. Tri par
+      // distance croissante ; à égalité, meilleure note.
+      const inRadius = withDistance
+        .filter((v) => v.distance !== null && v.distance <= RADIUS_KM)
+        .sort((a, b) => {
+          if (a.distance === null && b.distance === null) return (b.rating || 0) - (a.rating || 0);
+          if (a.distance === null) return 1;
+          if (b.distance === null) return -1;
+          return a.distance - b.distance;
+        });
+
+      setVendors(inRadius);
     } catch (e) {
       console.error("Erreur chargement boutiques:", e);
       setError("Erreur lors du chargement des boutiques");

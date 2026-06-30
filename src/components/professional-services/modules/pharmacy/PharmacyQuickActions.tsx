@@ -2,7 +2,6 @@
  * Actions rapides pharmacie — inspiré CVS/Walgreens POS
  */
 
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Plus, ShoppingCart, Users, FileText, Package,

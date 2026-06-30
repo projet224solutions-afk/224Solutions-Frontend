@@ -4,10 +4,9 @@
  * 224SOLUTIONS - Bureau Syndicat
  */
 
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import StolenMotoReportButton from './StolenMotoReportButton';
-import { AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+import { CheckCircle, Clock } from 'lucide-react';
 
 interface Props {
   moto: any;

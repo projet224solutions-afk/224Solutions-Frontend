@@ -7,7 +7,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Navigation, Clock, Phone, User, Package } from 'lucide-react';
+import { MapPin, Clock, Phone, User, Package } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { subscribeLivePosition, deliveryPositionTopic } from '@/lib/realtime/livePositions';
 import { Button } from '@/components/ui/button';

@@ -8,18 +8,16 @@ import {
   collection,
   doc,
   setDoc,
-  getDoc,
   getDocs,
   query,
   where,
-  updateDoc,
   deleteDoc,
   onSnapshot,
   Timestamp
 } from 'firebase/firestore';
 import { firestore } from './firebaseClient';
 import { supabase } from './supabaseClient';
-import { encryptData, decryptData, hashValue } from './encryption';
+import { encryptData, decryptData } from './encryption';
 import { toast } from 'sonner';
 
 export interface SyncConfig {

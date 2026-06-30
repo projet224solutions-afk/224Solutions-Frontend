@@ -4,10 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Loader2, Calendar, CreditCard, Wallet, Smartphone, CheckCircle2, XCircle, Zap } from 'lucide-react';
+import { Loader2, CreditCard, Wallet, Smartphone, CheckCircle2, XCircle, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { useUnifiedSubscription } from '@/hooks/useUnifiedSubscription';
-import { UnifiedPlan } from '@/services/unifiedSubscriptionService';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 

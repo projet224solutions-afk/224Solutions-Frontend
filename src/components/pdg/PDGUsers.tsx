@@ -7,9 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { backendFetch } from '@/services/backendApi';
-import { Search, UserCheck, UserX, Lock, Unlock, Shield, Trash2, Store, Package, Eye, _ChevronDown, ChevronUp, Globe, Loader2 } from 'lucide-react';
+import { Search, UserCheck, UserX, Lock, Unlock, Shield, Trash2, Store, Package, Eye, ChevronUp, Globe, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { _Collapsible, _CollapsibleContent, _CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
   Select,
   SelectContent,
@@ -239,20 +238,26 @@ export default function PDGUsers() {
 
   const toggleUserStatus = async (userId: string, currentStatus: boolean) => {
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ is_active: !currentStatus })
-        .eq('id', userId);
+      // ✅ Passe par le backend : l'UPDATE direct sur profiles était bloqué par la
+      // RLS (modif de son propre profil uniquement) → la suspension d'autrui
+      // n'affectait 0 ligne (l'UI affichait pourtant « suspendu »). Le backend
+      // (service_role) applique réellement + protège les comptes privilégiés + audite.
+      const res = await backendFetch<{ success: boolean; error?: string; protected?: boolean }>(
+        '/api/admin/set-user-active',
+        {
+          method: 'POST',
+          body: { userId, isActive: !currentStatus },
+        }
+      );
 
-      if (error) throw error;
-
-      // Log action
-      await supabase.from('audit_logs').insert({
-        actor_id: (await supabase.auth.getUser()).data.user?.id,
-        action: currentStatus ? 'USER_SUSPENDED' : 'USER_ACTIVATED',
-        target_type: 'user',
-        target_id: userId
-      });
+      if (!res?.success) {
+        if (res?.protected) {
+          toast.error('Compte protégé : suspension refusée');
+        } else {
+          toast.error(res?.error || t('pDGUsers.erreurLorsDeLaModification'));
+        }
+        return;
+      }
 
       toast.success(currentStatus ? 'Utilisateur suspendu' : 'Utilisateur activé');
       loadUsers();

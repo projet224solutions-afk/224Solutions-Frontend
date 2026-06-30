@@ -10,8 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
-  Shield, Clock, Users, Activity, AlertTriangle, CheckCircle,
-  XCircle, RefreshCw, Phone, Mail, UserCheck, Eye, FileText
+  Shield, Clock, Users, AlertTriangle, CheckCircle, RefreshCw, Phone, Eye, FileText
 } from "lucide-react";
 import { ResponsiveGrid } from "@/components/responsive/ResponsiveContainer";
 import { useSecurityOps } from "@/hooks/useSecurityOps";

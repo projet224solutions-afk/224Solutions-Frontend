@@ -144,6 +144,14 @@ export function useRealEstateData(serviceId: string) {
     latitude?: number;
     longitude?: number;
     amenities?: string[];
+    // Bonus — fiche enrichie (optionnels)
+    year_built?: number;
+    floor_number?: number;
+    total_floors?: number;
+    has_parking?: boolean;
+    furnished?: boolean;
+    charges_amount?: number;
+    orientation?: string;
   }) => {
     setSaving(true);
     try {
@@ -169,8 +177,16 @@ export function useRealEstateData(serviceId: string) {
           latitude: data.latitude || null,
           longitude: data.longitude || null,
           amenities: data.amenities || [],
+          // Bonus — champs enrichis (null si non fournis)
+          year_built: data.year_built ?? null,
+          floor_number: data.floor_number ?? null,
+          total_floors: data.total_floors ?? null,
+          has_parking: data.has_parking ?? false,
+          furnished: data.furnished ?? false,
+          charges_amount: data.charges_amount ?? null,
+          orientation: data.orientation || null,
           status: 'disponible',
-        })
+        } as any)
         .select()
         .single();
 

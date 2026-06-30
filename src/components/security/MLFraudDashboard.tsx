@@ -29,8 +29,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  BarChart,
-  Bar,
   Legend
 } from 'recharts';
 

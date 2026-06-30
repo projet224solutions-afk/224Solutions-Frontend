@@ -1,5 +1,5 @@
 import { useTranslation } from "@/hooks/useTranslation";
-﻿/**
+/**
  * EMERGENCY PAGE - Page dédiée aux urgences
  * 224Solutions - Page complète de gestion des alertes
  */
@@ -21,19 +21,20 @@ import { useActiveEmergencyAlerts, useEmergencyStats } from '@/hooks/useEmergenc
 export const EmergencyPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
 
-  // Déterminer le rôle et le bureau
-  const userRole = (user?.role as 'admin' | 'syndicat' | 'pdg') || 'syndicat';
-  const bureauId = userRole === 'syndicat' ? (user as any)?.bureau_id : undefined;
+  // Déterminer le rôle et le bureau — le RÔLE est sur `profile` (pas sur `user` auth).
+  const userRole = (profile?.role as 'admin' | 'syndicat' | 'pdg') || 'syndicat';
+  const bureauId = userRole === 'syndicat' ? (profile as any)?.bureau_id : undefined;
 
   // Hooks
   const { alerts, count: _alertCount } = useActiveEmergencyAlerts(bureauId);
   const { stats, activeAlerts } = useEmergencyStats(bureauId);
 
-  // Vérifier les permissions
-  if (!user || !['admin', 'syndicat', 'pdg'].includes(user.role)) {
+  // Vérifier les permissions (rôle sur profile). On attend le profil chargé pour ne pas
+  // refuser pendant le chargement.
+  if (!user || (profile && !['admin', 'syndicat', 'pdg'].includes(profile.role))) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <Card className="max-w-md">
@@ -252,7 +253,7 @@ export const EmergencyAlertDetailPage: React.FC = () => {
   const { t } = useTranslation();
   const { alertId } = useParams<{ alertId: string }>();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
 
   if (!alertId) {
     return (
@@ -281,7 +282,7 @@ export const EmergencyAlertDetailPage: React.FC = () => {
         </Button>
 
         <EmergencyAlertsDashboard
-          userRole={(user?.role as any) || 'syndicat'}
+          userRole={(profile?.role as any) || 'syndicat'}
           userId={user?.id || ''}
           userName={(user as any)?.full_name || user?.email || 'Utilisateur'}
         />

@@ -29,7 +29,7 @@ export default function MobilityJobPage() {
     setJ(data?.found ? data : null);
     setLoading(false);
   };
-  useEffect(() => { void load(); /* eslint-disable-next-line */ }, [jobId]);
+  useEffect(() => { void load();   }, [jobId]);
 
   const pay = async () => {
     if (!user) { toast.error(t('mobilityJobPage.connectezVousPourPayer')); navigate('/auth'); return; }

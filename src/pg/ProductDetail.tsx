@@ -1,5 +1,5 @@
 import { useTranslation } from "@/hooks/useTranslation";
-﻿import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { ArrowLeft, ShoppingCart, MessageCircle, Star, Shield, Truck, ExternalLink, Play, Pause, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";

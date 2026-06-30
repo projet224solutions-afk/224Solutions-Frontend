@@ -10,7 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFormatCurrency } from "@/hooks/useFormatCurrency";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { _Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
     CreditCard,

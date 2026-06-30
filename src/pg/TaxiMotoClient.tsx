@@ -226,7 +226,7 @@ export default function TaxiMotoClient() {
     };
 
     restoreActiveRide();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [user?.id]);
 
   // Demander automatiquement la position GPS au chargement

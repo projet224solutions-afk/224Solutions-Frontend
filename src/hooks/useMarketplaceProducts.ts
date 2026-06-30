@@ -12,8 +12,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   dropshipMarketplace,
   MarketplaceProduct,
-  ProductQueryOptions,
-  ProductQueryResult
+  ProductQueryOptions
 } from '@/services/dropship';
 
 interface UseMarketplaceProductsOptions extends Omit<ProductQueryOptions, 'page'> {

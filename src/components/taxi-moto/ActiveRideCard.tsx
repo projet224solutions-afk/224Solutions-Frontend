@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
   Car, MapPin, Phone, MessageCircle,
-  Navigation, Star, Clock, DollarSign
+  Navigation, Star, DollarSign
 } from 'lucide-react';
 
 interface ActiveRideCardProps {

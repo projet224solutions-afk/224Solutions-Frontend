@@ -14,9 +14,8 @@ import { useFormatCurrency } from '@/hooks/useFormatCurrency';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  MapPin, Package, Navigation, Phone, Store, Clock,
-  DollarSign, CreditCard, Truck, Check, X, Loader2, RefreshCw
+import { Package, Navigation, Phone, Store, Clock,
+  DollarSign, CreditCard, Check, Loader2, RefreshCw
 } from 'lucide-react';
 import { DeliveryService, type NearbyDelivery } from '@/services/delivery/DeliveryService';
 import { supabase } from '@/integrations/supabase/client';

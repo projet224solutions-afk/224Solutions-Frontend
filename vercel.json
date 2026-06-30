@@ -1,5 +1,4 @@
 {
-  "_note_supabase_project": "Project ID supabase: uakkxaibujzxdiqzpnpr — à mettre à jour ici ET dans netlify.toml en cas de migration Supabase",
   "redirects": [
     {
       "source": "/:path*",

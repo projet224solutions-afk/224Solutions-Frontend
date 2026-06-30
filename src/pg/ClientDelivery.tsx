@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Package, MapPin, Truck } from 'lucide-react';
+import { ArrowLeft, Package, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ClientDeliveryRequest } from '@/components/delivery/ClientDeliveryRequest';

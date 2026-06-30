@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Wallet as WalletIcon, _ArrowDownCircle, ArrowUpCircle, RefreshCw, AlertCircle, Smartphone, CreditCard } from "lucide-react";
+import { Wallet as WalletIcon, ArrowUpCircle, RefreshCw, AlertCircle, Smartphone, CreditCard } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";

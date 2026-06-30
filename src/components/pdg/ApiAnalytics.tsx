@@ -6,8 +6,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   LineChart, Line, BarChart, Bar, AreaChart, Area,
@@ -15,9 +13,8 @@ import {
   PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar
 } from 'recharts';
 import { ApiConnection, ApiUsageLog, ApiMonitoringService } from '@/services/apiMonitoring';
-import {
-  TrendingUp, TrendingDown, Activity, Zap,
-  Clock, AlertTriangle, CheckCircle2, DollarSign
+import { Activity, Zap,
+  Clock, AlertTriangle, CheckCircle2
 } from 'lucide-react';
 import { toast } from 'sonner';
 

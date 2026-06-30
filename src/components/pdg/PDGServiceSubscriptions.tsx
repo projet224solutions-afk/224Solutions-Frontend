@@ -22,10 +22,10 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabaseClient';
 import {
-  DollarSign, History, TrendingUp, Users, Edit, RefreshCw, Gift,
+  DollarSign, History, TrendingUp, Users, RefreshCw, Gift,
   Store, Calendar, AlertCircle, CheckCircle, XCircle, Clock,
   UtensilsCrossed, Home, Wrench, Car, Dumbbell, Scissors, Laptop,
-  BookOpen, Truck, Camera, Leaf, Heart, Hammer, Sparkles, Filter,
+  BookOpen, Truck, Camera, Leaf, Heart, Hammer, Sparkles,
   Shield, LayoutGrid, Eye, Ban, CreditCard, Settings2, ClipboardCheck, UserCheck
 } from 'lucide-react';
 import { PDGServiceProvidersList } from './services/PDGServiceProvidersList';

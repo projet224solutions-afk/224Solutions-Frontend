@@ -48,7 +48,7 @@ export interface Message {
   // Champs de traduction audio
   transcribed_text?: string; // Texte transcrit du message audio (speech-to-text)
   translated_audio_url?: string; // URL de l'audio traduit et synthétisé
-  audio_translation_status?: 'none' | 'pending' | 'text_only' | 'completed' | 'failed'; // Statut traduction audio
+  audio_translation_status?: 'none' | 'pending' | 'text_only' | 'completed' | 'failed' | 'native'; // Statut traduction audio ('native' = langue non transcriptible/identique → audio original)
   status: MessageStatus;
   metadata?: MessageMetadata;
   created_at: string;

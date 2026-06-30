@@ -3,7 +3,7 @@
  * CRUD catégories et plats avec professional_service_id
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import offlineDB from '@/lib/offlineDB';
 
@@ -266,6 +266,20 @@ export function useRestaurantMenu(serviceId: string) {
     loadMenu();
   }, [loadMenu]);
 
+  // ✅ Alertes stock : plats à stock suivi sous le seuil (rupture imminente) ou épuisés.
+  // Stock NULL = illimité → ignoré.
+  const LOW_STOCK_THRESHOLD = 5;
+  const lowStockItems = useMemo(
+    () => menuItems.filter(
+      (m) => m.stock_quantity != null && m.stock_quantity > 0 && m.stock_quantity <= LOW_STOCK_THRESHOLD
+    ),
+    [menuItems]
+  );
+  const outOfStockItems = useMemo(
+    () => menuItems.filter((m) => m.stock_quantity != null && m.stock_quantity <= 0),
+    [menuItems]
+  );
+
   return {
     categories,
     menuItems,
@@ -280,5 +294,7 @@ export function useRestaurantMenu(serviceId: string) {
     deleteMenuItem,
     toggleItemAvailability,
     decrementLocalStock,
+    lowStockItems,
+    outOfStockItems,
   };
 }

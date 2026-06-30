@@ -1,11 +1,53 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import fs from "fs";
 import { componentTagger } from "lovable-tagger";
 import obfuscatorPlugin from "rollup-plugin-obfuscator";
 // @ts-ignore - JS config file
 import { obfuscatorConfig, excludePatterns } from "./obfuscator.config.js";
 import { buildInfoPlugin } from "./vite-plugins/buildInfo";
+
+// Version unique générée à chaque build (timestamp). Sert à :
+// 1. Remplacer __SW_VERSION__ dans le service worker (dist/service-worker.js)
+// 2. Exposer la version à l'app (import.meta.env.VITE_APP_VERSION) pour la détection MAJ
+const APP_BUILD_VERSION = `v${Date.now()}`;
+
+// Plugin : génère dist/version.json (lu par versionCheck pour la bannière / le forçage MAJ).
+// ✅ SOURCE UNIQUE DE VERSION : APP_BUILD_VERSION est désormais partagée entre :
+//   • le service worker (via buildInfoPlugin(APP_BUILD_VERSION) → __SW_VERSION__)
+//   • version.json (ce plugin)
+//   • VITE_APP_VERSION (import.meta.env, lu par versionCheck)
+// Les trois pointent vers la MÊME valeur "v<timestamp>" → cohérence totale.
+// Le bloc ci-dessous reste comme simple garde-fou (idempotent).
+function appVersionJsonPlugin() {
+  return {
+    name: 'app-version-json',
+    closeBundle() {
+      try {
+        // Garde-fou : si jamais __SW_VERSION__ subsistait (buildInfo retiré), on le remplace.
+        const swPath = path.resolve(__dirname, 'dist/service-worker.js');
+        if (fs.existsSync(swPath)) {
+          const sw = fs.readFileSync(swPath, 'utf-8');
+          if (sw.includes('__SW_VERSION__')) {
+            fs.writeFileSync(swPath, sw.replace(/__SW_VERSION__/g, APP_BUILD_VERSION));
+            console.log(`[build] __SW_VERSION__ (fallback) → ${APP_BUILD_VERSION}`);
+          }
+        }
+        // version.json à la racine de dist/. minVersion absent par défaut → on NE force PAS.
+        // Pour forcer une MAJ critique : ajouter "minVersion" (ex: APP_BUILD_VERSION) au build
+        // ou éditer dist/version.json post-déploiement.
+        fs.writeFileSync(
+          path.resolve(__dirname, 'dist/version.json'),
+          JSON.stringify({ version: APP_BUILD_VERSION, builtAt: new Date().toISOString() }, null, 2),
+        );
+        console.log(`[build] version.json: ${APP_BUILD_VERSION}`);
+      } catch (e) {
+        console.warn('[build] Erreur écriture version.json:', e);
+      }
+    },
+  };
+}
 
 // Fonction de chunking partagée
 function getManualChunks(id: string) {
@@ -108,9 +150,15 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      buildInfoPlugin(),
+      // ✅ Source unique de version : APP_BUILD_VERSION partagée avec le SW (__SW_VERSION__)
+      buildInfoPlugin(APP_BUILD_VERSION),
+      appVersionJsonPlugin(),
       mode === 'development' && componentTagger(),
     ].filter(Boolean),
+    define: {
+      // Version embarquée, accessible via import.meta.env.VITE_APP_VERSION
+      'import.meta.env.VITE_APP_VERSION': JSON.stringify(APP_BUILD_VERSION),
+    },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
@@ -125,6 +173,14 @@ export default defineConfig(({ mode }) => {
     build: {
       rollupOptions: {
         output: {
+          // Nomme les chunks de langue pour le debug : assets/locale-fr-[hash].js, etc.
+          // (chaque src/i18n/locales/{code}.ts devient un chunk chargé à la volée).
+          chunkFileNames: (chunkInfo) => {
+            if (chunkInfo.facadeModuleId?.includes('/i18n/locales/')) {
+              return 'assets/locale-[name]-[hash].js';
+            }
+            return 'assets/[name]-[hash].js';
+          },
           // manualChunks DÉSACTIVÉ : le découpage manuel (vendors + code app) créait des
           // dépendances circulaires ENTRE chunks → erreurs runtime au démarrage empêchant
           // React de monter (TDZ « before initialization », « Class extends undefined »,

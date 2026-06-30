@@ -12,17 +12,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
 import {
     AlertTriangle,
     Shield,
     Send,
     CheckCircle,
     XCircle,
-    Loader2,
-    MapPin,
-    Calendar,
-    FileText
+    Loader2
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';

@@ -24,7 +24,6 @@ import {
   Wallet,
   ShoppingCart,
   Package,
-  Users,
   Truck,
   Settings,
   Play,

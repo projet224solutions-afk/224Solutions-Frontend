@@ -8,8 +8,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import {
-  Calendar, Clock, Users, Check, X, AlertCircle,
-  Download, RefreshCw, MapPin, Phone, Receipt,
+  Calendar, Clock, Users, Check, X, AlertCircle, RefreshCw, MapPin, Receipt,
   CheckCircle2, Timer, Armchair, XCircle
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

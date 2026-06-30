@@ -9,9 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   AlertTriangle,
   Shield,
-  TrendingUp,
   Wallet,
-  Clock,
   CheckCircle,
   XCircle,
   AlertOctagon,
@@ -21,7 +19,6 @@ import {
   Eye,
   Activity,
   DollarSign,
-  Users,
   FileText
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -38,7 +35,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
 interface DashboardData {

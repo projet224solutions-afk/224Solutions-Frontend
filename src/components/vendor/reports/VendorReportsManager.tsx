@@ -4,18 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useCurrentVendor } from '@/hooks/useCurrentVendor';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
 import { usePriceConverter } from '@/hooks/usePriceConverter';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import {
-  BarChart3, Calendar, TrendingUp, TrendingDown,
-  Download, FileText, DollarSign, Package, ShoppingCart,
-  Clock, Users, CreditCard
+  BarChart3, TrendingUp, TrendingDown,
+  Download, DollarSign, Package, ShoppingCart, CreditCard
 } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface ReportData {
   sales: number;

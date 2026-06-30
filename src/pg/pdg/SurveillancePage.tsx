@@ -9,17 +9,21 @@ import { AlertCircle } from 'lucide-react';
 
 export default function SurveillancePage() {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
 
-  // Vérifier que l'utilisateur est PDG
+  // Le RÔLE est sur `profile` (pas sur `user` auth). PDG = pdg/ceo/admin.
+  const isPdg = !!profile && ['pdg', 'ceo', 'admin'].includes(profile.role);
+
+  // Vérifier que l'utilisateur est PDG (une fois le profil chargé, pour ne pas
+  // rediriger pendant le chargement).
   useEffect(() => {
-    if (user && user.role !== 'pdg') {
+    if (user && profile && !isPdg) {
       navigate('/');
     }
-  }, [user, navigate]);
+  }, [user, profile, isPdg, navigate]);
 
-  if (!user || user.role !== 'pdg') {
+  if (profile && !isPdg) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-slate-900">
         <Card className="w-full max-w-md bg-[#ff4000]/20 border-[#ff4000]">

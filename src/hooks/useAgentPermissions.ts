@@ -88,6 +88,7 @@ export const AVAILABLE_PERMISSIONS = {
   manage_stolen_vehicles: 'Gérer les motos volées',
   view_orders: 'Voir les commandes',
   manage_orders: 'Gérer les commandes',
+  view_support: 'Voir le support technique',   // ✅ permission dédiée (séparée de view_orders)
   view_vendors: 'Voir les vendeurs',
   manage_vendors: 'Gérer les vendeurs',
   view_vendor_kyc: 'Voir la vérification KYC vendeurs',

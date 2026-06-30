@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Calendar, Clock, User, Phone, CheckCircle, XCircle, DollarSign, AlertTriangle } from 'lucide-react';
+import { Calendar, User, Phone, CheckCircle, XCircle, DollarSign, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';

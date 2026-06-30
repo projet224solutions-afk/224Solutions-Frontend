@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { DollarSign, TrendingUp, Wallet, Download, Clock, BarChart3, RefreshCw, User, Mail, Phone, CreditCard, Calendar, _Crown, Shield, Bike, Sparkles, Building2, ArrowUpDown, AlertTriangle, Globe2 } from 'lucide-react';
+import { DollarSign, TrendingUp, Wallet, Download, Clock, BarChart3, RefreshCw, User, Mail, Phone, CreditCard, Calendar, Shield, Bike, Sparkles, Building2, ArrowUpDown, AlertTriangle, Globe2 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   LineChart,
@@ -18,8 +18,7 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
-  _ResponsiveContainer
+  CartesianGrid
 } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { useFinanceData } from '@/hooks/useFinanceData';

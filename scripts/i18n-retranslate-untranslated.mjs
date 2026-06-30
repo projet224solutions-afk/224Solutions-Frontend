@@ -39,7 +39,7 @@ function parseTranslations(text) {
   const start = text.indexOf('{', text.indexOf('translations'));
   const endMarker = text.indexOf('export const supportedLanguages');
   const body = text.slice(start, text.lastIndexOf('}', endMarker) + 1);
-  return eval('(' + body + ')'); // eslint-disable-line no-eval
+  return eval('(' + body + ')');  
 }
 
 async function translateBatch(key, lang, entries) {
@@ -59,7 +59,7 @@ async function translateBatch(key, lang, entries) {
 
 async function main() {
   const key = loadKey();
-  let text = fs.readFileSync(FILE, 'utf8');
+  const text = fs.readFileSync(FILE, 'utf8');
   const obj = parseTranslations(text);
   const fr = obj.fr;
   const frKeys = Object.keys(fr);
@@ -92,7 +92,7 @@ async function main() {
   if (DRY) { console.log('\n--dry: pas d écriture'); return; }
 
   // Remplacement en place, ligne par ligne, dans le bloc de chaque langue
-  let lines = text.split(/\r?\n/);
+  const lines = text.split(/\r?\n/);
   const blockRange = {}; // lang -> [start,end]
   let cur = null, startIdx = -1;
   lines.forEach((l, i) => {

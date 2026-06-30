@@ -387,6 +387,29 @@ export class TaxiMotoService {
   }
 
   /**
+   * Confirmer le paiement ESPÈCES d'une course (cash). Marque la course payée +
+   * terminée. AUCUN crédit wallet : le chauffeur a déjà le liquide en main. RPC
+   * IDOR-proof (auth.uid() : chauffeur OU client de la course), idempotente.
+   */
+  static async confirmCashPayment(
+    rideId: string,
+    actorType: 'driver' | 'customer' = 'driver'
+  ): Promise<void> {
+    const { data, error } = await supabase.rpc('process_taxi_cash_payment' as any, {
+      p_ride_id: rideId,
+      p_actor_type: actorType,
+    });
+    if (error) {
+      console.error('[TaxiMotoService] confirmCashPayment error:', error);
+      throw new Error(error.message || 'Erreur confirmation paiement espèces');
+    }
+    const result = data as any;
+    if (!result?.success) {
+      throw new Error(result?.error || 'Confirmation espèces refusée par le serveur');
+    }
+  }
+
+  /**
    * Enregistrer un point de tracking
    */
   static async trackPosition(

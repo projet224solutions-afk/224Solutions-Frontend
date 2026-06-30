@@ -14,8 +14,7 @@ import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import { hashPassword, generateSecureToken } from './encryption';
 import {
   encryptWithPIN,
-  decryptWithPIN,
-  timingSafeEqual
+  decryptWithPIN
 } from '@/lib/security/secureEncryption';
 
 /**

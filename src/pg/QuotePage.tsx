@@ -30,7 +30,7 @@ export default function QuotePage() {
     setQ(data?.found ? data : null);
     setLoading(false);
   };
-  useEffect(() => { void load(); /* eslint-disable-next-line */ }, [quoteId]);
+  useEffect(() => { void load();   }, [quoteId]);
 
   const pay = async () => {
     if (!user) { toast.error(t('quotePage.connectezVousPourPayer')); navigate('/auth'); return; }

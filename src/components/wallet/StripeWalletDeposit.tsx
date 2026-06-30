@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowDownCircle, Loader2, Shield, CreditCard } from "lucide-react";
+import { ArrowDownCircle, Shield, CreditCard } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import StripeCheckoutButton from '@/components/payment/StripeCheckoutButton';
 import { useTranslation } from "@/hooks/useTranslation";

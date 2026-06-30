@@ -1,5 +1,5 @@
 import { useTranslation } from "@/hooks/useTranslation";
-﻿/**
+/**
  * 💳 PAGE PUBLIQUE DE PAIEMENT - /pay/:token
  * Page professionnelle pour payer via un lien de paiement 224SOLUTIONS
  * Supporte: invités (Orange Money, Carte) + connectés (Wallet)

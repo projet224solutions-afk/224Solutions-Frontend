@@ -9,16 +9,26 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Money } from '@/components/Money';
 import { useRentalLeases, type RentalLease } from '@/hooks/useRentalLeases';
-import { Home, Wallet, ShieldCheck, FileText, Loader2, KeyRound } from 'lucide-react';
+import { Home, Wallet, ShieldCheck, FileText, Loader2, KeyRound, ClipboardList } from 'lucide-react';
 import { useState } from 'react';
+import { generateRentReceipt } from '@/lib/realEstatePdf';
+import { LeaseInventoryDialog } from './LeaseInventoryDialog';
 
 export function RealEstateRentals({ serviceId }: { serviceId: string }) {
   const { t } = useTranslation();
   const { leases, payments, loading, releaseDeposit, stats } = useRentalLeases(serviceId);
   const [busy, setBusy] = useState<string | null>(null);
+  const [inventoryLease, setInventoryLease] = useState<RentalLease | null>(null);
 
   const act = async (id: string, refund: boolean) => { setBusy(id); await releaseDeposit(id, refund); setBusy(null); };
   const receiptsOf = (leaseId: string) => payments.filter((p) => p.lease_id === leaseId);
+
+  const printReceipt = (l: RentalLease, p: { id: string; period_label: string; amount: number; receipt_code: string | null; paid_at: string }) =>
+    generateRentReceipt({
+      tenantName: l.tenant_name || 'Locataire', propertyTitle: 'Bien loué',
+      period: p.period_label, amount: p.amount, paidAt: p.paid_at,
+      receiptNumber: p.receipt_code || String(p.id).slice(0, 8).toUpperCase(),
+    });
 
   if (loading) return <div className="flex justify-center py-8"><Loader2 className="h-6 w-6 animate-spin text-[#ff4000]" /></div>;
 
@@ -47,11 +57,17 @@ export function RealEstateRentals({ serviceId }: { serviceId: string }) {
             </div>
           </div>
 
-          {/* Quittances */}
-          <div className="flex flex-wrap gap-1">
+          {/* Quittances (cliquables → PDF) + état des lieux */}
+          <div className="flex flex-wrap items-center gap-1">
             {receiptsOf(l.id).map((p) => (
-              <Badge key={p.id} variant="outline" className="gap-1 text-[10px]"><FileText className="h-3 w-3" />{p.period_label}</Badge>
+              <button key={p.id} type="button" onClick={() => printReceipt(l, p)} title="Quittance PDF"
+                className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] hover:bg-muted">
+                <FileText className="h-3 w-3" />{p.period_label}
+              </button>
             ))}
+            <Button size="sm" variant="ghost" className="h-6 gap-1 text-[11px]" onClick={() => setInventoryLease(l)}>
+              <ClipboardList className="h-3.5 w-3.5" /> État des lieux
+            </Button>
           </div>
 
           {/* Libération de caution */}
@@ -65,6 +81,15 @@ export function RealEstateRentals({ serviceId }: { serviceId: string }) {
           )}
         </CardContent></Card>
       ))}
+
+      {inventoryLease && (
+        <LeaseInventoryDialog
+          open={!!inventoryLease}
+          onClose={() => setInventoryLease(null)}
+          lease={{ id: inventoryLease.id, tenant_name: inventoryLease.tenant_name }}
+          serviceId={serviceId}
+        />
+      )}
     </div>
   );
 }

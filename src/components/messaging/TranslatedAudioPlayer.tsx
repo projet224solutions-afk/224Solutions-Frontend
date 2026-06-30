@@ -8,6 +8,7 @@ import { Play, Pause, Volume2, Globe, FileText, Loader2 } from 'lucide-react';
 import { Message } from '@/types/communication.types';
 import { SUPPORTED_LANGUAGES, SupportedLanguage } from '@/services/translationService';
 import { useAudioTranslation } from '@/hooks/useAudioTranslation';
+import { getCapability } from '@/services/translationCapabilities';
 import { cn } from '@/lib/utils';
 
 interface TranslatedAudioPlayerProps {
@@ -20,7 +21,6 @@ interface TranslatedAudioPlayerProps {
 export const TranslatedAudioPlayer: React.FC<TranslatedAudioPlayerProps> = ({
   message,
   className = '',
-  showTranscription = false,
   compact = false
 }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -104,9 +104,6 @@ export const TranslatedAudioPlayer: React.FC<TranslatedAudioPlayerProps> = ({
     return SUPPORTED_LANGUAGES[code as SupportedLanguage] || code;
   };
 
-  // Texte à afficher (transcription ou traduction)
-  const displayText = message.translated_text || message.transcribed_text;
-
   return (
     <div className={cn(
       'rounded-lg p-3',
@@ -179,17 +176,15 @@ export const TranslatedAudioPlayer: React.FC<TranslatedAudioPlayerProps> = ({
         <Volume2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
       </div>
 
-      {/* Indicateur de traduction */}
-      <div className="flex items-center justify-between mt-2">
+      {/* Indicateur de traduction + bascule texte */}
+      <div className="flex items-center justify-between mt-2 gap-2">
         {isTranslated && (
           <div className="flex items-center gap-1 text-xs text-blue-400">
             <Globe className="w-3 h-3" />
             <span>Traduit depuis {getLanguageName(message.original_language)}</span>
           </div>
         )}
-
-        {/* Bouton transcription */}
-        {displayText && showTranscription && (
+        {(message.transcribed_text || message.translated_text) && (
           <button
             onClick={() => setShowText(!showText)}
             className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-300 transition-colors ml-auto"
@@ -200,23 +195,47 @@ export const TranslatedAudioPlayer: React.FC<TranslatedAudioPlayerProps> = ({
         )}
       </div>
 
-      {/* Transcription/Traduction */}
-      {showText && displayText && (
-        <div className="mt-2 p-2 bg-black/20 rounded text-sm text-gray-300">
-          <p className="whitespace-pre-wrap">{displayText}</p>
-          {message.original_language && message.original_language !== message.target_language && (
-            <p className="text-xs text-gray-500 mt-1 italic">
-              Original: {message.transcribed_text}
-            </p>
-          )}
-        </div>
-      )}
-
-      {/* Statut de traduction en cours */}
+      {/* Statuts honnêtes : pending / native / text_only / failed */}
       {message.audio_translation_status === 'pending' && (
         <div className="flex items-center gap-2 mt-2 text-xs text-[#ff4000]">
           <Loader2 className="w-3 h-3 animate-spin" />
           <span>Traduction en cours...</span>
+        </div>
+      )}
+      {message.audio_translation_status === 'native' && (
+        <p className="mt-2 text-xs text-gray-400">🎙️ Message vocal — lecture directe (pas de traduction nécessaire).</p>
+      )}
+      {message.audio_translation_status === 'text_only' && (
+        <p className="mt-2 text-xs text-amber-400">🔇 Audio traduit non disponible pour cette langue. Traduction texte ci-dessous.</p>
+      )}
+      {message.audio_translation_status === 'failed' && (
+        <p className="mt-2 text-xs text-red-400">⚠️ La traduction audio a échoué. Audio original ci-dessus.</p>
+      )}
+
+      {/* AMÉLIORATION 2 : transcription (original) + traduction côte à côte (vérifiabilité) */}
+      {(showText || message.audio_translation_status === 'text_only') && (message.transcribed_text || message.translated_text) && (
+        <div className="mt-2 space-y-2 text-sm">
+          {message.transcribed_text ? (
+            <div className="p-2 bg-black/20 rounded">
+              <p className="text-[10px] uppercase tracking-wide text-gray-500 mb-0.5">
+                Original{message.original_language ? ` · ${getLanguageName(message.original_language)}` : ''}
+              </p>
+              <p className="whitespace-pre-wrap text-gray-300">{message.transcribed_text}</p>
+            </div>
+          ) : (
+            <p className="text-xs text-gray-500 italic">Transcription non disponible pour cette langue.</p>
+          )}
+          {message.translated_text && message.translated_text !== message.transcribed_text && (
+            <div className="p-2 bg-blue-500/10 rounded">
+              <p className="text-[10px] uppercase tracking-wide text-blue-400 mb-0.5">
+                Traduction{message.target_language ? ` · ${getLanguageName(message.target_language)}` : ''}
+              </p>
+              <p className="whitespace-pre-wrap text-gray-200">{message.translated_text}</p>
+              {message.target_language && getCapability(message.target_language).quality === 'low' && (
+                <p className="text-[11px] text-amber-500/90 mt-1">⚠️ Traduction approximative (langue à ressources limitées)</p>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

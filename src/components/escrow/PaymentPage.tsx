@@ -13,7 +13,6 @@ import { Badge } from '@/components/ui/badge';
 import {
     Shield,
     MapPin,
-    Clock,
     DollarSign,
     CreditCard,
     Smartphone,

@@ -15,19 +15,14 @@ import type {
   ChinaProductImport,
   ChinaSupplierOrder,
   ChinaCostBreakdown,
-  ChinaPriceSync,
   ChinaPriceAlert,
   ChinaDropshipSettings,
   ChinaDropshipLog,
-  ChinaDropshipReport,
   ChinaPlatformType,
-  SupplierScore,
-  ChinaLogistics,
   SyncStatus
 } from '@/types/china-dropshipping';
 import {
-  DEFAULT_CHINA_SETTINGS,
-  SUPPLIER_SCORE_THRESHOLDS
+  DEFAULT_CHINA_SETTINGS
 } from '@/types/china-dropshipping';
 
 // ==================== INTERFACES ====================

@@ -8,7 +8,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -157,7 +156,7 @@ function PharmacyOnCall({ serviceId }: { serviceId: string }) {
     const { data: svc } = await supabase.from('professional_services').select('opening_hours').eq('id', serviceId).maybeSingle();
     if (svc?.opening_hours && typeof svc.opening_hours === 'object') setHours((h) => ({ ...h, ...(svc.opening_hours as any) }));
   };
-  useEffect(() => { void load(); /* eslint-disable-next-line */ }, [serviceId]);
+  useEffect(() => { void load();   }, [serviceId]);
   const setDay = (k: string, patch: any) => setHours((h) => ({ ...h, [k]: { ...h[k], ...patch } }));
   const saveHours = async () => {
     setSavingHours(true);

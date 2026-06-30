@@ -22,7 +22,6 @@ import {
   Database,
   ArrowRight,
   Wrench,
-  Eye,
   XCircle
 } from 'lucide-react';
 

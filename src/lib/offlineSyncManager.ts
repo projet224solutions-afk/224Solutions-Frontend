@@ -7,7 +7,6 @@
 import localforage from 'localforage';
 import { supabase } from '@/lib/supabaseClient';
 import { encryptData, decryptData } from './encryption';
-import _offlineDB from './offlineDB';
 import dualSyncManager from './dualSyncManager';
 
 // Configuration des stores locaux

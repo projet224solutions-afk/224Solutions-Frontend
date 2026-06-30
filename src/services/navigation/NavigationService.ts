@@ -3,7 +3,6 @@
  * Navigation étape par étape avec guidage vocal et visuel
  */
 
-import { supabase } from "@/integrations/supabase/client";
 
 export interface GPSPosition {
   latitude: number;

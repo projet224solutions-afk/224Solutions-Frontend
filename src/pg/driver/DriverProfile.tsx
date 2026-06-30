@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { User, Mail, Phone, MapPin, Star, Award, TrendingUp, Bike } from 'lucide-react';
+import { Mail, Phone, Star, Award, TrendingUp, Bike } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useDriver } from '@/hooks/useDriver';
 import { DriverLayout } from '@/components/driver/DriverLayout';

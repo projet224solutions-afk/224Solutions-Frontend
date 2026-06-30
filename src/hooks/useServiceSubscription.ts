@@ -21,6 +21,10 @@ export interface ActiveServiceSubscription {
   priority_listing: boolean;
   analytics_access: boolean;
   can_upload_video: boolean;
+  sms_notifications: boolean;    // ✅ NOUVEAU
+  email_notifications: boolean;  // ✅ NOUVEAU
+  custom_branding: boolean;      // ✅ NOUVEAU
+  api_access: boolean;           // ✅ NOUVEAU
   features: string[];
 }
 
@@ -60,15 +64,17 @@ export function useServiceSubscription({ serviceId, serviceTypeId }: UseServiceS
 
       const row = (data as any[])?.[0];
 
-      // Si le RPC retourne le plan gratuit sans subscription_id → pas d'abonnement actif payant
-      if (!row || !row.subscription_id) {
+      if (!row) {
         setSubscription(null);
         return;
       }
 
+      // ✅ On CONSERVE le plan gratuit (subscription_id null) comme plancher de limites.
+      // isActive distingue payant vs gratuit. Ne plus mettre subscription=null sinon les
+      // limites du plan gratuit sont perdues (l'app croirait à tort « aucune limite »).
       const rawFeatures = row.features;
       setSubscription({
-        subscription_id: row.subscription_id,
+        subscription_id: row.subscription_id || '',  // '' = plan gratuit (non payant)
         plan_id: row.plan_id,
         plan_name: row.plan_name || 'free',
         plan_display_name: row.plan_display_name || 'Gratuit',
@@ -82,6 +88,10 @@ export function useServiceSubscription({ serviceId, serviceTypeId }: UseServiceS
         priority_listing: row.priority_listing ?? false,
         analytics_access: row.analytics_access ?? false,
         can_upload_video: row.can_upload_video === true,
+        sms_notifications: row.sms_notifications ?? false,        // ✅
+        email_notifications: row.email_notifications ?? true,     // ✅
+        custom_branding: row.custom_branding ?? false,            // ✅
+        api_access: row.api_access ?? false,                      // ✅
         features: Array.isArray(rawFeatures)
           ? rawFeatures
           : (typeof rawFeatures === 'string' ? JSON.parse(rawFeatures) : []),
@@ -139,9 +149,15 @@ export function useServiceSubscription({ serviceId, serviceTypeId }: UseServiceS
     return success;
   };
 
-  // subscription null = plan gratuit par défaut (jamais souscrit)
-  const isFree = subscription === null;
-  const isActive = subscription !== null && subscription.status === 'active';
+  // ✅ Plan gratuit = pas d'abonnement PAYANT (subscription_id vide).
+  const isFree = !subscription?.subscription_id;
+  // ✅ Actif = abonnement PAYANT (subscription_id réel), statut actif ET non expiré.
+  // Le plan gratuit (subscription_id vide) → isActive=false, MAIS ses limites
+  // s'appliquent quand même (cf. useServiceLimits corrigé).
+  const isActive = !!subscription?.subscription_id &&
+    subscription.status === 'active' &&
+    (!subscription.current_period_end ||
+      new Date(subscription.current_period_end) >= new Date());
   const isExpired = subscription !== null &&
     (subscription.status === 'expired' || subscription.status === 'cancelled');
   const isPremium = subscription?.can_upload_video === true

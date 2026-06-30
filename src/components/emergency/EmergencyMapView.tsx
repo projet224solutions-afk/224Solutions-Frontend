@@ -7,7 +7,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MapPin, Navigation, CheckCircle, XCircle, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
 import { emergencyService } from '@/services/emergencyService';
 import type { EmergencyAlert, EmergencyGPSTracking } from '@/types/emergency';
 

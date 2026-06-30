@@ -3,8 +3,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
-  MapPin, Eye, Heart, Bed, Bath, Maximize,
-  Building2, MoreVertical, Pencil, Trash2, CheckCircle
+  MapPin, Eye, Heart, Bed, Bath, Maximize, MoreVertical, Trash2, CheckCircle
 } from 'lucide-react';
 import {
   DropdownMenu,

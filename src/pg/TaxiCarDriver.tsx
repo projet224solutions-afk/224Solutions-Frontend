@@ -33,9 +33,8 @@ import { GoogleMapsNavigation } from '@/components/taxi-moto/GoogleMapsNavigatio
 import { ActiveRideNavigationPanel } from '@/components/taxi-moto/driver';
 import { DriverSubscriptionBanner } from '@/components/driver/DriverSubscriptionBanner';
 import {
-  Car, Star, Wifi, WifiOff, LogOut, Bell, Settings, Wallet,
-  ShoppingBag, History, Navigation, Phone, MessageSquare,
-  TrendingUp, Clock, DollarSign, ChevronRight, MapPin,
+  Car, Star, Wifi, WifiOff, LogOut, Bell, Settings,
+  ShoppingBag, History, Navigation, DollarSign, ChevronRight, MapPin,
   CheckCircle, XCircle, Loader2, User, LayoutDashboard
 } from 'lucide-react';
 

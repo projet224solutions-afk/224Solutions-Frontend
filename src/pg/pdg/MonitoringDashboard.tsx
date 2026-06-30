@@ -1,5 +1,5 @@
 import { useTranslation } from "@/hooks/useTranslation";
-﻿/**
+/**
  * MONITORING DASHBOARD - Production-grade realtime monitoring
  * 224Solutions - PDG/Admin SOC-level dashboard
  */
@@ -16,7 +16,7 @@ import {
   Bell, Eye, CheckCheck, Zap, Globe, Smartphone,
   TrendingUp, ArrowLeft
 } from 'lucide-react';
-import { useMonitoringRealtime, type MonitoringAlert, type ServiceStatus } from '@/hooks/useMonitoringRealtime';
+import { useMonitoringRealtime, type MonitoringAlert } from '@/hooks/useMonitoringRealtime';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';

@@ -26,7 +26,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SubscriptionService, Plan, PriceHistory } from '@/services/subscriptionService';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabaseClient';
-import { DollarSign, History, TrendingUp, Users, Edit, RefreshCw, Gift, AlertTriangle, Image, Package } from 'lucide-react';
+import { DollarSign, TrendingUp, Users, Edit, RefreshCw, Gift, AlertTriangle, Image, Package } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';

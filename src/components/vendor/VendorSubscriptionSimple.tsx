@@ -7,7 +7,6 @@ import { Calendar, AlertCircle, CheckCircle, Clock, XCircle } from "lucide-react
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/supabaseClient";
 import { VendorSubscriptionPlanSelector } from "./VendorSubscriptionPlanSelector";
-import { _toast } from "sonner";
 
 interface SimpleSubscription {
   subscription_id: string | null;

@@ -11,7 +11,7 @@
 import { useState } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -26,13 +26,9 @@ import {
   Settings,
   Plus,
   TrendingUp,
-  DollarSign,
   AlertTriangle,
   BarChart3,
-  RefreshCw,
-  Loader2,
-  Activity,
-  ShoppingCart
+  Activity
 } from 'lucide-react';
 
 // Components

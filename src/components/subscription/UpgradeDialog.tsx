@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Crown, Lock, Zap, Check } from 'lucide-react';
+import { Crown, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,

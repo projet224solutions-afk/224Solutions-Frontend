@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { pdgSyncService, DataConsistencyCheck, SyncResult } from '@/services/pdg/PDGSyncService';
+import { pdgSyncService, DataConsistencyCheck } from '@/services/pdg/PDGSyncService';
 import { toast } from 'sonner';
 
 export interface SyncStatus {

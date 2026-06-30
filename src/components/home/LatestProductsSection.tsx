@@ -6,7 +6,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Package, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { MarketplaceGrid } from '@/components/marketplace/MarketplaceGrid';
 import { TranslatedProductCard } from '@/components/marketplace/TranslatedProductCard';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useLoadingTimeout } from '@/hooks/useLoadingTimeout';

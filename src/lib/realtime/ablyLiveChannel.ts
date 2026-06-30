@@ -8,7 +8,7 @@ import type { LiveChannel, LiveStatus } from './types';
 import { getAblyClient } from './ablyClient';
 
 export class AblyLiveChannel implements LiveChannel {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   private channelPromise: Promise<any>;
   private closed = false;
 

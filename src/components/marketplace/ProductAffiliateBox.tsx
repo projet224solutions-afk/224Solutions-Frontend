@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { backendFetch } from "@/services/backendApi";
 import { useAuth } from "@/hooks/useAuth";
-import { Share2, Copy, Check, Loader2 } from "lucide-react";
+import { Share2, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 
 interface ProgramInfo {

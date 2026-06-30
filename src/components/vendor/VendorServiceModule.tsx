@@ -9,7 +9,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, RefreshCw, Plus, Clock, XCircle } from 'lucide-react';
+import { AlertCircle, RefreshCw, Clock, XCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { useCurrentVendor } from '@/hooks/useCurrentVendor';
 import { useVendorServices } from '@/hooks/useVendorServices';

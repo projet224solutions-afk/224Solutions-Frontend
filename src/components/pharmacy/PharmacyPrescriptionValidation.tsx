@@ -18,24 +18,26 @@ import { FileText, Plus, Trash2, Check, X, ZoomIn, Clock, Loader2, ShieldAlert }
 
 /** Miniature d'ordonnance via URL signée (bucket privé). */
 function PrescThumb({ prescriptionId, hasPhotos, className }: { prescriptionId: string; hasPhotos: boolean; className?: string }) {
-  const { t } = useTranslation();
   const { urls } = usePrescriptionPhotos(prescriptionId, hasPhotos);
   if (!hasPhotos) return null;
   if (!urls[0]) return <div className={`rounded border bg-muted flex items-center justify-center ${className || ''}`}><FileText className="h-4 w-4 text-muted-foreground" /></div>;
   return <img src={urls[0]} alt="ordonnance" className={`rounded object-cover border ${className || ''}`} />;
 }
 
-const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
-  pending: { label: t('pharmacyPrescriptionValidation.aVerifier'), cls: 'bg-red-100 text-red-700' },
-  reviewing: { label: 'En cours', cls: 'bg-orange-100 text-orange-700' },
-  quoted: { label: t('pharmacyPrescriptionValidation.devisEnvoye'), cls: 'bg-blue-100 text-blue-700' },
-  validated: { label: t('pharmacyPrescriptionValidation.validee'), cls: 'bg-emerald-100 text-emerald-700' },
-  refused: { label: t('pharmacyPrescriptionValidation.refusee'), cls: 'bg-gray-200 text-gray-600' },
-  expired: { label: t('pharmacyPrescriptionValidation.expiree'), cls: 'bg-gray-200 text-gray-600' },
-};
-
 export function PharmacyPrescriptionValidation({ serviceId }: { serviceId: string }) {
   const { t } = useTranslation();
+
+  // ⚠️ DOIT rester DANS le composant : t() n'existe qu'au sein d'un composant
+  // (via useTranslation). Au niveau module, t est undefined → ReferenceError à
+  // l'évaluation, ce qui faisait planter TOUT le module métier (import statique).
+  const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
+    pending: { label: t('pharmacyPrescriptionValidation.aVerifier'), cls: 'bg-red-100 text-red-700' },
+    reviewing: { label: 'En cours', cls: 'bg-orange-100 text-orange-700' },
+    quoted: { label: t('pharmacyPrescriptionValidation.devisEnvoye'), cls: 'bg-blue-100 text-blue-700' },
+    validated: { label: t('pharmacyPrescriptionValidation.validee'), cls: 'bg-emerald-100 text-emerald-700' },
+    refused: { label: t('pharmacyPrescriptionValidation.refusee'), cls: 'bg-gray-200 text-gray-600' },
+    expired: { label: t('pharmacyPrescriptionValidation.expiree'), cls: 'bg-gray-200 text-gray-600' },
+  };
   const fc = useFormatCurrency();
   const { prescriptions, loading, validate, refuse } = usePharmacyPrescriptions(serviceId);
   const [openId, setOpenId] = useState<string | null>(null);

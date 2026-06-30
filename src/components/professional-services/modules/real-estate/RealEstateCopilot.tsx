@@ -7,9 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
-import { Bot, Send, Loader2, Sparkles, User, MessageSquare } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { Bot, Send, Loader2, Sparkles } from 'lucide-react';
+import { backendFetch } from '@/services/backendApi';
 import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
 
@@ -70,31 +69,18 @@ export function RealEstateCopilot({ stats, className }: RealEstateCopilotProps) 
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('ai-copilot', {
-        body: {
-          query: messageText,
-          context: {
-            stats: {
-              systemHealth: 100,
-              criticalErrors: 0,
-              autoFixedErrors: 0,
-              pendingErrors: 0,
-              activeInterfaces: 1,
-              totalTransactions: 0,
-              ...stats,
-            },
-            recentErrors: [],
-            systemHealth: { services: [] },
-          },
-        },
-      });
-
-      if (error) throw error;
+      // UNIFIÉ sur /api/v2/copilot (service='immobilier') : mêmes capacités cross-service
+      // (marketplace, proximité, guide d'app) que Copilot224, + personnalité immobilière.
+      const history = messages.slice(-8).map((m) => ({ role: m.role, content: m.content }));
+      const res = await backendFetch<{ success?: boolean; reply?: string; products?: any[]; actions?: any[] }>(
+        '/api/v2/copilot',
+        { method: 'POST', body: { service: 'immobilier', message: messageText, history, context: { service: 'immobilier', stats } } }
+      );
 
       const assistantMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data?.answer || 'Désolé, je n\'ai pas pu répondre.',
+        content: (res as any)?.reply || 'Désolé, je n\'ai pas pu répondre.',
         timestamp: new Date(),
       };
 

@@ -5,8 +5,9 @@ import { useTranslation } from "@/hooks/useTranslation";
  * Flux : scan ordonnance → choix pharmacie → mode récupération → envoi → devis → paiement → suivi.
  * Sécurité médicale : badge « Appelez le 15 » sur toutes les vues. Wallet + Copilot intégrés.
  */
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';
 import { usePharmaciesDiscovery, useClientPrescriptions, useMedicationReminders, usePrescriptionPhotos, uploadPrescriptionPhoto, type PharmacyCard } from '@/hooks/usePharmacyClient';
@@ -254,10 +255,19 @@ function MyPrescriptions({ prescriptions, orders, loading, fc, pay, payingId }: 
 function MyReminders() {
   const { t } = useTranslation();
   const { reminders, loading, addReminder, removeReminder } = useMedicationReminders();
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [times, setTimes] = useState<string[]>(['08:00']);
   const [durationDays, setDurationDays] = useState('');
   const [saving, setSaving] = useState(false);
+  // AMÉLIORATION 2.1 — traitements du client qui se terminent bientôt (renouvellement)
+  const [renewals, setRenewals] = useState<any[]>([]);
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.rpc('my_treatments_ending_soon' as any, { p_days_ahead: 3 });
+      if ((data as any)?.success) setRenewals((data as any).treatments || []);
+    })();
+  }, [reminders]);
 
   const addTime = () => setTimes((t) => (t.length >= 6 ? t : [...t, '12:00']));
   const setTimeAt = (i: number, v: string) => setTimes((t) => t.map((x, idx) => (idx === i ? v : x)));
@@ -276,6 +286,23 @@ function MyReminders() {
 
   return (
     <div className="space-y-3">
+      {/* AMÉLIORATION 2.1 — rappel de renouvellement de traitement */}
+      {renewals.length > 0 && (
+        <div className="space-y-2">
+          {renewals.map((r) => (
+            <Card key={r.id} className="border-[#ff4000]/40 bg-orange-50">
+              <CardContent className="flex flex-wrap items-center gap-3 py-3">
+                <Pill className="h-5 w-5 shrink-0 text-[#ff4000]" />
+                <div className="min-w-0 flex-1 text-sm">
+                  💊 Votre traitement <strong>{r.medication_name}</strong> se termine
+                  {' '}{r.days_left <= 0 ? "aujourd'hui" : `dans ${r.days_left} jour(s)`}. Pensez à renouveler.
+                </div>
+                <Button size="sm" className="gap-1.5 shrink-0" onClick={() => navigate('/pharmacie')}>Commander</Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
       <Card><CardContent className="space-y-3 py-4">
         <div className="flex items-center gap-2 text-sm font-semibold"><BellRing className="h-4 w-4 text-[#ff4000]" /> {t('pharmacie.nouveauRappel')}</div>
         <p className="text-xs text-muted-foreground">{t('pharmacie.recevezUneNotificationAL')}</p>

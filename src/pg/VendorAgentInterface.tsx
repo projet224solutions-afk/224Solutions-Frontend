@@ -1,5 +1,5 @@
 import { useTranslation } from "@/hooks/useTranslation";
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,7 @@ import {
   Users, TrendingUp, Package, ShoppingCart, Warehouse,
   Truck, UserPlus, LogOut, BarChart3, FileText,
   MessageSquare, Settings, Shield, Wallet, CreditCard, DollarSign,
-  Menu, X, ChevronRight, Home
+  Menu, ChevronRight, Home
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';

@@ -14,12 +14,10 @@ import { Separator } from "@/components/ui/separator";
 import {
     MapPin,
     Navigation,
-    Clock,
     CreditCard,
     Star,
     Heart,
     Loader2,
-    Calendar,
     Users,
     Zap,
     DollarSign,
@@ -28,7 +26,6 @@ import {
     AlertCircle
 } from "lucide-react";
 import { toast } from "sonner";
-import { getVehicleTypeInfo } from "@/services/pricingService";
 import { useAuth } from "@/hooks/useAuth";
 import { TaxiMotoService } from "@/services/taxi/TaxiMotoService";
 import { TaxiMotoPricingService } from "@/services/taxi/TaxiMotoPricingService";

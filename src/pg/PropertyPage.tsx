@@ -38,7 +38,7 @@ export default function PropertyPage() {
     }
     setLoading(false);
   };
-  useEffect(() => { void load(); /* eslint-disable-next-line */ }, [propertyId, user]);
+  useEffect(() => { void load();   }, [propertyId, user]);
 
   const rent = async () => {
     if (!user) { toast.error(t('propertyPage.connectezVousPourLouer')); navigate('/auth'); return; }

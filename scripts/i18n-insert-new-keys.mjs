@@ -14,17 +14,17 @@ function parseTranslations(text) {
   const start = text.indexOf('{', text.indexOf('translations'));
   const endMarker = text.indexOf('export const supportedLanguages');
   const body = text.slice(start, text.lastIndexOf('}', endMarker) + 1);
-  // eslint-disable-next-line no-eval
+   
   return eval('(' + body + ')');
 }
 
 const FR_ONLY = process.argv.includes('--fr-only'); // n'insère que FR (EN sera traduit par translate --all)
 const pairs = JSON.parse(fs.readFileSync(KEYS, 'utf8'));
-let text = fs.readFileSync(FILE, 'utf8');
+const text = fs.readFileSync(FILE, 'utf8');
 const obj = parseTranslations(text);
 const frKeysBefore = Object.keys(obj.fr).length;
 
-let lines = text.split(/\r?\n/);
+const lines = text.split(/\r?\n/);
 const blockStart = {};
 lines.forEach((l, i) => { const m = l.match(/^ {2}([A-Za-z][\w-]*): \{\s*$/); if (m && blockStart[m[1]] == null) blockStart[m[1]] = i; });
 

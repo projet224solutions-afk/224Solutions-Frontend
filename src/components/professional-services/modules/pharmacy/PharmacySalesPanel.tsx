@@ -7,7 +7,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
-  TrendingUp, TrendingDown, DollarSign, Eye,
+  TrendingUp, DollarSign,
   ShoppingCart, Calendar, ArrowUpRight
 } from 'lucide-react';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';

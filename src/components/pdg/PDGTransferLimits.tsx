@@ -3,7 +3,6 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -141,6 +140,14 @@ export default function PDGTransferLimits() {
           .insert({ setting_key: key, setting_value: { value: val } as any });
         if (error) throw error;
       }
+
+      // ✅ Audit trail : tracer le changement de limite/frais sensible (avant → après)
+      const { logPdgAction } = await import('@/utils/auditPdgAction');
+      void logPdgAction('transfer_limit_changed', {
+        targetType: 'pdg_settings',
+        before: { key, value: limits[key] },
+        after:  { key, value: val },
+      });
 
       setLimits(prev => ({ ...prev, [key]: val }));
       toast.success(t('pDGTransferLimits.limiteMiseAJourAvec'));

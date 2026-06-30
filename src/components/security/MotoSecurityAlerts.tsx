@@ -9,9 +9,6 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { _Table, _TableBody, _TableCell, _TableHead, _TableHeader, _TableRow } from '@/components/ui/table';
-import { _Alert, _AlertDescription } from '@/components/ui/alert';
-import { _Tabs, _TabsContent, _TabsList, _TabsTrigger } from '@/components/ui/tabs';
 import {
     Shield,
     AlertTriangle,
@@ -23,15 +20,9 @@ import {
     Calendar,
     Eye,
     RefreshCw,
-    _Filter,
     Search,
     Loader2,
-    _TrendingUp,
     FileText,
-    _XCircle,
-    _Info,
-    _Download,
-    _Phone,
     Activity
 } from 'lucide-react';
 import { toast } from 'sonner';

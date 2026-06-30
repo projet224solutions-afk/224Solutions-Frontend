@@ -17,11 +17,6 @@ import {
     AlertTriangle,
     RefreshCw,
     Settings,
-    _Database,
-    _User,
-    _Wallet,
-    _Package,
-    _ShoppingCart,
     Loader2
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';

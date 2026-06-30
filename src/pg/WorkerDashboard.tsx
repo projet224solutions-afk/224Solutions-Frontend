@@ -4,7 +4,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Users, Bike, AlertCircle, Phone, MessageSquare } from 'lucide-react';
+import { AlertCircle, Phone, MessageSquare } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import CommunicationWidget from '@/components/communication/CommunicationWidget';

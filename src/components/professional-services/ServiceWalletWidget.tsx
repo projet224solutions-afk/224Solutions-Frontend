@@ -5,7 +5,7 @@
  */
 
 import { lazy, Suspense } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Wallet } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 

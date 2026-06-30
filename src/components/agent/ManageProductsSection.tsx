@@ -24,7 +24,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { supabase } from '@/lib/supabaseClient';
 import { toast } from 'sonner';
 import {
   Package,

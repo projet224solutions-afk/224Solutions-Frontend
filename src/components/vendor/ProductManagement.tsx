@@ -33,7 +33,7 @@ import { PublicIdBadge } from "@/components/PublicIdBadge";
 import {
   Package, Plus, Search, Filter, Edit, Trash2,
   ShoppingCart, TrendingUp, Camera, Save, X, Copy,
-  Sparkles, Loader2, ImagePlus, Tags, FolderOpen, Barcode, AlertCircle, Video
+  Sparkles, Loader2, ImagePlus, Tags, FolderOpen, AlertCircle, Video
 } from "lucide-react";
 import { ProductBarcodeDisplay } from "./ProductBarcodeDisplay";
 import { BarcodeLabelsA4Generator } from "./BarcodeLabelsA4Generator";

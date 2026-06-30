@@ -43,7 +43,7 @@ function parseTranslations(text) {
   const start = text.indexOf('{', text.indexOf('translations'));
   const endMarker = text.indexOf('export const supportedLanguages');
   const body = text.slice(start, text.lastIndexOf('}', endMarker) + 1);
-  // eslint-disable-next-line no-eval
+   
   return eval('(' + body + ')');
 }
 
@@ -68,7 +68,7 @@ async function translateBatch(key, lang, entries) {
 
 async function main() {
   const key = loadKey();
-  let text = fs.readFileSync(FILE, 'utf8');
+  const text = fs.readFileSync(FILE, 'utf8');
   const obj = parseTranslations(text);
   const fr = obj.fr;
   const frKeys = Object.keys(fr);
@@ -108,7 +108,7 @@ async function main() {
   if (DRY) { console.log('\n--dry: aucune écriture du fichier.'); return; }
 
   // ── Insertion sûre par bloc de langue ──
-  let lines = text.split(/\r?\n/);
+  const lines = text.split(/\r?\n/);
   const blockStart = {}; // lang -> index de la ligne "  code: {"
   lines.forEach((l, i) => { const m = l.match(/^ {2}([A-Za-z][\w-]*): \{\s*$/); if (m) blockStart[m[1]] = i; });
 

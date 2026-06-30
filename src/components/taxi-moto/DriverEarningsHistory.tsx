@@ -7,8 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Money } from "@/components/Money";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Clock, MapPin, DollarSign, Calendar, TrendingUp } from "lucide-react";
+import { Clock, MapPin, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
 
 interface Ride {

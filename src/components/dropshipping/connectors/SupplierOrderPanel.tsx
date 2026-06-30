@@ -13,7 +13,6 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -42,20 +41,10 @@ import {
   AlertDescription,
   AlertTitle,
 } from '@/components/ui/alert';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+
+
+
+
 import {
   Tooltip,
   TooltipContent,
@@ -78,14 +67,9 @@ import {
   MapPin,
   Phone,
   User,
-  Box,
-  DollarSign,
-  Calendar,
-  FileText,
-  Link2
+  FileText
 } from 'lucide-react';
 import { formatCurrency, formatDate, formatRelativeTime } from '@/lib/utils';
-import { useConnectors } from '@/hooks/useConnectors';
 import type { ConnectorType, OrderResult, TrackingInfo } from '@/services/connectors';
 
 // ==================== INTERFACES ====================

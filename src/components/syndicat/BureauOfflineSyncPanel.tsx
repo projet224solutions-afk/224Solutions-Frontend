@@ -17,14 +17,11 @@ import {
     RefreshCw,
     CheckCircle,
     AlertTriangle,
-    Clock,
     Bike,
     User,
     Shield,
-    History,
     Trash2
 } from "lucide-react";
-import { toast } from "sonner";
 import { useBureauOfflineSync } from '@/hooks/useBureauOfflineSync';
 
 interface Props {

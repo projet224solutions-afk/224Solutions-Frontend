@@ -18,20 +18,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
 import {
   Plus, Store, Utensils, Scissors, Car, Heart,
   BookOpen, Camera, Truck, Building2, Dumbbell,
-  Laptop, Leaf, Hammer, Sparkles, ArrowRight,
+  Laptop, Leaf, Hammer, Sparkles,
   Loader2, CheckCircle, AlertCircle, MapPin, Navigation,
   Home, Plane, Briefcase, Wrench, Square, Flame
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
 import { z } from 'zod';
 
 interface ServiceType {
@@ -288,34 +285,34 @@ export function AddServiceModal({ open, onOpenChange }: AddServiceModalProps) {
   const DISPLAY_SERVICES = {
     // Services de Proximité Populaires (6) - Identique à Auth.tsx
     proximity: [
-      { code: 'restaurant', name: 'Restaurant', logoImage: '/service-icons/logo-resto.jpeg', icon: '🍽️', desc: 'Cuisine & plats' },
-      { code: 'beaute', name: 'Beauté & Coiffure', logoImage: '/service-icons/icon-beaute.png', icon: '💇', desc: 'Soins & styling' },
-      { code: 'vtc', name: 'Transport VTC', logoImage: '/service-icons/icon-taxi-moto.png', icon: '🚗', desc: 'Véhicules privés' },
-      { code: 'reparation', name: 'Réparation', logoImage: '/service-icons/icon-reparation.png', icon: '🔧', desc: 'Électro & mécanique' },
-      { code: 'menage', name: 'Nettoyage', logoImage: '/service-icons/icon-nettoyage.png', icon: '✨', desc: 'Ménage & pressing' },
-      { code: 'informatique', name: 'Informatique', logoImage: '/service-icons/icon-informatique.png', icon: '💻', desc: 'Tech & dépannage' },
+      { code: 'restaurant', name: 'Restaurant', logoImage: '/service-icons-3d/restaurant.png', icon: '🍽️', desc: 'Cuisine & plats' },
+      { code: 'beaute', name: 'Beauté & Coiffure', logoImage: '/service-icons-3d/beaute.png', icon: '💇', desc: 'Soins & styling' },
+      { code: 'vtc', name: 'Transport VTC', logoImage: '/service-icons-3d/vtc.png', icon: '🚗', desc: 'Véhicules privés' },
+      { code: 'reparation', name: 'Réparation', logoImage: '/service-icons-3d/reparation.png', icon: '🔧', desc: 'Électro & mécanique' },
+      { code: 'menage', name: 'Nettoyage', logoImage: '/service-icons-3d/nettoyage.png', icon: '✨', desc: 'Ménage & pressing' },
+      { code: 'informatique', name: 'Informatique', logoImage: '/service-icons-3d/informatique.png', icon: '💻', desc: 'Tech & dépannage' },
     ],
     // Services Professionnels (8) - Identique à Auth.tsx
     professional: [
-      { code: 'sport', name: 'Sport & Fitness', logoImage: '/service-icons/icon-sport-fitness.png', icon: '🏋️', desc: 'Coaching' },
-      { code: 'location', name: 'Immobilier', logoImage: '/service-icons/logo-immobilier.jpeg', icon: '🏢', desc: 'Location & vente' },
-      { code: 'media', name: 'Photo & Vidéo', logoImage: '/service-icons/icon-photo-video.png', icon: '📸', desc: 'Événements' },
-      { code: 'construction', name: 'Construction & BTP', logoImage: '/service-icons/logo-construction-btp.jpeg', icon: '🏗️', desc: 'Bâtiment' },
-      { code: 'plomberie', name: 'Plomberie', logoImage: '/service-icons/logo-plomberie.svg', icon: '🔧', desc: 'Sanitaires & urgence' },
-      { code: 'vitrerie', name: 'Vitrerie', logoImage: '/service-icons/logo-vitrerie.svg', icon: '🪟', desc: 'Vitres & miroirs' },
-      { code: 'menuiserie', name: 'Menuiserie', logoImage: '/service-icons/logo-menuiserie.svg', icon: '🪚', desc: 'Bois sur mesure' },
-      { code: 'soudure', name: 'Soudure & Métallerie', logoImage: '/service-icons/logo-soudure.svg', icon: '🔥', desc: 'Métal & ferronnerie' },
-      { code: 'agriculture', name: 'Agriculture', logoImage: '/service-icons/icon-agriculture.png', icon: '🌾', desc: 'Produits locaux' },
-      { code: 'freelance', name: 'Administratif', logoImage: '/service-icons/icon-administratif.png', icon: '💼', desc: 'Secrétariat' },
-      { code: 'sante', name: 'Santé & Bien-être', logoImage: '/service-icons/icon-sante.png', icon: '💊', desc: 'Pharmacie & soins' },
-      { code: 'maison', name: 'Maison & Déco', logoImage: '/service-icons/icon-maison.png', icon: '🏠', desc: 'Intérieur' },
+      { code: 'sport', name: 'Sport & Fitness', logoImage: '/service-icons-3d/sport.png', icon: '🏋️', desc: 'Coaching' },
+      { code: 'location', name: 'Immobilier', logoImage: '/service-icons-3d/immobilier.png', icon: '🏢', desc: 'Location & vente' },
+      { code: 'media', name: 'Photo & Vidéo', logoImage: '/service-icons-3d/media.png', icon: '📸', desc: 'Événements' },
+      { code: 'construction', name: 'Construction & BTP', logoImage: '/service-icons-3d/construction.png', icon: '🏗️', desc: 'Bâtiment' },
+      { code: 'plomberie', name: 'Plomberie', logoImage: '/service-icons-3d/plomberie.png', icon: '🔧', desc: 'Sanitaires & urgence' },
+      { code: 'vitrerie', name: 'Vitrerie', logoImage: '/service-icons-3d/vitrerie.png', icon: '🪟', desc: 'Vitres & miroirs' },
+      { code: 'menuiserie', name: 'Menuiserie', logoImage: '/service-icons-3d/menuiserie.png', icon: '🪚', desc: 'Bois sur mesure' },
+      { code: 'soudure', name: 'Soudure & Métallerie', logoImage: '/service-icons-3d/soudure.png', icon: '🔥', desc: 'Métal & ferronnerie' },
+      { code: 'agriculture', name: 'Agriculture', logoImage: '/service-icons-3d/agriculture.png', icon: '🌾', desc: 'Produits locaux' },
+      { code: 'freelance', name: 'Administratif', logoImage: '/service-icons-3d/freelance.png', icon: '💼', desc: 'Secrétariat' },
+      { code: 'sante', name: 'Santé & Bien-être', logoImage: '/service-icons-3d/sante.png', icon: '💊', desc: 'Pharmacie & soins' },
+      { code: 'maison', name: 'Maison & Déco', logoImage: '/service-icons-3d/maison.png', icon: '🏠', desc: 'Intérieur' },
     ],
     // Autres Services (4) - Identique à Auth.tsx
     other: [
       { code: 'education', name: 'Formation', icon: '🎓', desc: 'Cours et coaching' },
-      { code: 'livraison', name: 'Livraison', logoImage: '/service-icons/icon-livreur.png', icon: '🚚', desc: 'Coursier & colis' },
+      { code: 'livraison', name: 'Livraison', logoImage: '/service-icons-3d/livraison.png', icon: '🚚', desc: 'Coursier & colis' },
       { code: 'voyage', name: 'Voyage', icon: '✈️', desc: 'Tourisme et voyages' },
-      { code: 'ecommerce', name: 'Boutique', logoImage: '/service-icons/logo-boutique.jpeg', icon: '🏪', desc: 'E-commerce' },
+      { code: 'ecommerce', name: 'Boutique', logoImage: '/service-icons-3d/boutique.png', icon: '🏪', desc: 'E-commerce' },
     ]
   };
 

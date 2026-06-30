@@ -29,7 +29,6 @@ import {
 } from '@/components/ui/dialog';
 import {
   TrendingUp,
-  TrendingDown,
   DollarSign,
   Home,
   CreditCard,
@@ -49,20 +48,12 @@ import {
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { format, startOfMonth, endOfMonth } from 'date-fns';
-import { fr } from 'date-fns/locale';
 import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
   PieChart,
   Pie,
-  Cell,
-  Legend
+  Cell
 } from 'recharts';
 
 interface FixedCost {

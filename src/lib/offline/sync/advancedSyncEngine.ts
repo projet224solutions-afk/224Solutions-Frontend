@@ -12,7 +12,7 @@
  * IMPORTANT: Ce fichier ne modifie PAS offlineSyncService.ts, il le wrappe.
  */
 
-import { SyncableEntity, SyncConfig, SyncRecord } from '@/lib/offlineSyncService';
+import { SyncableEntity } from '@/lib/offlineSyncService';
 
 /**
  * Priorités de synchronisation (1 = max priorité)

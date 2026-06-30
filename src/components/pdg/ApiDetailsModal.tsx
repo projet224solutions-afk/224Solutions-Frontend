@@ -17,8 +17,8 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  Key, Activity, AlertTriangle, TrendingUp,
-  Clock, MapPin, Globe, Shield, XCircle, CheckCircle2
+  Key, Activity,
+  Clock, Shield, XCircle, CheckCircle2
 } from 'lucide-react';
 import { ApiConnection, ApiUsageLog, ApiMonitoringService } from '@/services/apiMonitoring';
 import { maskApiKey } from '@/services/apiEncryption';

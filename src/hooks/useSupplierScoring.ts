@@ -11,8 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type {
   SupplierScore,
-  SupplierScoreLevel,
-  ChinaSupplierExtension
+  SupplierScoreLevel
 } from '@/types/china-dropshipping';
 import { SUPPLIER_SCORE_THRESHOLDS } from '@/types/china-dropshipping';
 

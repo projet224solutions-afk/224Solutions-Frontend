@@ -35,7 +35,7 @@ export default function MyBeautyAppointments() {
       .eq('customer_user_id', user.id).order('appointment_date', { ascending: false });
     setRows((data as any[]) ?? []); setLoading(false);
   };
-  useEffect(() => { void load(); /* eslint-disable-next-line */ }, [user]);
+  useEffect(() => { void load();   }, [user]);
 
   const { upcoming, past } = useMemo(() => {
     const today = new Date().toISOString().slice(0, 10);

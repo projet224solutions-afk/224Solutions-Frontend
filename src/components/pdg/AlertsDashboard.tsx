@@ -10,8 +10,7 @@ import {
   CheckCircle2,
   Clock,
   Zap,
-  RefreshCw,
-  XCircle
+  RefreshCw
 } from 'lucide-react';
 import { toast } from 'sonner';
 

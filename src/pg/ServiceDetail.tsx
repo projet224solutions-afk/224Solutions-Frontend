@@ -18,7 +18,6 @@ import {
   Settings,
   Camera,
   ImagePlus,
-  Trash2,
   LocateFixed,
   PhoneCall,
   Images,

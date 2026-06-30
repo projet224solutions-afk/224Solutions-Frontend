@@ -9,6 +9,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
 import { useChatLanguage } from '@/hooks/useChatLanguage';
+import { capabilityBadge } from '@/services/translationCapabilities';
 import { toast } from 'sonner';
 
 interface ChatLanguageSelectorProps {
@@ -36,12 +37,20 @@ export function ChatLanguageSelector({ showLabel = false, className }: ChatLangu
         {showLabel ? <SelectValue /> : <span className="text-xs font-medium uppercase">{chatLanguage}</span>}
       </SelectTrigger>
       <SelectContent className="max-h-72">
-        {entries.map(([code, label]) => (
-          <SelectItem key={code} value={code}>
-            <span className="text-xs text-muted-foreground uppercase mr-2">{code}</span>
-            {label}
-          </SelectItem>
-        ))}
+        {entries.map(([code, label]) => {
+          const badge = capabilityBadge(code);
+          return (
+            <SelectItem key={code} value={code}>
+              <span className="flex items-center gap-1.5">
+                <span className="text-xs text-muted-foreground uppercase">{code}</span>
+                <span>{label}</span>
+                <span className="ml-1 text-[10px] text-muted-foreground" title="Capacité de traduction">
+                  {badge.icon} {badge.label}
+                </span>
+              </span>
+            </SelectItem>
+          );
+        })}
       </SelectContent>
     </Select>
   );

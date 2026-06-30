@@ -83,16 +83,16 @@ function findComponentBody(lines) {
 
 function processFile(file, keys) {
   const rel = path.relative(process.cwd(), file).replace(/\\/g, '/');
-  let src = fs.readFileSync(file, 'utf8');
+  const src = fs.readFileSync(file, 'utf8');
   if (!/return\s*\(|=>\s*</.test(src)) return { rel, status: 'skip-no-jsx' };
 
   const ns = camel(path.basename(file));
-  let lines = src.split(/\r?\n/);
+  const lines = src.split(/\r?\n/);
   const usedSlugs = new Set();
   let count = 0;
 
   const mkKey = (text) => {
-    let base = `${ns}.${slug(text)}`;
+    const base = `${ns}.${slug(text)}`;
     let k = base, n = 2;
     while (usedSlugs.has(k) && keys[k] && keys[k][0] !== text) { k = `${base}${n++}`; }
     usedSlugs.add(k);

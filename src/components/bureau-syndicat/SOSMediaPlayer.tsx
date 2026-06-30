@@ -14,7 +14,6 @@ import {
   Mic,
   Play,
   Pause,
-  Eye,
   Clock,
   User,
   Download,

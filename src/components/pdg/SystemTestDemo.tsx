@@ -20,7 +20,6 @@ import {
   AlertTriangle,
   Shield,
   Database,
-  Zap,
   Activity,
   Server,
   Lock,

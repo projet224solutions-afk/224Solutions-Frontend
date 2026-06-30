@@ -9,7 +9,7 @@ import React from 'react';
 import { Shield, CheckCircle2, AlertTriangle, XCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { VendorCertificationStatus, getCertificationStatusLabel } from '@/types/vendorCertification';
+import { VendorCertificationStatus } from '@/types/vendorCertification';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
 

@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export interface RestaurantOrderItem {
   id: string;
@@ -49,6 +50,18 @@ export interface RestaurantOrder {
   created_at: string;
   order_items?: RestaurantOrderItem[];
 }
+
+// ✅ Transitions de statut autorisées (machine d'état). Empêche les retours
+// arrière incohérents (ex: completed → pending). completed/cancelled = finaux.
+const ALLOWED_ORDER_TRANSITIONS: Record<RestaurantOrder['status'], RestaurantOrder['status'][]> = {
+  pending:   ['confirmed', 'preparing', 'cancelled'],
+  confirmed: ['preparing', 'cancelled'],
+  preparing: ['ready', 'cancelled'],
+  ready:     ['delivered', 'completed'],
+  delivered: ['completed'],
+  completed: [],
+  cancelled: [],
+};
 
 export function useRestaurantOrders(serviceId: string) {
   const [orders, setOrders] = useState<RestaurantOrder[]>([]);
@@ -121,6 +134,16 @@ export function useRestaurantOrders(serviceId: string) {
   };
 
   const updateOrderStatus = async (id: string, status: RestaurantOrder['status']) => {
+    // ✅ Machine d'état : empêche les transitions incohérentes (ex: completed → pending).
+    const current = orders.find(o => o.id === id);
+    if (current && current.status !== status) {
+      const allowed = ALLOWED_ORDER_TRANSITIONS[current.status] || [];
+      if (!allowed.includes(status)) {
+        toast.error(`Transition invalide : ${current.status} → ${status}`);
+        return;
+      }
+    }
+
     const updates: Partial<RestaurantOrder> = { status };
 
     // Ajouter les timestamps selon le statut

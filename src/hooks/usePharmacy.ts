@@ -27,6 +27,9 @@ export interface Medication {
   id: string; pharmacy_id: string; name: string; dosage: string | null; form: string | null;
   price: number | null; stock: number; requires_prescription: boolean; generic_equivalents: string[];
   low_stock_threshold: number; is_active: boolean;
+  // Conformité (migration 20260628000006) : niveau de contrôle + péremption + lot
+  control_level?: 'none' | 'prescription' | 'controlled' | 'narcotic';
+  expiry_date?: string | null; batch_number?: string | null;
 }
 
 /** File d'ordonnances du pharmacien + actions (valider / refuser). */
@@ -122,6 +125,9 @@ export function usePharmacyMedications(serviceId: string) {
       price: med.price ?? 0, stock: med.stock ?? 0, requires_prescription: med.requires_prescription ?? true,
       generic_equivalents: med.generic_equivalents ?? [], low_stock_threshold: med.low_stock_threshold ?? 5,
       is_active: med.is_active ?? true, updated_at: new Date().toISOString(),
+      // Conformité : contrôle / péremption / lot
+      control_level: med.control_level ?? 'none',
+      expiry_date: med.expiry_date ?? null, batch_number: med.batch_number ?? null,
     };
     const q = med.id
       ? supabase.from('pharmacy_medications').update(payload).eq('id', med.id)

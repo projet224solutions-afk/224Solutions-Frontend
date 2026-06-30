@@ -153,6 +153,35 @@ export function useTaxiActiveRide(
       return;
     }
 
+    // 🏁 FINALISATION : passer par les RPC IDOR-proof (écritures taxi_trips réservées
+    // service_role → l'UPDATE direct serait bloqué par RLS). En ESPÈCES, marquer le
+    // paiement ENCAISSÉ (process_taxi_cash_payment : completed + paid, AUCUN crédit
+    // wallet — le chauffeur a le liquide). Carte/wallet : RPC statut, paiement géré ailleurs.
+    if ((newStatus as string) === 'completed') {
+      try {
+        let isCash = false;
+        try {
+          const { data: rideRow } = await supabase
+            .from('taxi_trips').select('payment_method').eq('id', activeRide.id).maybeSingle();
+          isCash = (rideRow as any)?.payment_method === 'cash';
+        } catch { /* défaut non-cash */ }
+
+        if (isCash) {
+          await TaxiMotoService.confirmCashPayment(activeRide.id, 'driver');
+        } else {
+          await TaxiMotoService.updateRideStatus(activeRide.id, 'completed', 'driver', {
+            completed_at: new Date().toISOString(),
+          });
+        }
+        setActiveRide(prev => prev ? { ...prev, status: newStatus } : null);
+        toast.success('🏁 Course terminée');
+      } catch (error: any) {
+        console.error('[ActiveRide] Erreur finalisation:', error);
+        toast.error('Erreur lors de la finalisation', { description: error?.message || 'Veuillez réessayer' });
+      }
+      return;
+    }
+
     try {
       // Mapper les statuts frontend vers les statuts DB
       let dbStatus: string;

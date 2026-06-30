@@ -16,12 +16,8 @@ import {
     CheckCircle,
     Activity,
     Bell,
-    Settings,
     Eye,
     RefreshCw,
-    TrendingUp,
-    TrendingDown,
-    MapPin,
     Clock
 } from 'lucide-react';
 import { useMotoSecurity } from '@/hooks/useMotoSecurity';

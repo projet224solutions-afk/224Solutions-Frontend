@@ -1,19 +1,16 @@
 ﻿import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Grid, List, ArrowUpDown, Menu, ShoppingCart as ShoppingCartIcon, MapPin, Globe, Share2, Filter, Package, Briefcase, Laptop, Plane, Monitor, GraduationCap, BookOpen, Bot, ShoppingBag, Star, Sparkles, ExternalLink, X } from "lucide-react";
+import { List, ArrowUpDown, ShoppingCart as ShoppingCartIcon, MapPin, Globe, Package, Briefcase, Laptop, Plane, Monitor, GraduationCap, BookOpen, Bot, ExternalLink, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import SearchBar from "@/components/SearchBar";
 import { MarketplaceGrid } from "@/components/marketplace/MarketplaceGrid";
 import { TranslatedProductCard } from "@/components/marketplace/TranslatedProductCard";
-import { UniversalMarketplaceCard } from "@/components/marketplace/UniversalMarketplaceCard";
-import { ProfessionalServiceCard } from "@/components/marketplace/ProfessionalServiceCard";
 import { ServiceTypesGrid } from "@/components/marketplace/ServiceTypesGrid";
 import { CurrencyIndicator } from "@/components/marketplace/CurrencyIndicator";
 import QuickFooter from "@/components/QuickFooter";
 import ProductDetailModal from "@/components/marketplace/ProductDetailModal";
-import { FavoriteButton } from "@/components/ui/FavoriteButton";
 import { BrowseModal } from "@/components/marketplace/BrowseModal";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -21,7 +18,6 @@ import { useMarketplaceUniversal } from "@/hooks/useMarketplaceUniversal";
 import { useContactVendor } from "@/hooks/useContactVendor";
 import { toast } from "sonner";
 import { useResponsive } from "@/hooks/useResponsive";
-import { ResponsiveContainer } from "@/components/responsive/ResponsiveContainer";
 import { useCart } from "@/contexts/CartContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { getFlagEmoji, getCountryNameFromCode } from "@/data/countryMappings";

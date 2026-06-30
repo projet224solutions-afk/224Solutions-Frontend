@@ -30,7 +30,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -38,6 +37,7 @@ import QuickFooter from "@/components/QuickFooter";
 import { cn } from "@/lib/utils";
 import { useGeoDistance, formatDistance, calculateDistance } from "@/hooks/useGeoDistance";
 import { getServiceVisual } from "@/config/serviceVisuals";
+import { getCityCoordinates, resolveItemCoords } from "@/lib/cityGeocode";
 
 interface ProfessionalService {
   id: string;
@@ -257,19 +257,18 @@ export default function ServicesProximite() {
         list = list.filter((s) => norm((s as any)._country) === target);
       }
 
-      // Calculer la distance pour chaque service (null si GPS absent/invalide)
+      // Calculer la distance pour chaque service. Coordonnées effectives : GPS
+      // précis si présent, sinon centre-ville (city_coordinates) via la ville
+      // effective → les services de la ville de l'utilisateur entrent dans 20 km
+      // même sans position GPS précise.
       const isCountryMode = selectedCountry && selectedCountry !== 'all';
+      const cityMap = await getCityCoordinates();
       const withDistance = list.map((s) => {
-        const lat_val = Number(s.latitude);
-        const lng_val = Number(s.longitude);
-        const hasValidCoords =
-          s.latitude != null && s.longitude != null &&
-          Number.isFinite(lat_val) && Number.isFinite(lng_val) &&
-          !(lat_val === 0 && lng_val === 0);
-
-        const distance = hasValidCoords
-          ? calculateDistance(lat, lng, lat_val, lng_val)
-          : null;
+        const coords = resolveItemCoords(
+          { latitude: s.latitude, longitude: s.longitude, city: (s as any)._city ?? s.city },
+          cityMap,
+        );
+        const distance = coords ? calculateDistance(lat, lng, coords.lat, coords.lng) : null;
         return { ...s, distance };
       });
 
@@ -453,20 +452,10 @@ export default function ServicesProximite() {
         </div>
       </section>
 
-      {/* CTA parcours client artisan (demande → devis multiples) */}
-      {["plomberie", "vitrerie", "menuiserie", "soudure"].includes(selectedCategory) && (
-        <section className="px-4 py-3">
-          <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-[#ff4000]/30 bg-[#ff4000]/5 p-4">
-            <div className="min-w-0">
-              <div className="font-semibold">Besoin d'un artisan ({SERVICE_CATEGORIES.find((c) => c.id === selectedCategory)?.name}) ?</div>
-              <div className="text-sm text-muted-foreground">{t('servicesProximite.publiezVotreDemandeRecevezPlusieurs')}</div>
-            </div>
-            <Button className="ml-auto" onClick={() => navigate(`/services/artisan/demande?type=${selectedCategory}`)}>
-              Demander un devis
-            </Button>
-          </div>
-        </section>
-      )}
+      {/* Tous les métiers artisans (plomberie, vitrerie, menuiserie, soudure) fonctionnent
+          désormais comme des services de proximité standard : listing des prestataires
+          disponibles dans la zone + profil au clic. L'encart « demande de devis » a été
+          retiré de cette page ; la route /services/artisan/demande reste disponible si besoin. */}
 
       {/* Filtre par VILLE (chips défilables) — alimenté par la ville effective des services */}
       {availableCities.length > 0 && (

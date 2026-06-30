@@ -5,17 +5,15 @@
 
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, _CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { _Table, _TableBody, _TableCell, _TableHead, _TableHeader, _TableRow } from '@/components/ui/table';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
-import { _Progress } from '@/components/ui/progress';
 import {
   Package,
   CheckCircle2,
@@ -23,12 +21,9 @@ import {
   Truck,
   ArrowRight,
   Warehouse,
-  Store,
-  _XCircle,
-  _FileText,
-  _Camera
+  Store
 } from 'lucide-react';
-import { StockTransfer, _ConfirmReceptionInput, useMultiWarehouse } from '@/hooks/useMultiWarehouse';
+import { StockTransfer, useMultiWarehouse } from '@/hooks/useMultiWarehouse';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';

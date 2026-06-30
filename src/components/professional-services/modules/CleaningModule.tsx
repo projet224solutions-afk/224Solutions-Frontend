@@ -18,9 +18,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
-  Sparkles, Home, Building2, Users, Calendar,
-  Clock, CheckCircle2, DollarSign, TrendingUp,
-  MapPin, Star, ShoppingBag, Shirt, Shield
+  Sparkles, Home, Building2, Calendar,
+  Clock, CheckCircle2, DollarSign,
+  MapPin, Shirt, Shield
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ServiceShowcaseManager } from '@/components/service-common/ServiceShowcaseManager';

@@ -15,15 +15,14 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import {
-  Key, CheckCircle, XCircle, Clock, Shield, Activity,
-  RefreshCw, Users, DollarSign, AlertTriangle, Eye, Ban
+  Key, CheckCircle, XCircle, Clock,
+  RefreshCw, Users, AlertTriangle, Ban
 } from 'lucide-react';
 import { WalletApiService, WalletApiRequest, WalletApiKey } from '@/services/walletApiService';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabaseClient';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { cn } from '@/lib/utils';
 
 export default function PDGWalletApiManagement() {
   const { t } = useTranslation();

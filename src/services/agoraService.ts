@@ -12,8 +12,7 @@ import type {
   IMicrophoneAudioTrack,
   IRemoteVideoTrack,
   IRemoteAudioTrack,
-  NetworkQuality,
-  IAgoraRTCRemoteUser
+  NetworkQuality
 } from 'agora-rtc-sdk-ng';
 
 export interface AgoraConfig {

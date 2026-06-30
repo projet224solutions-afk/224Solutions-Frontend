@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useFormatCurrency } from "@/hooks/useFormatCurrency";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,8 +12,8 @@ import { useCurrentVendor } from "@/hooks/useCurrentVendor";
 import { useToast } from "@/hooks/use-toast";
 import { listVendorClients, broadcastToClients, type VendorCustomerLink, type BroadcastResult } from '@/services/campaignBackendService';
 import {
-  Users, Search, Filter, Eye, Star, ShoppingCart,
-  CreditCard, Calendar, Mail, Phone, MapPin,
+  Users, Search, Filter, Eye, ShoppingCart,
+  CreditCard, Mail, Phone,
   TrendingUp, Award, Clock, MessageSquare, Send, Loader2
 } from "lucide-react";
 

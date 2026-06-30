@@ -1,7 +1,7 @@
 // 🛡️ Security Operations Panel - Système de défense et riposte
 import React, { useState } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Shield, AlertTriangle, Ban, Activity, Lock, FileText, Zap, TrendingUp } from 'lucide-react';
+import { Shield, AlertTriangle, Ban, Activity, Lock, Zap, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +11,6 @@ import SecurityIncidentsList from './SecurityIncidentsList';
 import SecurityAlertsList from './SecurityAlertsList';
 import SecurityBlockedIPsList from './SecurityBlockedIPsList';
 import SecurityForensics from './SecurityForensics';
-import _SecurityPlaybooks from './SecurityPlaybooks';
 
 const SecurityOpsPanel: React.FC = () => {
   const { t } = useTranslation();

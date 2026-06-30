@@ -475,25 +475,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           .maybeSingle();
 
         if (serviceTypeData) {
-          const { error: psError } = await supabase
-            .from('professional_services')
-            .insert({
-              user_id: authUser.id,
-              service_type_id: serviceTypeData.id,
-              business_name: businessName,
-              city: meta.city || null,
-              address: meta.city || null,
-              phone: meta.phone || null,
-              status: 'active',
-              verification_status: 'unverified',
-              email: authUser.email || '',
-            });
-          if (psError) {
-            console.error('❌ Erreur création professional_service:', psError);
+          // ✅ Lire la position capturée avant la redirection OAuth
+          const lat = parseFloat(localStorage.getItem('oauth_business_lat') || '');
+          const lng = parseFloat(localStorage.getItem('oauth_business_lng') || '');
+          const acc = parseFloat(localStorage.getItem('oauth_business_accuracy') || '');
+
+          // ✅ RPC atomique avec géolocalisation
+          const { data: rpcRes, error: psError } = await supabase.rpc('create_proximity_service', {
+            p_user_id:           authUser.id,
+            p_service_type_code: oauthServiceType,
+            p_business_name:     businessName,
+            p_phone:             meta.phone || null,
+            p_email:             authUser.email || '',
+            p_city:              meta.city || null,
+            p_address:           meta.city || null,
+            p_latitude:          Number.isFinite(lat) ? lat : null,
+            p_longitude:         Number.isFinite(lng) ? lng : null,
+            p_accuracy:          Number.isFinite(acc) ? acc : null,
+          });
+
+          if (psError || !(rpcRes as any)?.success) {
+            console.error('❌ Erreur création professional_service:', psError || (rpcRes as any)?.error);
           } else {
             console.log('✅ Professional service créé pour prestataire:', oauthServiceType);
             localStorage.removeItem('oauth_service_type');
-            try { localStorage.removeItem('oauth_business_name'); } catch { /* ignore */ }
+            try {
+              localStorage.removeItem('oauth_business_name');
+              localStorage.removeItem('oauth_business_lat');
+              localStorage.removeItem('oauth_business_lng');
+              localStorage.removeItem('oauth_business_accuracy');
+            } catch { /* ignore */ }
           }
         } else {
           console.warn('⚠️ Service type non trouvé pour le code:', oauthServiceType);

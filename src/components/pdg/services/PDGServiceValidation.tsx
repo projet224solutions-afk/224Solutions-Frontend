@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,8 +16,8 @@ import { supabase } from '@/lib/supabaseClient';
 import { useToast } from '@/hooks/use-toast';
 import { ServiceSubscriptionService } from '@/services/serviceSubscriptionService';
 import {
-  CheckCircle, XCircle, Clock, MapPin, Phone, Mail, Eye,
-  Shield, AlertTriangle, RefreshCw, Store
+  CheckCircle, XCircle, Clock, MapPin, Phone, Mail,
+  Shield, RefreshCw
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';

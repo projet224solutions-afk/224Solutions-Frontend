@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Shield, Search, CheckCircle, XCircle, Clock, Eye,
-  Building2, User, Phone, FileText, AlertTriangle, RefreshCw
+  Building2, RefreshCw
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';

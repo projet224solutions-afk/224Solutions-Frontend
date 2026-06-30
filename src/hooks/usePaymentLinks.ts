@@ -342,7 +342,7 @@ export function usePaymentLinks() {
       const frais = montantFinal * 0.01;
       const total = montantFinal + frais;
 
-      let expireDays = Math.max(1, Math.min(365, parseInt(String(data.expires_days || 30)) || 30));
+      const expireDays = Math.max(1, Math.min(365, parseInt(String(data.expires_days || 30)) || 30));
       const expiresAtDate = new Date(Date.now() + expireDays * 24 * 60 * 60 * 1000);
 
       const { data: updated, error } = await supabase

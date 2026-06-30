@@ -3,7 +3,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { MapPin, AlertTriangle, CheckCircle, Loader2, RefreshCw } from 'lucide-react';
+import { MapPin, AlertTriangle, Loader2, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface GPSPermissionHelperProps {

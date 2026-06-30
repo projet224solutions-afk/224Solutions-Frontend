@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { PublicIdBadge } from '@/components/PublicIdBadge';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { backendFetch } from '@/services/backendApi';
 import { toast } from 'sonner';
@@ -21,7 +21,6 @@ import {
   Search,
   AlertTriangle,
   TrendingUp,
-  Users,
   DollarSign,
   Activity,
   Shield,

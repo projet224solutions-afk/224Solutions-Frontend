@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BarChart3, TrendingUp, Download, Calendar, Package, Users, ShoppingCart, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { BarChart3, TrendingUp, Download, Users, ShoppingCart, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { usePDGReportsData } from '@/hooks/usePDGReportsData';
 import { useFormatCurrency } from '@/hooks/useFormatCurrency';

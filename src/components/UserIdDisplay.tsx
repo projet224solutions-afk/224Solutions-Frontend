@@ -54,7 +54,7 @@ export const UserIdDisplay = ({
     };
 
     fetchStandardId();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [user, profile]);
 
   if (loading) {

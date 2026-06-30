@@ -26,19 +26,15 @@ import {
     QrCode,
     Download,
     Upload,
-    _Eye,
     Edit,
-    _Trash2,
     CheckCircle,
     XCircle,
     AlertTriangle,
     Shield,
     FileText,
     Calendar,
-    _MapPin,
     Settings,
     Printer,
-    _Share2,
     IdCard
 } from "lucide-react";
 import { toast } from "sonner";

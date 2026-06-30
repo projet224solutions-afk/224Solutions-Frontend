@@ -12,16 +12,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatCurrency } from '@/lib/formatters';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
-  UtensilsCrossed, ClipboardList, Users, Calendar,
+  UtensilsCrossed, ClipboardList, Calendar,
   TrendingUp, RefreshCw, Clock, CheckCircle, XCircle,
-  DollarSign, ShoppingBag, Package, Truck, MapPin, Eye,
+  DollarSign, ShoppingBag, Truck, MapPin,
   Sparkles, Settings, Plus, LayoutGrid, CalendarCheck, ShoppingCart, Tag, Images,
   UserCog, CreditCard
 } from 'lucide-react';
 import { ServiceMediaManager } from '@/components/professional-services/ServiceMediaManager';
 import { useServiceRestaurantStats } from '@/hooks/useServiceRestaurantStats';
-import { formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import { RestaurantMenuManager } from '@/components/restaurant/RestaurantMenuManager';
 import { RestaurantTableManager } from '@/components/restaurant/RestaurantTableManager';

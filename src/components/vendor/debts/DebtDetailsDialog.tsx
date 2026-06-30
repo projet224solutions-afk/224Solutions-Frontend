@@ -10,14 +10,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import {
-  _Table,
-  _TableBody,
-  _TableCell,
-  _TableHead,
-  _TableHeader,
-  _TableRow,
-} from "@/components/ui/table";
+
+
 
 interface Debt {
   id: string;

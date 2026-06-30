@@ -18,11 +18,8 @@ import {
     DollarSign,
     User,
     Phone,
-    Link,
-    QrCode,
     Copy,
     Share2,
-    Clock,
     Shield
 } from 'lucide-react';
 import useGeolocation from '../../hooks/useGeolocation';

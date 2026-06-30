@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import {
-  RefreshCw, Cloud, Database, Shield, Bell, Server,
+  RefreshCw, Cloud, Database, Bell, Server,
   CheckCircle, AlertTriangle, XCircle, HelpCircle,
   Activity, Clock, Wifi, Globe, Zap, TrendingUp, Eye
 } from 'lucide-react';

@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Money } from "@/components/Money";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MapPin, Navigation, Clock, DollarSign } from 'lucide-react';
+import { MapPin, Navigation, DollarSign } from 'lucide-react';
 import { useTaxiMoto } from '@/hooks/useTaxiMoto';
 import { TaxiMotoService } from '@/services/taxi/TaxiMotoService';
 import TaxiMotoPaymentModal from './TaxiMotoPaymentModal';

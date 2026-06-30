@@ -1,12 +1,11 @@
 ﻿import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Globe, Package, Plane, Ship, TrendingUp, Clock, MessageSquare } from "lucide-react";
+import { Globe, Package, Plane, Ship, TrendingUp, Clock } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useRoleRedirect } from "@/hooks/useRoleRedirect";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useNavigate } from "react-router-dom";
-import { ErrorBanner } from "@/components/ui/ErrorBanner";
 import { useTransitaireErrorBoundary } from "@/hooks/useTransitaireErrorBoundary";
 
 import { useTransitaireStats } from "@/hooks/useTransitaireStats";

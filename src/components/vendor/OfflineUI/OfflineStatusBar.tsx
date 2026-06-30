@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { Wifi, WifiOff, RefreshCw, CheckCircle, AlertCircle, Clock } from 'lucide-react';
+import { Wifi, WifiOff, RefreshCw, CheckCircle, Clock } from 'lucide-react';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus';
 import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/utils';

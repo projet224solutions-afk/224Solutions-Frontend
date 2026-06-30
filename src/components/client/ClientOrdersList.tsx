@@ -12,16 +12,15 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabaseClient';
 import { formatCurrency } from '@/lib/utils';
 import { Money } from '@/components/Money';
-import { cancelOrder as cancelOrderRequest, confirmCashOnDeliveryOrder, confirmEscrowDelivery, listMyOrders, requestOrderRefund } from '@/services/orderBackendService';
+import { cancelOrder as cancelOrderRequest, confirmCashOnDeliveryOrder, confirmEscrowDelivery, listMyOrders, requestOrderRefund, getDeliveryProof, type DeliveryProof } from '@/services/orderBackendService';
 import { toast } from 'sonner';
 import { useTranslation } from '@/hooks/useTranslation';
 import { OrderDisputeThread } from '@/components/disputes/OrderDisputeThread';
 import { ReturnRequestDialog } from '@/components/returns/ReturnRequestDialog';
 import {
   Package, CheckCircle, Clock, Truck, XCircle,
-  Shield, AlertCircle, Loader2, ListFilter, Ban, DollarSign, Banknote
+  Shield, AlertCircle, Loader2, ListFilter, Ban, DollarSign, Banknote, Camera, Star
 } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -139,6 +138,19 @@ export default function ClientOrdersList() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [activeFilter, setActiveFilter] = useState<'all' | 'pending' | 'in_progress' | 'delivered'>('all');
+  // PARTIE 1.4 — preuve de livraison par commande (chargée à la demande)
+  const [proofs, setProofs] = useState<Record<string, (DeliveryProof & { loading?: boolean }) | undefined>>({});
+
+  const loadProof = async (orderId: string) => {
+    setProofs(prev => ({ ...prev, [orderId]: { ...(prev[orderId] as any), loading: true, success: true, purged: false, photo_url: null, video_url: null } }));
+    try {
+      const res = await getDeliveryProof(orderId);
+      setProofs(prev => ({ ...prev, [orderId]: { ...(res as DeliveryProof), loading: false } }));
+    } catch {
+      setProofs(prev => ({ ...prev, [orderId]: undefined }));
+      toast.error('Impossible de charger la preuve de livraison');
+    }
+  };
   const [showRatingDialog, setShowRatingDialog] = useState(false);
   const [ratingOrderData, setRatingOrderData] = useState<RatingOrderData | null>(null);
   const [pendingRatingOrderData, setPendingRatingOrderData] = useState<RatingOrderData | null>(null);
@@ -563,7 +575,10 @@ export default function ClientOrdersList() {
                   const requiresEscrowRelease = order.payment_method !== 'cash';
                   const _escrowPending = escrow?.status === 'pending' || escrow?.status === 'held';
                   const isDeliveryPending = order.status === 'in_transit' || order.status === 'shipped' || order.status === 'ready';
-                  const isDeliveredAwaitingConfirmation = order.status === 'delivered' && (requiresEscrowRelease ? escrow?.status !== 'released' && escrow?.status !== 'refunded' : true);
+                  // ESCROW (wallet/carte) : en attente tant que l'escrow n'est pas libéré/remboursé.
+                  // COD : une fois 'delivered', la réception EST confirmée (pas d'escrow) → PLUS de bouton
+                  // (sinon « Confirmer la réception » se réaffiche en boucle).
+                  const isDeliveredAwaitingConfirmation = order.status === 'delivered' && (requiresEscrowRelease ? escrow?.status !== 'released' && escrow?.status !== 'refunded' : false);
                   const canConfirmDelivery = order.status !== 'cancelled' && order.status !== 'completed' && (isDeliveryPending || isDeliveredAwaitingConfirmation);
 
                   return (
@@ -623,6 +638,36 @@ export default function ClientOrdersList() {
                     </Badge>
                   )}
                 </div>
+
+                {/* PARTIE 1.4 — Preuve de livraison (photo + vidéo, supprimée 7j après confirmation) */}
+                {['shipped', 'in_transit', 'delivered', 'completed'].includes(order.status) && (
+                  <div className="rounded-lg border border-blue-200 bg-blue-50/50 p-3">
+                    {!proofs[order.id] ? (
+                      <Button variant="outline" size="sm" onClick={() => loadProof(order.id)}>
+                        <Camera className="w-4 h-4 mr-2" /> Voir la preuve de livraison
+                      </Button>
+                    ) : proofs[order.id]?.loading ? (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Loader2 className="w-4 h-4 animate-spin" /> Chargement…
+                      </div>
+                    ) : proofs[order.id]?.purged ? (
+                      <p className="text-sm text-muted-foreground">Preuve supprimée après 7 jours.</p>
+                    ) : (proofs[order.id]?.photo_url || proofs[order.id]?.video_url) ? (
+                      <div className="space-y-2">
+                        <p className="text-xs font-medium text-blue-800">📸 Preuve de livraison</p>
+                        {proofs[order.id]?.photo_url && (
+                          <img src={proofs[order.id]!.photo_url!} alt="Preuve de livraison" className="max-h-64 rounded-md border" />
+                        )}
+                        {proofs[order.id]?.video_url && (
+                          <video src={proofs[order.id]!.video_url!} controls className="max-h-64 w-full rounded-md border" />
+                        )}
+                        <p className="text-[11px] text-muted-foreground">Disponible jusqu'à 7 jours après confirmation de réception.</p>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">Aucune preuve jointe par le vendeur.</p>
+                    )}
+                  </div>
+                )}
 
                 {/* Info Paiement à la livraison */}
                 {isCODOrder && !['delivered', 'completed', 'cancelled'].includes(order.status) && (
@@ -720,6 +765,27 @@ export default function ClientOrdersList() {
                       )}
                     </Button>
                   )}
+
+                  {/* Noter le produit + la boutique — persistant après livraison (COD inclus), pour
+                      pouvoir laisser un avis à tout moment, pas seulement juste après la confirmation. */}
+                  {(order.status === 'delivered' || order.status === 'completed') && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setRatingOrderData({
+                          orderId: order.id,
+                          vendorId: order.vendor_id,
+                          vendorName: order.vendors?.business_name || 'ce vendeur',
+                        });
+                        setShowRatingDialog(true);
+                      }}
+                      className="w-full"
+                    >
+                      <Star className="w-4 h-4 mr-2" />
+                      Noter le produit et la boutique
+                    </Button>
+                  )}
                 </div>
 
                 {/* Info si déjà livrée */}
@@ -770,6 +836,7 @@ export default function ClientOrdersList() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+            {/* onClick enrobé : confirmDelivery(orderOverride?) ne doit pas recevoir l'event MouseEvent */}
             <AlertDialogAction onClick={() => void confirmDelivery()}>
               {t('orders.confirmReceptionBtn')}
             </AlertDialogAction>
