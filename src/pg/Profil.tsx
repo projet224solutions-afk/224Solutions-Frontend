@@ -360,10 +360,11 @@ export default function Profil() {
       const file = input.files?.[0];
       if (!file || !user) return;
       try {
-        // Upload vers GCS via le hook unifié
+        // Photos de profil : rester dans Supabase (pas GCS) — routage voulu.
         const result = await uploadFile(file, {
           folder: 'avatars',
           subfolder: user.id,
+          preferSupabase: true,
         });
 
         if (!result.success || !result.publicUrl) {
