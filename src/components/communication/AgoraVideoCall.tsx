@@ -58,13 +58,9 @@ export default function AgoraVideoCall({
       onUserJoined: (user) => {
         console.log('👤 Utilisateur rejoint:', user.uid);
         setRemoteUsers(agoraService.getRemoteUsers());
-
-        // Jouer la vidéo distante si disponible
-        if (user.videoTrack && remoteVideoRef.current) {
-          setTimeout(() => {
-            agoraService.playRemoteVideo(String(user.uid), remoteVideoRef.current!);
-          }, 100);
-        }
+        // Le (re)play de la vidéo distante est géré de façon FIABLE par le
+        // useEffect [remoteUsers] ci-dessous (déclenché à chaque user-published,
+        // donc dès que le videoTrack distant est disponible).
       },
       onUserLeft: (uid) => {
         console.log('👤 Utilisateur parti:', uid);
@@ -92,13 +88,6 @@ export default function AgoraVideoCall({
       durationIntervalRef.current = setInterval(() => {
         setCallDuration(prev => prev + 1);
       }, 1000);
-
-      // Jouer la vidéo locale
-      if (localVideoRef.current) {
-        setTimeout(() => {
-          agoraService.playLocalVideo(localVideoRef.current!);
-        }, 100);
-      }
     } else {
       if (durationIntervalRef.current) {
         clearInterval(durationIntervalRef.current);
@@ -112,6 +101,29 @@ export default function AgoraVideoCall({
       }
     };
   }, [callState.isInCall]);
+
+  // ▶️ (Re)joue la vidéo DISTANTE de façon FIABLE dès qu'un flux distant avec vidéo
+  // est disponible. Déclenché à chaque mise à jour de remoteUsers (donc à chaque
+  // user-published), ce qui couvre le cas où le play initial arrive avant que le
+  // track/DOM soit prêt. Le conteneur remoteVideoRef est VIDE → Agora en garde le
+  // contrôle exclusif (plus d'écran noir au re-render).
+  useEffect(() => {
+    if (remoteUsers.length > 0 && remoteVideoRef.current) {
+      const remote = remoteUsers.find((u) => u.videoTrack);
+      if (remote) {
+        agoraService.playRemoteVideo(String(remote.uid), remoteVideoRef.current);
+      }
+    }
+  }, [remoteUsers]);
+
+  // ▶️ Joue la vidéo LOCALE quand l'appel est établi ET le conteneur monté (après la
+  // fin de l'écran « connexion »). playLocalVideo est idempotent (ne fait rien si le
+  // track n'est pas prêt) → pas de setTimeout fragile.
+  useEffect(() => {
+    if (callState.isInCall && !isConnecting && localVideoRef.current) {
+      agoraService.playLocalVideo(localVideoRef.current);
+    }
+  }, [callState.isInCall, isConnecting]);
 
   const handleJoinCall = useCallback(async () => {
     console.log('🎥 AgoraVideoCall: handleJoinCall appelé');
@@ -201,35 +213,44 @@ export default function AgoraVideoCall({
     <div className="w-full h-full bg-black rounded-lg overflow-hidden relative min-h-[400px]">
       {/* Interface vidéo principale */}
       <div className="relative w-full h-full">
-        {/* Vidéo distante */}
-        <div
-          ref={remoteVideoRef}
-          className="w-full h-full bg-gray-900 flex items-center justify-center min-h-[400px]"
-        >
+        {/* Zone vidéo distante : conteneur Agora (VIDE) + overlay séparé, dans un parent relatif */}
+        <div className="relative w-full h-full min-h-[400px]">
+          {/* Conteneur DÉDIÉ à Agora — VIDE : React n'y met JAMAIS d'enfant JSX,
+              donc il ne le re-rend jamais → l'élément <video> injecté par Agora
+              reste en place (fini l'écran noir au re-render). */}
+          <div
+            ref={remoteVideoRef}
+            className="w-full h-full bg-gray-900 min-h-[400px]"
+          />
+
+          {/* Overlay « en attente » — SÉPARÉ, positionné PAR-DESSUS. Disparaît quand
+              la vidéo arrive, SANS jamais toucher au conteneur vidéo. */}
           {remoteUsers.length === 0 && callerInfo && (
-            <div className="text-center text-white">
-              <Avatar className="w-20 h-20 mx-auto mb-4">
-                <AvatarImage src={callerInfo.avatar} />
-                <AvatarFallback>
-                  {callerInfo.name?.charAt(0) || 'U'}
-                </AvatarFallback>
-              </Avatar>
-              <h3 className="text-xl font-semibold">{callerInfo.name}</h3>
-              <p className="text-gray-400">
-                {callState.isConnected ? 'En attente de la vidéo...' : 'Connexion en cours...'}
-              </p>
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="text-center text-white">
+                <Avatar className="w-20 h-20 mx-auto mb-4">
+                  <AvatarImage src={callerInfo.avatar} />
+                  <AvatarFallback>
+                    {callerInfo.name?.charAt(0) || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <h3 className="text-xl font-semibold">{callerInfo.name}</h3>
+                <p className="text-gray-400">
+                  {callState.isConnected ? 'En attente de la vidéo...' : 'Connexion en cours...'}
+                </p>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Vidéo locale (picture-in-picture) */}
-        <div
-          ref={localVideoRef}
-          className="absolute top-4 right-4 w-32 h-24 bg-gray-800 rounded-lg overflow-hidden border-2 border-white shadow-lg"
-        >
-          <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+        {/* Vidéo locale (PiP) : conteneur relatif = placeholder (derrière) + div Agora VIDE (devant) */}
+        <div className="absolute top-4 right-4 w-32 h-24 bg-gray-800 rounded-lg overflow-hidden border-2 border-white shadow-lg">
+          {/* Placeholder DERRIÈRE (visible tant que la vidéo locale n'est pas jouée) */}
+          <div className="absolute inset-0 bg-gray-700 flex items-center justify-center pointer-events-none">
             <Video className="w-8 h-8 text-white" />
           </div>
+          {/* Conteneur DÉDIÉ à Agora — VIDE, PAR-DESSUS le placeholder */}
+          <div ref={localVideoRef} className="absolute inset-0 w-full h-full" />
         </div>
 
         {/* Informations d'appel */}
