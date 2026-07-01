@@ -773,6 +773,32 @@ class UniversalCommunicationService {
     }
   }
 
+  /**
+   * Accepter un appel entrant (récepteur).
+   * Passe le statut à 'accepted' — ESSENTIEL : la garde du token Agora exige un
+   * appel ACTIF ('ringing'/'accepted') où l'user est caller/receiver. Sans ce
+   * passage, le token du récepteur serait refusé une fois le 'ringing' expiré.
+   */
+  async acceptCall(callId: string): Promise<void> {
+    const { error } = await supabase
+      .from('calls')
+      .update({ status: 'accepted' })
+      .eq('id', callId);
+    if (error) throw error;
+  }
+
+  /**
+   * Refuser un appel entrant (récepteur). Statut → 'rejected' (ou 'missed' sur
+   * timeout sans réponse). Valeurs de l'enum call_status_type.
+   */
+  async rejectCall(callId: string, reason: 'rejected' | 'missed' = 'rejected'): Promise<void> {
+    const { error } = await supabase
+      .from('calls')
+      .update({ status: reason })
+      .eq('id', callId);
+    if (error) throw error;
+  }
+
   // ==========================================================================
   // NOTIFICATIONS
   // ==========================================================================

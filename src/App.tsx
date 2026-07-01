@@ -24,6 +24,7 @@ import DeepLinkInitializer from "@/components/DeepLinkInitializer";
 
 const MerchantOnboarding = lazyWithRetry(() => import("@/components/onboarding/MerchantOnboarding"));
 const WebRTCCallProvider = lazyWithRetry(() => import("@/components/communication/WebRTCCallProvider"));
+const AgoraIncomingCallProvider = lazyWithRetry(() => import("@/components/communication/AgoraIncomingCallProvider"));
 const FcmAutoInit = lazyWithRetry(() => import("@/components/communication/FcmAutoInit"));
 
 // Lazy load TOUT - même la page d'accueil pour réduire TBT
@@ -330,6 +331,11 @@ function App() {
                             <WebRTCCallProvider>
                             <Suspense fallback={null}>
                               <FcmAutoInit />
+                            </Suspense>
+                            {/* 📞 Appels ENTRANTS Agora (global) : notifie le récepteur
+                                et le fait rejoindre le même canal (le maillon manquant). */}
+                            <Suspense fallback={null}>
+                              <AgoraIncomingCallProvider />
                             </Suspense>
                             <Routes>
                               {/* Route racine: redirige vers dashboard si connecté, sinon landing */}

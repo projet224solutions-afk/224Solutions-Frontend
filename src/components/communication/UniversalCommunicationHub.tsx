@@ -473,6 +473,50 @@ export default function UniversalCommunicationHub({
     setActiveCall(null);
   };
 
+  // 📞 Côté APPELANT : fin d'appel synchronisée + timeout de non-réponse.
+  // - Récepteur refuse/raccroche (statut terminal) → fermer l'écran ici aussi.
+  // - Pas de réponse en 30s (toujours 'ringing') → marquer 'missed' et fermer.
+  //   On NE re-marque PAS 'ended' sur un statut distant (évite d'écraser 'rejected').
+  useEffect(() => {
+    if (!activeCall?.id) return;
+    let answered = false;
+
+    const ch = supabase
+      .channel(`call-status-caller:${activeCall.id}`)
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'calls', filter: `id=eq.${activeCall.id}` },
+        (payload) => {
+          const s = (payload.new as any).status;
+          if (s === 'accepted') {
+            answered = true;
+          } else if (['ended', 'rejected', 'missed'].includes(s)) {
+            setActiveCall(null);
+          }
+        }
+      )
+      .subscribe();
+
+    const timeout = setTimeout(async () => {
+      if (answered) return;
+      try {
+        await supabase
+          .from('calls')
+          .update({ status: 'missed' })
+          .eq('id', activeCall.id)
+          .eq('status', 'ringing');
+      } catch {
+        /* non bloquant */
+      }
+      setActiveCall(null);
+    }, 30000);
+
+    return () => {
+      supabase.removeChannel(ch);
+      clearTimeout(timeout);
+    };
+  }, [activeCall?.id]);
+
   const handleSearchUsers = async (query: string) => {
     if (!query.trim()) {
       setSearchResults([]);
