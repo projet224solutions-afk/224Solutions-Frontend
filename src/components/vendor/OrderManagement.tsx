@@ -715,25 +715,48 @@ export default function OrderManagement() {
   };
 
   // ───────── PARTIE 1.4 — Upload de la preuve de livraison (vendeur) ─────────
+  // Upload d'un fichier de preuve vers le bucket GCS PRIVÉ via URL signée.
+  // Renvoie l'objectPath (scopé à la commande) ou null si échec.
+  const uploadProofToGcs = async (orderId: string, file: File): Promise<string | null> => {
+    const { data, error } = await supabase.functions.invoke('gcs-signed-url', {
+      body: {
+        action: 'upload',
+        fileName: file.name,
+        folder: orderId,
+        contentType: file.type || 'application/octet-stream',
+        visibility: 'private',
+        expiresInMinutes: 15,
+      },
+    });
+    if (error || !data?.signedUrl || !data?.objectPath) return null;
+    const put = await fetch(data.signedUrl, {
+      method: 'PUT',
+      headers: { 'Content-Type': file.type || 'application/octet-stream' },
+      body: file,
+    });
+    if (!put.ok) return null;
+    return data.objectPath as string; // ${orderId}/...
+  };
+
   const submitDeliveryProof = async () => {
     if (!proofOrder || !proofPhoto) { toast({ title: 'Photo obligatoire', variant: 'destructive' }); return; }
     setProofUploading(true);
     try {
       const orderId = proofOrder.id;
-      const ext = (f: File) => (f.name.split('.').pop() || 'bin').toLowerCase();
-      const photoPath = `${orderId}/photo_${Date.now()}.${ext(proofPhoto)}`;
-      const { error: pErr } = await supabase.storage.from('delivery-proofs').upload(photoPath, proofPhoto, { upsert: false });
-      if (pErr) { toast({ title: 'Échec upload photo', description: pErr.message, variant: 'destructive' }); return; }
+      // Upload vers GCS privé (URL signée). Confidentialité préservée : lecture
+      // uniquement via URL signée temporaire côté backend.
+      const photoPath = await uploadProofToGcs(orderId, proofPhoto);
+      if (!photoPath) { toast({ title: 'Échec upload photo', variant: 'destructive' }); return; }
 
       let videoPath: string | undefined;
       if (proofVideo) {
-        videoPath = `${orderId}/video_${Date.now()}.${ext(proofVideo)}`;
-        const { error: vErr } = await supabase.storage.from('delivery-proofs').upload(videoPath, proofVideo, { upsert: false });
-        if (vErr) { toast({ title: 'Échec upload vidéo (photo conservée)', variant: 'destructive' }); videoPath = undefined; }
+        const vp = await uploadProofToGcs(orderId, proofVideo);
+        if (!vp) { toast({ title: 'Échec upload vidéo (photo conservée)', variant: 'destructive' }); }
+        else videoPath = vp;
       }
 
       const res = await backendFetch(`/api/orders/${orderId}/delivery-proof`, {
-        method: 'POST', body: { photo_path: photoPath, video_path: videoPath },
+        method: 'POST', body: { photo_path: photoPath, video_path: videoPath, storage: 'gcs' },
       });
       if (!(res as any)?.success) { toast({ title: 'Échec enregistrement preuve', variant: 'destructive' }); return; }
 
